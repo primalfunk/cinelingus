@@ -1,0 +1,60 @@
+﻿{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "performance_diagnostics",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool_version",
+    "media_hash",
+    "creation_timestamp",
+    "summary",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "media_hash": { "type": "string" },
+    "creation_timestamp": { "type": "string" },
+    "scheduling_mode": { "type": ["string", "null"] },
+    "active_filter": { "type": ["string", "null"] },
+    "summary": { "type": "object" },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "destination_performance_id",
+          "chosen_source_performance_ids",
+          "mapping_count",
+          "coverage",
+          "average_similarity_score",
+          "similarity_breakdown",
+          "selection_rationale",
+          "warnings"
+        ],
+        "properties": {
+          "destination_performance_id": { "type": "string" },
+          "destination_performance_type": { "type": ["string", "null"] },
+          "chosen_source_performance_ids": { "type": "array", "items": { "type": "string" } },
+          "mapping_count": { "type": "integer" },
+          "clip_ids": { "type": "array" },
+          "coverage": { "type": "number" },
+          "target_coverage": { "type": "number" },
+          "scheduled_duration": { "type": "number" },
+          "average_similarity_score": { "type": "number" },
+          "lowest_similarity_score": { "type": "number" },
+          "highest_stretch_delta": { "type": "number" },
+          "reuse_count": { "type": "integer" },
+          "similarity_breakdown": { "type": "object" },
+          "weight_contributions": { "type": "object" },
+          "selection_rationale": { "type": "array", "items": { "type": "string" } },
+          "top_rejected_candidates": { "type": "array" },
+          "split_required": { "type": "boolean" },
+          "split_reason": { "type": ["string", "null"] },
+          "stop_reason": { "type": ["string", "null"] },
+          "warnings": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

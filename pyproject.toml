@@ -1,0 +1,16 @@
+[project]
+name = "movie-masher"
+version = "0.1.0"
+description = "Dialogue replacement pipeline for local movie files."
+requires-python = ">=3.11"
+dependencies = [
+    "pyannote.audio>=4.0.6",
+]
+
+[project.scripts]
+movie-masher = "movie_masher.cli:main"
+movie-masher-gui = "movie_masher.gui:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "."]
+testpaths = ["tests"]

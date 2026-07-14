@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "filter_id": "infection.contagion",
+  "filter_version": "1.0.0",
+  "family_id": "infection",
+  "created_at": "2026-07-13T00:00:00Z",
+  "input_media_roles": {"film": "choose-a-film.mp4"},
+  "parameters": {"initial_carrier": "auto", "spread_speed": "Moderate", "contact_threshold": 1.0, "maximum_infected_speakers": 4, "intensity": "Moderate", "recovery_allowed": false, "progression": "Constant", "source_pool_policy": "Initial carrier"},
+  "output_settings": {"form": "best_short"},
+  "random_seed": 1,
+  "target_duration": 180.0,
+  "progression_settings": {"progression": "Constant"},
+  "identity_mapping_settings": {"initial_carrier": "auto"},
+  "selected_filter_stack": ["infection.contagion"],
+  "compatibility_decisions": [],
+  "requested_analysis_backends": {"diarization": "pyannote", "transcription": "small"},
+  "actual_analysis_backends": {}
+}

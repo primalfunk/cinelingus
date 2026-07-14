@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "id": "self_shuffle",
+  "name": "Self Shuffle",
+  "description": "Shuffle one film's own dialogue back into its speaking windows.",
+  "input_requirements": [
+    "destination_video"
+  ],
+  "transformation_strategy": "self_shuffle",
+  "selection_strategy": {
+    "source": "destination_video.filtered_dialogue_events",
+    "destination": "destination_video.filtered_timeline"
+  },
+  "scheduling": {
+    "mode": "strict_order",
+    "seed": 1
+  },
+  "render_outputs": {
+    "schedule": "self_shuffle_schedule.json",
+    "audio": "self_shuffle_dialogue.wav",
+    "video": "self_shuffle_output.mp4"
+  },
+  "parameters": {
+    "seed": {
+      "type": "integer",
+      "default": 1
+    }
+  }
+}

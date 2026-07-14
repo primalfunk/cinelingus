@@ -1,0 +1,14 @@
+﻿{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "taste_profile",
+  "type": "object",
+  "required": ["schema_version", "tool_version", "creation_timestamp", "profile_name", "parameters"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "creation_timestamp": { "type": "string" },
+    "profile_name": { "type": "string" },
+    "parameters": { "type": "object" },
+    "notes": { "type": "string" }
+  }
+}

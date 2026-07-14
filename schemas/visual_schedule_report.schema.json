@@ -1,0 +1,81 @@
+{
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool_version",
+    "media_hash",
+    "creation_timestamp",
+    "shot_boundary_mode",
+    "total_shots",
+    "total_speaking_windows",
+    "total_mappings",
+    "empty_dialogue_shots",
+    "overloaded_shots",
+    "crossing_mappings",
+    "longest_silent_visual_runs",
+    "highest_risk_mappings",
+    "shots"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "tool_version": {
+      "type": "string"
+    },
+    "media_hash": {
+      "type": "string"
+    },
+    "creation_timestamp": {
+      "type": "string"
+    },
+    "shot_boundary_mode": {
+      "type": "string"
+    },
+    "total_shots": {
+      "type": "integer"
+    },
+    "total_speaking_windows": {
+      "type": "integer"
+    },
+    "total_mappings": {
+      "type": "integer"
+    },
+    "empty_dialogue_shots": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "overloaded_shots": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "crossing_mappings": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "longest_silent_visual_runs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "highest_risk_mappings": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "shots": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}

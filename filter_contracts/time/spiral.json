@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "contract_version": "1.0.0",
+  "filter_id": "time.spiral",
+  "filter_name": "Spiral",
+  "family_id": "time",
+  "filter_version": "1.0.0",
+  "status": "accepted",
+  "implementation_class": "A",
+  "creative_proposition": "Absolute source-to-destination displacement never decreases across the selected sequence and follows the configured direction policy.",
+  "relationship_domains": {
+    "reads": [
+      "dialogue",
+      "time",
+      "performance"
+    ],
+    "changes": [
+      "dialogue",
+      "time"
+    ],
+    "preserves": {
+      "identity": "Preserved where possible",
+      "performance": "Duration matched",
+      "progression": "Absolute displacement never decreases"
+    }
+  },
+  "specimen_inputs": [
+    "film"
+  ],
+  "required_analysis": [
+    "dialogue_events",
+    "scenes"
+  ],
+  "candidate_generation": "Selected replacements alternate around the present while absolute source distance grows monotonically. Candidate pools exclude unusable zero-duration material.",
+  "selection_rules": [
+    "Selected replacements alternate around the present while absolute source distance grows monotonically.",
+    "Selection is deterministic for identical inputs, parameters, and random seed."
+  ],
+  "transformation_behavior": "Absolute source-to-destination displacement never decreases across the selected sequence and follows the configured direction policy.",
+  "progression": "Parameter-driven progression is measured in the emitted schedule.",
+  "state_variables": [
+    "parameter:starting_distance",
+    "parameter:maximum_distance",
+    "parameter:direction",
+    "parameter:intensity",
+    "parameter:performance_preservation",
+    "parameter:allow_line_reuse"
+  ],
+  "fields": [
+    "filter_metrics",
+    "filter_validation"
+  ],
+  "controlled_uncertainty": "Random choices are seeded and therefore reproducible.",
+  "hard_invariants": [
+    {
+      "id": "absolute_displacement_never_decreases",
+      "statement": "Absolute displacement never decreases.",
+      "validator": "filter_validation.absolute_displacement_never_decreases"
+    },
+    {
+      "id": "direction_policy_is_respected",
+      "statement": "Direction policy is respected.",
+      "validator": "filter_validation.direction_policy_is_respected"
+    }
+  ],
+  "validation": {
+    "strategy": "Validate strategy-emitted invariants, measurable coverage, silence ratio, provenance, and final audio stream.",
+    "required_metrics": [
+      "starting_displacement",
+      "ending_displacement",
+      "silence_ratio"
+    ]
+  },
+  "failure_behavior": "Fail before rendering when required inputs, analysis, candidates, or invariants are unavailable.",
+  "preview_strategy": "Choose representative mappings that expose the defining law without claiming Procedure behavior.",
+  "renderer_requirements": [
+    "Preserve the source picture unless the contract explicitly says otherwise.",
+    "Produce a final MP4 with a verified audio stream.",
+    "Report replacement-audio provenance, dialogue coverage, silence ratio, and invariant results."
+  ],
+  "procedure_behavior": {
+    "support_status": "single_step_validated",
+    "receives_transformed_specimen": false,
+    "commitment": "When a Procedure runtime exists, consume prior mappings without losing immutable source provenance; this phase does not execute that commitment."
+  },
+  "capabilities": {
+    "implemented": true,
+    "implementation_key": "spiral",
+    "execution_mode": "scheduling_strategy",
+    "sparse_schedule": true,
+    "requires_speaker_identity": false,
+    "supports_preview": true,
+    "supports_best_short": true,
+    "supports_full_length": true,
+    "requires_output_acceptance": true
+  },
+  "blockers": []
+}

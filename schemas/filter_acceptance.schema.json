@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "filter_acceptance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "filter_id", "contract_version", "status", "checks", "measurements", "outputs", "invariants"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "filter_id": {"type": "string"},
+    "contract_version": {"type": "string"},
+    "status": {"type": "string", "enum": ["pass", "fail"]},
+    "checks": {"type": "object"},
+    "measurements": {
+      "type": "object", "additionalProperties": false,
+      "required": ["dialogue_coverage", "mapped_dialogue_duration", "render_duration", "active_ratio", "silence_ratio"],
+      "properties": {
+        "dialogue_coverage": {"type": "number", "minimum": 0, "maximum": 1},
+        "mapped_dialogue_duration": {"type": "number", "minimum": 0},
+        "render_duration": {"type": "number", "minimum": 0},
+        "active_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "silence_ratio": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "outputs": {"type": "object"},
+    "invariants": {"type": "array", "items": {"type": "object"}}
+  }
+}

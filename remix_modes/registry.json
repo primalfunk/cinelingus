@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "default_mode_id": "best_short_remix",
+  "mode_files": [
+    "best_short_remix.json",
+    "self_shuffle.json",
+    "two_movie_dub.json",
+    "character_theft.json",
+    "personality_swap.json",
+    "surprise_me.json"
+  ]
+}

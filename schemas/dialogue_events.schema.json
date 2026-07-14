@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "dialogue_events",
+  "type": "object",
+  "required": ["schema_version", "tool_version", "media_hash", "creation_timestamp", "events"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "media_hash": { "type": "string" },
+    "creation_timestamp": { "type": "string" },
+    "detector": { "type": "string" },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "start", "end", "duration", "transcript", "confidence"],
+        "properties": {
+          "id": { "type": "string" },
+          "start": { "type": "number" },
+          "end": { "type": "number" },
+          "duration": { "type": "number" },
+          "transcript": { "type": "string" },
+          "confidence": { "type": "number" },
+          "speaker": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

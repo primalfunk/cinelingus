@@ -1,0 +1,62 @@
+{
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool_version",
+    "media_hash",
+    "creation_timestamp",
+    "detector",
+    "threshold",
+    "min_shot_duration",
+    "video_duration",
+    "total_shots",
+    "average_shot_duration",
+    "shortest_shot_duration",
+    "longest_shot_duration",
+    "shots_path"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "tool_version": {
+      "type": "string"
+    },
+    "media_hash": {
+      "type": "string"
+    },
+    "creation_timestamp": {
+      "type": "string"
+    },
+    "config_signature": {
+      "type": "string"
+    },
+    "detector": {
+      "type": "string"
+    },
+    "threshold": {
+      "type": "number"
+    },
+    "min_shot_duration": {
+      "type": "number"
+    },
+    "video_duration": {
+      "type": "number"
+    },
+    "total_shots": {
+      "type": "integer"
+    },
+    "average_shot_duration": {
+      "type": "number"
+    },
+    "shortest_shot_duration": {
+      "type": "number"
+    },
+    "longest_shot_duration": {
+      "type": "number"
+    },
+    "shots_path": {
+      "type": "string"
+    }
+  }
+}

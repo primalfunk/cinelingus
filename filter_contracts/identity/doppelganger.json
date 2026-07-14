@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "contract_version": "1.0.0",
+  "filter_id": "identity.doppelganger",
+  "filter_name": "Doppelgänger",
+  "family_id": "identity",
+  "filter_version": "1.0.0",
+  "status": "accepted",
+  "implementation_class": "A",
+  "creative_proposition": "Exactly two selected speakers exchange dialogue identities bidirectionally without changing the pair.",
+  "relationship_domains": {
+    "reads": [
+      "identity",
+      "dialogue",
+      "performance",
+      "time"
+    ],
+    "changes": [
+      "identity",
+      "dialogue"
+    ],
+    "preserves": {
+      "time": "Destination chronology preserved",
+      "identity": "One stable bidirectional pair"
+    }
+  },
+  "specimen_inputs": [
+    "film"
+  ],
+  "required_analysis": [
+    "dialogue_events",
+    "performances",
+    "speakers",
+    "scenes"
+  ],
+  "candidate_generation": "Dialogue from either selected speaker fills eligible windows belonging to the other; the pair never changes during a run. Candidate pools exclude unusable zero-duration material.",
+  "selection_rules": [
+    "Dialogue from either selected speaker fills eligible windows belonging to the other; the pair never changes during a run.",
+    "Speaker pools exclude unknown_ and fallback_ identities; insufficient real speaker coverage is a hard failure.",
+    "Selection is deterministic for identical inputs, parameters, and random seed."
+  ],
+  "transformation_behavior": "Exactly two selected speakers exchange dialogue identities bidirectionally without changing the pair.",
+  "progression": "Transformation strength is constant unless an explicit intensity parameter selects fewer windows.",
+  "state_variables": [
+    "parameter:primary_speaker",
+    "parameter:mirror_speaker",
+    "parameter:intensity",
+    "parameter:performance_preservation",
+    "parameter:allow_line_reuse"
+  ],
+  "fields": [
+    "filter_metrics",
+    "filter_validation"
+  ],
+  "controlled_uncertainty": "Random choices are seeded and therefore reproducible.",
+  "hard_invariants": [
+    {
+      "id": "all_mappings_remain_inside_pair",
+      "statement": "All mappings remain inside pair.",
+      "validator": "filter_validation.all_mappings_remain_inside_pair"
+    },
+    {
+      "id": "source_and_destination_are_distinct",
+      "statement": "Source and destination are distinct.",
+      "validator": "filter_validation.source_and_destination_are_distinct"
+    }
+  ],
+  "validation": {
+    "strategy": "Validate strategy-emitted invariants, measurable coverage, silence ratio, provenance, and final audio stream.",
+    "required_metrics": [
+      "transformed_windows",
+      "silence_ratio"
+    ]
+  },
+  "failure_behavior": "Fail before rendering when required inputs, analysis, candidates, or invariants are unavailable.",
+  "preview_strategy": "Choose representative mappings that expose the defining law without claiming Procedure behavior.",
+  "renderer_requirements": [
+    "Preserve the source picture unless the contract explicitly says otherwise.",
+    "Produce a final MP4 with a verified audio stream.",
+    "Report replacement-audio provenance, dialogue coverage, silence ratio, and invariant results."
+  ],
+  "procedure_behavior": {
+    "support_status": "single_step_validated",
+    "receives_transformed_specimen": false,
+    "commitment": "When a Procedure runtime exists, consume prior mappings without losing immutable source provenance; this phase does not execute that commitment."
+  },
+  "capabilities": {
+    "implemented": true,
+    "implementation_key": "doppelganger",
+    "execution_mode": "scheduling_strategy",
+    "sparse_schedule": true,
+    "requires_speaker_identity": true,
+    "supports_preview": true,
+    "supports_best_short": true,
+    "supports_full_length": true,
+    "requires_output_acceptance": true
+  },
+  "blockers": []
+}

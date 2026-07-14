@@ -1,0 +1,35 @@
+{
+  "mode_id": "best_short_remix",
+  "display_name": "Best Short Remix",
+  "short_description": "Finds the strongest few minutes instead of remixing the whole movie.",
+  "source_requirements": {
+    "minimum_movies": 1,
+    "maximum_movies": 2,
+    "requires_transcript": true,
+    "requires_speaker_labels": true
+  },
+  "default_settings": {
+    "target_duration_seconds": 180,
+    "minimum_duration_seconds": 120,
+    "maximum_duration_seconds": 300,
+    "quality_profile": "balanced"
+  },
+  "candidate_generation_strategy": "ranked_scene_candidates",
+  "scoring_profile": "balanced",
+  "assembly_strategy": "single_best_scene_or_short_sequence",
+  "output_report_fields": [
+    "selected_mode",
+    "source_files",
+    "target_duration",
+    "actual_duration",
+    "selected_candidate_ids",
+    "scoring_breakdown",
+    "speaker_mapping",
+    "line_replacement_mapping",
+    "render_settings",
+    "processing_time",
+    "warnings",
+    "rejected_candidates"
+  ],
+  "ui_visibility": "default"
+}

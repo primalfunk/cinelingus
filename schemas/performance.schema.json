@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "performance",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool_version",
+    "media_hash",
+    "creation_timestamp",
+    "role",
+    "performance_count",
+    "performances"
+  ],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "media_hash": { "type": "string" },
+    "creation_timestamp": { "type": "string" },
+    "role": { "type": "string" },
+    "max_pause": { "type": "number" },
+    "config_signature": { "type": "string" },
+    "performance_count": { "type": "integer" },
+    "performances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "role",
+          "start",
+          "end",
+          "duration",
+          "speaking_window_ids",
+          "shot_ids",
+          "estimated_speaker_count",
+          "pause_statistics",
+          "dialogue_density",
+          "conversation_type",
+          "confidence"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "role": { "type": "string" },
+          "start": { "type": "number" },
+          "end": { "type": "number" },
+          "duration": { "type": "number" },
+          "speaking_window_ids": { "type": "array", "items": { "type": "string" } },
+          "dialogue_event_ids": { "type": "array", "items": { "type": "string" } },
+          "shot_ids": { "type": "array", "items": { "type": "string" } },
+          "estimated_speaker_count": { "type": "integer" },
+          "estimated_turn_count": { "type": "integer" },
+          "speaker_sequence": { "type": "array", "items": { "type": "string" } },
+          "turn_pattern": { "type": "string" },
+          "pause_statistics": { "type": "object" },
+          "dialogue_density": { "type": "number" },
+          "pause_ratio": { "type": "number" },
+          "conversation_type": { "type": "string" },
+          "signature": { "type": "object" },
+          "confidence": { "type": "number" }
+        }
+      }
+    }
+  }
+}

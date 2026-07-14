@@ -1,0 +1,299 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "replacement_schedule",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool_version",
+    "media_hash",
+    "creation_timestamp",
+    "mappings"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "tool_version": {
+      "type": "string"
+    },
+    "media_hash": {
+      "type": "string"
+    },
+    "source_media_hash": {
+      "type": "string"
+    },
+    "destination_media_hash": {
+      "type": "string"
+    },
+    "creation_timestamp": {
+      "type": "string"
+    },
+    "scheduling_mode": {
+      "type": "string"
+    },
+    "max_time_stretch": {
+      "type": "number"
+    },
+    "best_fit_lookahead": {
+      "type": "integer"
+    },
+    "mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "window_id",
+          "clip_id",
+          "enabled",
+          "destination_timestamp",
+          "stretch_factor",
+          "leading_silence",
+          "trailing_silence",
+          "score",
+          "score_components",
+          "selection_reason",
+          "scheduling_mode",
+          "timing_strategy",
+          "planned_render_duration",
+          "render_operations",
+          "shot_boundary_mode",
+          "visual_fit_score"
+        ],
+        "properties": {
+          "window_id": {
+            "type": "string"
+          },
+          "clip_id": {
+            "type": "string"
+          },
+          "performance_id": {
+            "type": ["string", "null"]
+          },
+          "performance_type": {
+            "type": ["string", "null"]
+          },
+          "performance_dialogue_density": {
+            "type": ["number", "null"]
+          },
+          "performance_visible_windows": {
+            "type": ["integer", "null"]
+          },
+          "performance_shot_count": {
+            "type": ["integer", "null"]
+          },
+          "clip_path": {
+            "type": "string"
+          },
+          "destination_timestamp": {
+            "type": "number"
+          },
+          "stretch_factor": {
+            "type": "number"
+          },
+          "clip_trim_start": {
+            "type": "number"
+          },
+          "clip_trim_duration": {
+            "type": "number"
+          },
+          "leading_silence": {
+            "type": "number"
+          },
+          "trailing_silence": {
+            "type": "number"
+          },
+          "score": {
+            "type": "number"
+          },
+          "score_components": {
+            "type": "object"
+          },
+          "selection_reason": {
+            "type": "string"
+          },
+          "scheduling_mode": {
+            "type": "string"
+          },
+          "timing_strategy": {
+            "type": "string"
+          },
+          "skipped_source_clips": {
+            "type": "integer"
+          },
+          "source_transcript": {
+            "type": "string"
+          },
+          "source_performance_id": {
+            "type": ["string", "null"]
+          },
+          "source_performance_type": {
+            "type": ["string", "null"]
+          },
+          "source_performance_clip_count": {
+            "type": ["integer", "null"]
+          },
+          "source_performance_duration": {
+            "type": ["number", "null"]
+          },
+          "source_performance_group_index": {
+            "type": ["integer", "null"]
+          },
+          "source_performance_turn_count": {
+            "type": ["integer", "null"]
+          },
+          "source_performance_dialogue_density": {
+            "type": ["number", "null"]
+          },
+          "destination_performance_id": {
+            "type": ["string", "null"]
+          },
+          "planned_render_duration": {
+            "type": "number"
+          },
+          "render_operations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "operation"
+              ],
+              "properties": {
+                "operation": {
+                  "type": "string"
+                },
+                "start": {
+                  "type": "number"
+                },
+                "duration": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "factor": {
+                  "type": "number"
+                },
+                "preserve_pitch": {
+                  "type": "boolean"
+                },
+                "target_lufs": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "seconds": {
+                  "type": "number"
+                },
+                "peak_limit": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "shot_boundary_mode": {
+            "type": "string"
+          },
+          "primary_shot_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shot_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shot_start": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "shot_end": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "crosses_shot_boundary": {
+            "type": "boolean"
+          },
+          "boundary_overlap_seconds": {
+            "type": "number"
+          },
+          "mapping_crosses_shot_boundary": {
+            "type": "boolean"
+          },
+          "boundary_overrun_seconds": {
+            "type": "number"
+          },
+          "visual_fit_score": {
+            "type": "number"
+          },
+          "review_label": {
+            "type": "string"
+          },
+          "review_note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "performance_placements": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "destination_performance_fills": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "transformation_name": {
+      "type": "string"
+    },
+    "transformation_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "verb",
+          "description",
+          "inputs",
+          "outputs"
+        ],
+        "properties": {
+          "verb": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "outputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "shot_boundary_mode": {
+      "type": "string"
+    }
+  }
+}

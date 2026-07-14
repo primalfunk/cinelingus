@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0",
+  "contract_version": "1.0.0",
+  "filter_id": "translation.self_shuffle",
+  "filter_name": "Self Shuffle",
+  "family_id": "translation",
+  "filter_version": "1.0.0",
+  "status": "accepted",
+  "implementation_class": "A",
+  "creative_proposition": "A film's own whole lines move to different speaking slots; no enabled mapping may substantially overlap its original slot.",
+  "relationship_domains": {
+    "reads": [
+      "dialogue",
+      "performance",
+      "identity",
+      "time"
+    ],
+    "changes": [
+      "dialogue",
+      "time"
+    ],
+    "preserves": {
+      "performance": "Preserved where possible",
+      "identity": "Stable where speaker material permits"
+    }
+  },
+  "specimen_inputs": [
+    "film"
+  ],
+  "required_analysis": [
+    "dialogue_events",
+    "performances",
+    "speakers",
+    "scenes"
+  ],
+  "candidate_generation": "Dialogue is reassigned to different speaking windows while original-line placement is prohibited. Candidate pools exclude unusable zero-duration material.",
+  "selection_rules": [
+    "Dialogue is reassigned to different speaking windows while original-line placement is prohibited.",
+    "Selection is deterministic for identical inputs, parameters, and random seed."
+  ],
+  "transformation_behavior": "A film's own whole lines move to different speaking slots; no enabled mapping may substantially overlap its original slot.",
+  "progression": "Transformation strength is constant unless an explicit intensity parameter selects fewer windows.",
+  "state_variables": [
+    "parameter:seed",
+    "parameter:allow_line_reuse",
+    "parameter:performance_preservation"
+  ],
+  "fields": [
+    "filter_metrics",
+    "filter_validation"
+  ],
+  "controlled_uncertainty": "Random choices are seeded and therefore reproducible.",
+  "hard_invariants": [
+    {
+      "id": "no_enabled_line_remains_in_original_slot",
+      "statement": "No enabled line remains in original slot.",
+      "validator": "filter_validation.no_enabled_line_remains_in_original_slot"
+    },
+    {
+      "id": "all_clips_come_from_same_film",
+      "statement": "All clips come from same film.",
+      "validator": "filter_validation.all_clips_come_from_same_film"
+    }
+  ],
+  "validation": {
+    "strategy": "Validate strategy-emitted invariants, measurable coverage, silence ratio, provenance, and final audio stream.",
+    "required_metrics": [
+      "dialogue_coverage",
+      "silence_ratio"
+    ]
+  },
+  "failure_behavior": "Fail before rendering when required inputs, analysis, candidates, or invariants are unavailable.",
+  "preview_strategy": "Choose representative mappings that expose the defining law without claiming Procedure behavior.",
+  "renderer_requirements": [
+    "Preserve the source picture unless the contract explicitly says otherwise.",
+    "Produce a final MP4 with a verified audio stream.",
+    "Report replacement-audio provenance, dialogue coverage, silence ratio, and invariant results."
+  ],
+  "procedure_behavior": {
+    "support_status": "single_step_validated",
+    "receives_transformed_specimen": false,
+    "commitment": "When a Procedure runtime exists, consume prior mappings without losing immutable source provenance; this phase does not execute that commitment."
+  },
+  "capabilities": {
+    "implemented": true,
+    "implementation_key": "self_shuffle",
+    "execution_mode": "transformation",
+    "sparse_schedule": false,
+    "requires_speaker_identity": false,
+    "supports_preview": true,
+    "supports_best_short": true,
+    "supports_full_length": true,
+    "requires_output_acceptance": true
+  },
+  "blockers": []
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "mutation_report",
+  "type": "object",
+  "required": ["schema_version", "tool_version", "creation_timestamp", "source_film", "source_media_hash", "mutation_filter", "parameters", "counts", "outputs", "artifacts", "warnings", "review_summary"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "creation_timestamp": { "type": "string" },
+    "source_film": { "type": "string" },
+    "source_media_hash": { "type": "string" },
+    "mutation_filter": { "type": "object" },
+    "parameters": { "type": "object" },
+    "counts": { "type": "object" },
+    "outputs": { "type": "object" },
+    "artifacts": { "type": "object" },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "review_summary": { "type": "object" }
+  }
+}

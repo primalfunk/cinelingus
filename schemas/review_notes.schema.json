@@ -1,0 +1,99 @@
+{
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool_version",
+    "media_hash",
+    "creation_timestamp",
+    "total_mappings",
+    "reviewed_mappings",
+    "label_counts",
+    "notes"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "tool_version": {
+      "type": "string"
+    },
+    "media_hash": {
+      "type": "string"
+    },
+    "creation_timestamp": {
+      "type": "string"
+    },
+    "schedule_path": {
+      "type": "string"
+    },
+    "total_mappings": {
+      "type": "integer"
+    },
+    "reviewed_mappings": {
+      "type": "integer"
+    },
+    "label_counts": {
+      "type": "object"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "mapping_index",
+          "window_id",
+          "clip_id",
+          "review_label",
+          "enabled"
+        ],
+        "properties": {
+          "mapping_index": {
+            "type": "integer"
+          },
+          "window_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "clip_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "review_label": {
+            "type": "string"
+          },
+          "review_note": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "destination_timestamp": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "score": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "visual_fit_score": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "mapping_crosses_shot_boundary": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

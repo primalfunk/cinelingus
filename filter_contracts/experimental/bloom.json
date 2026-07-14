@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "contract_version": "1.0.0",
+  "filter_id": "experimental.bloom",
+  "filter_name": "Bloom",
+  "family_id": "experimental",
+  "filter_version": "1.0.0",
+  "status": "accepted",
+  "implementation_class": "A",
+  "creative_proposition": "Replacement frequency and measured transformation strength grow along the configured nonlinear curve.",
+  "relationship_domains": {
+    "reads": [
+      "dialogue",
+      "performance",
+      "identity",
+      "time"
+    ],
+    "changes": [
+      "dialogue",
+      "performance",
+      "identity",
+      "time"
+    ],
+    "preserves": {
+      "progression": "Measurably increasing",
+      "ending": "Authored coherence when enabled"
+    }
+  },
+  "specimen_inputs": [
+    "film"
+  ],
+  "required_analysis": [
+    "dialogue_events",
+    "performances",
+    "speakers",
+    "scenes"
+  ],
+  "candidate_generation": "A nonlinear progression curve increases replacement frequency and loosens time, identity, semantic, and performance constraints. Candidate pools exclude unusable zero-duration material.",
+  "selection_rules": [
+    "A nonlinear progression curve increases replacement frequency and loosens time, identity, semantic, and performance constraints.",
+    "Selection is deterministic for identical inputs, parameters, and random seed."
+  ],
+  "transformation_behavior": "Replacement frequency and measured transformation strength grow along the configured nonlinear curve.",
+  "progression": "Parameter-driven progression is measured in the emitted schedule.",
+  "state_variables": [
+    "parameter:starting_intensity",
+    "parameter:ending_intensity",
+    "parameter:curve_shape",
+    "parameter:bloom_dimensions",
+    "parameter:maximum_identity_instability",
+    "parameter:maximum_temporal_distance",
+    "parameter:preserve_ending_coherence"
+  ],
+  "fields": [
+    "filter_metrics",
+    "filter_validation"
+  ],
+  "controlled_uncertainty": "Random choices are seeded and therefore reproducible.",
+  "hard_invariants": [
+    {
+      "id": "late_strength_is_not_lower_than_early_strength",
+      "statement": "Late strength is not lower than early strength.",
+      "validator": "filter_validation.late_strength_is_not_lower_than_early_strength"
+    },
+    {
+      "id": "ending_coherence_cap_is_respected",
+      "statement": "Ending coherence cap is respected.",
+      "validator": "filter_validation.ending_coherence_cap_is_respected"
+    }
+  ],
+  "validation": {
+    "strategy": "Validate strategy-emitted invariants, measurable coverage, silence ratio, provenance, and final audio stream.",
+    "required_metrics": [
+      "bloom_profile",
+      "silence_ratio"
+    ]
+  },
+  "failure_behavior": "Fail before rendering when required inputs, analysis, candidates, or invariants are unavailable.",
+  "preview_strategy": "Choose representative mappings that expose the defining law without claiming Procedure behavior.",
+  "renderer_requirements": [
+    "Preserve the source picture unless the contract explicitly says otherwise.",
+    "Produce a final MP4 with a verified audio stream.",
+    "Report replacement-audio provenance, dialogue coverage, silence ratio, and invariant results."
+  ],
+  "procedure_behavior": {
+    "support_status": "single_step_validated",
+    "receives_transformed_specimen": false,
+    "commitment": "When a Procedure runtime exists, consume prior mappings without losing immutable source provenance; this phase does not execute that commitment."
+  },
+  "capabilities": {
+    "implemented": true,
+    "implementation_key": "bloom",
+    "execution_mode": "scheduling_strategy",
+    "sparse_schedule": true,
+    "requires_speaker_identity": false,
+    "supports_preview": true,
+    "supports_best_short": true,
+    "supports_full_length": true,
+    "requires_output_acceptance": true
+  },
+  "blockers": []
+}

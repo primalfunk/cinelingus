@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "filter_id": "time.foreshadow",
+  "filter_version": "1.0.0",
+  "family_id": "time",
+  "created_at": "2026-07-13T00:00:00Z",
+  "input_media_roles": {"film": "choose-a-film.mp4"},
+  "parameters": {"minimum_future_distance": 30.0, "maximum_future_distance": 900.0, "intensity": "Moderate", "performance_preservation": "Similar performance", "semantic_relationship": "Similar", "allow_line_reuse": false, "final_act_policy": "Gradually reduce", "progression": "Constant"},
+  "output_settings": {"form": "best_short"},
+  "random_seed": 1,
+  "target_duration": 180.0,
+  "progression_settings": {"progression": "Constant"},
+  "identity_mapping_settings": {},
+  "selected_filter_stack": ["time.foreshadow"],
+  "compatibility_decisions": [],
+  "requested_analysis_backends": {"diarization": "pyannote", "transcription": "small"},
+  "actual_analysis_backends": {}
+}

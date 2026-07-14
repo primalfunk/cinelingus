@@ -1,0 +1,40 @@
+﻿{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "editorial_highlights",
+  "type": "object",
+  "required": ["schema_version", "tool_version", "media_hash", "creation_timestamp", "taste_profile", "summary", "highlights", "performances"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "media_hash": { "type": "string" },
+    "creation_timestamp": { "type": "string" },
+    "taste_profile": { "type": "object" },
+    "summary": { "type": "object" },
+    "highlights": { "type": "object" },
+    "performances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["performance_id", "scheduler_score", "editorial_score", "editorial_label", "highlight_status", "review_status", "components"],
+        "properties": {
+          "performance_id": { "type": "string" },
+          "source_performance_ids": { "type": "array", "items": { "type": "string" } },
+          "start": { "type": ["number", "null"] },
+          "duration": { "type": ["number", "null"] },
+          "coverage": { "type": "number" },
+          "scheduler_score": { "type": ["number", "null"] },
+          "performance_similarity_score": { "type": ["number", "null"] },
+          "editorial_score": { "type": "number" },
+          "editorial_label": { "type": "string" },
+          "highlight_status": { "type": "array", "items": { "type": "string" } },
+          "review_status": { "type": "string" },
+          "final_selection_reason": { "type": "string" },
+          "components": { "type": "object" },
+          "review_labels": { "type": "array", "items": { "type": "string" } },
+          "warnings": { "type": "array", "items": { "type": "string" } },
+          "mapping_indices": { "type": "array" }
+        }
+      }
+    }
+  }
+}

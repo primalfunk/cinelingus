@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "cinematic_index",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool_version",
+    "creation_timestamp",
+    "cir_version",
+    "object_types",
+    "media",
+    "artifacts",
+    "transformation",
+    "outputs",
+    "counts"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "tool_version": {
+      "type": "string"
+    },
+    "creation_timestamp": {
+      "type": "string"
+    },
+    "cir_version": {
+      "type": "string"
+    },
+    "object_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "media": {
+      "type": "object"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "artifact_type",
+          "cir_object_type",
+          "path",
+          "exists"
+        ],
+        "properties": {
+          "artifact_type": {
+            "type": "string"
+          },
+          "cir_object_type": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "exists": {
+            "type": "boolean"
+          },
+          "count": {
+            "type": "integer"
+          },
+          "media_hash": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "transformation": {
+      "type": "object"
+    },
+    "outputs": {
+      "type": "object"
+    },
+    "counts": {
+      "type": "object"
+    }
+  }
+}

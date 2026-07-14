@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "timeline",
+  "type": "object",
+  "required": ["schema_version", "tool_version", "media_hash", "creation_timestamp", "windows"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "media_hash": { "type": "string" },
+    "creation_timestamp": { "type": "string" },
+    "detector": { "type": "string" },
+    "windows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "start", "end", "duration", "confidence"],
+        "properties": {
+          "id": { "type": "string" },
+          "start": { "type": "number" },
+          "end": { "type": "number" },
+          "duration": { "type": "number" },
+          "confidence": { "type": "number" }
+        }
+      }
+    }
+  }
+}

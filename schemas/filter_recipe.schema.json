@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "title": "filter_recipe", "type": "object",
+  "required": ["schema_version", "filter_id", "filter_version", "family_id", "created_at", "input_media_roles", "parameters", "output_settings", "random_seed", "target_duration", "progression_settings", "identity_mapping_settings", "selected_filter_stack", "compatibility_decisions", "requested_analysis_backends", "actual_analysis_backends"],
+  "properties": {
+    "schema_version": {"type": "string"}, "filter_id": {"type": "string"}, "filter_version": {"type": "string"}, "family_id": {"type": "string"}, "created_at": {"type": "string"},
+    "input_media_roles": {"type": "object"}, "parameters": {"type": "object"}, "output_settings": {"type": "object"}, "random_seed": {"type": "integer"}, "target_duration": {"type": ["number", "null"]},
+    "progression_settings": {"type": "object"}, "identity_mapping_settings": {"type": "object"}, "selected_filter_stack": {"type": "array", "items": {"type": "string"}},
+    "compatibility_decisions": {"type": "array", "items": {"type": "object"}}, "requested_analysis_backends": {"type": "object"}, "actual_analysis_backends": {"type": "object"}
+  }
+}

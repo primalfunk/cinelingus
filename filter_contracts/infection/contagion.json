@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0",
+  "contract_version": "1.0.0",
+  "filter_id": "infection.contagion",
+  "filter_name": "Contagion",
+  "family_id": "infection",
+  "filter_version": "1.0.0",
+  "status": "accepted",
+  "implementation_class": "A",
+  "creative_proposition": "A carrier identity spreads only after measured speaker contact and may transform a speaker only at or after infection time.",
+  "relationship_domains": {
+    "reads": [
+      "dialogue",
+      "performance",
+      "identity",
+      "time"
+    ],
+    "changes": [
+      "dialogue",
+      "identity",
+      "time"
+    ],
+    "preserves": {
+      "performance": "Duration matched where possible",
+      "time": "Exposure precedes infection"
+    }
+  },
+  "specimen_inputs": [
+    "film"
+  ],
+  "required_analysis": [
+    "dialogue_events",
+    "performances",
+    "speakers",
+    "scenes",
+    "speaker_graph"
+  ],
+  "candidate_generation": "A deterministic contact graph controls exposure, infection time, and progressive source-identity replacement. Candidate pools exclude unusable zero-duration material.",
+  "selection_rules": [
+    "A deterministic contact graph controls exposure, infection time, and progressive source-identity replacement.",
+    "Speaker pools exclude unknown_ and fallback_ identities; insufficient real speaker coverage is a hard failure.",
+    "Selection is deterministic for identical inputs, parameters, and random seed."
+  ],
+  "transformation_behavior": "A carrier identity spreads only after measured speaker contact and may transform a speaker only at or after infection time.",
+  "progression": "Parameter-driven progression is measured in the emitted schedule.",
+  "state_variables": [
+    "parameter:initial_carrier",
+    "parameter:spread_speed",
+    "parameter:contact_threshold",
+    "parameter:maximum_infected_speakers",
+    "parameter:intensity",
+    "parameter:recovery_allowed",
+    "parameter:progression",
+    "parameter:source_pool_policy"
+  ],
+  "fields": [
+    "filter_metrics",
+    "filter_validation"
+  ],
+  "controlled_uncertainty": "Random choices are seeded and therefore reproducible.",
+  "hard_invariants": [
+    {
+      "id": "no_mapping_precedes_infection",
+      "statement": "No mapping precedes infection.",
+      "validator": "filter_validation.no_mapping_precedes_infection"
+    },
+    {
+      "id": "maximum_infected_speakers_is_respected",
+      "statement": "Maximum infected speakers is respected.",
+      "validator": "filter_validation.maximum_infected_speakers_is_respected"
+    }
+  ],
+  "validation": {
+    "strategy": "Validate strategy-emitted invariants, measurable coverage, silence ratio, provenance, and final audio stream.",
+    "required_metrics": [
+      "infected_speaker_count",
+      "silence_ratio"
+    ]
+  },
+  "failure_behavior": "Fail before rendering when required inputs, analysis, candidates, or invariants are unavailable.",
+  "preview_strategy": "Choose representative mappings that expose the defining law without claiming Procedure behavior.",
+  "renderer_requirements": [
+    "Preserve the source picture unless the contract explicitly says otherwise.",
+    "Produce a final MP4 with a verified audio stream.",
+    "Report replacement-audio provenance, dialogue coverage, silence ratio, and invariant results."
+  ],
+  "procedure_behavior": {
+    "support_status": "single_step_validated",
+    "receives_transformed_specimen": false,
+    "commitment": "When a Procedure runtime exists, consume prior mappings without losing immutable source provenance; this phase does not execute that commitment."
+  },
+  "capabilities": {
+    "implemented": true,
+    "implementation_key": "contagion",
+    "execution_mode": "scheduling_strategy",
+    "sparse_schedule": true,
+    "requires_speaker_identity": true,
+    "supports_preview": true,
+    "supports_best_short": true,
+    "supports_full_length": true,
+    "requires_output_acceptance": true
+  },
+  "blockers": []
+}

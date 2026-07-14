@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "speaker_map",
+  "type": "object",
+  "required": ["schema_version", "tool_version", "media_hash", "creation_timestamp", "diarization_tool", "model_name", "speaker_count", "speakers", "speaker_segments"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "media_hash": { "type": "string" },
+    "creation_timestamp": { "type": "string" },
+    "diarization_tool": { "type": "string" },
+    "requested_backend": { "type": "string" },
+    "model_name": { "type": "string" },
+    "config_signature": { "type": "string" },
+    "speaker_count": { "type": "integer" },
+    "speakers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["speaker_id", "total_duration", "event_count", "first_seen", "last_seen"],
+        "properties": {
+          "speaker_id": { "type": "string" },
+          "total_duration": { "type": "number" },
+          "event_count": { "type": "integer" },
+          "first_seen": { "type": "number" },
+          "last_seen": { "type": "number" },
+          "confidence": { "type": "number" }
+        }
+      }
+    },
+    "speaker_segments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "start", "end", "duration", "speaker_id"],
+        "properties": {
+          "id": { "type": "string" },
+          "start": { "type": "number" },
+          "end": { "type": "number" },
+          "duration": { "type": "number" },
+          "speaker_id": { "type": "string" },
+          "confidence": { "type": "number" },
+          "source_id": { "type": "string" }
+        }
+      }
+    },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  }
+}

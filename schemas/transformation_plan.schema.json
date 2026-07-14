@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "transformation_plan",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool_version",
+    "vocabulary_version",
+    "creation_timestamp",
+    "transformation",
+    "inputs",
+    "vocabulary",
+    "selection",
+    "operations",
+    "placement",
+    "render",
+    "validation_rules",
+    "warnings",
+    "report"
+  ],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "vocabulary_version": { "type": "string" },
+    "creation_timestamp": { "type": "string" },
+    "transformation": {
+      "type": "object",
+      "required": ["id", "display_name", "description", "lifecycle"],
+      "properties": {
+        "id": { "type": "string" },
+        "display_name": { "type": "string" },
+        "description": { "type": "string" },
+        "lifecycle": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "inputs": { "type": "object" },
+    "vocabulary": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "selection": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["selector", "object_type", "role", "source_artifact", "count", "criteria", "object_ids"],
+        "properties": {
+          "selector": { "type": "string" },
+          "object_type": { "type": "string" },
+          "role": { "type": "string" },
+          "source_artifact": { "type": "string" },
+          "count": { "type": "integer" },
+          "criteria": { "type": "object" },
+          "object_ids": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "placement": { "type": "object" },
+    "render": { "type": "object" },
+    "validation_rules": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "report": { "type": "object" }
+  }
+}

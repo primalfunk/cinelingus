@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "performance_placement_report",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool_version",
+    "media_hash",
+    "creation_timestamp",
+    "scheduling_mode",
+    "placement_count",
+    "summary",
+    "destination_fills",
+    "placements"
+  ],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "media_hash": { "type": "string" },
+    "creation_timestamp": { "type": "string" },
+    "scheduling_mode": { "type": ["string", "null"] },
+    "placement_count": { "type": "integer" },
+    "summary": { "type": "object" },
+    "destination_fills": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "placements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source_performance_id",
+          "destination_performance_id",
+          "mapping_count",
+          "scheduled_duration",
+          "duration_fit",
+          "dialogue_density_fit",
+          "conversation_type_fit",
+          "destination_coverage",
+          "quality_score",
+          "warnings"
+        ],
+        "properties": {
+          "source_performance_id": { "type": ["string", "null"] },
+          "source_performance_type": { "type": ["string", "null"] },
+          "destination_performance_id": { "type": ["string", "null"] },
+          "destination_performance_type": { "type": ["string", "null"] },
+          "mapping_count": { "type": "integer" },
+          "clip_ids": { "type": "array" },
+          "source_duration": { "type": "number" },
+          "destination_duration": { "type": "number" },
+          "scheduled_duration": { "type": "number" },
+          "duration_fit": { "type": "number" },
+          "dialogue_density_fit": { "type": "number" },
+          "conversation_type_fit": { "type": "number" },
+          "destination_coverage": { "type": "number" },
+          "aggregate_destination_coverage": { "type": "number" },
+          "destination_stop_reason": { "type": ["string", "null"] },
+          "overcrowding_risk": { "type": "number" },
+          "sparsity_risk": { "type": "number" },
+          "average_mapping_score": { "type": ["number", "null"] },
+          "average_visual_fit_score": { "type": ["number", "null"] },
+          "shot_boundary_crossing_count": { "type": "integer" },
+          "quality_score": { "type": "number" },
+          "warnings": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

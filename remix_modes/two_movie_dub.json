@@ -1,0 +1,32 @@
+{
+  "mode_id": "two_movie_dub",
+  "display_name": "Two-Movie Dub",
+  "short_description": "One movie talks with another movie's mouth.",
+  "source_requirements": {
+    "minimum_movies": 2,
+    "maximum_movies": 2,
+    "requires_transcript": true,
+    "requires_speaker_labels": true
+  },
+  "default_settings": {
+    "target_duration_seconds": 180,
+    "quality_profile": "balanced",
+    "speaker_matching": "loose"
+  },
+  "candidate_generation_strategy": "cross_film_dialogue_replacement",
+  "scoring_profile": "balanced",
+  "assembly_strategy": "single_best_scene_or_short_sequence",
+  "output_report_fields": [
+    "selected_mode",
+    "source_files",
+    "target_duration",
+    "actual_duration",
+    "selected_candidate_ids",
+    "scoring_breakdown",
+    "speaker_mapping",
+    "line_replacement_mapping",
+    "warnings",
+    "rejected_candidates"
+  ],
+  "ui_visibility": "advanced"
+}

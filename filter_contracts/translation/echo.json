@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "contract_version": "1.0.0",
+  "filter_id": "translation.echo",
+  "filter_name": "Echo",
+  "family_id": "translation",
+  "filter_version": "1.0.0",
+  "status": "accepted",
+  "implementation_class": "A",
+  "creative_proposition": "Eligible original lines repeat at the configured positive delay without replacing their source occurrence.",
+  "relationship_domains": {
+    "reads": [
+      "dialogue",
+      "time"
+    ],
+    "changes": [
+      "dialogue",
+      "time"
+    ],
+    "preserves": {
+      "identity": "Preserved",
+      "performance": "Preserved",
+      "time": "Delayed copy"
+    }
+  },
+  "specimen_inputs": [
+    "film"
+  ],
+  "required_analysis": [
+    "dialogue_events"
+  ],
+  "candidate_generation": "Selected lines repeat later over the original film at a configurable delay. Candidate pools exclude unusable zero-duration material.",
+  "selection_rules": [
+    "Selected lines repeat later over the original film at a configurable delay.",
+    "Selection is deterministic for identical inputs, parameters, and random seed."
+  ],
+  "transformation_behavior": "Eligible original lines repeat at the configured positive delay without replacing their source occurrence.",
+  "progression": "Transformation strength is constant unless an explicit intensity parameter selects fewer windows.",
+  "state_variables": [
+    "parameter:delay_seconds",
+    "parameter:repeat_frequency",
+    "parameter:max_repeats",
+    "parameter:duck_original_at_echoes"
+  ],
+  "fields": [
+    "filter_metrics",
+    "filter_validation"
+  ],
+  "controlled_uncertainty": "Random choices are seeded and therefore reproducible.",
+  "hard_invariants": [
+    {
+      "id": "echo_delay_matches_parameter",
+      "statement": "Echo delay matches parameter.",
+      "validator": "filter_validation.echo_delay_matches_parameter"
+    },
+    {
+      "id": "repeat_limit_is_respected",
+      "statement": "Repeat limit is respected.",
+      "validator": "filter_validation.repeat_limit_is_respected"
+    }
+  ],
+  "validation": {
+    "strategy": "Validate strategy-emitted invariants, measurable coverage, silence ratio, provenance, and final audio stream.",
+    "required_metrics": [
+      "repeated_objects",
+      "silence_ratio"
+    ]
+  },
+  "failure_behavior": "Fail before rendering when required inputs, analysis, candidates, or invariants are unavailable.",
+  "preview_strategy": "Choose representative mappings that expose the defining law without claiming Procedure behavior.",
+  "renderer_requirements": [
+    "Preserve the source picture unless the contract explicitly says otherwise.",
+    "Produce a final MP4 with a verified audio stream.",
+    "Report replacement-audio provenance, dialogue coverage, silence ratio, and invariant results."
+  ],
+  "procedure_behavior": {
+    "support_status": "single_step_validated",
+    "receives_transformed_specimen": false,
+    "commitment": "When a Procedure runtime exists, consume prior mappings without losing immutable source provenance; this phase does not execute that commitment."
+  },
+  "capabilities": {
+    "implemented": true,
+    "implementation_key": "echo",
+    "execution_mode": "transformation",
+    "sparse_schedule": false,
+    "requires_speaker_identity": false,
+    "supports_preview": true,
+    "supports_best_short": true,
+    "supports_full_length": true,
+    "requires_output_acceptance": true
+  },
+  "blockers": []
+}

@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "contract_version": "1.0.0",
+  "filter_id": "time.mobius",
+  "filter_name": "Möbius",
+  "family_id": "time",
+  "filter_version": "1.0.0",
+  "status": "blocked",
+  "implementation_class": "A",
+  "creative_proposition": "The film discovers its other side. Beginning and ending dialogue fold into one another.",
+  "relationship_domains": {
+    "reads": [
+      "dialogue",
+      "time"
+    ],
+    "changes": [
+      "dialogue",
+      "time"
+    ],
+    "preserves": {}
+  },
+  "specimen_inputs": [
+    "film"
+  ],
+  "required_analysis": [
+    "dialogue_events",
+    "scenes"
+  ],
+  "candidate_generation": "Planned time strategy. Candidate pools exclude unusable zero-duration material.",
+  "selection_rules": [
+    "Planned time strategy.",
+    "Selection is deterministic for identical inputs, parameters, and random seed."
+  ],
+  "transformation_behavior": "The film discovers its other side. Beginning and ending dialogue fold into one another.",
+  "progression": "Transformation strength is constant unless an explicit intensity parameter selects fewer windows.",
+  "state_variables": [],
+  "fields": [],
+  "controlled_uncertainty": "No runtime uncertainty is permitted before contract acceptance.",
+  "hard_invariants": [
+    {
+      "id": "contract_must_be_accepted_before_execution",
+      "statement": "The operator must remain unavailable until this contract is accepted.",
+      "validator": ""
+    }
+  ],
+  "validation": {
+    "strategy": "Contract review must resolve every blocker before executable validation is defined.",
+    "required_metrics": []
+  },
+  "failure_behavior": "Remain visible as unavailable and report the named contract blockers.",
+  "preview_strategy": "No executable preview is available before contract acceptance.",
+  "renderer_requirements": [
+    "Preserve the source picture unless the contract explicitly says otherwise.",
+    "Produce a final MP4 with a verified audio stream.",
+    "Report replacement-audio provenance, dialogue coverage, silence ratio, and invariant results."
+  ],
+  "procedure_behavior": {
+    "support_status": "conceptual",
+    "receives_transformed_specimen": false,
+    "commitment": "When a Procedure runtime exists, consume prior mappings without losing immutable source provenance; this phase does not execute that commitment."
+  },
+  "capabilities": {
+    "implemented": false,
+    "implementation_key": null,
+    "execution_mode": "unavailable",
+    "sparse_schedule": false,
+    "requires_speaker_identity": false,
+    "supports_preview": false,
+    "supports_best_short": false,
+    "supports_full_length": false,
+    "requires_output_acceptance": false
+  },
+  "blockers": [
+    "Approve the exact beginning-to-ending fold, midpoint behavior, and reuse policy."
+  ]
+}

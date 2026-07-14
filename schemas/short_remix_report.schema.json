@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "short_remix_report",
+  "type": "object",
+  "required": ["schema_version", "tool_version", "creation_timestamp", "selected_mode", "target_duration", "actual_duration", "selected_scenes", "selection_summary", "scoring_breakdown", "speaker_labels_used", "rejected_top_candidates", "total_processing_time", "outputs"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "creation_timestamp": { "type": "string" },
+    "selected_mode": { "type": "string" },
+    "target_duration": { "type": "number" },
+    "actual_duration": { "type": "number" },
+    "selected_scenes": { "type": "array", "items": { "type": "object" } },
+    "selection_summary": { "type": "object" },
+    "scoring_breakdown": { "type": "object" },
+    "speaker_labels_used": { "type": "array", "items": { "type": "string" } },
+    "rejected_top_candidates": { "type": "array", "items": { "type": "object" } },
+    "total_processing_time": { "type": "number" },
+    "outputs": { "type": "object" }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "speaker_mapping",
+  "type": "object",
+  "required": ["schema_version", "tool_version", "creation_timestamp", "source_media_hash", "destination_media_hash", "mapping_strategy", "source_speaker_count", "destination_speaker_count", "mappings"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "creation_timestamp": { "type": "string" },
+    "source_media_hash": { "type": "string" },
+    "destination_media_hash": { "type": "string" },
+    "mapping_strategy": { "type": "string" },
+    "config_signature": { "type": "string" },
+    "source_speaker_count": { "type": "integer" },
+    "destination_speaker_count": { "type": "integer" },
+    "mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_speaker_id", "destination_speaker_id", "rank", "confidence", "basis"],
+        "properties": {
+          "source_speaker_id": { "type": "string" },
+          "destination_speaker_id": { "type": "string" },
+          "rank": { "type": "integer" },
+          "confidence": { "type": "number" },
+          "basis": { "type": "string" },
+          "source_total_duration": { "type": "number" },
+          "destination_total_duration": { "type": "number" }
+        }
+      }
+    },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  }
+}

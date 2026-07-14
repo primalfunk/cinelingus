@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "mutation_plan",
+  "type": "object",
+  "required": ["schema_version", "tool_version", "creation_timestamp", "mutation_id", "source_media_hash", "selected_objects", "operation_list", "placement_plan", "render_strategy", "warnings", "expected_output_path"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "creation_timestamp": { "type": "string" },
+    "mutation_id": { "type": "string" },
+    "mutation_name": { "type": "string" },
+    "source_media_hash": { "type": "string" },
+    "source_path": { "type": "string" },
+    "parameters": { "type": "object" },
+    "selected_objects": { "type": "array" },
+    "operation_list": { "type": "array" },
+    "placement_plan": { "type": "array" },
+    "render_strategy": { "type": "object" },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "expected_output_path": { "type": "string" }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0",
+  "contract_version": "1.0.0",
+  "filter_id": "time.flashback",
+  "filter_name": "Flashback",
+  "family_id": "time",
+  "filter_version": "1.0.0",
+  "status": "accepted",
+  "implementation_class": "A",
+  "creative_proposition": "Every replacement source is earlier than its destination by more than the configured minimum distance.",
+  "relationship_domains": {
+    "reads": [
+      "dialogue",
+      "time",
+      "performance"
+    ],
+    "changes": [
+      "dialogue",
+      "time"
+    ],
+    "preserves": {
+      "identity": "Preserved where possible",
+      "performance": "Duration matched",
+      "time": "Destination chronology preserved"
+    }
+  },
+  "specimen_inputs": [
+    "film"
+  ],
+  "required_analysis": [
+    "dialogue_events",
+    "scenes"
+  ],
+  "candidate_generation": "Every replacement source precedes its destination by the configured minimum temporal distance. Candidate pools exclude unusable zero-duration material.",
+  "selection_rules": [
+    "Every replacement source precedes its destination by the configured minimum temporal distance.",
+    "Selection is deterministic for identical inputs, parameters, and random seed."
+  ],
+  "transformation_behavior": "Every replacement source is earlier than its destination by more than the configured minimum distance.",
+  "progression": "Parameter-driven progression is measured in the emitted schedule.",
+  "state_variables": [
+    "parameter:minimum_past_distance",
+    "parameter:maximum_past_distance",
+    "parameter:intensity",
+    "parameter:performance_preservation",
+    "parameter:allow_line_reuse",
+    "parameter:progression"
+  ],
+  "fields": [
+    "filter_metrics",
+    "filter_validation"
+  ],
+  "controlled_uncertainty": "Random choices are seeded and therefore reproducible.",
+  "hard_invariants": [
+    {
+      "id": "all_sources_are_past_only",
+      "statement": "All sources are past only.",
+      "validator": "filter_validation.all_sources_are_past_only"
+    },
+    {
+      "id": "maximum_past_distance_is_respected",
+      "statement": "Maximum past distance is respected.",
+      "validator": "filter_validation.maximum_past_distance_is_respected"
+    }
+  ],
+  "validation": {
+    "strategy": "Validate strategy-emitted invariants, measurable coverage, silence ratio, provenance, and final audio stream.",
+    "required_metrics": [
+      "average_temporal_displacement",
+      "silence_ratio"
+    ]
+  },
+  "failure_behavior": "Fail before rendering when required inputs, analysis, candidates, or invariants are unavailable.",
+  "preview_strategy": "Choose representative mappings that expose the defining law without claiming Procedure behavior.",
+  "renderer_requirements": [
+    "Preserve the source picture unless the contract explicitly says otherwise.",
+    "Produce a final MP4 with a verified audio stream.",
+    "Report replacement-audio provenance, dialogue coverage, silence ratio, and invariant results."
+  ],
+  "procedure_behavior": {
+    "support_status": "single_step_validated",
+    "receives_transformed_specimen": false,
+    "commitment": "When a Procedure runtime exists, consume prior mappings without losing immutable source provenance; this phase does not execute that commitment."
+  },
+  "capabilities": {
+    "implemented": true,
+    "implementation_key": "flashback",
+    "execution_mode": "scheduling_strategy",
+    "sparse_schedule": true,
+    "requires_speaker_identity": false,
+    "supports_preview": true,
+    "supports_best_short": true,
+    "supports_full_length": true,
+    "requires_output_acceptance": true
+  },
+  "blockers": []
+}

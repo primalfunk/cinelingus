@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "performance_library",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool_version",
+    "media_hash",
+    "creation_timestamp",
+    "performance_count",
+    "performances"
+  ],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "tool_version": { "type": "string" },
+    "media_hash": { "type": "string" },
+    "creation_timestamp": { "type": "string" },
+    "config_signature": { "type": "string" },
+    "performance_count": { "type": "integer" },
+    "performances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "signature", "clip_count", "clips"],
+        "properties": {
+          "id": { "type": ["string", "null"] },
+          "start": { "type": ["number", "null"] },
+          "end": { "type": ["number", "null"] },
+          "duration": { "type": ["number", "null"] },
+          "conversation_type": { "type": "string" },
+          "signature": { "type": "object" },
+          "speaker_sequence": { "type": "array", "items": { "type": "string" } },
+          "turn_pattern": { "type": "string" },
+          "clip_count": { "type": "integer" },
+          "clips": { "type": "array", "items": { "type": "object" } },
+          "review_history": { "type": "array" },
+          "render_statistics": { "type": "object" }
+        }
+      }
+    }
+  }
+}
