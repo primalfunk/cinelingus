@@ -5,7 +5,7 @@ import wave
 
 import pytest
 
-from movie_masher.filter_lab.acceptance import FilterAcceptanceError, validate_filter_output
+from movie_masher.filter_lab.acceptance import FilterAcceptanceError, validate_filter_output, validate_schedule_quality
 from movie_masher.filter_lab.contracts import default_contract_catalog
 from movie_masher.filter_lab.registry import default_filter_registry
 from movie_masher.filter_lab.strategies import has_strategy
@@ -44,7 +44,7 @@ def test_contract_catalog_has_exact_registry_parity_and_generated_doc() -> None:
     registry = default_filter_registry()
 
     assert {row.filter_id for row in catalog.contracts()} == {row.id for row in registry.definitions()}
-    assert len(catalog.contracts()) == 28
+    assert len(catalog.contracts()) == 40
     assert (Path.cwd() / "docs" / "filter_contract_catalog.md").read_text(encoding="utf-8") == catalog.render_markdown() + "\n"
     for definition in registry.definitions(implemented_only=True):
         contract = catalog.get(definition.id)
@@ -97,6 +97,55 @@ def test_output_acceptance_rejects_mostly_silent_audio(tmp_path: Path, monkeypat
             output_path=tmp_path / "filter_acceptance.json",
             schemas_dir=Path.cwd() / "schemas",
         )
+
+
+def test_schedule_acceptance_rejects_sparse_clustered_repetitive_placements(tmp_path: Path) -> None:
+    schedule = _echo_schedule(tmp_path)
+    schedule["render_duration"] = 100.0
+    schedule["acceptance_requirements"] = {
+        "minimum_dialogue_coverage": 0.08,
+        "timeline_bucket_count": 4,
+        "minimum_occupied_timeline_buckets": 3,
+        "minimum_unique_source_ratio": 0.8,
+        "maximum_source_reuse": 2,
+    }
+    schedule["mappings"] = [
+        {**schedule["mappings"][0], "destination_timestamp": timestamp}
+        for timestamp in (40.0, 42.0, 44.0)
+    ]
+
+    with pytest.raises(
+        FilterAcceptanceError,
+        match="dialogue_coverage_sufficient, timeline_distribution_sufficient, source_repetition_within_limit",
+    ):
+        validate_schedule_quality(schedule)
+
+
+def test_schedule_acceptance_reports_distribution_and_repetition_metrics(tmp_path: Path) -> None:
+    schedule = _echo_schedule(tmp_path)
+    original = schedule["mappings"][0]
+    schedule["render_duration"] = 100.0
+    schedule["acceptance_requirements"] = {
+        "minimum_dialogue_coverage": 0.08,
+        "timeline_bucket_count": 4,
+        "minimum_occupied_timeline_buckets": 3,
+        "minimum_unique_source_ratio": 0.8,
+        "maximum_source_reuse": 2,
+    }
+    schedule["mappings"] = [
+        {**original, "clip_id": f"c{index}", "destination_timestamp": timestamp, "planned_render_duration": 3.0}
+        for index, timestamp in enumerate((5.0, 30.0, 55.0), start=1)
+    ]
+
+    quality = validate_schedule_quality(schedule)
+
+    assert quality["checks"] == {
+        "dialogue_coverage_sufficient": True,
+        "timeline_distribution_sufficient": True,
+        "source_repetition_within_limit": True,
+    }
+    assert quality["measurements"]["occupied_timeline_buckets"] == 3
+    assert quality["measurements"]["unique_source_ratio"] == 1.0
 
 
 def test_transposition_acceptance_rejects_reused_source_dialogue(tmp_path: Path, monkeypatch) -> None:

@@ -1,11 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema", "title": "filter_plan", "type": "object",
-  "required": ["schema_version", "filter_id", "filter_version", "family_id", "deterministic_seed", "selected_destination_regions", "mappings", "speaker_mappings", "time_relationships", "progression_values", "rejected_candidates", "warnings", "compatibility_decisions", "analysis_artifacts_used", "validation", "metrics", "summary"],
+  "required": ["schema_version", "filter_id", "filter_version", "family_id", "deterministic_seed", "selected_destination_regions", "mappings", "speaker_mappings", "time_relationships", "progression_values", "rejected_candidates", "warnings", "compatibility_decisions", "analysis_artifacts_used", "validation", "metrics", "summary", "cinematic_law", "anchor_behavior", "film_count", "inputs", "outputs", "affected_artifacts", "intermediate_products"],
   "properties": {
     "schema_version": {"type": "string"}, "filter_id": {"type": "string"}, "filter_version": {"type": "string"}, "family_id": {"type": "string"}, "deterministic_seed": {"type": "integer"},
     "selected_destination_regions": {"type": "array", "items": {"type": "object"}}, "mappings": {"type": "array", "items": {"type": "object"}}, "speaker_mappings": {"type": "array", "items": {"type": "object"}},
     "time_relationships": {"type": "array", "items": {"type": "object"}}, "progression_values": {"type": "array", "items": {"type": "object"}}, "rejected_candidates": {"type": "array", "items": {"type": "object"}},
     "warnings": {"type": "array", "items": {"type": "string"}}, "compatibility_decisions": {"type": "array", "items": {"type": "object"}}, "analysis_artifacts_used": {"type": "array", "items": {"type": "string"}},
-    "validation": {"type": "object"}, "metrics": {"type": "object"}, "summary": {"type": "string"}
+    "validation": {"type": "object"}, "metrics": {"type": "object"}, "summary": {"type": "string"},
+    "cinematic_law": {"type": "string"}, "anchor_behavior": {"type": "string"},
+    "film_count": {"type": "object", "required": ["minimum", "maximum"], "properties": {"minimum": {"type": "integer"}, "maximum": {"type": ["integer", "null"]}}},
+    "inputs": {"type": "array", "items": {"type": "string"}}, "outputs": {"type": "array", "items": {"type": "string"}},
+    "affected_artifacts": {"type": "array", "items": {"type": "string"}}, "intermediate_products": {"type": "array", "items": {"type": "string"}}
   }
 }

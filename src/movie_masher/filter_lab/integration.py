@@ -101,8 +101,8 @@ def write_filter_artifacts(
     return artifacts
 
 
-def _input_roles(pipeline: Any, required_inputs: tuple[str, ...]) -> dict[str, str]:
-    roles: dict[str, str] = {}
+def _input_roles(pipeline: Any, required_inputs: tuple[str, ...]) -> dict[str, Any]:
+    roles: dict[str, Any] = {}
     for role in required_inputs:
         if role == "film":
             roles[role] = str(pipeline.config.destination_video)
@@ -110,6 +110,8 @@ def _input_roles(pipeline: Any, required_inputs: tuple[str, ...]) -> dict[str, s
             roles[role] = str(pipeline.config.destination_video)
         elif role == "source_dialogue":
             roles[role] = str(pipeline.config.source_dialogue)
+        elif role == "films":
+            roles[role] = [str(path) for path in pipeline.config.films]
     return roles
 
 

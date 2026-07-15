@@ -1,0 +1,144 @@
+{
+  "schema_version": "1.0",
+  "contract_version": "1.0.0",
+  "filter_id": "multiworld.echo_chamber",
+  "filter_name": "Echo Chamber",
+  "family_id": "multiworld",
+  "filter_version": "1.0.0",
+  "status": "accepted",
+  "implementation_class": "F",
+  "creative_proposition": "Every selected anchor window becomes a staggered, attenuated echo group containing every film.",
+  "relationship_domains": {
+    "reads": [
+      "dialogue",
+      "soundscape"
+    ],
+    "changes": [
+      "dialogue",
+      "soundscape"
+    ],
+    "preserves": {
+      "time": "Anchor chronology is preserved",
+      "provenance": "Every echo layer names its source film"
+    }
+  },
+  "specimen_inputs": [
+    "films"
+  ],
+  "required_analysis": [
+    "film_inspections",
+    "shared_timeline",
+    "world_model"
+  ],
+  "candidate_generation": "Add one provenance-bearing dialogue layer per film with nondecreasing delay and nonincreasing gain. Every candidate retains its source film ID and media hash.",
+  "selection_rules": [
+    "Every selected anchor window becomes a staggered, attenuated echo group containing every film.",
+    "Selection is deterministic for identical films, parameters, and random seed."
+  ],
+  "transformation_behavior": "Add one provenance-bearing dialogue layer per film with nondecreasing delay and nonincreasing gain.",
+  "progression": "The schedule emits film, phase, layer, or normalized-time evidence for every placement.",
+  "state_variables": [
+    "parameter:layer_delay_seconds",
+    "parameter:layer_attenuation_db",
+    "parameter:intensity",
+    "anchor_film_id",
+    "source_film_id",
+    "source_media_hash"
+  ],
+  "fields": [
+    "filter_metrics",
+    "filter_validation",
+    "mappings",
+    "multiworld"
+  ],
+  "controlled_uncertainty": "All film ordering, candidate ranking, and tie breaking are deterministic; the recipe records the seed.",
+  "hard_invariants": [
+    {
+      "id": "every_film_contributes",
+      "statement": "Every film contributes at least one dialogue layer.",
+      "validator": "filter_validation.every_film_contributes"
+    },
+    {
+      "id": "every_echo_group_contains_every_film",
+      "statement": "Every echo group contains one layer from every film.",
+      "validator": "filter_validation.every_echo_group_contains_every_film"
+    },
+    {
+      "id": "echo_delays_never_decrease",
+      "statement": "Echo-layer delays never decrease inside a group.",
+      "validator": "filter_validation.echo_delays_never_decrease"
+    },
+    {
+      "id": "later_layers_are_not_louder",
+      "statement": "Successive echo layers never become louder.",
+      "validator": "filter_validation.later_layers_are_not_louder"
+    }
+  ],
+  "validation": {
+    "strategy": "Validate cinematic-law invariants, per-film provenance, measurable coverage, silence ratio, and the final audio stream.",
+    "required_metrics": [
+      "replacement_count",
+      "contributing_films",
+      "silence_ratio"
+    ]
+  },
+  "failure_behavior": "Fail before rendering when film count, analysis, contributing-film evidence, candidates, or cinematic-law invariants are unavailable.",
+  "preview_strategy": "Full-length execution is supported in this phase; preview remains unavailable until multi-film reel selection preserves all law invariants.",
+  "renderer_requirements": [
+    "Preserve Film A picture and chronology.",
+    "Render every replacement from its declared source film cache.",
+    "Produce a final MP4 with verified audio, coverage, silence, and multi-film provenance."
+  ],
+  "procedure_behavior": {
+    "support_status": "single_step_validated",
+    "receives_transformed_specimen": false,
+    "commitment": "When a Procedure runtime exists, consume the complete world model and prior mappings without losing immutable per-film provenance."
+  },
+  "capabilities": {
+    "implemented": true,
+    "implementation_key": "multiworld_echo_chamber",
+    "execution_mode": "transformation",
+    "sparse_schedule": true,
+    "requires_speaker_identity": false,
+    "supports_preview": false,
+    "supports_best_short": false,
+    "supports_full_length": true,
+    "requires_output_acceptance": true
+  },
+  "blockers": [],
+  "multiworld_contract": {
+    "cinematic_law": "Dialogue Translation",
+    "minimum_films": 2,
+    "maximum_films": null,
+    "anchor_behavior": "anchor_timeline",
+    "affected_elements": [
+      "dialogue",
+      "soundscape"
+    ],
+    "quality_requirements": [
+      "Cinematic-law invariants pass",
+      "Output provenance names every contributing film"
+    ],
+    "deterministic_seed_support": true,
+    "interface": {
+      "inputs": [
+        "films"
+      ],
+      "outputs": [
+        "rendered_film"
+      ],
+      "affected_artifacts": [
+        "shared_timeline",
+        "world_model",
+        "replacement_decisions"
+      ],
+      "intermediate_products": [
+        "film_inspections",
+        "shared_timeline",
+        "world_model",
+        "replacement_decisions",
+        "filter_plan"
+      ]
+    }
+  }
+}

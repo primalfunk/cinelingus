@@ -62,6 +62,7 @@ def render_dialogue_wav(
                 if rendered_duration is not None:
                     rendered_duration *= stretch_factor
             filters.append(f"loudnorm=I={target_lufs:.1f}:LRA=11:TP=-1.5")
+            filters.extend(_mapping_audio_filters(mapping))
             clip_fade = _effective_fade_duration(fade_duration, rendered_duration)
             if clip_fade > 0:
                 filters.append(f"afade=t=in:st=0:d={clip_fade:.3f}")
@@ -193,6 +194,7 @@ def render_schedule_over_original_audio(
                 if rendered_duration is not None:
                     rendered_duration *= stretch_factor
             filters.append(f"loudnorm=I={target_lufs:.1f}:LRA=11:TP=-1.5")
+            filters.extend(_mapping_audio_filters(mapping))
             clip_fade = _effective_fade_duration(fade_duration, rendered_duration)
             if clip_fade > 0:
                 filters.append(f"afade=t=in:st=0:d={clip_fade:.3f}")
@@ -247,6 +249,21 @@ def _effective_fade_duration(configured: float, rendered_duration: float | None)
     if rendered_duration is None:
         return configured
     return max(0.0, min(configured, rendered_duration / 3.0))
+
+
+def _mapping_audio_filters(mapping: dict) -> list[str]:
+    """Translate contract-visible mapping controls into bounded FFmpeg filters."""
+    filters: list[str] = []
+    highpass = mapping.get("highpass_hz")
+    lowpass = mapping.get("lowpass_hz")
+    gain = mapping.get("gain_db")
+    if highpass is not None:
+        filters.append(f"highpass=f={max(20.0, min(20000.0, float(highpass))):.1f}")
+    if lowpass is not None:
+        filters.append(f"lowpass=f={max(20.0, min(20000.0, float(lowpass))):.1f}")
+    if gain is not None:
+        filters.append(f"volume={max(-60.0, min(24.0, float(gain))):.2f}dB")
+    return filters
 
 
 def scheduled_audio_duration(schedule: dict, destination_duration: float) -> float:

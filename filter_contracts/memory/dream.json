@@ -5,9 +5,9 @@
   "filter_name": "Dream",
   "family_id": "memory",
   "filter_version": "1.0.0",
-  "status": "blocked",
+  "status": "accepted",
   "implementation_class": "B",
-  "creative_proposition": "The film dreams its own speech. Dialogue returns through associative memory.",
+  "creative_proposition": "The film dreams its own speech.",
   "relationship_domains": {
     "reads": [
       "dialogue",
@@ -17,7 +17,10 @@
       "dialogue",
       "time"
     ],
-    "preserves": {}
+    "preserves": {
+      "time": "Destination chronology preserved",
+      "provenance": "Association proxy is emitted per mapping"
+    }
   },
   "specimen_inputs": [
     "film"
@@ -25,51 +28,63 @@
   "required_analysis": [
     "dialogue_events"
   ],
-  "candidate_generation": "Planned memory strategy. Candidate pools exclude unusable zero-duration material.",
+  "candidate_generation": "Token overlap plus normalized temporal distance ranks non-identical source lines; no semantic embedding is claimed. Candidate pools exclude unusable zero-duration dialogue.",
   "selection_rules": [
-    "Planned memory strategy.",
+    "Dialogue returns through a disclosed lexical-association and temporal-drift proxy.",
     "Selection is deterministic for identical inputs, parameters, and random seed."
   ],
-  "transformation_behavior": "The film dreams its own speech. Dialogue returns through associative memory.",
-  "progression": "Transformation strength is constant unless an explicit intensity parameter selects fewer windows.",
-  "state_variables": [],
-  "fields": [],
-  "controlled_uncertainty": "No runtime uncertainty is permitted before contract acceptance.",
+  "transformation_behavior": "Token overlap plus normalized temporal distance ranks non-identical source lines; no semantic embedding is claimed.",
+  "progression": "The emitted schedule measures the defining law at every selected output position.",
+  "state_variables": [
+    "parameter:intensity"
+  ],
+  "fields": [
+    "filter_metrics",
+    "filter_validation",
+    "mappings"
+  ],
+  "controlled_uncertainty": "All tie breaking is deterministic; the recipe records the random seed even when a law needs no random choice.",
   "hard_invariants": [
     {
-      "id": "contract_must_be_accepted_before_execution",
-      "statement": "The operator must remain unavailable until this contract is accepted.",
-      "validator": ""
+      "id": "no_self_placements",
+      "statement": "No source line is placed into its own dialogue window.",
+      "validator": "filter_validation.no_self_placements"
+    },
+    {
+      "id": "association_proxy_is_disclosed",
+      "statement": "Every mapping discloses the association proxy.",
+      "validator": "filter_validation.association_proxy_is_disclosed"
     }
   ],
   "validation": {
-    "strategy": "Contract review must resolve every blocker before executable validation is defined.",
-    "required_metrics": []
+    "strategy": "Validate strategy-emitted invariants, measurable coverage, silence ratio, provenance, and the final audio stream.",
+    "required_metrics": [
+      "replacement_count",
+      "silence_ratio"
+    ]
   },
-  "failure_behavior": "Remain visible as unavailable and report the named contract blockers.",
-  "preview_strategy": "No executable preview is available before contract acceptance.",
+  "failure_behavior": "Fail before rendering when required analysis, candidate evidence, or the defining invariant is unavailable.",
+  "preview_strategy": "Choose representative mappings that expose the defining law and its emitted evidence.",
   "renderer_requirements": [
     "Preserve the source picture unless the contract explicitly says otherwise.",
     "Produce a final MP4 with a verified audio stream.",
     "Report replacement-audio provenance, dialogue coverage, silence ratio, and invariant results."
   ],
   "procedure_behavior": {
-    "support_status": "conceptual",
+    "support_status": "single_step_validated",
     "receives_transformed_specimen": false,
     "commitment": "When a Procedure runtime exists, consume prior mappings without losing immutable source provenance; this phase does not execute that commitment."
   },
   "capabilities": {
-    "implemented": false,
-    "implementation_key": null,
-    "execution_mode": "unavailable",
-    "sparse_schedule": false,
+    "implemented": true,
+    "implementation_key": "dream",
+    "execution_mode": "scheduling_strategy",
+    "sparse_schedule": true,
     "requires_speaker_identity": false,
-    "supports_preview": false,
-    "supports_best_short": false,
-    "supports_full_length": false,
-    "requires_output_acceptance": false
+    "supports_preview": true,
+    "supports_best_short": true,
+    "supports_full_length": true,
+    "requires_output_acceptance": true
   },
-  "blockers": [
-    "Choose an associative analysis signal; semantic embeddings are not currently available."
-  ]
+  "blockers": []
 }

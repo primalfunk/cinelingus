@@ -30,8 +30,22 @@
     stage_sequence_key,
     summarize_whisper_model_used,
     workflow_uses_target_length,
+    open_path_or_reveal,
 )
 from movie_masher.util import write_json
+
+
+def test_open_path_reveals_file_when_windows_player_launch_fails(tmp_path, monkeypatch):
+    movie = tmp_path / "finished.mp4"
+    movie.write_bytes(b"mp4")
+    calls = []
+    monkeypatch.setattr("movie_masher.gui.os.startfile", lambda _path: (_ for _ in ()).throw(OSError("broken association")))
+    monkeypatch.setattr("movie_masher.gui.subprocess.Popen", lambda command: calls.append(command))
+
+    result = open_path_or_reveal(movie)
+
+    assert result == "revealed"
+    assert calls == [["explorer.exe", "/select,", str(movie)]]
 
 
 def test_summarize_output_dir_reports_problem_preview_status(tmp_path):
@@ -166,9 +180,9 @@ def test_run_truth_summary_distinguishes_movie_masher_and_single_film(tmp_path):
         matching_style="Balanced",
     )
 
-    assert "Experiment: Transposition" in movie_masher
-    assert "Destination film:" in movie_masher
-    assert "Source film:" in movie_masher
+    assert "Experiment: Movie Masher" in movie_masher
+    assert "Anchor Film:" in movie_masher
+    assert "Film B:" in movie_masher
     assert "Film:" in single
     assert "Source dialogue:" not in single
     assert "Previous observations are reused only when material and settings match" in single
@@ -209,8 +223,7 @@ def test_completed_run_truth_summary_prefers_run_report_for_movie_masher(tmp_pat
 
     summary = completed_run_truth_summary(output, output.parent, "Movie Masher")
 
-    assert "Transposition" in summary
-    assert "Movie Masher" not in summary
+    assert "Movie Masher" in summary
     assert "dest.mp4" in summary
     assert "source.mp4" in summary
     assert "movie_masher_output.mp4" in summary
@@ -226,9 +239,9 @@ def test_compact_path_keeps_filename_visible(tmp_path):
 
 
 def test_required_input_fields_are_transformation_specific():
-    assert required_input_fields("Movie Masher") == ("destination", "source", "output")
-    assert required_input_fields("Self Shuffle") == ("film", "output")
-    assert required_input_fields("Echo") == ("film", "output")
+    assert required_input_fields("Movie Masher") == ("anchor_film", "film_2", "output")
+    assert required_input_fields("Self Shuffle") == ("anchor_film", "output")
+    assert required_input_fields("Echo") == ("anchor_film", "output")
 
 
 
@@ -264,7 +277,7 @@ def test_completion_summary_includes_quality_model_and_output(tmp_path):
         started_at=None,
     )
 
-    assert "Mode: Transposition" in summary
+    assert "Mode: Movie Masher" in summary
     assert "movie.mp4" in summary
     assert "Fidelity: Balanced" in summary
     assert "Whisper" not in summary

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 import random
+import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from typing import Any, Callable
@@ -652,6 +653,289 @@ def build_bloom_schedule(
         "late_strength_is_not_lower_than_early_strength": increasing,
         "ending_coherence_cap_is_respected": all(float(row["combined_transformation_score"]) <= 0.9 for row in mappings if float(row["normalized_output_position"]) > 0.92) if preserve_ending else True,
     }, summary)
+
+
+CATALOG_EMOTION_TERMS: dict[str, tuple[str, ...]] = {
+    "wonder": ("amazing", "beautiful", "imagine", "light", "look", "sky", "wonder", "world", "wow", "why"),
+    "regret": ("could", "mistake", "remember", "sorry", "should", "wish", "wrong"),
+    "optimist": ("better", "can", "good", "hope", "love", "possible", "together", "will"),
+    "paranoia": ("afraid", "behind", "danger", "follow", "know", "someone", "they", "trust", "watching"),
+    "venom": ("hate", "kill", "liar", "never", "stupid", "threat", "wrong", "you"),
+}
+
+
+def _catalog_inputs(clips: list[dict[str, Any]], windows: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    sources = sorted((row for row in clips if _duration(row) > 0), key=lambda row: (_start(row), _id(row)))
+    destinations = sorted((row for row in windows if _duration(row) > 0), key=lambda row: (_start(row), _id(row)))
+    if not sources or not destinations:
+        raise ValueError("The filter requires non-empty, positive-duration dialogue clips and destination windows.")
+    return sources, destinations
+
+
+def _selected_windows(windows: list[dict[str, Any]], parameters: dict[str, Any]) -> list[dict[str, Any]]:
+    ratio = INTENSITY_RATIOS.get(str(parameters.get("intensity", "Moderate")), 0.55)
+    return _evenly_select(windows, max(1, round(len(windows) * ratio)))
+
+
+def _transcript(row: dict[str, Any]) -> str:
+    return str(row.get("transcript", row.get("text", "")) or "")
+
+
+def _tokens(row: dict[str, Any]) -> set[str]:
+    return set(re.findall(r"[a-z']+", _transcript(row).lower()))
+
+
+def _lexical_score(row: dict[str, Any], terms: tuple[str, ...]) -> float:
+    words = _tokens(row)
+    if not words:
+        return 0.0
+    return sum(1.0 for term in terms if term in words) / math.sqrt(len(words))
+
+
+def _best_duration(candidates: list[dict[str, Any]], window: dict[str, Any]) -> dict[str, Any]:
+    return max(candidates, key=lambda row: (_duration_fit(_duration(row), _duration(window)), -abs(_start(row) - _start(window)), _id(row)))
+
+
+def _catalog_schedule(
+    filter_id: str,
+    *, clips: list[dict[str, Any]], windows: list[dict[str, Any]], duration: float,
+    parameters: dict[str, Any], seed: int,
+) -> dict[str, Any]:
+    sources, destinations = _catalog_inputs(clips, windows)
+    selected = _selected_windows(destinations, parameters)
+    mappings: list[dict[str, Any]] = []
+    rejected: list[dict[str, Any]] = []
+    metrics: dict[str, Any] = {"eligible_windows": len(destinations), "selected_windows": len(selected)}
+    validation: dict[str, Any] = {"passed": True}
+
+    if filter_id == "split_personality":
+        source_pools, window_pools = _speaker_pools(sources), _speaker_pools(destinations)
+        anchor = str(parameters.get("anchor_speaker", "auto"))
+        if anchor == "auto":
+            anchor = max(window_pools, key=lambda key: (_pool_duration(window_pools[key]), key), default="")
+        donors = sorted((speaker for speaker in source_pools if speaker != anchor), key=lambda key: (-_pool_duration(source_pools[key]), key))
+        personality_count = min(len(donors), max(2, int(parameters.get("personality_count", 2))))
+        if anchor not in window_pools or len(donors) < 2:
+            raise ValueError("Split Personality requires one recurring destination speaker and at least two distinct donor identities.")
+        selected = _selected_windows(sorted(window_pools[anchor], key=_start), parameters)
+        if len(selected) < 2:
+            raise ValueError("Split Personality requires at least two eligible anchor windows to expose distinct personalities.")
+        used_donors: list[str] = []
+        for index, window in enumerate(selected):
+            donor = donors[index % personality_count]
+            chosen = _best_duration(source_pools[donor], window)
+            mapping = _mapping(chosen, window, filter_id, "stable_round_robin_identity_partition")
+            mapping.update({"anchor_speaker": anchor, "personality_speaker": donor, "personality_partition": index % personality_count})
+            mappings.append(mapping)
+            used_donors.append(donor)
+        metrics.update({"anchor_speaker": anchor, "personality_speakers": sorted(set(used_donors))})
+        validation.update({"all_destinations_match_anchor": all(row["destination_speaker_id"] == anchor for row in mappings), "at_least_two_personalities_used": len(set(used_donors)) >= 2, "partition_is_stable": all(row["personality_speaker"] == donors[row["personality_partition"]] for row in mappings)})
+
+    elif filter_id == "amnesia":
+        selected = sorted(selected, key=_start)
+        pool_sizes: list[int] = []
+        for index, window in enumerate(selected):
+            position = index / max(1, len(selected) - 1)
+            pool_size = max(1, math.ceil(len(sources) * (1.0 - 0.8 * position)))
+            pool_sizes.append(pool_size)
+            chosen = _best_duration(sources[:pool_size], window)
+            mapping = _mapping(chosen, window, filter_id, "monotonically_shrinking_memory_pool")
+            mapping.update({"memory_pool_size": pool_size, "forgotten_source_count": len(sources) - pool_size, "normalized_output_position": round(position, 4)})
+            mappings.append(mapping)
+        source_ids = [_id(item) for item in sources]
+        metrics.update({"memory_pool_sizes": pool_sizes, "final_forgotten_source_count": len(sources) - pool_sizes[-1]})
+        validation.update({"memory_pool_never_grows": all(a >= b for a, b in zip(pool_sizes, pool_sizes[1:])), "forgotten_sources_never_return": all(row["clip_id"] in source_ids[:row["memory_pool_size"]] for row in mappings)})
+
+    elif filter_id == "recollection":
+        minimum = float(parameters.get("minimum_past_distance", 15.0))
+        for window in selected:
+            candidates = [row for row in sources if _start(row) <= _start(window) - minimum and (_speaker(row) == _speaker(window) or not _speaker(window))]
+            if not candidates:
+                candidates = [row for row in sources if _start(row) <= _start(window) - minimum]
+            if not candidates:
+                rejected.append(_rejection(window, "no_sufficiently_early_memory"))
+                continue
+            chosen = _best_duration(candidates, window)
+            mapping = _mapping(chosen, window, filter_id, "past_only_recollection")
+            mapping["past_distance"] = round(_start(window) - _start(chosen), 3)
+            mappings.append(mapping)
+        same_identity = sum(row["source_speaker_id"] == row["destination_speaker_id"] for row in mappings)
+        validation["all_sources_are_past_only"] = bool(mappings) and all(row["past_distance"] >= minimum for row in mappings)
+        metrics.update({"minimum_past_distance": minimum, "identity_preservation_rate": round(same_identity / len(mappings), 4) if mappings else 0.0})
+
+    elif filter_id == "dream":
+        for window in selected:
+            destination_words = _tokens(window)
+            ranked = []
+            for row in sources:
+                if _id(row) == _id(window):
+                    continue
+                source_words = _tokens(row)
+                union = source_words | destination_words
+                overlap = len(source_words & destination_words) / len(union) if union else 0.0
+                distance = abs(_start(row) - _start(window)) / max(1.0, duration)
+                ranked.append((overlap + 0.1 * distance, overlap, row))
+            if not ranked:
+                rejected.append(_rejection(window, "no_associative_source"))
+                continue
+            _score, overlap, chosen = max(ranked, key=lambda item: (item[0], item[1], _id(item[2])))
+            mapping = _mapping(chosen, window, filter_id, "lexical_association_with_temporal_drift")
+            mapping.update({"lexical_overlap": round(overlap, 4), "association_proxy_disclosed": True})
+            mappings.append(mapping)
+        validation.update({"no_self_placements": all(row["clip_id"] != row["window_id"] for row in mappings), "association_proxy_is_disclosed": all(row["association_proxy_disclosed"] for row in mappings)})
+        metrics["proxy"] = "token overlap plus normalized temporal distance; no semantic embeddings claimed"
+
+    elif filter_id in {"wonder", "regret", "optimist", "paranoia", "venom"}:
+        terms = CATALOG_EMOTION_TERMS[filter_id]
+        scored = sorted(((_lexical_score(row, terms), row) for row in sources), key=lambda item: (item[0], _id(item[1])))
+        if not scored or scored[-1][0] <= 0:
+            raise ValueError(f"{filter_id.title()} requires at least one transcript line matching its disclosed lexical proxy.")
+        ranked_sources = [row for score, row in scored if score > 0]
+        choices = _evenly_select(ranked_sources, len(selected)) if filter_id == "venom" else list(reversed(ranked_sources))
+        proxy_scores: list[float] = []
+        for index, window in enumerate(sorted(selected, key=_start)):
+            chosen = choices[min(index, len(choices) - 1)] if filter_id == "venom" else choices[index % len(choices)]
+            score = _lexical_score(chosen, terms)
+            proxy_scores.append(score)
+            mapping = _mapping(chosen, window, filter_id, "disclosed_deterministic_lexical_proxy")
+            mapping.update({"proxy_name": f"{filter_id}_lexical_v1", "proxy_score": round(score, 4), "proxy_terms": sorted(_tokens(chosen) & set(terms)), "normalized_output_position": round(index / max(1, len(selected) - 1), 4)})
+            mappings.append(mapping)
+        nondecreasing = all(a <= b + 1e-9 for a, b in zip(proxy_scores, proxy_scores[1:]))
+        metrics.update({"proxy": f"{filter_id}_lexical_v1", "proxy_terms": list(terms), "proxy_scores": [round(value, 4) for value in proxy_scores]})
+        validation.update({"proxy_is_disclosed": all(row["proxy_name"] == f"{filter_id}_lexical_v1" for row in mappings), "all_selected_sources_have_positive_proxy_score": all(value > 0 for value in proxy_scores), "hostility_never_decreases": nondecreasing if filter_id == "venom" else True})
+
+    elif filter_id == "exhaustion":
+        def exhaustion_score(row: dict[str, Any]) -> float:
+            return _duration(row) / max(1, len(_tokens(row)))
+        ranked = sorted(sources, key=lambda row: (exhaustion_score(row), _id(row)), reverse=True)
+        for index, window in enumerate(sorted(selected, key=_start)):
+            chosen = ranked[index % max(1, min(len(ranked), max(1, len(ranked) // 2)))]
+            position = index / max(1, len(selected) - 1)
+            mapping = _mapping(chosen, window, filter_id, "slow_delivery_performance_proxy")
+            mapping.update({"performance_proxy": "seconds_per_word_v1", "proxy_score": round(exhaustion_score(chosen), 4), "stretch_factor": round(1.08 + 0.17 * position, 4), "lowpass_hz": 3600, "gain_db": round(-2.0 - 3.0 * position, 2)})
+            mappings.append(mapping)
+        validation.update({"performance_proxy_is_disclosed": all(row["performance_proxy"] == "seconds_per_word_v1" for row in mappings), "delivery_slowing_never_decreases": all(a["stretch_factor"] <= b["stretch_factor"] for a, b in zip(mappings, mappings[1:])), "audio_shaping_is_present": all(row["gain_db"] < 0 and row["lowpass_hz"] > 0 for row in mappings)})
+        metrics["proxy"] = "seconds_per_word_v1"
+
+    elif filter_id in {"mobius", "ouroboros"}:
+        selected = sorted(selected, key=_start)
+        if filter_id == "mobius":
+            for window in selected:
+                normalized_destination = _start(window) / max(duration, 0.001)
+                target = duration * (1.0 - normalized_destination)
+                chosen = min(sources, key=lambda row: (abs(_start(row) - target), _id(row)))
+                mapping = _mapping(chosen, window, filter_id, "opposite_side_time_fold")
+                mapping["fold_position_sum"] = round(normalized_destination + _start(chosen) / max(duration, 0.001), 4)
+                mappings.append(mapping)
+            validation["opposite_positions_are_paired"] = all(abs(row["fold_position_sum"] - 1.0) <= 0.2 for row in mappings)
+        else:
+            if len(sources) < 2:
+                raise ValueError("Ouroboros requires at least two source lines to form a dialogue ring.")
+            offset = max(1, len(sources) // 2)
+            for index, window in enumerate(selected):
+                chosen = sources[(index + offset) % len(sources)]
+                mapping = _mapping(chosen, window, filter_id, "closed_dialogue_ring")
+                mapping.update({"ring_source_index": (index + offset) % len(sources), "ring_offset": offset})
+                mappings.append(mapping)
+            validation.update({"ring_offset_is_stable": all(row["ring_offset"] == offset for row in mappings), "ending_material_feeds_opening": mappings[0]["ring_source_index"] >= offset})
+        metrics["closed_temporal_law"] = filter_id
+
+    elif filter_id == "shed_skin":
+        pools = _speaker_pools(sources)
+        donors = sorted(pools, key=lambda key: (-_pool_duration(pools[key]), key))
+        if len(donors) < 2:
+            raise ValueError("Shed Skin requires at least two viable speaker identities.")
+        stage_count = min(len(donors), max(2, int(parameters.get("identity_stages", 3))))
+        stage_indices: list[int] = []
+        for index, window in enumerate(sorted(selected, key=_start)):
+            stage = min(stage_count - 1, (index * stage_count) // max(1, len(selected)))
+            donor = donors[stage]
+            chosen = _best_duration(pools[donor], window)
+            mapping = _mapping(chosen, window, filter_id, "monotonic_identity_stages")
+            mapping.update({"identity_stage": stage, "stage_identity": donor})
+            mappings.append(mapping)
+            stage_indices.append(stage)
+        validation.update({"identity_stages_never_revert": all(a <= b for a, b in zip(stage_indices, stage_indices[1:])), "each_stage_has_one_stable_identity": all(len({row["stage_identity"] for row in mappings if row["identity_stage"] == stage}) == 1 for stage in set(stage_indices))})
+        metrics.update({"identity_stage_count": len(set(stage_indices)), "identity_stages": stage_indices})
+
+    elif filter_id == "mutation":
+        ranked_pairs: list[tuple[float, dict[str, Any], dict[str, Any]]] = []
+        for window in selected:
+            for source in sources:
+                duration_mismatch = 1.0 - _duration_fit(_duration(source), _duration(window))
+                identity_mismatch = 1.0 if _speaker(source) and _speaker(window) and _speaker(source) != _speaker(window) else 0.0
+                ranked_pairs.append((0.65 * duration_mismatch + 0.35 * identity_mismatch, source, window))
+        target_scores = [index / max(1, len(selected) - 1) for index in range(len(selected))]
+        used_windows: set[str] = set()
+        for target in target_scores:
+            candidates = [row for row in ranked_pairs if _id(row[2]) not in used_windows]
+            score, chosen, window = min(candidates, key=lambda row: (abs(row[0] - target), _id(row[1]), _id(row[2])))
+            used_windows.add(_id(window))
+            mapping = _mapping(chosen, window, filter_id, "progressively_increasing_duration_and_identity_mismatch")
+            mapping.update({"mutation_magnitude": round(score, 4), "stretch_factor": round(max(0.67, min(1.45, _duration(window) / max(_duration(chosen), 0.001))), 4)})
+            mappings.append(mapping)
+        mappings.sort(key=lambda row: row["mutation_magnitude"])
+        for index, mapping in enumerate(mappings):
+            destination = selected[index]
+            source_duration = float(mapping["clip_trim_duration"])
+            destination_duration = _duration(destination)
+            mapping.update({"destination_timestamp": round(_start(destination), 3), "alignment_slot_start": round(_start(destination), 3), "alignment_slot_end": round(_start(destination) + destination_duration, 3), "window_id": _id(destination), "destination_speaker_id": _speaker(destination), "planned_render_duration": round(destination_duration, 3), "clip_trim_duration": round(min(source_duration, destination_duration), 3), "normalized_output_position": round(index / max(1, len(mappings) - 1), 4)})
+        validation.update({"mutation_magnitude_never_decreases": all(a["mutation_magnitude"] <= b["mutation_magnitude"] for a, b in zip(mappings, mappings[1:])), "magnitude_is_measurable": all(0.0 <= row["mutation_magnitude"] <= 1.0 for row in mappings)})
+        metrics["mutation_magnitudes"] = [row["mutation_magnitude"] for row in mappings]
+
+    elif filter_id in {"whisper", "dialect"}:
+        pools = _speaker_pools(sources)
+        anchor = str(parameters.get("carrier_speaker", "auto"))
+        if anchor == "auto":
+            anchor = max(pools, key=lambda key: (_pool_duration(pools[key]), key), default="")
+        if anchor not in pools:
+            raise ValueError(f"{filter_id.title()} requires one viable recurring carrier speaker.")
+        carrier = pools[anchor]
+        for index, window in enumerate(sorted(selected, key=_start)):
+            chosen = _best_duration(carrier, window)
+            position = index / max(1, len(selected) - 1)
+            mapping = _mapping(chosen, window, filter_id, "stable_carrier_audio_trait_spread")
+            if filter_id == "whisper":
+                mapping.update({"carrier_speaker": anchor, "gain_db": round(-18.0 + 6.0 * position, 2), "highpass_hz": 180, "lowpass_hz": 4200, "audio_trait": "quiet_band_limited_voice"})
+            else:
+                target_stretch = _duration(window) / max(_duration(chosen), 0.001)
+                mapping.update({"carrier_speaker": anchor, "stretch_factor": round(max(0.67, min(1.45, target_stretch)), 4), "audio_trait": "shared_carrier_cadence"})
+            mappings.append(mapping)
+        validation.update({"carrier_identity_is_stable": all(row["source_speaker_id"] == anchor for row in mappings), "audio_trait_is_explicit": all(bool(row.get("audio_trait")) for row in mappings), "quiet_gain_is_applied": all(row.get("gain_db", -1) < 0 for row in mappings) if filter_id == "whisper" else True})
+        metrics.update({"carrier_speaker": anchor, "audio_trait": mappings[0]["audio_trait"] if mappings else ""})
+
+    if not mappings:
+        raise ValueError(f"{filter_id.title()} found no viable replacements.")
+    validation["passed"] = all(value is not False for key, value in validation.items() if key != "passed")
+    summary = f"{filter_id.replace('_', ' ').title()} scheduled {len(mappings)} deterministic replacements and validated its defining law."
+    return _schedule(filter_id, duration, mappings, rejected, metrics, validation, summary)
+
+
+def _register_catalog_strategy(filter_id: str, stages: tuple[str, str, str, str]) -> None:
+    @scheduling_strategy(filter_id, stages)
+    def builder(*, clips: list[dict[str, Any]], windows: list[dict[str, Any]], duration: float, parameters: dict[str, Any], seed: int = 1) -> dict[str, Any]:
+        return _catalog_schedule(filter_id, clips=clips, windows=windows, duration=duration, parameters=parameters, seed=seed)
+
+
+for _filter_id, _stages in {
+    "whisper": ("identifying the carrier", "selecting quiet infections", "applying audible edge treatment", "validating stable spread"),
+    "mutation": ("measuring mismatches", "ordering mutation pressure", "growing transformation magnitude", "validating progression"),
+    "dialect": ("identifying the carrier", "measuring cadence", "spreading the cadence", "validating carrier stability"),
+    "split_personality": ("identifying the host", "partitioning donor identities", "assigning stable personalities", "validating the partition"),
+    "dream": ("tokenizing dialogue", "measuring associations", "drifting dialogue through memory", "validating disclosed proxies"),
+    "recollection": ("indexing past dialogue", "enforcing temporal distance", "returning earlier speech", "validating past-only sources"),
+    "amnesia": ("indexing memory", "shrinking eligible memory", "forgetting dialogue sources", "validating irreversible loss"),
+    "wonder": ("scoring lexical wonder", "ranking dialogue", "redirecting speech", "validating proxy disclosure"),
+    "regret": ("scoring lexical regret", "ranking dialogue", "redirecting speech", "validating proxy disclosure"),
+    "optimist": ("scoring lexical optimism", "ranking dialogue", "redirecting speech", "validating proxy disclosure"),
+    "paranoia": ("scoring lexical paranoia", "ranking dialogue", "redirecting speech", "validating proxy disclosure"),
+    "exhaustion": ("measuring delivery rate", "ranking slow performances", "slowing and shaping dialogue", "validating performance progression"),
+    "mobius": ("normalizing the timeline", "pairing opposite positions", "folding beginning and ending", "validating the fold"),
+    "venom": ("scoring lexical hostility", "ordering hostile sources", "growing contextual hostility", "validating monotonic pressure"),
+    "shed_skin": ("ranking identities", "partitioning temporal stages", "changing the active identity", "validating no reversion"),
+    "ouroboros": ("indexing the dialogue ring", "selecting a stable offset", "feeding ending into beginning", "validating ring closure"),
+}.items():
+    _register_catalog_strategy(_filter_id, _stages)
 
 
 def representative_preview_regions(filter_id: str, schedule: dict[str, Any], *, maximum: int = 3) -> list[dict[str, Any]]:

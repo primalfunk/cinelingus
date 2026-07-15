@@ -16,7 +16,7 @@ class FilterRecipe:
     filter_id: str
     filter_version: str
     family_id: str
-    input_media_roles: dict[str, str]
+    input_media_roles: dict[str, Any]
     parameters: dict[str, Any]
     output_settings: dict[str, Any]
     random_seed: int
@@ -35,7 +35,7 @@ class FilterRecipe:
         cls,
         filter_id: str,
         *,
-        input_media_roles: dict[str, str],
+        input_media_roles: dict[str, Any],
         parameters: dict[str, Any] | None = None,
         output_settings: dict[str, Any] | None = None,
         random_seed: int = 1,
@@ -59,7 +59,10 @@ class FilterRecipe:
             filter_id=definition.id,
             filter_version=definition.version,
             family_id=definition.family_id,
-            input_media_roles={key: str(value) for key, value in input_media_roles.items()},
+            input_media_roles={
+                key: [str(item) for item in value] if isinstance(value, (list, tuple)) else str(value)
+                for key, value in input_media_roles.items()
+            },
             parameters=normalized,
             output_settings=output_settings or {"form": "best_short"},
             random_seed=int(random_seed),
@@ -120,7 +123,10 @@ def load_recipe(path: Path, *, registry: FilterRegistry | None = None) -> Recipe
         filter_version=stored_version,
         family_id=definition.family_id,
         created_at=str(data.get("created_at") or utc_now()),
-        input_media_roles={str(key): str(value) for key, value in (data.get("input_media_roles") or {}).items()},
+        input_media_roles={
+            str(key): [str(item) for item in value] if isinstance(value, list) else str(value)
+            for key, value in (data.get("input_media_roles") or {}).items()
+        },
         parameters=definition.normalize_parameters(data.get("parameters") or {}),
         output_settings=dict(data.get("output_settings") or {}),
         random_seed=int(data.get("random_seed", 1)),

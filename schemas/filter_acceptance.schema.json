@@ -12,13 +12,23 @@
     "checks": {"type": "object"},
     "measurements": {
       "type": "object", "additionalProperties": false,
-      "required": ["dialogue_coverage", "mapped_dialogue_duration", "render_duration", "active_ratio", "silence_ratio"],
+      "required": ["dialogue_coverage", "mapped_dialogue_duration", "render_duration", "active_ratio", "silence_ratio", "occupied_timeline_buckets", "timeline_bucket_count", "unique_source_clip_count", "source_placement_count", "unique_source_ratio", "maximum_source_reuse", "minimum_dialogue_coverage", "minimum_occupied_timeline_buckets", "minimum_unique_source_ratio", "maximum_allowed_source_reuse"],
       "properties": {
         "dialogue_coverage": {"type": "number", "minimum": 0, "maximum": 1},
         "mapped_dialogue_duration": {"type": "number", "minimum": 0},
         "render_duration": {"type": "number", "minimum": 0},
         "active_ratio": {"type": "number", "minimum": 0, "maximum": 1},
-        "silence_ratio": {"type": "number", "minimum": 0, "maximum": 1}
+        "silence_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "occupied_timeline_buckets": {"type": "integer", "minimum": 0},
+        "timeline_bucket_count": {"type": "integer", "minimum": 1},
+        "unique_source_clip_count": {"type": "integer", "minimum": 0},
+        "source_placement_count": {"type": "integer", "minimum": 0},
+        "unique_source_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "maximum_source_reuse": {"type": "integer", "minimum": 0},
+        "minimum_dialogue_coverage": {"type": "number", "minimum": 0, "maximum": 1},
+        "minimum_occupied_timeline_buckets": {"type": "integer", "minimum": 0},
+        "minimum_unique_source_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "maximum_allowed_source_reuse": {"type": "integer", "minimum": 0}
       }
     },
     "outputs": {"type": "object"},

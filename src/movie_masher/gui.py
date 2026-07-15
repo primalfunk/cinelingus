@@ -4,6 +4,7 @@ import contextlib
 import os
 import queue
 import re
+import subprocess
 import threading
 import time
 import traceback
@@ -15,7 +16,8 @@ from tkinter import filedialog, messagebox, ttk
 from .cinematic_filters import FILTER_DISPLAY_NAMES
 from .build_info import format_build_identification
 from .config import load_config
-from .filter_lab.presentation import input_field_ids, parameter_help
+from .filter_lab.presentation import film_selector_spec, input_field_ids, parameter_help
+from .filter_lab.multiworld import film_label
 from .filter_lab.registry import default_filter_registry
 from .filter_lab.gui_controller import (
     current_filter_definition,
@@ -29,7 +31,6 @@ from .mutations import MUTATION_DISPLAY_NAMES
 from .pipeline import Pipeline
 from .operator_language import (
     MODE_DESCRIPTIONS,
-    MODE_GLYPHS,
     TRANSPOSITION,
     contains_traceback,
     display_mode_name,
@@ -57,6 +58,7 @@ from .review import (
     review_summary,
     write_review_notes,
 )
+from .run_guard import exclusive_output_run, verify_filter_execution
 from .util import read_json, write_json
 from .whisper_backend import whisper_runtime
 from .validation import validate_artifact
@@ -67,10 +69,23 @@ VIDEO_TYPES = [
 ]
 
 
+def open_path_or_reveal(path: Path) -> str:
+    try:
+        os.startfile(path)
+        return "opened"
+    except OSError as open_error:
+        command = ["explorer.exe", str(path)] if path.is_dir() else ["explorer.exe", "/select,", str(path)]
+        try:
+            subprocess.Popen(command)
+        except OSError as reveal_error:
+            raise OSError(f"Could not open {path}: {open_error}; Explorer fallback failed: {reveal_error}") from reveal_error
+        return "revealed"
+
+
 FILTER_REGISTRY = default_filter_registry()
 FILTER_FAMILY_DISPLAY_NAMES = {family.name: family.id for family in FILTER_REGISTRY.families()}
 FILTER_DEFINITIONS_BY_NAME = {definition.name: definition for definition in FILTER_REGISTRY.definitions()}
-TRANSFORMATION_CHOICES = ["Transposition", "Self Shuffle", "Echo", "Drift", "Contagion", "Possession", "Foreshadow", "Bloom"]
+TRANSFORMATION_CHOICES = [definition.name for definition in FILTER_REGISTRY.definitions()]
 TRANSFORMATION_MUTATIONS = {
     display_mode_name(definition.name): definition.implementation_key
     for definition in FILTER_REGISTRY.definitions(implemented_only=True)
@@ -234,10 +249,16 @@ def run_truth_summary(
     quality: str,
     matching_style: str,
     workflow: str = "Best Short Remix",
+    films: list[Path] | tuple[Path, ...] | None = None,
 ) -> str:
     mode = display_mode_name(transformation)
-    if mode == TRANSPOSITION:
-        media = f"Destination film: {compact_path(destination)} | Source film: {compact_path(source)}"
+    if films:
+        media = " | ".join(
+            f"{'Anchor Film' if index == 0 else f'Film {film_label(index)}'}: {compact_path(path)}"
+            for index, path in enumerate(films)
+        )
+    elif mode == TRANSPOSITION:
+        media = f"Anchor Film: {compact_path(destination)} | Film B: {compact_path(source)}"
     else:
         media = f"Film: {compact_path(destination)}"
     return (
@@ -287,8 +308,8 @@ def completed_run_truth_summary(output: Path, output_dir: Path, transformation: 
         source = ((inputs.get("source_dialogue") or {}).get("path") or "unknown")
         video = ((data.get("outputs") or {}).get("video_path") or output)
         return (
-            f"Last completed experiment: Transposition | Destination: {compact_path(Path(destination))} | "
-            f"Source: {compact_path(Path(source))} | Artifact: {compact_path(Path(video))}"
+            f"Last completed experiment: Movie Masher | Anchor Film: {compact_path(Path(destination))} | "
+            f"Film B: {compact_path(Path(source))} | Artifact: {compact_path(Path(video))}"
         )
     return f"Last completed experiment: {mode} | Artifact: {compact_path(output)}"
 
@@ -335,8 +356,8 @@ def accessible_control_labels() -> dict[str, str]:
     return {
         "begin": "Start Cinelingus processing job",
         "cancel": "Cancel Cinelingus processing job",
-        "source": "Choose source film",
-        "destination": "Choose destination film",
+        "source": "Choose additional film",
+        "destination": "Choose anchor film",
         "technical_record": "Show exact technical processing log",
     }
 
@@ -436,6 +457,9 @@ class MovieMasherApp(tk.Tk):
 
         self.destination_var = tk.StringVar(value=str(self.base_config.destination_video))
         self.source_var = tk.StringVar(value=str(self.base_config.source_dialogue))
+        self.film_vars: list[tk.StringVar] = [self.destination_var, self.source_var]
+        self._active_film_count = 2
+        self._active_filter_id: str | None = None
         self.output_var = tk.StringVar(value=str(self.base_config.output_dir))
         self.status_var = tk.StringVar(value="Ready")
         self.output_path_var = tk.StringVar(value="")
@@ -446,7 +470,7 @@ class MovieMasherApp(tk.Tk):
         self.filter_labels = {display: key for key, display in FILTER_DISPLAY_NAMES.items()}
         self.filter_var = tk.StringVar(value=FILTER_DISPLAY_NAMES.get(self.base_config.cinematic_filter, "Balanced"))
         self.quality_var = tk.StringVar(value=quality_preset_label(self.base_config.transcription_mode))
-        self.input_guidance_var = tk.StringVar(value="Choose the source and destination films required by this experiment.")
+        self.input_guidance_var = tk.StringVar(value="Choose the films required by this contract. Film A is the anchor.")
         self.speaker_detail_var = tk.StringVar(value=speaker_diarization_detail(self.base_config))
         self.stage_var = tk.StringVar(value="Awaiting material")
         self.current_operation_var = tk.StringVar(value="No operation in progress")
@@ -461,8 +485,8 @@ class MovieMasherApp(tk.Tk):
         self.setting_definition_var = tk.StringVar(value="")
         self.overall_progress_var = tk.DoubleVar(value=0.0)
         self.stage_progress_var = tk.DoubleVar(value=0.0)
-        self.mode_var = tk.StringVar(value=TRANSPOSITION)
-        self.family_var = tk.StringVar(value="Translation")
+        self.mode_var = tk.StringVar(value="Movie Masher")
+        self.family_var = tk.StringVar(value="Multiworld")
         self.filter_detail_var = tk.StringVar(value="")
         self.relationship_var = tk.StringVar(value="")
         self.filter_parameter_vars: dict[str, tk.Variable] = {}
@@ -478,7 +502,7 @@ class MovieMasherApp(tk.Tk):
 
         self._build_ui()
         self._bind_truth_refresh()
-        self._sync_mode_fields()
+        sync_filter_family(self, preferred_filter="Movie Masher")
         self._show_wizard_step(1)
         self.bind("<Configure>", self._on_window_resize)
         self.after(100, self._drain_output_queue)
@@ -676,32 +700,30 @@ class MovieMasherApp(tk.Tk):
         self.setup_controls = controls
         ttk.Label(controls, text="EXPERIMENT", style="PlateHeading.TLabel").grid(row=0, column=0, sticky="w", pady=(0, 8))
 
-        experiment_panel = ttk.LabelFrame(controls, text="Mode", padding=(12, 10))
+        experiment_panel = ttk.LabelFrame(controls, text="Filter", padding=(12, 10))
         experiment_panel.grid(row=1, column=0, sticky="ew")
-        experiment_panel.columnconfigure((0, 1), weight=1)
-        self.mode_box = ttk.Combobox(experiment_panel, textvariable=self.mode_var, values=TRANSFORMATION_CHOICES, state="readonly")
+        experiment_panel.columnconfigure(1, weight=1)
+        ttk.Label(experiment_panel, text="Family", style="Field.TLabel").grid(row=0, column=0, sticky="w", pady=3)
+        family_box = ttk.Combobox(experiment_panel, textvariable=self.family_var, values=list(FILTER_FAMILY_DISPLAY_NAMES), state="readonly")
+        family_box.grid(row=0, column=1, sticky="ew", padx=(8, 0), pady=3)
+        family_box.bind("<<ComboboxSelected>>", lambda _event: sync_filter_family(self))
+        ttk.Label(experiment_panel, text="Filter", style="Field.TLabel").grid(row=1, column=0, sticky="w", pady=3)
+        self.mode_box = ttk.Combobox(experiment_panel, textvariable=self.mode_var, values=(), state="readonly")
+        self.mode_box.grid(row=1, column=1, sticky="ew", padx=(8, 0), pady=3)
+        self.mode_box.bind("<<ComboboxSelected>>", lambda _event: self._sync_mode_fields())
         self.mode_buttons: list[ttk.Radiobutton] = []
-        for index, name in enumerate(TRANSFORMATION_CHOICES):
-            button = ttk.Radiobutton(
-                experiment_panel,
-                text=f"{MODE_GLYPHS.get(name, '◇')}  {name}",
-                value=name,
-                variable=self.mode_var,
-                command=self._sync_mode_fields,
-                style="Experiment.TRadiobutton",
-                takefocus=True,
-            )
-            button.grid(row=index // 2, column=index % 2, sticky="ew", padx=3, pady=3)
-            self.mode_buttons.append(button)
-        ttk.Label(experiment_panel, textvariable=self.mode_description_var, style="Hint.TLabel", wraplength=600).grid(row=4, column=0, columnspan=2, sticky="w", pady=(8, 0))
-        ttk.Label(experiment_panel, textvariable=self.relationship_var, style="Instrument.TLabel", wraplength=600).grid(row=5, column=0, columnspan=2, sticky="w", pady=(4, 0))
+        ttk.Label(experiment_panel, textvariable=self.mode_description_var, style="Hint.TLabel", wraplength=600).grid(row=2, column=0, columnspan=2, sticky="w", pady=(8, 0))
+        ttk.Label(experiment_panel, textvariable=self.relationship_var, style="Instrument.TLabel", wraplength=600).grid(row=3, column=0, columnspan=2, sticky="w", pady=(4, 0))
 
         material_panel = ttk.LabelFrame(controls, text="Material", padding=(12, 10))
         material_panel.grid(row=2, column=0, sticky="ew", pady=(10, 0))
-        material_panel.columnconfigure(1, weight=1)
-        self.source_widgets = self._path_row(material_panel, 0, "Source film", self.source_var, self._choose_source)
-        self.destination_widgets = self._path_row(material_panel, 1, "Destination film", self.destination_var, self._choose_destination)
-        ttk.Label(material_panel, textvariable=self.input_guidance_var, style="Hint.TLabel", wraplength=600).grid(row=2, column=0, columnspan=3, sticky="w", pady=(6, 0))
+        material_panel.columnconfigure(0, weight=1)
+        self.film_rows_frame = ttk.Frame(material_panel)
+        self.film_rows_frame.grid(row=0, column=0, sticky="ew")
+        self.film_rows_frame.columnconfigure(1, weight=1)
+        self.add_film_button = ttk.Button(material_panel, text="Add Film", command=self._add_film_selector)
+        self.add_film_button.grid(row=1, column=0, sticky="w", pady=(6, 0))
+        ttk.Label(material_panel, textvariable=self.input_guidance_var, style="Hint.TLabel", wraplength=600).grid(row=2, column=0, sticky="w", pady=(6, 0))
 
         fidelity_panel = ttk.LabelFrame(controls, text="Fidelity", padding=(12, 8))
         fidelity_panel.grid(row=3, column=0, sticky="ew", pady=(10, 0))
@@ -1005,6 +1027,85 @@ class MovieMasherApp(tk.Tk):
         button_widget.grid(row=row, column=2, sticky="e", pady=4)
         return label_widget, entry_widget, button_widget
 
+    def _sync_film_selectors(self, definition) -> None:
+        if not hasattr(self, "film_rows_frame"):
+            return
+        if self._active_filter_id != definition.id:
+            self._active_film_count = definition.minimum_films
+        self._active_filter_id = definition.id
+        selector = film_selector_spec(definition, self._active_film_count)
+        self._active_film_count = len(selector["rows"])
+        while len(self.film_vars) < self._active_film_count:
+            variable = tk.StringVar(value="")
+            variable.trace_add("write", lambda *_args: self._refresh_truth_panel())
+            self.film_vars.append(variable)
+        for widget in self.film_rows_frame.winfo_children():
+            widget.destroy()
+        rows = []
+        for row_spec in selector["rows"]:
+            index = row_spec["index"]
+            label = row_spec["label"]
+            row = self._path_row(
+                self.film_rows_frame,
+                index,
+                label,
+                self.film_vars[index],
+                lambda film_index=index: self._choose_film(film_index),
+            )
+            rows.append(row)
+            if row_spec["removable"]:
+                ttk.Button(self.film_rows_frame, text="Remove", command=lambda film_index=index: self._remove_film_selector(film_index)).grid(row=index, column=3, padx=(6, 0), pady=4)
+        self.destination_widgets = rows[0]
+        self.source_widgets = rows[1] if len(rows) > 1 else tuple()
+        if selector["can_add"]:
+            self.add_film_button.grid()
+        else:
+            self.add_film_button.grid_remove()
+
+    def _add_film_selector(self) -> None:
+        definition = current_filter_definition(self)
+        if definition.maximum_films is not None and self._active_film_count >= definition.maximum_films:
+            return
+        self._active_film_count += 1
+        self._sync_film_selectors(definition)
+
+    def _remove_film_selector(self, index: int) -> None:
+        definition = current_filter_definition(self)
+        if index < definition.minimum_films or index >= self._active_film_count:
+            return
+        self.film_vars.pop(index)
+        self._active_film_count -= 1
+        self._sync_film_selectors(definition)
+        self._refresh_truth_panel()
+
+    def _choose_film(self, index: int) -> None:
+        title = "Select anchor film" if index == 0 else f"Select Film {film_label(index)}"
+        path = filedialog.askopenfilename(title=title, filetypes=VIDEO_TYPES)
+        if path:
+            while len(self.film_vars) <= index:
+                self.film_vars.append(tk.StringVar(value=""))
+            self.film_vars[index].set(path)
+            if index == 0:
+                self.destination_selected_by_user = True
+            elif index == 1:
+                self.source_selected_by_user = True
+
+    def _selected_film_paths(self) -> list[Path]:
+        return [Path(variable.get()).expanduser() for variable in self.film_vars[:self._active_film_count]]
+
+    def _set_film_paths(self, paths: list[Path]) -> None:
+        definition = current_filter_definition(self)
+        definition.validate_film_count(len(paths))
+        while len(self.film_vars) < len(paths):
+            self.film_vars.append(tk.StringVar(value=""))
+        for index, path in enumerate(paths):
+            self.film_vars[index].set(str(path))
+        self._active_film_count = len(paths)
+        self._active_filter_id = definition.id
+        self.destination_selected_by_user = bool(paths)
+        self.source_selected_by_user = len(paths) > 1
+        self._sync_film_selectors(definition)
+
     def _choose_destination(self) -> None:
         path = filedialog.askopenfilename(title="Select destination video", filetypes=VIDEO_TYPES)
         if path:
@@ -1051,6 +1152,7 @@ class MovieMasherApp(tk.Tk):
                 quality=self.quality_var.get(),
                 matching_style=self.filter_var.get(),
                 workflow=self.workflow_var.get(),
+                films=self._selected_film_paths(),
             )
         )
 
@@ -1104,44 +1206,47 @@ class MovieMasherApp(tk.Tk):
         self.live_elapsed_var.set("00:00")
         self.live_idle_var.set("00:00")
         self.live_eta_var.set("Calculating...")
-        self.specimen_var.set(Path(self.destination_var.get()).name or "Selected material")
+        selected_films = self._selected_film_paths()
+        self.specimen_var.set(selected_films[0].name if selected_films else "Selected material")
         self._set_running(True, "Experiment in progress")
         self._mark_stage(None)
         start_detail = f"Starting {self.workflow_var.get()} / {self.mode_var.get()} run with {self.quality_var.get()} quality...\n"
         self._append_console(start_detail)
         self._append_journal("Experiment initiated", f"{self.mode_var.get()} has begun with {self.quality_var.get().lower()} fidelity.", event_id="experiment_started")
         definition = current_filter_definition(self)
-        mutation_id = definition.implementation_key or "movie_masher"
-        self.worker = threading.Thread(target=self._run_pipeline, args=(config, False, self.mode_var.get(), mutation_id, self.workflow_var.get(), remix_preference_id(self.remix_preference_var.get()), filter_parameters), daemon=True)
+        filter_id = definition.id
+        self.worker = threading.Thread(target=self._run_pipeline, args=(config, False, self.mode_var.get(), filter_id, self.workflow_var.get(), remix_preference_id(self.remix_preference_var.get()), filter_parameters), daemon=True)
         self.worker.start()
 
 
     def _selected_config(self):
-        destination = Path(self.destination_var.get()).expanduser()
-        source = Path(self.source_var.get()).expanduser()
+        films = self._selected_film_paths()
         output = Path(self.output_var.get()).expanduser()
         definition = current_filter_definition(self)
         if not definition.implemented:
-            raise ValueError(f"{definition.name} is in development and cannot be run.")
-        if not destination.exists():
-            raise ValueError(f"Destination video does not exist: {destination}")
-        source_required = "source_dialogue" in definition.required_inputs
-        if source_required and not source.exists():
-            raise ValueError(f"Source dialogue does not exist: {source}")
-        if not source_required:
+            raise ValueError("This filter is not yet implemented.")
+        definition.validate_film_count(len(films))
+        output_form = "best_short" if self.workflow_var.get() == "Best Short Remix" else "full_length"
+        if output_form not in definition.supported_output_forms:
+            supported = ", ".join(form.replace("_", " ") for form in definition.supported_output_forms)
+            raise ValueError(f"{definition.name} does not support {output_form.replace('_', ' ')} output. Supported: {supported}.")
+        for index, film in enumerate(films):
+            if not film.exists():
+                label = "Anchor Film" if index == 0 else f"Film {film_label(index)}"
+                raise ValueError(f"{label} does not exist: {film}")
+        if definition.is_multiworld and len({str(film.resolve()).casefold() for film in films}) != len(films):
+            raise ValueError("Choose distinct films for a Multiworld run; the same path is selected more than once.")
+        if definition.minimum_films == 1:
             if single_film_input_needs_explicit_choice(
                 self.mode_var.get(),
-                destination,
+                films[0],
                 self.base_config.destination_video,
                 selected_by_user=self.destination_selected_by_user,
             ):
-                raise ValueError(f"Choose one source film for {self.mode_var.get()} before starting.")
-            source = destination
+                raise ValueError(f"Choose one film for {self.mode_var.get()} before starting.")
         target = target_length_seconds(self.target_length_var.get())
-        return self.base_config.with_overrides(
+        return self.base_config.with_films(films).with_overrides(
             mode=quality_preset_mode(self.quality_var.get()),
-            destination_video=destination.resolve(),
-            source_dialogue=source.resolve(),
             output_dir=output.resolve(),
             cinematic_filter=self.filter_labels.get(self.filter_var.get(), "balanced"),
             target_duration_seconds=target,
@@ -1156,18 +1261,42 @@ class MovieMasherApp(tk.Tk):
         self.mode_description_var.set(MODE_DESCRIPTIONS.get(display_name, "A cinematic transformation experiment."))
         sync_filter_mode(self)
 
-    def _run_pipeline(self, config, force: bool, app_mode: str = TRANSPOSITION, mutation_id: str = "echo", workflow: str = "Best Short Remix", preference: str = "balanced", filter_parameters: dict[str, Any] | None = None) -> None:
+    def _run_pipeline(self, config, force: bool, app_mode: str = TRANSPOSITION, filter_id: str = "translation.echo", workflow: str = "Best Short Remix", preference: str = "balanced", filter_parameters: dict[str, Any] | None = None) -> None:
         writer = QueueWriter(self.output_queue)
         internal_app_mode = internal_mode_name(app_mode)
+        definition = FILTER_REGISTRY.get(filter_id)
+        implementation_key = definition.implementation_key or "movie_masher"
         try:
             with contextlib.redirect_stdout(writer), contextlib.redirect_stderr(writer):
-                pipeline = Pipeline(config, cancel_check=lambda: self.cancel_requested, stage_callback=lambda stage: self.output_queue.put(f"__DIARIZATION_STAGE__{stage}\n"))
-                if workflow == "Best Short Remix":
-                    output = pipeline.run_best_short_remix(app_mode=internal_app_mode, mutation_id=mutation_id, preference=preference, filter_parameters=filter_parameters, force=force)["video"]
-                elif internal_app_mode != "Movie Masher":
-                    output = pipeline.run_mutation(mutation_id, force=force, parameters=filter_parameters)["video"]
-                else:
-                    output = pipeline.run_all(force=force)
+                with exclusive_output_run(config.output_dir, definition.id) as run_lease:
+                    pipeline = Pipeline(config, cancel_check=lambda: self.cancel_requested, stage_callback=lambda stage: self.output_queue.put(f"__DIARIZATION_STAGE__{stage}\n"))
+                    if workflow == "Best Short Remix":
+                        result = pipeline.run_best_short_remix(app_mode=internal_app_mode, mutation_id=implementation_key, preference=preference, filter_parameters=filter_parameters, force=force)
+                        output = result["video"]
+                    elif definition.is_multiworld and definition.id != "multiworld.movie_masher":
+                        result = pipeline.run_multiworld_filter(definition.id, force=force, parameters=filter_parameters)
+                        output = result["video"]
+                    elif definition.id != "multiworld.movie_masher":
+                        result = pipeline.run_mutation(implementation_key, force=force, parameters=filter_parameters)
+                        output = result["video"]
+                    else:
+                        output = pipeline.run_all(force=force)
+                        result = {
+                            "video": output,
+                            "filter_acceptance": config.output_dir / "movie_masher" / "filter_acceptance.json",
+                            "filter_recipe": config.output_dir / "movie_masher" / "filter_recipe.json",
+                        }
+                    evidence = [
+                        Path(value)
+                        for key, value in result.items()
+                        if key in {"filter_acceptance", "filter_recipe"}
+                    ]
+                    receipt = verify_filter_execution(
+                        run_lease,
+                        requested_filter_id=definition.id,
+                        evidence_paths=evidence,
+                        output=Path(output),
+                    )
             self.last_output = output
             self.output_queue.put(f"__OUTPUT__{output}\n")
             summary_dir = Path(output).parent
@@ -1183,7 +1312,7 @@ class MovieMasherApp(tk.Tk):
                 started_at=self.run_started_at,
             )
             self.output_queue.put(f"__COMPLETION__{completion}\n")
-            self.output_queue.put(f"Technical completion: transcription_model={actual_model}; output={output}; warning={model_warning or 'none'}\n")
+            self.output_queue.put(f"Technical completion: transcription_model={actual_model}; output={output}; receipt={receipt}; warning={model_warning or 'none'}\n")
             self.output_queue.put(f"__SUMMARY__{summary['message']}\n")
             if summary.get("preview_dir"):
                 self.output_queue.put(f"__PREVIEWS__{summary['preview_dir']}\n")
@@ -1358,7 +1487,7 @@ class MovieMasherApp(tk.Tk):
     def _open_finished_output_folder(self, folder: Path) -> None:
         try:
             folder.mkdir(parents=True, exist_ok=True)
-            os.startfile(folder)
+            open_path_or_reveal(folder)
         except OSError as exc:
             self._append_console(f"Could not open output folder: {exc}\n")
 
@@ -1571,7 +1700,18 @@ class MovieMasherApp(tk.Tk):
         if not path.exists():
             messagebox.showerror("Output unavailable", f"Finished movie not found: {path}")
             return
-        os.startfile(path)
+        try:
+            result = open_path_or_reveal(path)
+        except OSError as exc:
+            self._append_console(f"Could not open finished movie: {exc}\n")
+            messagebox.showerror("Could not open movie", str(exc))
+            return
+        if result == "revealed":
+            self._append_console("Windows could not launch the registered video player; the movie was selected in Explorer instead.\n")
+            messagebox.showwarning(
+                "Movie selected in Explorer",
+                "Windows could not launch the registered video player. The finished movie has been selected in Explorer instead.",
+            )
 
     def _open_problem_previews(self) -> None:
         path_text = self.preview_path_var.get().strip()
@@ -1579,13 +1719,19 @@ class MovieMasherApp(tk.Tk):
         if not path.exists():
             messagebox.showerror("Previews unavailable", "No problem preview folder exists yet.")
             return
-        os.startfile(path)
+        try:
+            open_path_or_reveal(path)
+        except OSError as exc:
+            messagebox.showerror("Previews unavailable", str(exc))
 
     def _open_output_folder(self) -> None:
         output = self.output_path_var.get().strip()
         path = finished_output_folder(output, self.output_var.get())
         path.mkdir(parents=True, exist_ok=True)
-        os.startfile(path)
+        try:
+            open_path_or_reveal(path)
+        except OSError as exc:
+            messagebox.showerror("Output folder unavailable", str(exc))
 
 
 class HighlightReviewWindow(tk.Toplevel):
@@ -2006,7 +2152,10 @@ class ScheduleReviewWindow(tk.Toplevel):
         if not clip_path.exists():
             messagebox.showerror("Preview unavailable", f"Clip file not found: {clip_path}")
             return
-        os.startfile(clip_path)
+        try:
+            open_path_or_reveal(clip_path)
+        except OSError as exc:
+            messagebox.showerror("Preview unavailable", str(exc))
 
     def _save(self, *, show_message: bool = True) -> None:
         write_json(self.schedule_path, self.schedule)

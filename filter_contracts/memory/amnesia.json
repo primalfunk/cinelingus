@@ -5,9 +5,9 @@
   "filter_name": "Amnesia",
   "family_id": "memory",
   "filter_version": "1.0.0",
-  "status": "blocked",
+  "status": "accepted",
   "implementation_class": "A",
-  "creative_proposition": "The film forgets how it spoke. Dialogue identities and repetitions gradually disappear.",
+  "creative_proposition": "The film forgets how it spoke.",
   "relationship_domains": {
     "reads": [
       "dialogue",
@@ -18,7 +18,10 @@
       "dialogue",
       "identity"
     ],
-    "preserves": {}
+    "preserves": {
+      "time": "Destination chronology preserved",
+      "progression": "Forgotten sources never return"
+    }
   },
   "specimen_inputs": [
     "film"
@@ -26,51 +29,63 @@
   "required_analysis": [
     "dialogue_events"
   ],
-  "candidate_generation": "Planned memory strategy. Candidate pools exclude unusable zero-duration material.",
+  "candidate_generation": "Each successive selected window draws from a prefix of the source pool that never grows. Candidate pools exclude unusable zero-duration dialogue.",
   "selection_rules": [
-    "Planned memory strategy.",
+    "The eligible dialogue memory pool shrinks irreversibly through the output.",
     "Selection is deterministic for identical inputs, parameters, and random seed."
   ],
-  "transformation_behavior": "The film forgets how it spoke. Dialogue identities and repetitions gradually disappear.",
-  "progression": "Transformation strength is constant unless an explicit intensity parameter selects fewer windows.",
-  "state_variables": [],
-  "fields": [],
-  "controlled_uncertainty": "No runtime uncertainty is permitted before contract acceptance.",
+  "transformation_behavior": "Each successive selected window draws from a prefix of the source pool that never grows.",
+  "progression": "The emitted schedule measures the defining law at every selected output position.",
+  "state_variables": [
+    "parameter:intensity"
+  ],
+  "fields": [
+    "filter_metrics",
+    "filter_validation",
+    "mappings"
+  ],
+  "controlled_uncertainty": "All tie breaking is deterministic; the recipe records the random seed even when a law needs no random choice.",
   "hard_invariants": [
     {
-      "id": "contract_must_be_accepted_before_execution",
-      "statement": "The operator must remain unavailable until this contract is accepted.",
-      "validator": ""
+      "id": "memory_pool_never_grows",
+      "statement": "The eligible memory pool never grows.",
+      "validator": "filter_validation.memory_pool_never_grows"
+    },
+    {
+      "id": "forgotten_sources_never_return",
+      "statement": "A source excluded from memory never returns later.",
+      "validator": "filter_validation.forgotten_sources_never_return"
     }
   ],
   "validation": {
-    "strategy": "Contract review must resolve every blocker before executable validation is defined.",
-    "required_metrics": []
+    "strategy": "Validate strategy-emitted invariants, measurable coverage, silence ratio, provenance, and the final audio stream.",
+    "required_metrics": [
+      "replacement_count",
+      "silence_ratio"
+    ]
   },
-  "failure_behavior": "Remain visible as unavailable and report the named contract blockers.",
-  "preview_strategy": "No executable preview is available before contract acceptance.",
+  "failure_behavior": "Fail before rendering when required analysis, candidate evidence, or the defining invariant is unavailable.",
+  "preview_strategy": "Choose representative mappings that expose the defining law and its emitted evidence.",
   "renderer_requirements": [
     "Preserve the source picture unless the contract explicitly says otherwise.",
     "Produce a final MP4 with a verified audio stream.",
     "Report replacement-audio provenance, dialogue coverage, silence ratio, and invariant results."
   ],
   "procedure_behavior": {
-    "support_status": "conceptual",
+    "support_status": "single_step_validated",
     "receives_transformed_specimen": false,
     "commitment": "When a Procedure runtime exists, consume prior mappings without losing immutable source provenance; this phase does not execute that commitment."
   },
   "capabilities": {
-    "implemented": false,
-    "implementation_key": null,
-    "execution_mode": "unavailable",
-    "sparse_schedule": false,
+    "implemented": true,
+    "implementation_key": "amnesia",
+    "execution_mode": "scheduling_strategy",
+    "sparse_schedule": true,
     "requires_speaker_identity": false,
-    "supports_preview": false,
-    "supports_best_short": false,
-    "supports_full_length": false,
-    "requires_output_acceptance": false
+    "supports_preview": true,
+    "supports_best_short": true,
+    "supports_full_length": true,
+    "requires_output_acceptance": true
   },
-  "blockers": [
-    "Approve whether forgetting mutes, removes, or reassigns dialogue and how coverage may decline."
-  ]
+  "blockers": []
 }

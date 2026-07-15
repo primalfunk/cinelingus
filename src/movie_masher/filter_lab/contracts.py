@@ -37,6 +37,11 @@ class FilterContract:
     def capabilities(self) -> dict[str, Any]:
         return dict(self.data["capabilities"])
 
+    @property
+    def multiworld(self) -> dict[str, Any] | None:
+        value = self.data.get("multiworld_contract")
+        return dict(value) if isinstance(value, dict) else None
+
     def to_dict(self) -> dict[str, Any]:
         return dict(self.data)
 
@@ -85,15 +90,23 @@ class FilterContractCatalog:
             "",
             "Generated from the machine-valid contracts in filter_contracts/.",
             "",
-            "| Filter | Family | Status | Class | Execution | Contract law |",
-            "|---|---|---:|---:|---|---|",
+            "| Filter | Family | Films | Cinematic law | Status | Execution | Contract proposition |",
+            "|---|---|---:|---|---:|---|---|",
         ]
         for contract in self.contracts():
             row = contract.data
             proposition = str(row["creative_proposition"]).replace("|", "\\|")
+            multiworld = row.get("multiworld_contract") or {}
+            maximum = multiworld.get("maximum_films")
+            film_range = "1" if not multiworld else (
+                str(multiworld["minimum_films"]) if maximum == multiworld["minimum_films"]
+                else f"{multiworld['minimum_films']}+" if maximum is None
+                else f"{multiworld['minimum_films']}-{maximum}"
+            )
             lines.append(
-                f"| {row['filter_name']} | {row['family_id']} | {row['status']} | "
-                f"{row['implementation_class']} | {row['capabilities']['execution_mode']} | {proposition} |"
+                f"| {row['filter_name']} | {row['family_id']} | {film_range} | "
+                f"{multiworld.get('cinematic_law', definition_law(row))} | {row['status']} | "
+                f"{row['capabilities']['execution_mode']} | {proposition} |"
             )
         lines.extend([
             "",
@@ -187,3 +200,31 @@ def _validate_contract_against_definition(contract: FilterContract, definition: 
             raise ValidationError(f"{contract.path}: Class A requests unavailable artifacts: {', '.join(unavailable)}")
     if definition.execution_mode == "scheduling_strategy" and not has_strategy(str(definition.implementation_key)):
         raise ValidationError(f"{contract.path}: declared scheduling strategy is not registered.")
+    if definition.is_multiworld:
+        multiworld = data.get("multiworld_contract") or {}
+        expected_multiworld = {
+            "cinematic_law": definition.cinematic_law,
+            "minimum_films": definition.minimum_films,
+            "maximum_films": definition.maximum_films,
+            "anchor_behavior": definition.anchor_behavior,
+            "affected_elements": list(definition.affected_elements),
+            "quality_requirements": list(definition.quality_requirements),
+            "deterministic_seed_support": definition.deterministic_seed_support,
+        }
+        for field, value in expected_multiworld.items():
+            if multiworld.get(field) != value:
+                raise ValidationError(f"{contract.path}: multiworld {field} does not match the registry.")
+        interface = multiworld.get("interface") or {}
+        interface_expectations = {
+            "inputs": list(definition.required_inputs),
+            "outputs": list(definition.output_artifacts),
+            "affected_artifacts": list(definition.affected_artifacts),
+            "intermediate_products": list(definition.intermediate_products),
+        }
+        for field, value in interface_expectations.items():
+            if interface.get(field) != value:
+                raise ValidationError(f"{contract.path}: multiworld interface {field} does not match the registry.")
+
+
+def definition_law(row: dict[str, Any]) -> str:
+    return str(row.get("creative_proposition", "Internal Transformation")).split(".", 1)[0]

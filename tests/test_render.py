@@ -29,6 +29,9 @@ def test_render_dialogue_wav_skips_disabled_mappings(monkeypatch, tmp_path: Path
                     "clip_trim_start": 0.0,
                     "clip_trim_duration": 1.0,
                     "stretch_factor": 1.0,
+                    "highpass_hz": 180,
+                    "lowpass_hz": 4200,
+                    "gain_db": -14.0,
                 },
                 {
                     "enabled": False,
@@ -51,6 +54,9 @@ def test_render_dialogue_wav_skips_disabled_mappings(monkeypatch, tmp_path: Path
     command_text = " ".join(" ".join(command) for command in commands)
     assert str(enabled_clip) in command_text
     assert str(disabled_clip) not in command_text
+    assert "highpass=f=180.0" in command_text
+    assert "lowpass=f=4200.0" in command_text
+    assert "volume=-14.00dB" in command_text
 
 
 def test_render_schedule_over_original_audio_uses_original_track_and_mutes_windows(monkeypatch, tmp_path: Path) -> None:

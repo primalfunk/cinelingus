@@ -55,6 +55,36 @@ class AppConfig:
     prefer_clean_dialogue_timing: bool
     prefer_funny_or_surprising_matches: bool
     allow_full_movie_mode: bool
+    film_paths: tuple[Path, ...] = ()
+
+    @property
+    def films(self) -> tuple[Path, ...]:
+        """Canonical ordered film inputs; the first film is the anchor."""
+        if self.film_paths:
+            return self.film_paths
+        if self.source_dialogue == self.destination_video:
+            return (self.destination_video,)
+        return (self.destination_video, self.source_dialogue)
+
+    @property
+    def anchor_film(self) -> Path:
+        return self.films[0]
+
+    def with_films(self, films: list[Path] | tuple[Path, ...], *, anchor_index: int = 0) -> "AppConfig":
+        rows = tuple(Path(path) for path in films)
+        if not rows:
+            raise ValueError("At least one film is required.")
+        if anchor_index < 0 or anchor_index >= len(rows):
+            raise ValueError(f"Anchor index {anchor_index} is outside the {len(rows)} selected films.")
+        anchor = rows[anchor_index]
+        donors = rows[:anchor_index] + rows[anchor_index + 1:]
+        ordered = (anchor, *donors)
+        return replace(
+            self,
+            destination_video=anchor,
+            source_dialogue=donors[0] if donors else anchor,
+            film_paths=ordered,
+        )
 
     def with_overrides(
         self,
@@ -104,6 +134,8 @@ class AppConfig:
         if output_dir is not None:
             path_updates["output_dir"] = output_dir
         if path_updates:
+            if "destination_video" in path_updates or "source_dialogue" in path_updates:
+                path_updates["film_paths"] = ()
             config = replace(config, **path_updates)
         advanced_updates: dict[str, Any] = {}
         if shot_boundary_mode is not None:

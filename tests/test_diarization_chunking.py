@@ -1,5 +1,6 @@
 import warnings
 
+import numpy as np
 import torch
 
 from movie_masher.diarization_runtime import _run_chunked_pipeline
@@ -9,6 +10,24 @@ class Segment:
     def __init__(self, start, end):
         self.start = start
         self.end = end
+
+
+class EmbeddingOutput:
+    def __init__(self, rows, embeddings):
+        self.speaker_diarization = Annotation(rows)
+        self.exclusive_speaker_diarization = self.speaker_diarization
+        self.speaker_embeddings = np.asarray(embeddings, dtype=float)
+
+
+class Annotation:
+    def __init__(self, rows):
+        self.rows = rows
+
+    def __iter__(self):
+        return iter(self.rows)
+
+    def labels(self):
+        return sorted({label for _segment, label in self.rows})
 
 
 def test_overlapping_chunks_stitch_local_speaker_labels() -> None:
@@ -64,6 +83,32 @@ def test_stitching_does_not_collapse_two_local_speakers_into_one_global_id() -> 
     assert turns == [
         {"start": 15.0, "end": 18.0, "raw_speaker": "GLOBAL_001"},
         {"start": 18.0, "end": 20.0, "raw_speaker": "GLOBAL_002"},
+    ]
+
+
+def test_embedding_stitching_recovers_speaker_missing_from_adjacent_overlap() -> None:
+    class Pipeline:
+        def __init__(self):
+            self.calls = 0
+
+        def __call__(self, _audio):
+            self.calls += 1
+            if self.calls == 1:
+                return EmbeddingOutput([(Segment(0.0, 5.0), "LOCAL_A")], [[1.0, 0.0]])
+            if self.calls == 2:
+                return EmbeddingOutput([(Segment(5.0, 10.0), "LOCAL_B")], [[0.0, 1.0]])
+            return EmbeddingOutput([(Segment(5.0, 10.0), "LOCAL_A_AGAIN")], [[0.99, 0.01]])
+
+    audio = {"waveform": torch.zeros((1, 500)), "sample_rate": 10}
+    turns, chunk_count = _run_chunked_pipeline(
+        Pipeline(), audio, 50.0, chunk_seconds=20.0, overlap_seconds=5.0
+    )
+
+    assert chunk_count == 3
+    assert turns == [
+        {"start": 0.0, "end": 5.0, "raw_speaker": "GLOBAL_001"},
+        {"start": 20.0, "end": 25.0, "raw_speaker": "GLOBAL_002"},
+        {"start": 35.0, "end": 40.0, "raw_speaker": "GLOBAL_001"},
     ]
 
 

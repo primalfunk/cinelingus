@@ -13,17 +13,17 @@ from movie_masher.operator_language import (
 )
 
 
-def test_movie_masher_displays_as_transposition_and_internal_alias_survives() -> None:
+def test_movie_masher_is_the_canonical_display_name_and_internal_alias_survives() -> None:
     assert display_mode_name("Movie Masher") == TRANSPOSITION
     assert display_mode_name("movie_masher") == TRANSPOSITION
-    assert internal_mode_name(TRANSPOSITION) == LEGACY_TRANSPOSITION
+    assert internal_mode_name(TRANSPOSITION) == TRANSPOSITION
 
 
 def test_legacy_mode_values_migrate_with_an_explicit_note() -> None:
-    value, note = migrate_mode_value("Movie Masher")
+    value, note = migrate_mode_value("Transposition")
 
     assert value == TRANSPOSITION
-    assert note == "Movie Masher migrated to Transposition"
+    assert note == "Transposition migrated to Movie Masher"
 
 
 def test_every_major_stage_has_backend_free_operator_language() -> None:
@@ -53,6 +53,11 @@ def test_timeout_and_fallback_are_truthful_and_visible() -> None:
     assert "Pyannote" in timeout.diagnostic_detail
     assert fallback is not None and fallback.severity == "warning"
     assert "alternate method" in fallback.message
+
+
+def test_timeout_configuration_is_not_reported_as_an_actual_timeout() -> None:
+    assert operator_message_for_log("Pyannote inactivity timeout: 180 seconds") is None
+    assert operator_message_for_log("Pyannote total timeout: 3600 seconds") is None
 
 
 def test_speaker_validation_does_not_claim_final_artifact_validation():

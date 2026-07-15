@@ -4,33 +4,49 @@ Cinelingus is a local cinematic transformation laboratory. It analyzes dialogue,
 
 The application is designed for local film material: media and analysis artifacts remain on the workstation unless you deliberately publish them elsewhere.
 
+**Current development release: 0.2.0**
+
+This release marks the expansion from the original two-film dialogue replacement pipeline into a contract-driven Filter Laboratory with single-film and Multiworld cinematic operators.
+
 ## Current capabilities
 
 - Guided desktop Filter Laboratory with plain-language operator controls
 - Preview, Best Short Remix, and Full Movie output forms
 - Whisper transcription and Pyannote-aware speaker diarization
 - Duration-, rhythm-, performance-, and speaker-aware dialogue placement
-- Persistent, role-aware analysis caching for source and destination media
+- Persistent, role-aware analysis caching for every film in a world
 - Versioned `filter_recipe.json` and normalized `filter_plan.json` artifacts
 - Replacement-audio provenance, coverage, silence, stream, and contract validation
 - Diagnostic reports for diarization, performance matching, scheduling, and renders
 - Deterministic recipes and seeds where a filter uses controlled variation
+- Cross-process run locking so two experiments cannot publish into the same output tree
+- Fresh filter-identity receipts that prevent a completed run from being reported under the wrong operator
+- Scoped publication cleanup that preserves audit logs and artifacts belonging to other runs
 
-Transposition, the default two-film translation operation, assigns each source dialogue clip at most once. When no suitable unused phrase remains, Cinelingus leaves the unmatched destination interval unfilled instead of recycling distracting audio. Operators that intentionally repeat material, such as Echo, own that behavior explicitly.
+Movie Masher established the Multiworld foundation by applying the Dialogue Translation law to two films. Film A is the anchor and supplies the timeline; Film B supplies donor dialogue. The same staged runtime now also supports variable film counts and provenance-bearing dialogue laws.
+
+Full-length Movie Masher and the newer dialogue laws now share measurable pre-render and final-output gates. A run must provide sufficient dialogue coverage and timeline distribution, remain within its source-reuse rules, retain valid provenance, and produce an accepted audio-bearing MP4. Sparse or effectively unchanged schedules fail before an expensive full render rather than masquerading as successful output.
 
 ## Available operators
 
-The Laboratory groups operators into Translation, Infection, Identity, Memory, Emotion, Time, and Experimental families.
+The Laboratory groups operators into Translation, Infection, Identity, Memory, Emotion, Time, Experimental, and Multiworld families.
 
 Currently executable:
 
-- Translation: Transposition, Self Shuffle, Echo, Drift
-- Infection: Contagion
-- Identity: Possession, Doppelganger, Chorus
-- Time: Flashback, Foreshadow, Spiral
-- Experimental: Bloom
+- Translation: Self Shuffle, Echo, Drift
+- Infection: Contagion, Whisper, Mutation, Dialect
+- Identity: Possession, Doppelgänger, Chorus, Split Personality
+- Memory: Dream, Recollection, Amnesia
+- Emotion: Wonder, Regret, Optimist, Paranoia, Exhaustion
+- Time: Flashback, Foreshadow, Spiral, Möbius
+- Experimental: Bloom, Venom, Shed Skin, Ouroboros
+- Multiworld: Movie Masher, Possession, Contagion, Echo Chamber, Prophecy
 
-Planned operators remain visible as **In Development** and cannot be selected accidentally. Bloom can be added as a progression modifier; this release otherwise runs one primary operator at a time.
+Emotion, Dream, and Venom deliberately use disclosed lexical proxies rather than claiming unavailable semantic or emotional embeddings. Whisper and Exhaustion emit bounded gain/EQ controls that the renderer applies per placement.
+
+Multiworld Possession, Contagion, Echo Chamber, and Prophecy currently support Full Movie output. They preserve Film A picture and chronology while emitting the source film ID and media hash for every dialogue layer. Best Short remains disabled until reel selection can prove that every required film, infection phase, echo layer, or prophecy relationship survives shortening.
+
+The remaining Multiworld placeholders are Doppelgänger, Mirror World, Bleed, Parallel Universes, Wormhole, Chimera, Triangle, and Civilization. They remain visible with the explicit message **This filter is not yet implemented.** Their contracts require cross-film picture, shot, music, soundscape, or genre composition beyond the current dialogue renderer. Bloom can be added as a progression modifier; this release otherwise runs one primary operator at a time.
 
 ## Requirements
 
@@ -86,13 +102,15 @@ Configuration defaults live in `config/default.json`. Keep machine-specific path
 
 ## Typical workflow
 
-1. Choose the destination film and, when required, the source dialogue film.
+1. Choose Film A, the anchor, and exactly as many additional films as the selected contract requests.
 2. Select an operator and output form.
 3. Review the operator description and its relevant controls.
 4. Run the experiment. Existing compatible analysis is reused automatically.
 5. Inspect the finished media together with its reports in `output/`.
 
 The progress journal distinguishes analysis, matching, arrangement, reconstruction, and final validation. A completed render is not considered successful solely because an MP4 exists: accepted operators must also pass their declared output contract.
+
+Only one active experiment may use a given output directory. Successful GUI filter runs write a receipt beneath `output/run_receipts/` recording the requested filter, the filter identified by fresh recipe or acceptance evidence, and the published artifact. A mismatch is treated as a failed run. Technical timeout configuration is retained in the diagnostic record without being misreported as an actual timeout event.
 
 ## Artifacts and repository boundaries
 
@@ -101,6 +119,7 @@ Runtime material is separated from source code:
 - `cache/` - reusable media analysis and extracted dialogue
 - `temp/` - intermediate render and diagnostic files
 - `output/` - final media and acceptance/provenance reports
+- `output/run_receipts/` - per-run requested-versus-executed filter identity records
 - `filter_contracts/` - machine-valid operator laws
 - `schemas/` - artifact and contract schemas
 - `presets/filter_recipes/` - shareable operator recipes
@@ -119,6 +138,10 @@ python -m pytest -q
 ```
 
 The CUDA override keeps routine tests CPU-only. Remove it only when deliberately validating GPU behavior.
+
+## Versioning
+
+Cinelingus follows Semantic Versioning. The repository began at `0.1.0`; this architecture and operator expansion advances it to `0.2.0`. Minor releases may add or refine filters, contracts, artifacts, and operator workflows while the project remains pre-1.0. A `1.0.0` release should follow once the public recipe/contract formats, supported operator behavior, and installation workflow are considered stable.
 
 Useful references:
 

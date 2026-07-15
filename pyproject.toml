@@ -1,7 +1,7 @@
 [project]
 name = "movie-masher"
-version = "0.1.0"
-description = "Dialogue replacement pipeline for local movie files."
+version = "0.2.0"
+description = "Cinelingus local cinematic transformation laboratory."
 requires-python = ">=3.11"
 dependencies = [
     "pyannote.audio>=4.0.6",

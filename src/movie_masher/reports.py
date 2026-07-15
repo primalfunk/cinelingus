@@ -325,7 +325,7 @@ def _format_text_report(report: dict[str, Any]) -> str:
     destination = report["inputs"]["destination_video"]
     source = report["inputs"]["source_dialogue"]
     lines = [
-        "Cinelingus Transposition Run Report",
+        "Cinelingus Movie Masher Run Report",
         "=====================================",
         f"Created: {report['creation_timestamp']}",
         "",

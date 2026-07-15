@@ -24,8 +24,7 @@ def test_movie_masher_metadata_declares_contract() -> None:
     metadata = MovieMasherTransformation.metadata
 
     assert metadata.id == "movie_masher"
-    assert "destination_video" in metadata.required_inputs
-    assert "source_dialogue" in metadata.required_inputs
+    assert metadata.required_inputs == ("films",)
     assert "movie_masher_output.mp4" in metadata.generated_outputs
 
 
@@ -83,6 +82,7 @@ def test_movie_masher_transformation_passes_artifacts_forward(tmp_path: Path) ->
         destination_video = tmp_path / "destination.mp4"
         source_dialogue = tmp_path / "source.mp4"
         max_time_stretch = 1.1
+        films = (destination_video, source_dialogue)
 
     class FakePipeline:
         def __init__(self) -> None:
@@ -94,6 +94,7 @@ def test_movie_masher_transformation_passes_artifacts_forward(tmp_path: Path) ->
             self.source = type("Source", (), {"media_hash": "sourcehash"})()
             self.schemas_dir = Path.cwd() / "schemas"
             self.calls: dict[str, int] = {}
+            self.logger = type("Logger", (), {"info": lambda self, _message: None})()
 
         def _called(self, name: str) -> None:
             self.calls[name] = self.calls.get(name, 0) + 1
@@ -147,7 +148,13 @@ def test_movie_masher_transformation_passes_artifacts_forward(tmp_path: Path) ->
             assert kwargs["library"]["config_signature"] == "clips"
             assert kwargs["timeline"]["config_signature"] == "timeline"
             assert kwargs["destination_performances"]["config_signature"] == "dest_perf"
-            return {"mappings": [{"id": "m1"}]}
+            return {
+                "mappings": [
+                    {"id": "m1", "clip_id": "c1", "destination_timestamp": 0.5, "planned_render_duration": 1.0},
+                    {"id": "m2", "clip_id": "c2", "destination_timestamp": 3.0, "planned_render_duration": 1.0},
+                    {"id": "m3", "clip_id": "c3", "destination_timestamp": 6.0, "planned_render_duration": 1.0},
+                ]
+            }
 
         def render_audio_from_schedule(self, **kwargs):
             self._called("render_audio_from_schedule")
@@ -179,8 +186,10 @@ def test_movie_masher_transformation_passes_artifacts_forward(tmp_path: Path) ->
     pipeline = FakePipeline()
     transformation = MovieMasherTransformation(TransformationContext(pipeline=pipeline))
 
+    transformation.validate_inputs()
     selections = transformation.select()
     transformed = transformation.transform(selections)
+    transformation.validate(transformed)
     outputs = transformation.render(transformed)
 
     assert outputs["audio"].name == "replacement_dialogue.wav"

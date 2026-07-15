@@ -5,8 +5,8 @@ import re
 from typing import Iterable
 
 
-TRANSPOSITION = "Transposition"
-LEGACY_TRANSPOSITION = "Movie Masher"
+TRANSPOSITION = "Movie Masher"
+LEGACY_TRANSPOSITION = "Transposition"
 SELF_SHUFFLE = "Self Shuffle"
 LEGACY_SELF_SHUFFLE = "Self-Shuffle"
 
@@ -46,7 +46,7 @@ def display_mode_name(value: str | None) -> str:
 def internal_mode_name(value: str | None) -> str:
     displayed = display_mode_name(value)
     if displayed == TRANSPOSITION:
-        return LEGACY_TRANSPOSITION
+        return TRANSPOSITION
     if displayed == SELF_SHUFFLE:
         return LEGACY_SELF_SHUFFLE
     return str(value or "").strip()
@@ -95,7 +95,15 @@ def operator_message_for_log(line: str) -> OperatorMessage | None:
     if not text:
         return None
     lowered = text.lower()
-    if "timeout" in lowered or "timed out" in lowered or "exceeded" in lowered and "time" in lowered:
+    timeout_configuration = any(token in lowered for token in ("inactivity timeout:", "total timeout:"))
+    actual_timeout = (
+        "timed out" in lowered
+        or "inference timeout after" in lowered
+        or "made no progress for" in lowered
+        or "total safety limit" in lowered
+        or ("exceeded" in lowered and "time" in lowered)
+    )
+    if actual_timeout and not timeout_configuration:
         return OperatorMessage("timeout", "Observation period exceeded", "The current examination exceeded its allotted observation period.", "warning", diagnostic_detail=text)
     if "fallback" in lowered or "fall back" in lowered:
         return OperatorMessage("fallback", "Alternate method in use", "The operation is continuing by an alternate method.", "warning", diagnostic_detail=text)

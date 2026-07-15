@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from movie_masher.filter_lab import FilterRecipe, default_filter_registry, load_recipe, save_recipe
+from movie_masher.filter_lab import FilterRecipe, default_contract_catalog, default_filter_registry, load_recipe, save_recipe
 from movie_masher.filter_lab.gui_controller import sync_filter_family
 from movie_masher.filter_lab.integration import build_strategy_schedule
 from movie_masher.filter_lab.plan import plan_from_schedule, write_filter_plan
@@ -33,16 +33,17 @@ def window(window_id: str, speaker: str, start: float, duration: float = 2.0, sc
 def test_registry_contains_all_families_and_only_real_filters_are_runnable() -> None:
     registry = default_filter_registry()
 
-    assert [family.id for family in registry.families()] == ["translation", "infection", "identity", "memory", "emotion", "time", "experimental"]
-    assert {item.id for item in registry.definitions(implemented_only=True)} == {
-        "translation.self_shuffle", "translation.echo", "translation.movie_masher", "translation.drift",
-        "identity.possession", "identity.doppelganger", "identity.chorus",
-        "time.foreshadow", "time.flashback", "time.spiral", "infection.contagion", "experimental.bloom",
+    assert [family.id for family in registry.families()] == ["translation", "infection", "identity", "memory", "emotion", "time", "experimental", "multiworld"]
+    assert len(registry.definitions(implemented_only=True)) == 32
+    assert {item.id for item in registry.definitions() if not item.implemented} == {
+        "multiworld.bleed", "multiworld.chimera", "multiworld.civilization",
+        "multiworld.doppelganger", "multiworld.mirror_world",
+        "multiworld.parallel_universes", "multiworld.triangle", "multiworld.wormhole",
     }
-    assert registry.get("movie_masher").id == "translation.movie_masher"
-    assert registry.get("memory.dream").implemented is False
-    with pytest.raises(ValueError, match="in development"):
-        registry.validate_stack(["memory.dream"])
+    assert registry.get("movie_masher").id == "multiworld.movie_masher"
+    assert registry.get("translation.movie_masher").id == "multiworld.movie_masher"
+    assert registry.get("memory.dream").implemented is True
+    assert registry.validate_stack(["memory.dream"]) == []
 
 
 def test_family_change_defaults_to_an_implemented_filter(monkeypatch) -> None:
@@ -70,6 +71,44 @@ def test_family_change_defaults_to_an_implemented_filter(monkeypatch) -> None:
 
     assert app.mode_var.get() == "Contagion"
     assert "Mutation" in app.mode_box.values
+
+
+def test_new_catalog_strategies_are_deterministic_and_validate_their_laws(tmp_path: Path) -> None:
+    filter_ids = (
+        "whisper", "mutation", "dialect", "split_personality", "dream", "recollection", "amnesia",
+        "wonder", "regret", "optimist", "paranoia", "exhaustion", "mobius", "venom", "shed_skin", "ouroboros",
+    )
+    texts = (
+        "wow look at the beautiful world", "I am sorry I made a mistake", "we can hope for better together",
+        "they are watching someone behind us", "you liar I hate you", "remember the light",
+        "why imagine the sky", "I wish I could", "good love is possible", "danger never trust them",
+        "kill the threat", "we will know",
+    )
+    clips = [
+        {"id": f"c{i}", "speaker_id": f"s{(i % 3) + 1}", "movie_timestamp": i * 20.0,
+         "duration": 2.0 + (i % 4), "path": f"c{i}.wav", "transcript": text}
+        for i, text in enumerate(texts)
+    ]
+    windows = [
+        {"id": f"w{i}", "speaker_id": f"s{(i % 3) + 1}", "start": i * 20.0 + 10.0,
+         "duration": 2.5 + (i % 3), "transcript": texts[(i + 1) % len(texts)]}
+        for i in range(len(texts))
+    ]
+    parameters = {"intensity": "Total", "minimum_past_distance": 5.0, "identity_stages": 3, "personality_count": 2}
+
+    for filter_id in filter_ids:
+        first = build_strategy_schedule(filter_id, clips=clips, windows=windows, duration=250.0, parameters=parameters)
+        second = build_strategy_schedule(filter_id, clips=clips, windows=windows, duration=250.0, parameters=parameters)
+        assert first["mappings"] == second["mappings"], filter_id
+        assert first["filter_validation"]["passed"] is True, filter_id
+        assert first["filter_progress_stages"], filter_id
+        contract = default_contract_catalog().get(filter_id)
+        for invariant in contract.data["hard_invariants"]:
+            key = invariant["validator"].split(".", 1)[1]
+            assert first["filter_validation"][key] is True, f"{filter_id}: {key}"
+        definition = default_filter_registry().get(filter_id)
+        plan = plan_from_schedule(definition=definition, schedule=first, seed=1)
+        validate_artifact("filter_plan", write_filter_plan(plan, tmp_path / f"{filter_id}_plan.json"), Path.cwd() / "schemas")
 
 
 def test_recipe_round_trip_migrates_legacy_id_and_warns_on_version(tmp_path: Path) -> None:

@@ -8,14 +8,16 @@ This inventory is the Phase 1 baseline for the Filter Laboratory migration. It r
 | --- | --- | --- | --- | --- | --- |
 | Self Shuffle | `Pipeline.execute_transformation("self_shuffle")`, `Pipeline.run_self_shuffle()`, `Pipeline._build_single_film_mutation_schedule()` | One film used as source and destination | Speaker-aware deterministic shuffle, whole-line fill, changed-line enforcement, minimum temporal separation in short-reel selection | Dialogue-only replacement soundtrack muxed to the original picture | `self_shuffle_schedule.json`, speaker maps, dialogue events, clip library, performances, transformation report |
 | Echo | `Pipeline.run_mutation("echo")`, `Pipeline._build_single_film_mutation_schedule()` | One film | Every configured nth line is repeated at a fixed delay, bounded by film duration and repeat limit | Mutated dialogue mixed over original audio; original is ducked at echo placements by default | mutation schedule/plan/report under `output/mutations/echo`, shared single-film analysis caches |
-| Transposition | `Pipeline.execute_transformation("movie_masher")`, `Pipeline.run_all()`, `Pipeline.run_best_short_remix(app_mode="Movie Masher")` | Destination picture/speaking windows plus a separate source-dialogue film | Performance-aware whole-line filling with stable cross-film speaker mapping when validated | Replacement soundtrack rendered against destination windows and muxed to destination picture | destination replacement schedule, source/destination speaker maps and performances, transformation plan/report |
+| Movie Masher | `Pipeline.execute_transformation("movie_masher")`, `Pipeline.run_all()`, `Pipeline.run_best_short_remix(app_mode="Movie Masher")` | Film A anchor timeline plus Film B donor dialogue | Performance-aware whole-line filling with stable cross-film speaker mapping when validated | Replacement soundtrack rendered against anchor windows and muxed to anchor picture | replacement decisions, anchor/donor speaker maps and performances, Multiworld world model, transformation plan/report |
 | Drift | `Pipeline.run_mutation("drift")`, `Pipeline._build_single_film_mutation_schedule()` | One film | Each line moves later by an offset interpolated from `starting_offset` to `maximum_offset` over source time | Mutated dialogue mixed over the original soundtrack; detected speech regions are muted by default | mutation schedule/plan/report under `output/mutations/drift`, shared single-film analysis caches |
+| Contract scheduling strategies | Pipeline.run_mutation(...), Filter Laboratory Preview/Best Short/Full Movie | One film | Sixteen deterministic laws covering infection, identity, memory, disclosed emotion proxies, temporal folds, and experimental progression | Dialogue replacement over the original picture; mapping-specific stretch, gain, high-pass, and low-pass controls where declared | versioned recipe, normalized plan, filter metrics/validation, acceptance report, shared analysis caches |
+| Multiworld dialogue laws | Pipeline.run_multiworld_filter(...), Filter Laboratory Full Movie | Two or more ordered films with Film A as anchor | Identity possession, ordered infection phases, per-film echo layers, or normalized-time prophecy; every mapping names its source film and media hash | Cross-film dialogue mixed over Film A picture and chronology | per-film inspections, shared timeline, world model, replacement decisions, normalized plan, Multiworld report, acceptance report |
 
 ## Stable behavior that adapters must preserve
 
 - Existing media-role handling and published output paths.
 - Self Shuffle changed-line and temporal-separation guarantees.
-- Transposition source/destination identity, validated speaker mapping, performance-aware scheduling, and the final audio-activity gate.
+- Movie Masher anchor/donor identity, validated speaker mapping, performance-aware scheduling, and the final audio-activity gate.
 - Echo's fixed-delay repetition defaults and Drift's progressive positive time offset.
 - Cache reuse based on media hashes and content-dependent signatures.
 - Best Short candidate selection and final MP4 publication behavior.
@@ -24,7 +26,7 @@ This inventory is the Phase 1 baseline for the Filter Laboratory migration. It r
 ## Existing duplication and migration seams
 
 - GUI transformation labels, input visibility, and dispatch are hard-coded independently.
-- Transposition and Self Shuffle use `movie_masher.transformations`; Echo and Drift use `movie_masher.mutations`.
+- Movie Masher and Self Shuffle use `movie_masher.transformations`; Echo and Drift use `movie_masher.mutations`.
 - Full Movie and Best Short build single-film mutation schedules through separate paths.
 - Mutation reports and transformation reports use different shapes.
 - The existing `cinematic_filters.py` controls candidate scoring style; it is not the new product-level filter registry and must remain distinct.
@@ -44,7 +46,7 @@ Rendering continues to consume the established schedule shape. A filter strategy
 
 Legacy identifiers resolve explicitly and emit migration notes:
 
-- `movie_masher` -> `translation.movie_masher`
+- `movie_masher`, `translation.movie_masher`, `Transposition` -> `multiworld.movie_masher`
 - `self_shuffle` -> `translation.self_shuffle`
 - `echo` -> `translation.echo`
 - `drift` -> `translation.drift`

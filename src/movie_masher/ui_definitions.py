@@ -10,8 +10,8 @@ QUALITY_DEFINITIONS = {
 }
 
 TRANSFORMATION_DEFINITIONS = {
-    "Transposition": "Transfers spoken performances from one film into another.",
-    "Movie Masher": "Legacy name for Transposition.",
+    "Movie Masher": "Applies Dialogue Translation from Film B to the Film A anchor timeline.",
+    "Transposition": "Legacy name for Movie Masher.",
     "Self Shuffle": "Reassigns one film's own dialogue to different speaking intervals while requiring changed line placement.",
     "Echo": "Repeats selected dialogue at configured later positions over the original film.",
     "Drift": "Moves dialogue progressively away from its original timing while preserving the picture.",

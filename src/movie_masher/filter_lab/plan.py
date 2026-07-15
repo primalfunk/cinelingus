@@ -65,6 +65,13 @@ def plan_from_schedule(
         validation=validation or dict(schedule.get("filter_validation", {})),
         metrics=metrics or dict(schedule.get("filter_metrics", {})),
         summary=summary or str(schedule.get("filter_summary", "")),
+        cinematic_law=definition.cinematic_law,
+        anchor_behavior=definition.anchor_behavior,
+        film_count={"minimum": definition.minimum_films, "maximum": definition.maximum_films},
+        inputs=list(definition.required_inputs),
+        outputs=list(definition.output_artifacts),
+        affected_artifacts=list(definition.affected_artifacts),
+        intermediate_products=list(definition.intermediate_products),
     )
 
 

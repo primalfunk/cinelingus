@@ -11,6 +11,13 @@ class RelationshipDimension(StrEnum):
     PERFORMANCE = "performance"
     IDENTITY = "identity"
     TIME = "time"
+    SCENE_ORDER = "scene_order"
+    EMOTION = "emotion"
+    MUSIC = "music"
+    SOUNDSCAPE = "soundscape"
+    SHOT_SELECTION = "shot_selection"
+    NARRATION = "narration"
+    GENRE = "genre"
 
 
 @dataclass(frozen=True)
@@ -84,6 +91,16 @@ class FilterDefinition:
     can_follow: tuple[str, ...] = ()
     incompatible_filters: tuple[str, ...] = ()
     known_limitations: tuple[str, ...] = ()
+    minimum_films: int = 1
+    maximum_films: int | None = 1
+    anchor_behavior: str = "anchor_timeline"
+    cinematic_law: str = "Internal Transformation"
+    affected_elements: tuple[str, ...] = ()
+    quality_requirements: tuple[str, ...] = ()
+    deterministic_seed_support: bool = True
+    output_artifacts: tuple[str, ...] = ()
+    affected_artifacts: tuple[str, ...] = ()
+    intermediate_products: tuple[str, ...] = ()
 
     @property
     def parameter_defaults(self) -> dict[str, Any]:
@@ -98,6 +115,16 @@ class FilterDefinition:
             raise ValueError(f"Unknown parameters for {self.name}: {', '.join(unknown)}")
         return {key: known[key].validate(value) for key, value in values.items()}
 
+    def validate_film_count(self, count: int) -> None:
+        if count < self.minimum_films:
+            raise ValueError(f"{self.name} requires at least {self.minimum_films} films; received {count}.")
+        if self.maximum_films is not None and count > self.maximum_films:
+            raise ValueError(f"{self.name} accepts at most {self.maximum_films} films; received {count}.")
+
+    @property
+    def is_multiworld(self) -> bool:
+        return self.family_id == "multiworld"
+
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)
         data["reads_dimensions"] = [item.value for item in self.reads_dimensions]
@@ -107,14 +134,9 @@ class FilterDefinition:
 
 @dataclass
 class FilterExecutionContext:
-    source_media: Path | None = None
-    destination_media: Path | None = None
-    source_dialogue: dict[str, Any] | None = None
-    destination_dialogue: dict[str, Any] | None = None
-    source_performances: dict[str, Any] | None = None
-    destination_performances: dict[str, Any] | None = None
-    source_speakers: dict[str, Any] | None = None
-    destination_speakers: dict[str, Any] | None = None
+    films: list["FilmInput"] = field(default_factory=list)
+    anchor_film_id: str | None = None
+    film_artifacts: dict[str, dict[str, Any]] = field(default_factory=dict)
     scenes: dict[str, Any] | None = None
     shots: dict[str, Any] | None = None
     semantic_features: dict[str, Any] | None = None
@@ -124,6 +146,29 @@ class FilterExecutionContext:
     random_seed: int = 1
     parameters: dict[str, Any] = field(default_factory=dict)
     cache_references: dict[str, str] = field(default_factory=dict)
+
+    @property
+    def anchor_film(self) -> "FilmInput | None":
+        if not self.films:
+            return None
+        anchor_id = self.anchor_film_id or self.films[0].id
+        return next((film for film in self.films if film.id == anchor_id), None)
+
+
+@dataclass(frozen=True)
+class FilmInput:
+    id: str
+    media_path: Path
+    label: str
+    is_anchor: bool = False
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "id": self.id,
+            "media_path": str(self.media_path),
+            "label": self.label,
+            "is_anchor": self.is_anchor,
+        }
 
 
 @dataclass
@@ -144,6 +189,13 @@ class TransformationPlan:
     validation: dict[str, Any] = field(default_factory=dict)
     metrics: dict[str, Any] = field(default_factory=dict)
     summary: str = ""
+    cinematic_law: str = "Internal Transformation"
+    anchor_behavior: str = "anchor_timeline"
+    film_count: dict[str, int | None] = field(default_factory=lambda: {"minimum": 1, "maximum": 1})
+    inputs: list[str] = field(default_factory=list)
+    outputs: list[str] = field(default_factory=list)
+    affected_artifacts: list[str] = field(default_factory=list)
+    intermediate_products: list[str] = field(default_factory=list)
     schema_version: str = "1.0"
 
     def to_dict(self) -> dict[str, Any]:

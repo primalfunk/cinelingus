@@ -15,7 +15,9 @@ from .dialogue_reel import build_dialogue_scene_artifact, build_scene_pair_candi
 from .filters import FilterConfig, filter_dialogue_events, filter_timeline, usable_rows
 from .filter_lab.registry import default_filter_registry
 from .filter_lab.integration import build_strategy_schedule, write_filter_artifacts
-from .filter_lab.acceptance import validate_filter_output
+from .filter_lab.acceptance import apply_full_length_dialogue_requirements, validate_filter_output, validate_schedule_quality
+from .filter_lab.multiworld import MultiworldPipeline
+from .filter_lab.multiworld_strategies import build_multiworld_schedule
 from .logging import RunLogger
 from .media import inspect_media
 from .mutations import (
@@ -61,6 +63,13 @@ class Pipeline:
         self.logger = RunLogger(config.output_dir / "run.log")
         self.destination = ensure_cache(config.cache_dir, config.destination_video, "destination_video")
         self.source = ensure_cache(config.cache_dir, config.source_dialogue, "source_dialogue")
+        films: list[CacheEntry] = [self.destination]
+        if config.source_dialogue != config.destination_video:
+            films.append(self.source)
+        for index, media_path in enumerate(config.films[len(films):], start=len(films) + 1):
+            films.append(ensure_cache(config.cache_dir, media_path, f"film_{index}"))
+        self.films = tuple(films)
+        self.anchor = self.films[0]
         self.schemas_dir = config.root / "schemas"
 
     def _publish_diarization_stage(self, stage: str) -> None:
@@ -80,6 +89,11 @@ class Pipeline:
     def inspect(self, *, force: bool = False) -> tuple[dict, dict]:
         self._check_cancel()
         return self._inspect_one(self.destination, force=force), self._inspect_one(self.source, force=force)
+
+    def inspect_films(self, *, force: bool = False) -> tuple[dict, ...]:
+        """Inspect the canonical films[] collection used by Multiworld orchestration."""
+        self._check_cancel()
+        return tuple(self._inspect_one(film, force=force) for film in self.films)
 
     def extract_source_dialogue(self, *, force: bool = False, source_movie: dict | None = None) -> dict:
         self._check_cancel()
@@ -815,7 +829,37 @@ class Pipeline:
             self.logger.info(f"problem preview generation skipped: {exc}")
         if not hasattr(self, "config"):
             return video
-        return publish_single_video(video=video, output_dir=self.config.output_dir, process="movie-masher")
+        audio = result.outputs["audio"]
+        schedule = self.schedule(force=False)
+        destination_movie = self._inspect_one(self.destination, force=False)
+        apply_full_length_dialogue_requirements(
+            schedule,
+            render_duration=float(destination_movie["duration"]),
+        )
+        acceptance_path = self.config.output_dir / "movie_masher" / "filter_acceptance.json"
+        validate_filter_output(
+            filter_id="multiworld.movie_masher",
+            schedule=schedule,
+            final_video=video,
+            replacement_audio=audio,
+            output_path=acceptance_path,
+            schemas_dir=self.schemas_dir,
+        )
+        rendered_video = video
+        published_video = publish_single_video(
+            video=rendered_video,
+            output_dir=self.config.output_dir,
+            process="movie-masher",
+        )
+        artifact_paths = [acceptance_path, *result.artifacts.values()]
+        _rewrite_published_video_references(
+            artifact_paths=artifact_paths,
+            rendered_video=rendered_video,
+            published_video=published_video,
+            root=self.config.root,
+            cleaned_intermediates=[audio],
+        )
+        return published_video
 
 
     def execute_transformation(
@@ -833,6 +877,14 @@ class Pipeline:
         implementation_key = definition.implementation_key
         if not definition.implemented or not implementation_key:
             raise ValueError(f"{definition.name} is in development and cannot be executed.")
+        if definition.is_multiworld and definition.id != "multiworld.movie_masher":
+            paths = self.run_multiworld_filter(definition.id, force=force, parameters=parameters)
+            artifacts = {key: value for key, value in paths.items() if key not in {"video", "audio"}}
+            return TransformationResult(
+                transformation_id=definition.id,
+                outputs={key: paths[key] for key in ("video", "audio") if key in paths},
+                artifacts=artifacts,
+            )
         if definition.execution_mode == "scheduling_strategy":
             paths = self.run_mutation(implementation_key, force=force, parameters=parameters)
             artifacts = {key: value for key, value in paths.items() if key not in {"video", "audio"}}
@@ -840,6 +892,228 @@ class Pipeline:
         context = TransformationContext(pipeline=self, force=force, parameters=parameters or {})
         transformation = default_registry().create(implementation_key, context)
         return transformation.execute()
+
+    def run_multiworld_filter(
+        self,
+        filter_id: str,
+        *,
+        force: bool = False,
+        parameters: dict[str, Any] | None = None,
+    ) -> dict[str, Path]:
+        definition = default_filter_registry().get(filter_id)
+        if not definition.is_multiworld or definition.id == "multiworld.movie_masher":
+            raise ValueError(f"{definition.name} does not use the general Multiworld dialogue runtime.")
+        if not definition.implemented:
+            raise ValueError(f"{definition.name} is in development and cannot be executed.")
+        definition.validate_film_count(len(self.config.films))
+        params = {**definition.parameter_defaults, **(parameters or {})}
+        seed = int(params.get("seed", 1))
+        world = MultiworldPipeline(
+            definition,
+            self.config.films,
+            seed=seed,
+            stage_callback=lambda stage: self.logger.info(f"multiworld stage: {stage}"),
+        )
+        children: dict[str, Pipeline] = {}
+        film_artifacts: dict[str, dict[str, Any]] = {}
+        for film in world.state.films:
+            child, artifacts = self._analyze_multiworld_film(film.media_path, force=force)
+            children[film.id] = child
+            film_artifacts[film.id] = artifacts
+        identity_quality = (
+            _multiworld_identity_quality(world.state.films, film_artifacts)
+            if definition.requires_speaker_identity
+            else None
+        )
+        world.inspect_films(
+            lambda film: {
+                "film_id": film.id,
+                "label": film.label,
+                "path": str(film.media_path),
+                "media_hash": film_artifacts[film.id]["media_hash"],
+                "duration": film_artifacts[film.id]["movie"]["duration"],
+                "dialogue_clip_count": len(film_artifacts[film.id]["clips"]),
+                "dialogue_window_count": len(film_artifacts[film.id]["windows"]),
+                "speaker_ids": sorted({
+                    str(row.get("speaker_id")) for row in film_artifacts[film.id]["clips"] if row.get("speaker_id")
+                }),
+            }
+        )
+        anchor = world.state.anchor
+        anchor_artifacts = film_artifacts[anchor.id]
+        world.create_shared_timeline(
+            lambda state: {
+                "anchor_film_id": state.anchor.id,
+                "behavior": state.definition.anchor_behavior,
+                "duration": anchor_artifacts["movie"]["duration"],
+                "speaking_windows": anchor_artifacts["windows"],
+                "film_ids": [film.id for film in state.films],
+            }
+        )
+        world.construct_world_model(
+            lambda state: {
+                "cinematic_law": state.definition.cinematic_law,
+                "anchor_film_id": state.anchor.id,
+                "films": [film.to_dict() for film in state.films],
+                "film_inspections": state.film_inspections,
+                "shared_timeline": state.shared_timeline,
+                "affected_elements": list(state.definition.affected_elements),
+                "deterministic_seed": state.seed,
+            }
+        )
+        law_result = world.apply_cinematic_law(
+            lambda state: {
+                "schedule": build_multiworld_schedule(
+                    definition.id,
+                    films=state.films,
+                    film_artifacts=film_artifacts,
+                    parameters=params,
+                    seed=state.seed,
+                )
+            }
+        )
+        decisions = world.generate_replacement_decisions()
+        schedule = decisions["schedule"]
+        schedule["multiworld_artifacts"] = {
+            "film_inspections": world.state.film_inspections,
+            "shared_timeline": world.state.shared_timeline,
+            "world_model": world.state.world_model,
+        }
+        schedule["config_signature"] = self._signature(
+            "multiworld_filter",
+            definition.id,
+            schedule["multiworld"]["film_media_hashes"],
+            params,
+        )
+        if identity_quality is not None:
+            schedule["identity_quality"] = identity_quality
+        validate_schedule_quality(schedule)
+        output_dir = self.config.output_dir / "multiworld" / definition.id.split(".", 1)[1]
+        output_dir.mkdir(parents=True, exist_ok=True)
+        schedule_path = output_dir / "replacement_decisions.json"
+        audio_output = output_dir / "replacement_dialogue.wav"
+        video_output = output_dir / "multiworld_output.mp4"
+        acceptance_path = output_dir / "filter_acceptance.json"
+        report_path = output_dir / "multiworld_report.json"
+        filter_artifacts = write_filter_artifacts(
+            pipeline=self,
+            filter_id=definition.id,
+            parameters=params,
+            schedule=schedule,
+            output_dir=output_dir,
+            output_form="full_length",
+            target_duration=float(anchor_artifacts["movie"]["duration"]),
+        )
+        write_json(schedule_path, schedule)
+        world.review(
+            lambda _state: {
+                "status": "pass",
+                "mapping_count": len(schedule["mappings"]),
+                "filter_validation": schedule["filter_validation"],
+                "source_media_hashes": schedule["source_media_hashes"],
+            }
+        )
+
+        def render_world(_state):
+            duration = float(anchor_artifacts["movie"]["duration"])
+            render_mutation_media(
+                original_media=anchor.media_path,
+                schedule=schedule,
+                duration=duration,
+                audio_output=audio_output,
+                video_output=video_output,
+                sample_rate=self.config.render_sample_rate,
+                channels=self.config.render_channels,
+                target_lufs=self.config.target_lufs,
+                fade_duration=self.config.audio_fade_duration,
+                mute_regions=_speech_mute_regions(schedule, padding=0.35, merge_gap=0.25, duration=duration),
+            )
+            validate_filter_output(
+                filter_id=definition.id,
+                schedule=schedule,
+                final_video=video_output,
+                replacement_audio=audio_output,
+                output_path=acceptance_path,
+                schemas_dir=self.schemas_dir,
+            )
+            return {"audio": audio_output, "video": video_output}
+
+        world.render(render_world)
+        schedule["multiworld"]["completed_stages"] = list(world.state.completed_stages)
+        schedule["filter_acceptance_path"] = str(acceptance_path)
+        write_json(schedule_path, schedule)
+        write_json(report_path, {
+            "schema_version": "1.0",
+            "filter_id": definition.id,
+            "cinematic_law": definition.cinematic_law,
+            "films": [film.to_dict() for film in world.state.films],
+            "completed_stages": list(world.state.completed_stages),
+            "review": world.state.review,
+            "metrics": schedule["filter_metrics"],
+            "validation": schedule["filter_validation"],
+            "outputs": {"video": str(video_output), "audio": str(audio_output), "acceptance": str(acceptance_path)},
+        })
+        rendered_video = video_output
+        published_video = publish_single_video(
+            video=rendered_video,
+            output_dir=self.config.output_dir,
+            process=definition.id.split(".", 1)[1],
+        )
+        _rewrite_published_video_references(
+            artifact_paths=[schedule_path, acceptance_path, report_path, *filter_artifacts.values()],
+            rendered_video=rendered_video,
+            published_video=published_video,
+            root=self.config.root,
+            cleaned_intermediates=[audio_output],
+        )
+        return {
+            "video": published_video,
+            "audio": audio_output,
+            "schedule": schedule_path,
+            "multiworld_report": report_path,
+            "filter_acceptance": acceptance_path,
+            **filter_artifacts,
+        }
+
+    def _analyze_multiworld_film(self, media_path: Path, *, force: bool) -> tuple["Pipeline", dict[str, Any]]:
+        child_config = self.config.with_films([media_path]).with_overrides(output_dir=self.config.output_dir)
+        child = Pipeline(child_config, cancel_check=self.cancel_check, stage_callback=self.stage_callback)
+        movie, _duplicate = child.inspect(force=force)
+        events = child.extract_source_dialogue(force=force, source_movie=movie)
+        source_speaker_map = None
+        if child.config.enable_speaker_awareness:
+            source_speaker_map = child.build_source_speaker_map(source_events=events, force=force)
+            events = annotate_artifact_speakers(events, source_speaker_map, collection_key="events")
+        filtered_events = child.filter_source_dialogue_from_events(events, force=force)
+        clip_library = child.build_clip_library_from_events(filtered_events, force=force)
+        timeline = child.detect_destination_timeline(force=force, dest_movie=movie)
+        visual = child.analyze_visual(force=force, dest_movie=movie)
+        destination_speaker_map = None
+        if child.config.enable_speaker_awareness:
+            destination_speaker_map = child.build_destination_speaker_map(timeline=timeline, force=force)
+            timeline = annotate_artifact_speakers(timeline, destination_speaker_map, collection_key="windows")
+        filtered_timeline = child.filter_destination_timeline_from_timeline(timeline, force=force)
+        source_performances = child.build_source_performances(source_events=filtered_events, force=force)
+        destination_performances = child.build_destination_performances(
+            timeline=filtered_timeline,
+            visual=visual,
+            force=force,
+        )
+        clips = [dict(row) for row in clip_library.get("clips", [])]
+        _annotate_clips_with_dialogue_scene_ids(clips=clips, source_performances=source_performances)
+        return child, {
+            "media_hash": child.destination.media_hash,
+            "movie": movie,
+            "clips": clips,
+            "windows": usable_rows(filtered_timeline.get("windows", [])),
+            "source_performances": source_performances,
+            "destination_performances": destination_performances,
+            "visual": visual,
+            "speaker_maps": {
+                "source": source_speaker_map,
+                "destination": destination_speaker_map,
+            },
+        }
 
     def generate_reports(
         self,
@@ -1280,7 +1554,7 @@ class Pipeline:
         self.logger.info(f"Dialogue reel rendered: {video_output}")
         rendered_video_output = video_output
         video_output = publish_single_video(video=rendered_video_output, output_dir=self.config.output_dir, process=f"{run_mode}-short")
-        _rewrite_published_video_references(artifact_paths=[report_output, latest_report_output, audio_provenance_output, filter_acceptance_output], rendered_video=rendered_video_output, published_video=video_output, root=self.config.root)
+        _rewrite_published_video_references(artifact_paths=[report_output, latest_report_output, audio_provenance_output, filter_acceptance_output], rendered_video=rendered_video_output, published_video=video_output, root=self.config.root, cleaned_intermediates=[audio_output])
         return {
             "video": video_output,
             "audio": audio_output,
@@ -1521,7 +1795,7 @@ class Pipeline:
         self.logger.info(f"mutation {mutation_id} rendered: {video_output}")
         rendered_video_output = video_output
         video_output = publish_single_video(video=rendered_video_output, output_dir=self.config.output_dir, process=mutation_id)
-        _rewrite_published_video_references(artifact_paths=[schedule_path, plan_path, report_path, acceptance_path, *filter_artifacts.values()], rendered_video=rendered_video_output, published_video=video_output, root=self.config.root)
+        _rewrite_published_video_references(artifact_paths=[schedule_path, plan_path, report_path, acceptance_path, *filter_artifacts.values()], rendered_video=rendered_video_output, published_video=video_output, root=self.config.root, cleaned_intermediates=[audio_output])
         return {"video": video_output, "audio": audio_output, "schedule": schedule_path, "mutation_plan": plan_path, "mutation_report": report_path, "filter_acceptance": acceptance_path, **filter_artifacts}
 
     def run_preset(
@@ -1685,7 +1959,7 @@ class Pipeline:
         elif phase == "speaker_map":
             payload.update(
                 {
-                    "speaker_schema": "speaker_backend_v4_stable_input" if self.config.enable_speaker_awareness else "off",
+                    "speaker_schema": "speaker_backend_v5_global_embedding_stitch" if self.config.enable_speaker_awareness else "off",
                     "speaker_diarization_backend": self.config.speaker_diarization_backend,
                     "speaker_diarization_model": self.config.speaker_diarization_model,
                     "speaker_diarization_device": self.config.speaker_diarization_device,
@@ -1780,6 +2054,72 @@ class Pipeline:
         validate_artifact(artifact_type, path, self.schemas_dir)
 
 
+def _multiworld_identity_quality(films: tuple[Any, ...], film_artifacts: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    film_reports = []
+    warnings = []
+    for film in films:
+        role = "destination" if film.is_anchor else "source"
+        artifacts = film_artifacts.get(film.id, {})
+        speaker_map = (artifacts.get("speaker_maps") or {}).get(role)
+        duration = float((artifacts.get("movie") or {}).get("duration") or 0.0)
+        if not isinstance(speaker_map, dict):
+            film_reports.append({
+                "film_id": film.id,
+                "role": role,
+                "passed": False,
+                "reason": "speaker map unavailable",
+            })
+            continue
+        diagnostics = dict(speaker_map.get("diagnostics") or {})
+        segments = [
+            row for row in speaker_map.get("speaker_segments", [])
+            if row.get("speaker_id")
+            and not str(row.get("speaker_id")).startswith(("unknown_", "fallback_"))
+            and not row.get("fallback_label")
+        ]
+        real_speakers = sorted({str(row["speaker_id"]) for row in segments})
+        real_item_ids = {str(row.get("source_id")) for row in segments if row.get("source_id")}
+        speech_item_count = int(diagnostics.get("speech_item_count", 0) or 0)
+        real_coverage = len(real_item_ids) / speech_item_count if speech_item_count else 0.0
+        backend = str(speaker_map.get("actual_backend") or speaker_map.get("diarization_tool") or "")
+        maximum_plausible_speakers = max(12, int((duration + 59.999) // 60))
+        fragmented = len(real_speakers) > maximum_plausible_speakers
+        passed = (
+            backend in {"pyannote", "pyannote.audio", "pyannote_partial"}
+            and real_coverage >= 0.6
+            and bool(real_speakers)
+            and not fragmented
+        )
+        partial = backend == "pyannote_partial"
+        if partial:
+            warnings.append(
+                f"{film.label} uses a partial Pyannote map; {real_coverage:.1%} of speech items have real speaker identities."
+            )
+        if fragmented:
+            warnings.append(
+                f"{film.label} speaker identity appears fragmented: {len(real_speakers)} real labels exceed the "
+                f"{maximum_plausible_speakers}-speaker quality ceiling for this duration."
+            )
+        film_reports.append({
+            "film_id": film.id,
+            "role": role,
+            "backend": backend,
+            "partial": partial,
+            "real_speaker_count": len(real_speakers),
+            "maximum_plausible_speaker_count": maximum_plausible_speakers,
+            "real_speech_item_coverage": round(real_coverage, 4),
+            "fragmented": fragmented,
+            "passed": passed,
+        })
+    passed = bool(film_reports) and all(row.get("passed") is True for row in film_reports)
+    return {
+        "passed": passed,
+        "status": "pass" if passed and not warnings else "warning" if passed else "fail",
+        "films": film_reports,
+        "warnings": warnings,
+    }
+
+
 def _annotate_clips_with_dialogue_scene_ids(*, clips: list[dict[str, Any]], source_performances: dict[str, Any]) -> None:
     performances = list(source_performances.get("performances", []))
     for clip in clips:
@@ -1818,7 +2158,14 @@ def _float_for_pipeline(value: Any, default: float | None) -> float | None:
     except (TypeError, ValueError):
         return default
 
-def _rewrite_published_video_references(*, artifact_paths: list[Path], rendered_video: Path, published_video: Path, root: Path) -> None:
+def _rewrite_published_video_references(
+    *,
+    artifact_paths: list[Path],
+    rendered_video: Path,
+    published_video: Path,
+    root: Path,
+    cleaned_intermediates: list[Path] | None = None,
+) -> None:
     old_absolute = str(rendered_video.resolve())
     new_absolute = str(published_video.resolve())
     old_relative = str(rendered_video)
@@ -1841,11 +2188,36 @@ def _rewrite_published_video_references(*, artifact_paths: list[Path], rendered_
                 return new_relative
         return value
 
+    cleaned = list(cleaned_intermediates or [])
+    cleaned_variants = {
+        str(path): path
+        for path in cleaned
+    }
+    cleaned_variants.update({str(path.resolve()): path for path in cleaned})
+
     for artifact_path in artifact_paths:
         if not artifact_path.exists():
             continue
         data = read_json(artifact_path)
         updated = replace(data)
+        outputs = updated.get("outputs") if isinstance(updated, dict) else None
+        if isinstance(outputs, dict) and cleaned:
+            retention = dict(outputs.get("artifact_retention") or {})
+            for key, value in list(outputs.items()):
+                if not isinstance(value, str) or value not in cleaned_variants:
+                    continue
+                path = cleaned_variants[value]
+                retained = path.exists()
+                retention[key] = {
+                    "path": value,
+                    "retained": retained,
+                    "policy": "retained" if retained else "removed_after_publish",
+                }
+                if key == "replacement_audio":
+                    outputs["replacement_audio_retained"] = retained
+                    outputs["replacement_audio_retention"] = retention[key]["policy"]
+            if retention:
+                outputs["artifact_retention"] = retention
         if updated != data:
             write_json(artifact_path, updated)
 

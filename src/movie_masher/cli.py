@@ -7,7 +7,8 @@ from pathlib import Path
 from .config import load_config
 from .pipeline import Pipeline
 from .publish import publish_single_video
-from .presets import list_presets
+from .presets import list_presets, load_preset
+from .run_guard import exclusive_output_run, verify_filter_execution
 from .tools import ToolError
 from .validation import ValidationError
 from .whisper_backend import whisper_runtime
@@ -49,8 +50,15 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     root = Path.cwd()
     pipeline: Pipeline | None = None
+    run_guard = None
+    run_lease = None
     try:
         config = load_config(root, args.config).with_overrides(mode=args.mode, quick_seconds=args.quick, output_dir=args.output_dir)
+        if args.command not in {"presets", "validate", "whisper-info"}:
+            requested_filter = _command_filter_id(args, root)
+            candidate_guard = exclusive_output_run(config.output_dir, requested_filter)
+            run_lease = candidate_guard.__enter__()
+            run_guard = candidate_guard
         pipeline = Pipeline(config)
         if args.command == "inspect":
             dest, source = pipeline.inspect(force=args.force)
@@ -100,9 +108,24 @@ def main(argv: list[str] | None = None) -> int:
                 params["seed"] = args.seed
             paths = pipeline.run_preset(args.preset_id, force=args.force, parameters=params)
             video = publish_single_video(video=paths["video"], output_dir=config.output_dir, process=args.preset_id)
+            assert run_lease is not None
+            requested_filter = _command_filter_id(args, root)
+            verify_filter_execution(
+                run_lease,
+                requested_filter_id=requested_filter,
+                evidence_paths=[config.output_dir / requested_filter / "filter_recipe.json"],
+                output=video,
+            )
             print(video)
         elif args.command == "self-shuffle":
             paths = pipeline.run_self_shuffle(seed=args.seed, force=args.force)
+            assert run_lease is not None
+            verify_filter_execution(
+                run_lease,
+                requested_filter_id="self_shuffle",
+                evidence_paths=[config.output_dir / "self_shuffle" / "filter_recipe.json"],
+                output=paths["video"],
+            )
             print(f"self-shuffle schedule: {paths['schedule']}")
             print(f"self-shuffle audio: {paths['audio']}")
             print(f"self-shuffle video: {paths['video']}")
@@ -118,8 +141,17 @@ def main(argv: list[str] | None = None) -> int:
             print(f"mode: {config.transcription_mode}")
             print(f"model: {config.whisper_model}")
         elif args.command == "run":
-            result = pipeline.execute_transformation("movie_masher", force=args.force)
-            video = publish_single_video(video=result.outputs["video"], output_dir=config.output_dir, process="movie-masher")
+            video = pipeline.run_all(force=args.force)
+            assert run_lease is not None
+            verify_filter_execution(
+                run_lease,
+                requested_filter_id="movie_masher",
+                evidence_paths=[
+                    config.output_dir / "movie_masher" / "filter_acceptance.json",
+                    config.output_dir / "movie_masher" / "filter_recipe.json",
+                ],
+                output=video,
+            )
             print(video)
         return 0
     except (FileNotFoundError, ToolError, ValueError, ValidationError, RuntimeError) as exc:
@@ -127,11 +159,22 @@ def main(argv: list[str] | None = None) -> int:
             pipeline.logger.error(str(exc))
         print(f"error: {exc}", file=sys.stderr)
         return 1
+    finally:
+        if run_guard is not None:
+            run_guard.__exit__(*sys.exc_info())
 
 
 def _filter_summary(label: str, data: dict) -> str:
     stats = data["filter_stats"]
     return f"{label}: {stats['usable_count']} usable / {stats['raw_count']} raw / {stats['rejected_count']} rejected"
+
+
+def _command_filter_id(args, root: Path) -> str:
+    if args.command == "self-shuffle":
+        return "self_shuffle"
+    if args.command == "preset":
+        return load_preset(root, args.preset_id).transformation_strategy
+    return "movie_masher"
 
 
 if __name__ == "__main__":

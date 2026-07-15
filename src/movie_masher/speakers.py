@@ -157,7 +157,7 @@ def _build_pyannote_speaker_map(
                 )
         except Exception:
             pass
-    attempt_key = f"{media_hash}|{model_name}|{config_signature or ''}|speaker_mapping_v2"
+    attempt_key = f"{media_hash}|{model_name}|{config_signature or ''}|speaker_mapping_v3_global_embeddings"
     if attempt_registry is not None and attempt_key in attempt_registry:
         reason = "Identical Pyannote attempt already failed during this run; redundant launch suppressed."
         if log:
@@ -362,7 +362,8 @@ def speaker_map_diagnostics(speaker_map: dict[str, Any], speech_items: list[dict
     effective_backend = str(speaker_map.get("diarization_tool") or "")
     warnings = [str(row) for row in speaker_map.get("warnings", [])]
     fallback_reason = next((warning for warning in warnings if "fell back" in warning or "falling back" in warning), None)
-    fallback_used = bool(fallback_reason or (requested_backend == "pyannote" and effective_backend != "pyannote.audio"))
+    real_backends = {"pyannote", "pyannote.audio"}
+    fallback_used = bool(fallback_reason or (requested_backend == "pyannote" and effective_backend not in real_backends))
     coverage_rate = round(labeled_item_count / item_count, 4) if item_count else 0.0
     duration_coverage_rate = round(labeled_duration / total_duration, 4) if total_duration else 0.0
     status = "strong"

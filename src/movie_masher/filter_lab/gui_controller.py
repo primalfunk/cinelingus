@@ -15,7 +15,8 @@ REGISTRY = default_filter_registry()
 
 
 def current_filter_definition(app: Any):
-    return REGISTRY.get(internal_mode_name(app.mode_var.get()))
+    family_id = next((family.id for family in REGISTRY.families() if family.name == app.family_var.get()), "multiworld")
+    return REGISTRY.get_in_family(family_id, app.mode_var.get())
 
 
 def sync_filter_family(app: Any, preferred_filter: str | None = None) -> None:
@@ -32,26 +33,21 @@ def sync_filter_family(app: Any, preferred_filter: str | None = None) -> None:
 def sync_filter_mode(app: Any, *, existing_values: dict[str, Any] | None = None) -> None:
     definition = current_filter_definition(app)
     display_name = display_mode_name(definition.name)
-    source_visible = "source_dialogue" in definition.required_inputs
-    for widget in app.source_widgets:
-        if source_visible:
-            widget.grid()
-        else:
-            widget.grid_remove()
-    app.destination_widgets[0].configure(text="Destination film" if source_visible else "Source film")
+    app._sync_film_selectors(definition)
     app.filter_detail_var.set(detail_text(definition))
     app.relationship_var.set(relationship_summary(definition))
     if definition.implemented:
         app.continue_button.configure(state="normal")
-        if source_visible:
-            app.input_guidance_var.set("Choose the source film whose voices will be transferred and the destination film that will receive them.")
-        else:
-            app.input_guidance_var.set(f"Choose one film for {display_name}.")
+        if hasattr(app, "workflow_var") and definition.supported_output_forms == ("full_length",):
+            app.workflow_var.set("Full Movie Remix")
+        maximum = "any number" if definition.maximum_films is None else str(definition.maximum_films)
+        range_note = "" if definition.maximum_films == definition.minimum_films else f" (up to {maximum})"
+        app.input_guidance_var.set(f"Choose {definition.minimum_films} film{'s' if definition.minimum_films != 1 else ''}{range_note}. Film A is the anchor.")
         app.status_var.set(f"Ready for {display_name}")
     else:
         app.continue_button.configure(state="disabled")
-        app.input_guidance_var.set(f"{definition.name} is visible as part of the filter family, but is still in development.")
-        app.status_var.set(f"{definition.name} — In Development")
+        app.input_guidance_var.set("This filter is not yet implemented.")
+        app.status_var.set(f"{definition.name} - This filter is not yet implemented.")
     if hasattr(app, "filter_controls_frame"):
         app.filter_parameter_vars = render_parameter_controls(app.filter_controls_frame, definition, existing_values=existing_values)
     app._refresh_truth_panel()
@@ -69,7 +65,10 @@ def save_recipe_dialog(app: Any) -> None:
         definition = current_filter_definition(app)
         config = app._selected_config()
         parameters = selected_filter_parameters(app)
-        roles = {role: str(config.destination_video if role in {"film", "destination_video"} else config.source_dialogue) for role in definition.required_inputs}
+        roles = {"films": [str(path) for path in config.films]} if "films" in definition.required_inputs else {
+            role: str(config.destination_video if role in {"film", "destination_video"} else config.source_dialogue)
+            for role in definition.required_inputs
+        }
         recipe = FilterRecipe.create(
             definition.id,
             input_media_roles=roles,
@@ -104,7 +103,9 @@ def load_recipe_dialog(app: Any) -> None:
     sync_filter_family(app, preferred_filter=display_name)
     sync_filter_mode(app, existing_values=loaded.recipe.parameters)
     roles = loaded.recipe.input_media_roles
-    if "film" in roles:
+    if "films" in roles:
+        app._set_film_paths([Path(path) for path in roles["films"]])
+    elif "film" in roles:
         app.destination_var.set(roles["film"])
         app.destination_selected_by_user = True
     else:

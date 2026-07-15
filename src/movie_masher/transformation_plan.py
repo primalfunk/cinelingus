@@ -95,7 +95,7 @@ def build_movie_masher_plan(
         "creation_timestamp": utc_now(),
         "transformation": {
             "id": "movie_masher",
-            "display_name": "Transposition",
+            "display_name": "Movie Masher",
             "description": "Replace destination dialogue using dialogue extracted from another film.",
             "lifecycle": MOVIE_MASHER_LIFECYCLE,
         },

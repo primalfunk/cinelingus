@@ -30,7 +30,7 @@ MUTATIONS: dict[str, MutationDefinition] = {
         default_parameters=definition.parameter_defaults,
     )
     for definition in default_filter_registry().definitions(implemented_only=True)
-    if definition.implementation_key and definition.implementation_key != "movie_masher"
+    if definition.implementation_key and definition.family_id != "multiworld"
 }
 
 MUTATION_CHOICES = tuple(MUTATIONS.keys())

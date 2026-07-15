@@ -5,71 +5,95 @@
   "filter_name": "Split Personality",
   "family_id": "identity",
   "filter_version": "1.0.0",
-  "status": "blocked",
+  "status": "accepted",
   "implementation_class": "A",
-  "creative_proposition": "A voice becomes multiple occupants. One speaker divides across several dialogue identities.",
+  "creative_proposition": "A voice becomes multiple occupants.",
   "relationship_domains": {
     "reads": [
       "identity",
-      "dialogue"
+      "dialogue",
+      "performance"
     ],
     "changes": [
       "identity",
       "dialogue"
     ],
-    "preserves": {}
+    "preserves": {
+      "time": "Destination chronology preserved",
+      "partition": "Donor identity is stable per partition"
+    }
   },
   "specimen_inputs": [
     "film"
   ],
   "required_analysis": [
-    "speakers"
+    "speakers",
+    "dialogue_events"
   ],
-  "candidate_generation": "Planned identity strategy. Candidate pools exclude unusable zero-duration material.",
+  "candidate_generation": "Eligible windows for one anchor speaker receive donor voices in a stable round-robin partition. Candidate pools exclude unusable zero-duration dialogue.",
   "selection_rules": [
-    "Planned identity strategy.",
+    "One recurring speaker is partitioned across two or more stable donor identities.",
     "Selection is deterministic for identical inputs, parameters, and random seed."
   ],
-  "transformation_behavior": "A voice becomes multiple occupants. One speaker divides across several dialogue identities.",
-  "progression": "Transformation strength is constant unless an explicit intensity parameter selects fewer windows.",
-  "state_variables": [],
-  "fields": [],
-  "controlled_uncertainty": "No runtime uncertainty is permitted before contract acceptance.",
+  "transformation_behavior": "Eligible windows for one anchor speaker receive donor voices in a stable round-robin partition.",
+  "progression": "The emitted schedule measures the defining law at every selected output position.",
+  "state_variables": [
+    "parameter:anchor_speaker",
+    "parameter:personality_count",
+    "parameter:intensity"
+  ],
+  "fields": [
+    "filter_metrics",
+    "filter_validation",
+    "mappings"
+  ],
+  "controlled_uncertainty": "All tie breaking is deterministic; the recipe records the random seed even when a law needs no random choice.",
   "hard_invariants": [
     {
-      "id": "contract_must_be_accepted_before_execution",
-      "statement": "The operator must remain unavailable until this contract is accepted.",
-      "validator": ""
+      "id": "all_destinations_match_anchor",
+      "statement": "Every transformed destination belongs to the anchor speaker.",
+      "validator": "filter_validation.all_destinations_match_anchor"
+    },
+    {
+      "id": "at_least_two_personalities_used",
+      "statement": "At least two distinct donor personalities are used.",
+      "validator": "filter_validation.at_least_two_personalities_used"
+    },
+    {
+      "id": "partition_is_stable",
+      "statement": "Each personality partition retains one donor identity.",
+      "validator": "filter_validation.partition_is_stable"
     }
   ],
   "validation": {
-    "strategy": "Contract review must resolve every blocker before executable validation is defined.",
-    "required_metrics": []
+    "strategy": "Validate strategy-emitted invariants, measurable coverage, silence ratio, provenance, and the final audio stream.",
+    "required_metrics": [
+      "replacement_count",
+      "silence_ratio"
+    ]
   },
-  "failure_behavior": "Remain visible as unavailable and report the named contract blockers.",
-  "preview_strategy": "No executable preview is available before contract acceptance.",
+  "failure_behavior": "Fail before rendering when required analysis, candidate evidence, or the defining invariant is unavailable.",
+  "preview_strategy": "Choose representative mappings that expose the defining law and its emitted evidence.",
   "renderer_requirements": [
     "Preserve the source picture unless the contract explicitly says otherwise.",
     "Produce a final MP4 with a verified audio stream.",
     "Report replacement-audio provenance, dialogue coverage, silence ratio, and invariant results."
   ],
   "procedure_behavior": {
-    "support_status": "conceptual",
+    "support_status": "single_step_validated",
     "receives_transformed_specimen": false,
     "commitment": "When a Procedure runtime exists, consume prior mappings without losing immutable source provenance; this phase does not execute that commitment."
   },
   "capabilities": {
-    "implemented": false,
-    "implementation_key": null,
-    "execution_mode": "unavailable",
-    "sparse_schedule": false,
-    "requires_speaker_identity": false,
-    "supports_preview": false,
-    "supports_best_short": false,
-    "supports_full_length": false,
-    "requires_output_acceptance": false
+    "implemented": true,
+    "implementation_key": "split_personality",
+    "execution_mode": "scheduling_strategy",
+    "sparse_schedule": true,
+    "requires_speaker_identity": true,
+    "supports_preview": true,
+    "supports_best_short": true,
+    "supports_full_length": true,
+    "requires_output_acceptance": true
   },
-  "blockers": [
-    "Approve the stable identity-allocation law and source-pool exhaustion behavior."
-  ]
+  "blockers": []
 }

@@ -6,16 +6,14 @@
   "required": [
     "schema_version", "contract_version", "filter_id", "filter_name", "family_id", "filter_version",
     "status", "implementation_class", "creative_proposition", "relationship_domains", "specimen_inputs",
-    "required_analysis", "candidate_generation", "selection_rules", "transformation_behavior", "progression",
-    "state_variables", "fields", "controlled_uncertainty", "hard_invariants", "validation",
-    "failure_behavior", "preview_strategy", "renderer_requirements", "procedure_behavior", "capabilities", "blockers"
+    "required_analysis", "capabilities", "blockers"
   ],
   "properties": {
     "schema_version": {"type": "string", "const": "1.0"},
     "contract_version": {"type": "string", "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+"},
     "filter_id": {"type": "string", "pattern": "[a-z_]+\\.[a-z_]+"},
     "filter_name": {"type": "string", "minLength": 1},
-    "family_id": {"type": "string", "enum": ["translation", "infection", "identity", "memory", "emotion", "time", "experimental"]},
+    "family_id": {"type": "string", "enum": ["translation", "infection", "identity", "memory", "emotion", "time", "experimental", "multiworld"]},
     "filter_version": {"type": "string", "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+"},
     "status": {"type": "string", "enum": ["accepted", "blocked", "deferred"]},
     "implementation_class": {"type": "string", "enum": ["A", "B", "C", "D", "E", "F"]},
@@ -23,8 +21,8 @@
     "relationship_domains": {
       "type": "object", "additionalProperties": false, "required": ["reads", "changes", "preserves"],
       "properties": {
-        "reads": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "enum": ["dialogue", "performance", "identity", "time"]}},
-        "changes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "enum": ["dialogue", "performance", "identity", "time"]}},
+        "reads": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "enum": ["dialogue", "performance", "identity", "time", "scene_order", "emotion", "music", "soundscape", "shot_selection", "narration", "genre"]}},
+        "changes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "enum": ["dialogue", "performance", "identity", "time", "scene_order", "emotion", "music", "soundscape", "shot_selection", "narration", "genre"]}},
         "preserves": {"type": "object"}
       }
     },
@@ -81,6 +79,41 @@
         "requires_output_acceptance": {"type": "boolean"}
       }
     },
-    "blockers": {"type": "array", "items": {"type": "string", "minLength": 8}}
-  }
+    "blockers": {"type": "array", "items": {"type": "string", "minLength": 8}},
+    "multiworld_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cinematic_law", "minimum_films", "maximum_films", "anchor_behavior", "affected_elements", "quality_requirements", "deterministic_seed_support", "interface"],
+      "properties": {
+        "cinematic_law": {"type": "string", "minLength": 3},
+        "minimum_films": {"type": "integer", "minimum": 2},
+        "maximum_films": {"type": ["integer", "null"], "minimum": 2},
+        "anchor_behavior": {"type": "string", "enum": ["anchor_timeline", "shared_timeline", "law_defined_timeline"]},
+        "affected_elements": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "enum": ["dialogue", "performance", "identity", "time", "scene_order", "emotion", "music", "soundscape", "shot_selection", "narration", "genre"]}},
+        "quality_requirements": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 8}},
+        "deterministic_seed_support": {"type": "boolean"},
+        "interface": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["inputs", "outputs", "affected_artifacts", "intermediate_products"],
+          "properties": {
+            "inputs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+            "outputs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+            "affected_artifacts": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+            "intermediate_products": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"family_id": {"const": "multiworld"}}},
+      "then": {"required": ["multiworld_contract"]}
+    },
+    {
+      "if": {"properties": {"status": {"const": "accepted"}}},
+      "then": {"required": ["candidate_generation", "selection_rules", "transformation_behavior", "progression", "state_variables", "fields", "controlled_uncertainty", "hard_invariants", "validation", "failure_behavior", "preview_strategy", "renderer_requirements", "procedure_behavior"]}
+    }
+  ]
 }

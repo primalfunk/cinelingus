@@ -72,4 +72,14 @@ def materialize_required_artifacts(
         output_path = output_dir / "speaker_graph.json"
         write_json(output_path, {"schema_version": "1.0", "creation_timestamp": utc_now(), "speaker_graph": schedule["speaker_graph"]})
         paths["speaker_graph"] = output_path
+    multiworld = schedule.get("multiworld_artifacts", {})
+    for artifact_name in ("film_inspections", "shared_timeline", "world_model"):
+        if artifact_name in required and artifact_name in multiworld:
+            output_path = output_dir / f"{artifact_name}.json"
+            write_json(output_path, {
+                "schema_version": "1.0",
+                "creation_timestamp": utc_now(),
+                artifact_name: multiworld[artifact_name],
+            })
+            paths[artifact_name] = output_path
     return paths

@@ -16,12 +16,13 @@ from .ffmpeg_env import ensure_project_ffmpeg_shared_on_path
 from .pyannote_adapter import diarization_tracks
 from .util import utc_now, write_json
 
-DIARIZATION_SCHEMA_VERSION = "2.1"
+DIARIZATION_SCHEMA_VERSION = "2.2"
 DEFAULT_INFERENCE_TIMEOUT_SECONDS = 180
 DEFAULT_TOTAL_INFERENCE_TIMEOUT_SECONDS = 3600
 DEFAULT_CHUNK_SECONDS = 30.0
 DEFAULT_CHUNK_OVERLAP_SECONDS = 6.0
 DEFAULT_CUDA_MEMORY_FRACTION = 0.65
+DEFAULT_SPEAKER_MATCH_MAX_COSINE_DISTANCE = 0.35
 
 
 def _run_pipeline_without_empty_cluster_warning_noise(pipeline: Any, audio: Any) -> Any:
@@ -70,6 +71,8 @@ def _worker(result_queue, audio_path: str, model_name: str, device: str, token: 
                 "chunk_count": chunk_count,
                 "chunk_seconds": DEFAULT_CHUNK_SECONDS,
                 "overlap_seconds": DEFAULT_CHUNK_OVERLAP_SECONDS,
+                "speaker_stitching": "overlap_then_global_embedding_centroid",
+                "speaker_match_max_cosine_distance": _speaker_match_max_cosine_distance(),
                 "cuda_memory_fraction": cuda_memory_fraction,
             }
         else:
@@ -116,6 +119,7 @@ def _run_chunked_pipeline(
     windows = _chunk_windows(effective_duration, chunk_seconds, overlap_seconds)
     global_turns: list[dict[str, Any]] = []
     previous_context: list[dict[str, Any]] = []
+    global_embeddings: dict[str, dict[str, Any]] = {}
     next_global = 1
     for chunk_index, (chunk_start, chunk_end) in enumerate(windows, start=1):
         start_sample = max(0, int(round(chunk_start * sample_rate)))
@@ -128,6 +132,7 @@ def _run_chunked_pipeline(
                 {"waveform": chunk_waveform, "sample_rate": sample_rate},
             )
             local_turns = _turn_rows(output)
+            local_embeddings = _speaker_embedding_rows(output)
         finally:
             del output
             del chunk_waveform
@@ -137,10 +142,20 @@ def _run_chunked_pipeline(
             row["end"] += chunk_start
 
         label_map = _overlap_label_mapping(local_turns, previous_context)
+        embedding_map = _embedding_label_mapping(
+            local_turns,
+            local_embeddings,
+            global_embeddings,
+            claimed_globals=set(label_map.values()),
+            max_cosine_distance=_speaker_match_max_cosine_distance(),
+        )
+        for local_label, global_label in embedding_map.items():
+            label_map.setdefault(local_label, global_label)
         for local_label in sorted({str(row["raw_speaker"]) for row in local_turns}):
             if local_label not in label_map:
                 label_map[local_label] = f"GLOBAL_{next_global:03d}"
                 next_global += 1
+        _update_global_embeddings(global_embeddings, local_turns, local_embeddings, label_map)
         for row in local_turns:
             row["raw_speaker"] = label_map[str(row["raw_speaker"])]
         previous_context = [dict(row) for row in local_turns]
@@ -198,6 +213,113 @@ def _overlap_label_mapping(current_turns: list[dict[str, Any]], previous_turns: 
         mapping[local_label] = global_label
         claimed_globals.add(global_label)
     return mapping
+
+
+def _speaker_embedding_rows(output: Any) -> dict[str, list[float]]:
+    embeddings = output.get("speaker_embeddings") if isinstance(output, dict) else getattr(output, "speaker_embeddings", None)
+    if embeddings is None:
+        return {}
+    annotation = output.get("speaker_diarization") if isinstance(output, dict) else getattr(output, "speaker_diarization", None)
+    if annotation is None or not hasattr(annotation, "labels"):
+        return {}
+    try:
+        labels = [str(label) for label in annotation.labels()]
+        rows = embeddings.tolist() if hasattr(embeddings, "tolist") else list(embeddings)
+    except (TypeError, ValueError):
+        return {}
+    if len(labels) != len(rows):
+        return {}
+    result: dict[str, list[float]] = {}
+    for label, row in zip(labels, rows):
+        try:
+            vector = [float(value) for value in row]
+        except (TypeError, ValueError):
+            continue
+        if vector and all(math.isfinite(value) for value in vector) and _vector_norm(vector) > 0:
+            result[label] = vector
+    return result
+
+
+def _embedding_label_mapping(
+    local_turns: list[dict[str, Any]],
+    local_embeddings: dict[str, list[float]],
+    global_embeddings: dict[str, dict[str, Any]],
+    *,
+    claimed_globals: set[str],
+    max_cosine_distance: float,
+) -> dict[str, str]:
+    local_labels = sorted({str(row["raw_speaker"]) for row in local_turns})
+    candidates: list[tuple[float, str, str]] = []
+    for local_label in local_labels:
+        local_vector = local_embeddings.get(local_label)
+        if local_vector is None:
+            continue
+        for global_label, state in global_embeddings.items():
+            if global_label in claimed_globals:
+                continue
+            distance = _cosine_distance(local_vector, state.get("centroid", []))
+            if distance <= max_cosine_distance:
+                candidates.append((distance, local_label, global_label))
+    mapping: dict[str, str] = {}
+    for _distance, local_label, global_label in sorted(candidates):
+        if local_label in mapping or global_label in claimed_globals:
+            continue
+        mapping[local_label] = global_label
+        claimed_globals.add(global_label)
+    return mapping
+
+
+def _update_global_embeddings(
+    global_embeddings: dict[str, dict[str, Any]],
+    local_turns: list[dict[str, Any]],
+    local_embeddings: dict[str, list[float]],
+    label_map: dict[str, str],
+) -> None:
+    durations: dict[str, float] = {}
+    for row in local_turns:
+        label = str(row["raw_speaker"])
+        durations[label] = durations.get(label, 0.0) + max(0.0, float(row["end"]) - float(row["start"]))
+    for local_label, global_label in label_map.items():
+        vector = local_embeddings.get(local_label)
+        if vector is None:
+            continue
+        weight = max(0.001, durations.get(local_label, 0.0))
+        state = global_embeddings.get(global_label)
+        if state is None or len(state.get("centroid", [])) != len(vector):
+            global_embeddings[global_label] = {"centroid": list(vector), "weight": weight}
+            continue
+        previous_weight = float(state.get("weight", 0.0))
+        total_weight = previous_weight + weight
+        state["centroid"] = [
+            (float(old) * previous_weight + float(new) * weight) / total_weight
+            for old, new in zip(state["centroid"], vector)
+        ]
+        state["weight"] = total_weight
+
+
+def _speaker_match_max_cosine_distance() -> float:
+    raw = os.environ.get(
+        "CINELINGUS_SPEAKER_MATCH_MAX_COSINE_DISTANCE",
+        str(DEFAULT_SPEAKER_MATCH_MAX_COSINE_DISTANCE),
+    )
+    value = float(raw)
+    if not 0.0 <= value <= 1.0:
+        raise ValueError("CINELINGUS_SPEAKER_MATCH_MAX_COSINE_DISTANCE must be between 0 and 1")
+    return value
+
+
+def _cosine_distance(left: list[float], right: list[float]) -> float:
+    if not left or len(left) != len(right):
+        return math.inf
+    denominator = _vector_norm(left) * _vector_norm(right)
+    if denominator <= 0:
+        return math.inf
+    similarity = sum(a * b for a, b in zip(left, right)) / denominator
+    return max(0.0, min(2.0, 1.0 - similarity))
+
+
+def _vector_norm(vector: list[float]) -> float:
+    return math.sqrt(sum(value * value for value in vector))
 
 
 def _merge_boundary_turns(turns: list[dict[str, Any]]) -> list[dict[str, Any]]:
