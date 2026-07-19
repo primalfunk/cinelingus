@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cinelingus Montage Evaluation",
+  "type": "object",
+  "required": ["schema_version", "evaluation_version", "configuration", "source_manifest_version", "corpus_split_version", "planner_version", "filter_contract_version", "model_inventory", "capability_availability", "random_seed", "boundary_results", "category_metrics", "naive_sampler_comparison", "safety_critical_failures", "fallback_frequency", "human_review", "plan_reproducible", "source_start_bias_check", "production_readiness_checks", "verdict"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "evaluation_version": {"type": "string", "minLength": 1},
+    "configuration": {"type": "object", "minProperties": 1},
+    "source_manifest_version": {"type": "string", "minLength": 1},
+    "corpus_split_version": {"type": "string", "minLength": 1},
+    "planner_version": {"type": "string", "minLength": 1},
+    "filter_contract_version": {"type": "string", "minLength": 1},
+    "model_inventory": {"type": "array", "items": {"type": "object"}},
+    "capability_availability": {"type": "object", "minProperties": 1},
+    "random_seed": {"type": "integer"},
+    "boundary_results": {"type": "array", "items": {"type": "object"}},
+    "category_metrics": {"type": "object", "minProperties": 1},
+    "naive_sampler_comparison": {"type": "object", "minProperties": 1},
+    "safety_critical_failures": {"type": "array", "items": {"type": "object"}},
+    "fallback_frequency": {"type": "number", "minimum": 0, "maximum": 1},
+    "human_review": {"type": "object", "minProperties": 1},
+    "plan_reproducible": {"type": "boolean"},
+    "source_start_bias_check": {"type": "object", "minProperties": 1},
+    "production_readiness_checks": {"type": "object", "minProperties": 1},
+    "verdict": {"type": "string", "enum": ["EXPERIMENTAL", "PREVIEW", "PRODUCTION_READY"]}
+  }
+}

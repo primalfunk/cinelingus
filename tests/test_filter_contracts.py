@@ -5,10 +5,10 @@ import wave
 
 import pytest
 
-from movie_masher.filter_lab.acceptance import FilterAcceptanceError, validate_filter_output, validate_schedule_quality
-from movie_masher.filter_lab.contracts import default_contract_catalog
-from movie_masher.filter_lab.registry import default_filter_registry
-from movie_masher.filter_lab.strategies import has_strategy
+from cinelingus.filter_lab.acceptance import FilterAcceptanceError, validate_filter_output, validate_schedule_quality
+from cinelingus.filter_lab.contracts import default_contract_catalog
+from cinelingus.filter_lab.registry import default_filter_registry
+from cinelingus.filter_lab.strategies import has_strategy
 
 
 def _wav(path: Path, *, active: bool) -> None:
@@ -59,7 +59,7 @@ def test_output_acceptance_reports_all_required_measurements(tmp_path: Path, mon
     video.write_bytes(b"mp4")
     _wav(audio, active=True)
     monkeypatch.setattr(
-        "movie_masher.filter_lab.acceptance.ffprobe_json",
+        "cinelingus.filter_lab.acceptance.ffprobe_json",
         lambda _path: {"streams": [{"codec_type": "audio", "codec_name": "aac", "sample_rate": "48000", "channels": 2}]},
     )
 
@@ -84,7 +84,7 @@ def test_output_acceptance_rejects_mostly_silent_audio(tmp_path: Path, monkeypat
     video.write_bytes(b"mp4")
     _wav(audio, active=False)
     monkeypatch.setattr(
-        "movie_masher.filter_lab.acceptance.ffprobe_json",
+        "cinelingus.filter_lab.acceptance.ffprobe_json",
         lambda _path: {"streams": [{"codec_type": "audio", "codec_name": "aac"}]},
     )
 
@@ -97,6 +97,75 @@ def test_output_acceptance_rejects_mostly_silent_audio(tmp_path: Path, monkeypat
             output_path=tmp_path / "filter_acceptance.json",
             schemas_dir=Path.cwd() / "schemas",
         )
+
+
+def test_output_acceptance_rejects_sustained_dead_air_even_with_active_audio(tmp_path: Path, monkeypatch) -> None:
+    video = tmp_path / "final.mp4"
+    audio = tmp_path / "replacement.wav"
+    video.write_bytes(b"mp4")
+    with wave.open(str(audio), "wb") as handle:
+        handle.setnchannels(1)
+        handle.setsampwidth(2)
+        handle.setframerate(48000)
+        active = (3000).to_bytes(2, "little", signed=True)
+        silent = (0).to_bytes(2, "little", signed=True)
+        handle.writeframes(active * 4800 + silent * 38400 + active * 4800)
+    monkeypatch.setattr(
+        "cinelingus.filter_lab.acceptance.ffprobe_json",
+        lambda _path: {"streams": [{"codec_type": "audio", "codec_name": "aac"}]},
+    )
+
+    with pytest.raises(FilterAcceptanceError, match="replacement_audio_has_no_sustained_dead_air"):
+        validate_filter_output(
+            filter_id="echo",
+            schedule=_echo_schedule(tmp_path),
+            final_video=video,
+            replacement_audio=audio,
+            output_path=tmp_path / "filter_acceptance.json",
+            schemas_dir=Path.cwd() / "schemas",
+        )
+    report = __import__("json").loads((tmp_path / "filter_acceptance.json").read_text(encoding="utf-8"))
+    assert report["measurements"]["dead_air_intervals"] == [{"start": 0.1, "end": 0.9, "duration": 0.8}]
+
+
+def test_full_source_acceptance_preserves_source_authored_quiet(tmp_path: Path, monkeypatch) -> None:
+    video = tmp_path / "final.mp4"
+    audio = tmp_path / "replacement.wav"
+    video.write_bytes(b"mp4")
+    with wave.open(str(audio), "wb") as handle:
+        handle.setnchannels(1)
+        handle.setsampwidth(2)
+        handle.setframerate(48000)
+        active = (3000).to_bytes(2, "little", signed=True)
+        silent = (0).to_bytes(2, "little", signed=True)
+        handle.writeframes(active * 9600 + silent * 38400 + active * 9600)
+    monkeypatch.setattr(
+        "cinelingus.filter_lab.acceptance.ffprobe_json",
+        lambda _path: {"streams": [{"codec_type": "audio", "codec_name": "aac"}]},
+    )
+    schedule = _echo_schedule(tmp_path)
+    schedule["render_duration"] = 1.2
+    schedule["audio_continuity_policy"] = "FULL_SOURCE_SOUNDTRACK_BED"
+    schedule["montage_audio_segments"] = [{
+        "moment_id": "full_source",
+        "output_start": 0.0,
+        "output_end": 1.2,
+        "source_start": 0.0,
+        "source_end": 1.2,
+    }]
+
+    report = validate_filter_output(
+        filter_id="echo",
+        schedule=schedule,
+        final_video=video,
+        replacement_audio=audio,
+        output_path=tmp_path / "filter_acceptance.json",
+        schemas_dir=Path.cwd() / "schemas",
+    )
+
+    assert report["status"] == "pass"
+    assert report["measurements"]["unexplained_dead_air_intervals"] == []
+    assert report["measurements"]["classified_silent_intervals"][0]["classification"] == "SOURCE_AUTHORED_AUDIO_BEHAVIOR"
 
 
 def test_schedule_acceptance_rejects_sparse_clustered_repetitive_placements(tmp_path: Path) -> None:
@@ -154,7 +223,7 @@ def test_transposition_acceptance_rejects_reused_source_dialogue(tmp_path: Path,
     video.write_bytes(b"mp4")
     _wav(audio, active=True)
     monkeypatch.setattr(
-        "movie_masher.filter_lab.acceptance.ffprobe_json",
+        "cinelingus.filter_lab.acceptance.ffprobe_json",
         lambda _path: {"streams": [{"codec_type": "audio", "codec_name": "aac"}]},
     )
     schedule = _echo_schedule(tmp_path)
@@ -166,7 +235,7 @@ def test_transposition_acceptance_rejects_reused_source_dialogue(tmp_path: Path,
 
     with pytest.raises(FilterAcceptanceError, match="contract_invariants_pass"):
         validate_filter_output(
-            filter_id="translation.movie_masher",
+            filter_id="multiworld.translation",
             schedule=schedule,
             final_video=video,
             replacement_audio=audio,

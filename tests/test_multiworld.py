@@ -1,19 +1,20 @@
 from dataclasses import replace
 from pathlib import Path
+import wave
 
 import pytest
 
-from movie_masher.config import load_config
-from movie_masher.pipeline import Pipeline, _multiworld_identity_quality
-from movie_masher.util import read_json, write_json
-from movie_masher.filter_lab.multiworld import MULTIWORLD_STAGES, MultiworldPipeline
-from movie_masher.filter_lab.acceptance import _provenance_check
-from movie_masher.filter_lab.multiworld_strategies import build_multiworld_schedule
-from movie_masher.filter_lab.models import FilmInput
-from movie_masher.filter_lab.contracts import default_contract_catalog
-from movie_masher.filter_lab.gui_controller import current_filter_definition
-from movie_masher.filter_lab.presentation import detail_text, film_selector_spec
-from movie_masher.filter_lab.registry import default_filter_registry
+from cinelingus.config import load_config
+from cinelingus.pipeline import Pipeline, _multiworld_identity_quality
+from cinelingus.util import read_json, write_json
+from cinelingus.filter_lab.multiworld import MULTIWORLD_STAGES, MultiworldPipeline
+from cinelingus.filter_lab.acceptance import _provenance_check
+from cinelingus.filter_lab.multiworld_strategies import build_multiworld_schedule
+from cinelingus.filter_lab.models import FilmInput
+from cinelingus.filter_lab.contracts import default_contract_catalog
+from cinelingus.filter_lab.gui_controller import current_filter_definition
+from cinelingus.filter_lab.presentation import detail_text, film_selector_spec
+from cinelingus.filter_lab.registry import default_filter_registry
 
 
 def test_first_wave_multiworld_catalog_stabilizes_ids_and_cardinality() -> None:
@@ -21,14 +22,14 @@ def test_first_wave_multiworld_catalog_stabilizes_ids_and_cardinality() -> None:
     definitions = registry.filters_for_family("multiworld")
 
     assert {row.id for row in definitions} == {
-        "multiworld.movie_masher", "multiworld.possession", "multiworld.contagion",
+        "multiworld.translation", "multiworld.possession", "multiworld.contagion",
         "multiworld.doppelganger", "multiworld.mirror_world", "multiworld.prophecy",
         "multiworld.echo_chamber", "multiworld.bleed", "multiworld.parallel_universes",
         "multiworld.wormhole", "multiworld.chimera", "multiworld.triangle",
         "multiworld.civilization",
     }
     assert {row.id for row in definitions if row.implemented} == {
-        "multiworld.movie_masher", "multiworld.possession", "multiworld.contagion",
+        "multiworld.translation", "multiworld.possession", "multiworld.contagion",
         "multiworld.echo_chamber", "multiworld.prophecy",
     }
     assert registry.get("multiworld.chimera").minimum_films == 3
@@ -96,6 +97,22 @@ def test_duplicate_filter_names_resolve_inside_the_selected_family() -> None:
     app.family_var = Variable("Identity")
     assert current_filter_definition(app).id == "identity.possession"
     assert "This filter is not yet implemented" not in detail_text(default_filter_registry().get("multiworld.possession"))
+
+
+def test_translation_family_lookup_accepts_new_and_legacy_names() -> None:
+    class Variable:
+        def __init__(self, value: str) -> None:
+            self.value = value
+
+        def get(self) -> str:
+            return self.value
+
+    app = type("App", (), {"family_var": Variable("Multiworld"), "mode_var": Variable("Translation")})()
+    assert current_filter_definition(app).id == "multiworld.translation"
+    app.mode_var = Variable("Translation")
+    assert current_filter_definition(app).id == "multiworld.translation"
+    app.mode_var = Variable("Transposition")
+    assert current_filter_definition(app).id == "multiworld.translation"
 
 
 def test_general_pipeline_runs_each_stage_in_order_for_any_film_count(tmp_path: Path) -> None:
@@ -182,7 +199,7 @@ def test_multiworld_dialogue_laws_are_deterministic_and_validate_contract_invari
 
 
 def test_general_multiworld_runtime_writes_world_artifacts_and_completes_all_stages(monkeypatch, tmp_path: Path) -> None:
-    import movie_masher.pipeline as pipeline_module
+    import cinelingus.pipeline as pipeline_module
 
     media = [tmp_path / "anchor.mp4", tmp_path / "donor.mp4"]
     for index, path in enumerate(media):
@@ -211,17 +228,25 @@ def test_general_multiworld_runtime_writes_world_artifacts_and_completes_all_sta
             for index in range(8)
         ]
         windows = [
-            {"id": f"window_{film_index}_{index}", "start": index * 8.0 + 1.0, "duration": 2.0, "speaker_id": f"speaker_{index % 2}"}
+            {"id": f"window_{film_index}_{index}", "start": index * 8.0 + 1.0, "end": index * 8.0 + 3.0, "duration": 2.0, "speaker_id": f"speaker_{index % 2}"}
             for index in range(8)
         ]
-        return object(), {
+        visual = {
+            "shots": {
+                "shots": [
+                    {"id": f"shot_{index}", "start": index * 8.0, "end": index * 8.0 + 4.0, "scene_id": f"scene_{index}"}
+                    for index in range(8)
+                ]
+            }
+        }
+        return self, {
             "media_hash": media_hash,
             "movie": {"duration": 70.0},
             "clips": clips,
             "windows": windows,
             "source_performances": {"performances": []},
             "destination_performances": {"performances": []},
-            "visual": {},
+            "visual": visual,
             "speaker_maps": {
                 "source": _speaker_map(8, 2),
                 "destination": _speaker_map(8, 2),
@@ -237,9 +262,20 @@ def test_general_multiworld_runtime_writes_world_artifacts_and_completes_all_sta
         write_json(kwargs["output_path"], {"schema_version": "1.0", "status": "pass"})
         return {"status": "pass"}
 
+    def fake_extract_analysis_audio(_media_path: Path, output_path: Path) -> None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        with wave.open(str(output_path), "wb") as handle:
+            handle.setnchannels(1)
+            handle.setsampwidth(2)
+            handle.setframerate(100)
+            handle.writeframes((3000).to_bytes(2, "little", signed=True) * 7000)
+
     monkeypatch.setattr(Pipeline, "_analyze_multiworld_film", fake_analysis)
+    monkeypatch.setattr(pipeline_module, "extract_analysis_audio", fake_extract_analysis_audio)
     monkeypatch.setattr(pipeline_module, "render_mutation_media", fake_render)
+    monkeypatch.setattr(pipeline_module, "ffprobe_json", lambda _path: {"streams": [{"codec_type": "video"}, {"codec_type": "audio"}], "format": {"duration": "70.0"}})
     monkeypatch.setattr(pipeline_module, "validate_filter_output", fake_acceptance)
+    monkeypatch.setattr(Pipeline, "_write_and_validate", lambda _self, _kind, path, data: write_json(path, data))
     monkeypatch.setattr(pipeline_module, "publish_single_video", lambda **kwargs: kwargs["video"])
     monkeypatch.setattr(pipeline_module, "_rewrite_published_video_references", lambda **_kwargs: None)
 
@@ -254,6 +290,11 @@ def test_general_multiworld_runtime_writes_world_artifacts_and_completes_all_sta
     assert result["analysis_shared_timeline"].exists()
     assert result["analysis_world_model"].exists()
     assert result["filter_plan"].exists()
+    assert result["montage_plan"].exists()
+    assert result["montage_render_acceptance"].exists()
+    assert schedule["montage_native"] is True
+    assert schedule["full_timeline_native"] is True
+    assert schedule["render_duration"] == 70.0
 
 
 def _speaker_map(item_count: int, speaker_count: int, *, partial: bool = False) -> dict:

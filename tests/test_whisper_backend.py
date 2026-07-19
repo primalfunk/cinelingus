@@ -1,6 +1,6 @@
-﻿from pathlib import Path
+from pathlib import Path
 
-from movie_masher.whisper_backend import _fallback_candidates, _transcribe_with_model_fallback
+from cinelingus.whisper_backend import _fallback_candidates, _transcribe_with_model_fallback
 
 
 class FakeModel:

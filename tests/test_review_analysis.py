@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from movie_masher.review import REVIEW_LABEL_BAD_SHOT, REVIEW_LABEL_GOOD
-from movie_masher.review_analysis import build_review_analysis, infer_mapping_causes
-from movie_masher.validation import validate_artifact
+from cinelingus.review import REVIEW_LABEL_BAD_SHOT, REVIEW_LABEL_GOOD
+from cinelingus.review_analysis import build_review_analysis, infer_mapping_causes
+from cinelingus.validation import validate_artifact
 
 
 def test_infer_mapping_causes_flags_measurable_risks() -> None:

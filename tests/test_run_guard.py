@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from movie_masher.run_guard import (
+from cinelingus.run_guard import (
     FilterExecutionMismatch,
     RunInProgressError,
     exclusive_output_run,
@@ -16,7 +16,7 @@ def test_output_run_lock_rejects_a_second_active_run(tmp_path: Path) -> None:
 
     with exclusive_output_run(output, "contagion"):
         with pytest.raises(RunInProgressError, match="already using this output directory"):
-            with exclusive_output_run(output, "movie_masher"):
+            with exclusive_output_run(output, "translation"):
                 pass
 
 
@@ -41,7 +41,7 @@ def test_filter_execution_receipt_requires_matching_fresh_identity(tmp_path: Pat
 
     with exclusive_output_run(output, "multiworld.contagion") as lease:
         evidence = output / "filter_acceptance.json"
-        evidence.write_text(json.dumps({"filter_id": "multiworld.movie_masher", "status": "pass"}))
+        evidence.write_text(json.dumps({"filter_id": "multiworld.translation", "status": "pass"}))
         with pytest.raises(FilterExecutionMismatch, match="Requested filter multiworld.contagion"):
             verify_filter_execution(
                 lease,

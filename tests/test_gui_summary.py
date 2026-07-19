@@ -1,4 +1,4 @@
-﻿from movie_masher.gui import (
+from cinelingus.gui import (
     compact_path,
     completed_run_truth_summary,
     finished_output_folder,
@@ -13,6 +13,7 @@
     highlight_row_tags,
     highlight_row_values,
     highlight_rows,
+    pipeline_stage_presentation,
     plain_status_for_log_line,
     quality_detail,
     quality_preset_label,
@@ -29,18 +30,17 @@
     stage_key_for_log_line,
     stage_sequence_key,
     summarize_whisper_model_used,
-    workflow_uses_target_length,
     open_path_or_reveal,
 )
-from movie_masher.util import write_json
+from cinelingus.util import write_json
 
 
 def test_open_path_reveals_file_when_windows_player_launch_fails(tmp_path, monkeypatch):
     movie = tmp_path / "finished.mp4"
     movie.write_bytes(b"mp4")
     calls = []
-    monkeypatch.setattr("movie_masher.gui.os.startfile", lambda _path: (_ for _ in ()).throw(OSError("broken association")))
-    monkeypatch.setattr("movie_masher.gui.subprocess.Popen", lambda command: calls.append(command))
+    monkeypatch.setattr("cinelingus.gui.os.startfile", lambda _path: (_ for _ in ()).throw(OSError("broken association")))
+    monkeypatch.setattr("cinelingus.gui.subprocess.Popen", lambda command: calls.append(command))
 
     result = open_path_or_reveal(movie)
 
@@ -155,16 +155,16 @@ def test_single_film_input_guard_rejects_unchanged_project_default(tmp_path):
     assert single_film_input_needs_explicit_choice("Self Shuffle", default, default, selected_by_user=False) is True
     assert single_film_input_needs_explicit_choice("Self Shuffle", default, default, selected_by_user=True) is False
     assert single_film_input_needs_explicit_choice("Self Shuffle", chosen, default, selected_by_user=False) is False
-    assert single_film_input_needs_explicit_choice("Movie Masher", default, default, selected_by_user=False) is False
+    assert single_film_input_needs_explicit_choice("Translation", default, default, selected_by_user=False) is False
 
 
-def test_run_truth_summary_distinguishes_movie_masher_and_single_film(tmp_path):
+def test_run_truth_summary_distinguishes_translation_and_single_film(tmp_path):
     destination = tmp_path / "destination.mp4"
     source = tmp_path / "source.mp4"
     output = tmp_path / "output"
 
-    movie_masher = run_truth_summary(
-        transformation="Movie Masher",
+    translation = run_truth_summary(
+        transformation="Translation",
         destination=destination,
         source=source,
         output_dir=output,
@@ -180,9 +180,9 @@ def test_run_truth_summary_distinguishes_movie_masher_and_single_film(tmp_path):
         matching_style="Balanced",
     )
 
-    assert "Experiment: Movie Masher" in movie_masher
-    assert "Anchor Film:" in movie_masher
-    assert "Film B:" in movie_masher
+    assert "Experiment: Translation" in translation
+    assert "Anchor Film:" in translation
+    assert "Film B:" in translation
     assert "Film:" in single
     assert "Source dialogue:" not in single
     assert "Previous observations are reused only when material and settings match" in single
@@ -207,8 +207,8 @@ def test_completed_run_truth_summary_prefers_mutation_report(tmp_path):
     assert "self_shuffle_output.mp4" in summary
 
 
-def test_completed_run_truth_summary_prefers_run_report_for_movie_masher(tmp_path):
-    output = tmp_path / "output" / "movie_masher_output.mp4"
+def test_completed_run_truth_summary_migrates_legacy_translation_name(tmp_path):
+    output = tmp_path / "output" / "translation_output.mp4"
     output.parent.mkdir(parents=True)
     write_json(
         output.parent / "run_report.json",
@@ -221,12 +221,12 @@ def test_completed_run_truth_summary_prefers_run_report_for_movie_masher(tmp_pat
         },
     )
 
-    summary = completed_run_truth_summary(output, output.parent, "Movie Masher")
+    summary = completed_run_truth_summary(output, output.parent, "Translation")
 
-    assert "Movie Masher" in summary
+    assert "Translation" in summary
     assert "dest.mp4" in summary
     assert "source.mp4" in summary
-    assert "movie_masher_output.mp4" in summary
+    assert "translation_output.mp4" in summary
 
 
 def test_compact_path_keeps_filename_visible(tmp_path):
@@ -239,7 +239,7 @@ def test_compact_path_keeps_filename_visible(tmp_path):
 
 
 def test_required_input_fields_are_transformation_specific():
-    assert required_input_fields("Movie Masher") == ("anchor_film", "film_2", "output")
+    assert required_input_fields("Translation") == ("anchor_film", "film_2", "output")
     assert required_input_fields("Self Shuffle") == ("anchor_film", "output")
     assert required_input_fields("Echo") == ("anchor_film", "output")
 
@@ -271,13 +271,13 @@ def test_completion_summary_includes_quality_model_and_output(tmp_path):
     summary = completion_summary(
         output=output,
         output_dir=tmp_path,
-        transformation="Movie Masher",
+        transformation="Translation",
         quality_preset="Balanced",
         whisper_model="small",
         started_at=None,
     )
 
-    assert "Mode: Movie Masher" in summary
+    assert "Mode: Translation" in summary
     assert "movie.mp4" in summary
     assert "Fidelity: Balanced" in summary
     assert "Whisper" not in summary
@@ -357,9 +357,16 @@ def test_stage_key_for_log_line_drives_progress_checklist():
     assert stage_key_for_log_line("rendered video: out.mp4") == "render_video"
 
 
+def test_gui_exposes_only_full_source_timeline_output():
+    source = (__import__("pathlib").Path.cwd() / "src" / "cinelingus" / "gui.py").read_text(encoding="utf-8")
+    assert "Best Short Remix" not in source
+    assert "Target length" not in source
+    assert "Full Source Timeline" in source
+
+
 def test_completed_run_truth_summary_includes_short_remix_audio_provenance(tmp_path):
-    output = tmp_path / "output" / "best_short" / "FINAL_movie_masher_best_short.mp4"
-    audio = tmp_path / "output" / "best_short" / "movie_masher_best_short.wav"
+    output = tmp_path / "output" / "best_short" / "FINAL_translation_best_short.mp4"
+    audio = tmp_path / "output" / "best_short" / "translation_best_short.wav"
     output.parent.mkdir(parents=True)
     write_json(
         output.parent / "output_report.json",
@@ -376,9 +383,9 @@ def test_completed_run_truth_summary_includes_short_remix_audio_provenance(tmp_p
         },
     )
 
-    summary = completed_run_truth_summary(output, tmp_path / "output", "Movie Masher")
+    summary = completed_run_truth_summary(output, tmp_path / "output", "Translation")
 
-    assert "FINAL_movie_masher_best_short.mp4" in summary
+    assert "FINAL_translation_best_short.mp4" in summary
     assert "visual.mp4" in summary
     assert "dialogue.mp4" in summary
     assert "Audio check: pass" in summary
@@ -395,7 +402,7 @@ def test_completed_run_truth_summary_includes_dialogue_reel_vignette_count(tmp_p
         },
     )
 
-    summary = completed_run_truth_summary(output, tmp_path / "output", "Movie Masher")
+    summary = completed_run_truth_summary(output, tmp_path / "output", "Translation")
 
     assert "Vignettes: 3" in summary
     assert "Candidate: scene_pair_001" in summary
@@ -406,9 +413,16 @@ def test_responsive_layout_hides_hero_before_controls_become_cramped():
     assert responsive_layout(820) == "compact"
 
 
-def test_target_length_only_applies_to_short_remixes():
-    assert workflow_uses_target_length("Best Short Remix") is True
-    assert workflow_uses_target_length("Full Movie Remix") is False
+def test_run_truth_summary_declares_full_source_timeline():
+    summary = run_truth_summary(
+        transformation="Echo",
+        destination=__import__("pathlib").Path("film.mp4"),
+        source=__import__("pathlib").Path("film.mp4"),
+        output_dir=__import__("pathlib").Path("output"),
+        quality="Balanced",
+        matching_style="Balanced",
+    )
+    assert "Form: Full Source Timeline" in summary
 
 
 def test_missing_emblem_uses_documented_optional_asset_path(tmp_path):
@@ -439,7 +453,7 @@ def test_completion_summary_reports_duration_and_fallback_truthfully(tmp_path):
     summary = completion_summary(
         output=output,
         output_dir=tmp_path,
-        transformation="Movie Masher",
+        transformation="Translation",
         quality_preset="Balanced",
         whisper_model="small",
         started_at=None,
@@ -455,3 +469,10 @@ def test_completion_summary_reports_duration_and_fallback_truthfully(tmp_path):
 def test_operator_clock_uses_stable_in_place_format():
     assert format_clock_duration(30) == "00:30"
     assert format_clock_duration(494) == "08:14"
+
+def test_pipeline_stage_presentations_cover_the_previously_silent_render_boundary():
+    assert pipeline_stage_presentation("multiworld:review") == ("schedule", "Reviewing the arrangement")
+    assert pipeline_stage_presentation("runtime:render_audio") == ("render_audio", "Reconstructing the soundtrack")
+    assert pipeline_stage_presentation("runtime:render_video") == ("render_audio", "Assembling picture and sound")
+    assert pipeline_stage_presentation("runtime:finalize") == ("finalize", "Examining the finished artifact")
+    assert pipeline_stage_presentation("unknown:stage") is None

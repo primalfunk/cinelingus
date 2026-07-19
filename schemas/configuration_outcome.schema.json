@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cinelingus Configuration Outcome",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "guarantee_version", "creation_timestamp", "status", "requested_configuration", "resolution", "duration_contract", "alteration_contract", "execution", "output", "filter_id"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "guarantee_version": {"type": "string", "minLength": 1},
+    "creation_timestamp": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["REQUESTED_SUCCESS", "NORMALIZED_SUCCESS", "PRIMARY_ONLY_SUCCESS", "DURATION_REPAIRED_SUCCESS", "ALTERED_FALLBACK_SUCCESS", "UNALTERED_RECOVERY", "PASSTHROUGH_SUCCESS"]},
+    "requested_configuration": {"type": "object"},
+    "resolution": {"type": "object"},
+    "duration_contract": {"type": "object"},
+    "alteration_contract": {"type": "object"},
+    "execution": {"type": "object"},
+    "output": {"type": "object"},
+    "filter_id": {"type": "string", "minLength": 1}
+  }
+}

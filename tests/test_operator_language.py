@@ -1,4 +1,4 @@
-from movie_masher.operator_language import (
+from cinelingus.operator_language import (
     LEGACY_TRANSPOSITION,
     MAJOR_STAGE_KEYS,
     TRANSPOSITION,
@@ -8,14 +8,16 @@ from movie_masher.operator_language import (
     migrate_mode_value,
     operator_message_for_log,
     operator_text_is_backend_free,
+    serialize_operator_event,
     stage_key_for_diagnostic,
     stage_message,
 )
 
 
-def test_movie_masher_is_the_canonical_display_name_and_internal_alias_survives() -> None:
-    assert display_mode_name("Movie Masher") == TRANSPOSITION
-    assert display_mode_name("movie_masher") == TRANSPOSITION
+def test_translation_is_canonical_and_legacy_aliases_survive() -> None:
+    assert display_mode_name("Translation") == TRANSPOSITION
+    assert display_mode_name("translation") == TRANSPOSITION
+    assert display_mode_name("Translation") == TRANSPOSITION
     assert internal_mode_name(TRANSPOSITION) == TRANSPOSITION
 
 
@@ -23,7 +25,7 @@ def test_legacy_mode_values_migrate_with_an_explicit_note() -> None:
     value, note = migrate_mode_value("Transposition")
 
     assert value == TRANSPOSITION
-    assert note == "Transposition migrated to Movie Masher"
+    assert note == "Transposition migrated to Translation"
 
 
 def test_every_major_stage_has_backend_free_operator_language() -> None:
@@ -58,6 +60,29 @@ def test_timeout_and_fallback_are_truthful_and_visible() -> None:
 def test_timeout_configuration_is_not_reported_as_an_actual_timeout() -> None:
     assert operator_message_for_log("Pyannote inactivity timeout: 180 seconds") is None
     assert operator_message_for_log("Pyannote total timeout: 3600 seconds") is None
+
+
+def test_empty_fallback_fields_do_not_create_false_operator_warnings() -> None:
+    assert operator_message_for_log('fallback_reason: None') is None
+    assert operator_message_for_log('fallback_used: False') is None
+    assert operator_message_for_log('fallback_status=NONE') is None
+
+
+def test_structured_operator_event_preserves_specific_alignment_truth() -> None:
+    line = serialize_operator_event(
+        event_id='source_speaker_alignment_partial',
+        title='Speaker alignment partially inferred',
+        message='Speaker analysis succeeded. 100 of 156 passages aligned directly.',
+        severity='warning',
+        metadata={'direct_item_count': 100, 'speech_item_count': 156},
+    )
+
+    event = operator_message_for_log('[2026-07-15T15:27:49] ' + line)
+
+    assert event is not None
+    assert event.event_id == 'source_speaker_alignment_partial'
+    assert event.title == 'Speaker alignment partially inferred'
+    assert event.metadata['direct_item_count'] == 100
 
 
 def test_speaker_validation_does_not_claim_final_artifact_validation():

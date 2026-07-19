@@ -4,11 +4,11 @@ from pathlib import Path
 
 import pytest
 
-from movie_masher.filter_lab import FilterRecipe, default_contract_catalog, default_filter_registry, load_recipe, save_recipe
-from movie_masher.filter_lab.gui_controller import sync_filter_family
-from movie_masher.filter_lab.integration import build_strategy_schedule
-from movie_masher.filter_lab.plan import plan_from_schedule, write_filter_plan
-from movie_masher.filter_lab.strategies import (
+from cinelingus.filter_lab import FilterRecipe, default_contract_catalog, default_filter_registry, load_recipe, save_recipe
+from cinelingus.filter_lab.gui_controller import sync_filter_family
+from cinelingus.filter_lab.integration import build_strategy_schedule
+from cinelingus.filter_lab.plan import plan_from_schedule, write_filter_plan
+from cinelingus.filter_lab.strategies import (
     build_bloom_schedule,
     build_chorus_schedule,
     build_contagion_schedule,
@@ -19,7 +19,7 @@ from movie_masher.filter_lab.strategies import (
     build_spiral_schedule,
     representative_preview_regions,
 )
-from movie_masher.validation import validate_artifact
+from cinelingus.validation import validate_artifact
 
 
 def clip(clip_id: str, speaker: str, start: float, duration: float = 2.0) -> dict:
@@ -40,8 +40,12 @@ def test_registry_contains_all_families_and_only_real_filters_are_runnable() -> 
         "multiworld.doppelganger", "multiworld.mirror_world",
         "multiworld.parallel_universes", "multiworld.triangle", "multiworld.wormhole",
     }
-    assert registry.get("movie_masher").id == "multiworld.movie_masher"
-    assert registry.get("translation.movie_masher").id == "multiworld.movie_masher"
+    assert registry.get("translation").id == "multiworld.translation"
+    assert registry.get("multiworld.translation").id == "multiworld.translation"
+    assert registry.get("Translation").id == "multiworld.translation"
+    assert registry.get("Translation").id == "multiworld.translation"
+    assert registry.get_in_family("multiworld", "Translation").id == "multiworld.translation"
+    assert registry.get_in_family("multiworld", "Translation").id == "multiworld.translation"
     assert registry.get("memory.dream").implemented is True
     assert registry.validate_stack(["memory.dream"]) == []
 
@@ -65,7 +69,7 @@ def test_family_change_defaults_to_an_implemented_filter(monkeypatch) -> None:
     app.family_var = Variable("Infection")
     app.mode_var = Variable("Mutation")
     app.mode_box = Box()
-    monkeypatch.setattr("movie_masher.filter_lab.gui_controller.sync_filter_mode", lambda _app: None)
+    monkeypatch.setattr("cinelingus.filter_lab.gui_controller.sync_filter_mode", lambda _app: None)
 
     sync_filter_family(app)
 
@@ -187,6 +191,69 @@ def test_contagion_requires_exposure_and_respects_maximum() -> None:
     assert s2["infection_time"] >= 0
     assert all(row["destination_timestamp"] >= row["infection_time"] for row in schedule["mappings"])
     assert schedule["filter_metrics"]["infected_speaker_count"] <= 2
+
+
+def test_contagion_uses_full_contact_history_but_only_audio_safe_placement_windows() -> None:
+    clips = [clip(f"carrier{i}", "s1", 70.0 + i * 5.0) for i in range(4)] + [clip("other", "s2", 5.0)]
+    analysis_windows = [
+        window("origin", "s1", 5.0, scene="scene1"),
+        window("exposure", "s2", 10.0, scene="scene1"),
+        window("unsafe_after", "s2", 30.0, scene="scene2"),
+        {
+            **window("safe_after", "s2", 50.0, scene="scene3"),
+            "montage_moment_id": "moment_safe",
+            "montage_audio_eligible": True,
+            "montage_placement_eligible": True,
+        },
+    ]
+    placement_windows = [analysis_windows[-1]]
+    params = default_filter_registry().get("contagion").parameter_defaults | {
+        "initial_carrier": "s1", "maximum_infected_speakers": 2, "intensity": "Trace", "seed": 2,
+    }
+
+    schedule = build_strategy_schedule(
+        "contagion",
+        clips=clips,
+        windows=analysis_windows,
+        placement_windows=placement_windows,
+        duration=120.0,
+        parameters=params,
+    )
+
+    assert [row["window_id"] for row in schedule["mappings"]] == ["safe_after"]
+    assert schedule["mappings"][0]["montage_moment_id"] == "moment_safe"
+    assert schedule["mappings"][0]["montage_rescue"] is True
+    assert schedule["filter_metrics"]["montage_rescue_used"] is True
+    assert schedule["montage_window_eligibility"] == {
+        "analysis_window_count": 4,
+        "placement_window_count": 1,
+        "strategy_used_full_window_context": True,
+        "authored_placements_restricted_to_audio_safe_moments": True,
+    }
+    assert schedule["filter_fallbacks"][0]["action"] == "SELECTED_DETERMINISTIC_AUDIO_SAFE_POST_INFECTION_WINDOW"
+
+
+def test_standard_strategy_dispatch_restricts_authored_placements_to_montage_windows() -> None:
+    params = default_filter_registry().get("possession").parameter_defaults | {
+        "possessing_speaker": "s1", "possessed_speaker": "s2", "intensity": "Total",
+        "minimum_temporal_separation": 1.0,
+    }
+    unsafe = window("unsafe", "s2", 50.0)
+    safe = {**window("safe", "s2", 70.0), "montage_moment_id": "moment_safe", "montage_audio_eligible": True}
+
+    schedule = build_strategy_schedule(
+        "possession",
+        clips=[clip("a", "s1", 10.0), clip("b", "s1", 20.0)],
+        windows=[unsafe, safe],
+        placement_windows=[safe],
+        duration=100.0,
+        parameters=params,
+    )
+
+    assert [row["window_id"] for row in schedule["mappings"]] == ["safe"]
+    assert schedule["mappings"][0]["montage_moment_id"] == "moment_safe"
+    assert schedule["montage_window_eligibility"]["analysis_window_count"] == 2
+    assert schedule["montage_window_eligibility"]["placement_window_count"] == 1
 
 
 def test_bloom_measurably_increases_and_preview_spans_progression() -> None:

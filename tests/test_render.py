@@ -1,7 +1,49 @@
 from pathlib import Path
+import wave
 
-from movie_masher import render
-from movie_masher.render import build_preview_schedule, preview_bounds, scheduled_audio_duration
+from cinelingus import render
+from cinelingus.render import build_preview_schedule, preview_bounds, scheduled_audio_duration
+
+
+def test_mux_video_curtails_picture_to_audio(monkeypatch, tmp_path: Path) -> None:
+    commands = []
+    monkeypatch.setattr(render, "run", lambda args: commands.append(args))
+
+    render.mux_video(
+        destination_video=tmp_path / "longer_video.mp4",
+        dialogue_wav=tmp_path / "complete_supporting_audio.wav",
+        output_path=tmp_path / "final.mp4",
+        duration=42.25,
+    )
+
+    command = commands[0]
+    assert "-shortest" in command
+    assert command[command.index("-t") + 1] == "42.250"
+    assert command.index("-t") < command.index("-shortest")
+    assert command.index("-shortest") < command.index(str(tmp_path / "final.mp4"))
+
+
+def test_render_montage_visual_uses_exact_plan_boundaries_and_source_audio(monkeypatch, tmp_path: Path) -> None:
+    commands = []
+    monkeypatch.setattr(render, "run", lambda args: commands.append(args))
+
+    render.render_montage_visual(
+        input_video=tmp_path / "film.mp4",
+        selected_moments=[
+            {"id": "m1", "visual_boundary": {"start": 2.0, "end": 5.5}},
+            {"id": "m2", "visual_boundary": {"start": 11.0, "end": 15.0}},
+        ],
+        output_path=tmp_path / "montage.mp4",
+    )
+
+    command = commands[0]
+    filters = command[command.index("-filter_complex") + 1]
+    assert "trim=start=2.000:end=5.500" in filters
+    assert "trim=start=11.000:end=15.000" in filters
+    assert "atrim=start=2.000:end=5.500" in filters
+    assert "atrim=start=11.000:end=15.000" in filters
+    assert "concat=n=2:v=1:a=1" in filters
+    assert "[outa]" in command
 
 
 def test_render_dialogue_wav_skips_disabled_mappings(monkeypatch, tmp_path: Path) -> None:
@@ -99,8 +141,46 @@ def test_render_schedule_over_original_audio_uses_original_track_and_mutes_windo
 
     command_text = " ".join(" ".join(command) for command in commands)
     assert str(original) in command_text
-    assert "volume=enable='between(t,3.000,5.000)':volume=-28.0dB" in command_text
+    assert "volume=enable='between(t,3.000,4.000)':volume=-28.0dB" in command_text
     assert str(clip) in command_text
+
+
+def test_render_schedule_ducks_only_literal_clip_activity(monkeypatch, tmp_path: Path) -> None:
+    original = tmp_path / "movie.mp4"
+    clip = tmp_path / "clip.wav"
+    original.write_text("movie")
+    with wave.open(str(clip), "wb") as handle:
+        handle.setnchannels(1)
+        handle.setsampwidth(2)
+        handle.setframerate(48000)
+        silent = (0).to_bytes(2, "little", signed=True)
+        active = (3000).to_bytes(2, "little", signed=True)
+        handle.writeframes(silent * 9600 + active * 19200 + silent * 19200)
+    commands = []
+
+    def fake_run(args):
+        commands.append(args)
+        output = Path(args[-1])
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text("wav")
+
+    monkeypatch.setattr(render, "run", fake_run)
+    schedule = {"mappings": [{
+        "enabled": True, "clip_path": str(clip), "destination_timestamp": 3.0,
+        "planned_render_duration": 1.0, "clip_trim_start": 0.0,
+        "clip_trim_duration": 1.0, "stretch_factor": 1.0,
+    }]}
+
+    render.render_schedule_over_original_audio(
+        original_media=original, schedule=schedule, duration=10.0,
+        output_path=tmp_path / "mix.wav", sample_rate=48000, channels=2,
+        target_lufs=-18.0, fade_duration=0.015,
+    )
+
+    command_text = " ".join(" ".join(command) for command in commands)
+    assert "volume=enable='between(t,3.200,3.600)':volume=-28.0dB" in command_text
+    assert schedule["audio_ducking"]["strategy"] == "clip_activity_exact_v1"
+    assert schedule["audio_ducking"]["rendered_region_count"] == 1
 
 
 def test_render_schedule_over_original_audio_accepts_explicit_mute_regions(monkeypatch, tmp_path: Path) -> None:
@@ -134,7 +214,7 @@ def test_render_schedule_over_original_audio_accepts_explicit_mute_regions(monke
             ]
         },
         duration=10.0,
-        output_path=tmp_path / "movie_masher.wav",
+        output_path=tmp_path / "cinelingus.wav",
         sample_rate=48000,
         channels=2,
         target_lufs=-18.0,

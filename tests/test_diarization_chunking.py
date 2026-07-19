@@ -3,7 +3,7 @@ import warnings
 import numpy as np
 import torch
 
-from movie_masher.diarization_runtime import _run_chunked_pipeline
+from cinelingus.diarization_runtime import _run_chunked_pipeline
 
 
 class Segment:

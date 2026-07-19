@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from movie_masher.validation import validate_artifact
-from movie_masher.review import (
+from cinelingus.validation import validate_artifact
+from cinelingus.review import (
     REVIEW_LABEL_BAD_SHOT,
     REVIEW_LABEL_DISABLE,
     REVIEW_LABEL_VERY_FUNNY,

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cinelingus Montage Plan",
+  "type": "object",
+  "required": ["schema_version", "planner_version", "filter_id", "filter_contract_version", "random_seed", "governing_relationship", "laws", "requested_duration", "requested_minimum_moments", "actual_duration", "duration_resolution", "repetition_policy", "material_utilization", "placement_qualification", "structural_roles", "opening_selection", "source_participation", "selected_moments", "rejected_candidates", "fallback_decisions", "provenance", "verdict"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "planner_version": {"type": "string", "minLength": 1},
+    "filter_id": {"type": "string", "minLength": 1},
+    "filter_contract_version": {"type": "string", "minLength": 1},
+    "random_seed": {"type": "integer"},
+    "governing_relationship": {"type": "string", "minLength": 1},
+    "laws": {"type": "object", "required": ["visual", "temporal", "dialogue", "requested_audio", "actual_audio_method"], "additionalProperties": false, "properties": {"visual": {"type": "string"}, "temporal": {"type": "string"}, "dialogue": {"type": "string"}, "requested_audio": {"type": "string"}, "actual_audio_method": {"type": "string"}}},
+    "requested_duration": {"type": "number", "minimum": 0},
+    "requested_minimum_moments": {"type": "integer", "minimum": 1},
+    "actual_duration": {"type": "number", "minimum": 0},
+    "duration_resolution": {
+      "type": "object",
+      "required": ["policy", "requested_target_duration", "configured_minimum_duration", "available_non_repeating_montage_duration", "resolved_duration", "shortened", "configured_minimum_relaxed"],
+      "additionalProperties": false,
+      "properties": {
+        "policy": {"enum": ["TARGET_IS_CEILING_SHORTEN_TO_NON_REPEATED_SOURCE_AUDIO", "FULL_SOURCE_TIMELINE_LIMITED_BY_SUPPORTING_AUDIO"]},
+        "requested_target_duration": {"type": "number", "exclusiveMinimum": 0},
+        "configured_minimum_duration": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "available_non_repeating_montage_duration": {"type": "number", "minimum": 0},
+        "resolved_duration": {"type": "number", "minimum": 0},
+        "shortened": {"type": "boolean"},
+        "configured_minimum_relaxed": {"type": "boolean"}
+      }
+    },
+    "repetition_policy": {
+      "type": "object",
+      "required": ["default_when_source_audio_is_short", "authorized", "authorization_basis", "observed_repeated_source_clip_ids", "observed_repeated_placement_count"],
+      "additionalProperties": false,
+      "properties": {
+        "default_when_source_audio_is_short": {"enum": ["SHORTEN_TARGET_VIDEO", "CURTAIL_VIDEO_TO_SUPPORTING_AUDIO"]},
+        "authorized": {"type": "boolean"},
+        "authorization_basis": {"type": "string", "minLength": 1},
+        "observed_repeated_source_clip_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "observed_repeated_placement_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "material_utilization": {
+      "type": "object",
+      "required": ["policy", "available_audio_safe_duration", "available_within_target_duration", "selected_duration", "utilization_ratio", "minimum_utilization_ratio", "utilization_sufficient", "available_moment_count", "selected_moment_count", "available_authored_moment_count", "selected_authored_moment_count", "selected_context_moment_count"],
+      "additionalProperties": false,
+      "properties": {
+        "policy": {"enum": ["MAXIMIZE_AUDIO_SAFE_MATERIAL_WITHIN_TARGET", "USE_COMPLETE_SOURCE_TIMELINE"]},
+        "available_audio_safe_duration": {"type": "number", "minimum": 0},
+        "available_within_target_duration": {"type": "number", "minimum": 0},
+        "selected_duration": {"type": "number", "minimum": 0},
+        "utilization_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "minimum_utilization_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "utilization_sufficient": {"type": "boolean"},
+        "available_moment_count": {"type": "integer", "minimum": 1},
+        "selected_moment_count": {"type": "integer", "minimum": 1},
+        "available_authored_moment_count": {"type": "integer", "minimum": 0},
+        "selected_authored_moment_count": {"type": "integer", "minimum": 0},
+        "selected_context_moment_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "placement_qualification": {"type": "object", "required": ["policy_version", "cinematic_moments_detected", "preferred_audio_qualified_moments", "dialogue_bearing_moments", "dialogue_windows_examined", "complete_shot_submoments_constructed", "locally_rejected_submoments", "preferred_legal_placements", "local_legal_placements", "final_legal_authored_placements", "deterministic_rescue_invoked", "final_output_dead_air_limit_seconds", "qualification_outcome"]},
+    "structural_roles": {"type": "array", "items": {"type": "string", "enum": ["BEGINNING", "DEVELOPMENT", "CLIMAX", "RESOLUTION"]}},
+    "opening_selection": {"type": "object", "minProperties": 1},
+    "source_participation": {"type": "object", "minProperties": 1},
+    "selected_moments": {"type": "array", "items": {"type": "object"}},
+    "rejected_candidates": {"type": "array", "items": {"type": "object"}},
+    "fallback_decisions": {"type": "array", "items": {"type": "object"}},
+    "provenance": {"type": "object", "minProperties": 1},
+    "verdict": {"type": "string", "enum": ["EXPERIMENTAL", "PREVIEW", "PRODUCTION_READY"]}
+  }
+}

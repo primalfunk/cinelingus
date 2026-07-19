@@ -5,16 +5,18 @@ import time
 
 from PIL import ImageGrab
 
-from movie_masher.gui import MovieMasherApp
+from cinelingus.gui import CinelingusInstrumentApp
 
 
-def capture(app: MovieMasherApp, path: Path) -> None:
+def capture(app: CinelingusInstrumentApp, path: Path) -> None:
     app.update_idletasks()
     app.update()
     app.lift()
     app.attributes('-topmost', True)
     app.update()
     time.sleep(0.35)
+    app.update_idletasks()
+    app.update()
     x, y = app.winfo_rootx(), app.winfo_rooty()
     width, height = app.winfo_width(), app.winfo_height()
     ImageGrab.grab(bbox=(x, y, x + width, y + height), all_screens=True).save(path)
@@ -24,14 +26,17 @@ def capture(app: MovieMasherApp, path: Path) -> None:
 def main() -> None:
     output = Path.cwd() / "output" / "ui_overhaul" / "screenshots"
     output.mkdir(parents=True, exist_ok=True)
-    app = MovieMasherApp()
+    app = CinelingusInstrumentApp()
     try:
+        assert app.instrument_canvas.plate_available
+        assert len(app.instrument_canvas._overlays) == 10
         app.geometry("1120x780+80+60")
         app._show_wizard_step(1)
         capture(app, output / "01_initial.png")
 
         app._show_wizard_step(3)
-        app.status_var.set("Experiment in progress")
+        app._set_running(True, "Experiment in progress")
+        app.stage_var.set("Examining recurring voices")
         app.current_operation_var.set("Examining recurring voices")
         app.overall_progress_var.set(58)
         app.progress_percent_var.set("58%")
@@ -57,9 +62,11 @@ def main() -> None:
         app._toggle_technical_record()
         capture(app, output / "03_warning.png")
 
-        app.output_path_var.set(str(Path.cwd() / "output" / "cinelingus_movie-masher-short_2026-07-13_17-39-34.mp4"))
+        app._set_running(False, "Experiment complete")
+        app._mark_stage(None, finished=True)
+        app.output_path_var.set(str(Path.cwd() / "output" / "cinelingus_translation_2026-07-13_17-39-34.mp4"))
         app.completion_summary_var.set(
-            "Mode: Transposition\n"
+            "Mode: Translation\n"
             "Source: Hey Dude - Day One at the Bar None\n"
             "Destination: MADtv - S01 E19\n"
             "Observations: 5 exchanges selected\n"

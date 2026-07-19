@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cinelingus Alteration Acceptance",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "policy_version", "creation_timestamp", "status", "basis", "checks", "thresholds", "measurements", "provenance"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "policy_version": {"type": "string", "minLength": 1},
+    "creation_timestamp": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["PASS", "FAIL"]},
+    "basis": {"type": "string", "enum": ["REQUESTED_FILTER_ACCEPTANCE", "UNIVERSAL_RENDERER_AND_SAMPLED_AUDIO", "UNALTERED_RECOVERY"]},
+    "checks": {"type": "object"},
+    "thresholds": {"type": "object"},
+    "measurements": {"type": "object"},
+    "provenance": {"type": "object"},
+    "renderer_manifest": {},
+    "sampled_audio_difference": {},
+    "artifact_path": {"type": "string"},
+    "failure_summary": {"type": ["string", "null"]}
+  }
+}

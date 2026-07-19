@@ -1,25 +1,27 @@
-﻿from pathlib import Path
+from pathlib import Path
 import math
 import struct
 import wave
 
-from movie_masher.mutations import speaker_aware_shuffle_selection
-from movie_masher.speakers import (
+from cinelingus.mutations import speaker_aware_shuffle_selection
+from cinelingus.speakers import (
     annotate_artifact_speakers,
     apply_speaker_mapping_to_schedule,
     build_speaker_map,
     build_speaker_mapping,
+    build_item_speaker_assignments,
     diarization_backend_status,
     diarization_setup_status,
     enrich_performances_with_speakers,
     speaker_map_diagnostics,
     speaker_mapping_summary,
     speaker_map_has_real_diarization,
+    speaker_map_identity_ready,
     speaker_preservation_summary,
     _hf_token,
     _load_pyannote_audio_input,
 )
-from movie_masher.validation import validate_artifact
+from cinelingus.validation import validate_artifact
 
 
 def _items():
@@ -226,7 +228,7 @@ def test_pyannote_zero_segments_falls_back_to_heuristic(monkeypatch, tmp_path: P
         def itertracks(self, yield_label: bool = False):
             return iter(())
 
-    import movie_masher.speakers as speakers
+    import cinelingus.speakers as speakers
 
     monkeypatch.setattr(speakers, "_pyannote_unavailable_reason", lambda audio_path, hf_token: None)
     monkeypatch.setattr(speakers, "_resolve_pyannote_device", lambda device: None)
@@ -353,4 +355,151 @@ def test_speaker_mapping_excludes_unknown_fallback_speakers(tmp_path: Path) -> N
     assert mapping["destination_speaker_count"] == 1
     assert mapping["mappings"][0]["source_speaker_id"] == "speaker_001"
     assert mapping["mappings"][0]["destination_speaker_id"] == "speaker_002"
+
+
+def test_one_diarization_turn_can_directly_support_multiple_transcript_items() -> None:
+    items = [
+        {'id': 'e1', 'start': 0.0, 'end': 1.0},
+        {'id': 'e2', 'start': 1.0, 'end': 2.0},
+        {'id': 'e3', 'start': 2.0, 'end': 3.0},
+    ]
+    turns = [
+        {'id': 'segment_1', 'start': 0.0, 'end': 3.0, 'speaker_id': 'speaker_001', 'confidence': 0.8},
+    ]
+
+    assignments = build_item_speaker_assignments(items, turns)
+
+    assert [row['source_id'] for row in assignments] == ['e1', 'e2', 'e3']
+    assert {row['speaker_id'] for row in assignments} == {'speaker_001'}
+    assert {row['assignment_method'] for row in assignments} == {'DIRECT_OVERLAP'}
+    diagnostics = speaker_map_diagnostics(
+        {
+            'requested_backend': 'pyannote',
+            'actual_backend': 'pyannote',
+            'diarization_tool': 'pyannote',
+            'diarization_status': 'SUCCESS',
+            'alignment_status': 'COMPLETE',
+            'fallback_status': 'NONE',
+            'speaker_count': 1,
+            'speaker_segments': turns,
+            'speaker_assignments': assignments,
+            'warnings': [],
+        },
+        items,
+    )
+    assert diagnostics['direct_item_count'] == 3
+    assert diagnostics['direct_item_rate'] == 1.0
+    assert diagnostics['fallback_used'] is False
+
+
+def test_nonoverlapping_item_uses_explicit_continuity_provenance() -> None:
+    items = [
+        {'id': 'e1', 'start': 0.0, 'end': 1.0},
+        {'id': 'e2', 'start': 1.05, 'end': 1.15},
+        {'id': 'e3', 'start': 1.2, 'end': 2.0},
+    ]
+    turns = [
+        {'id': 's1', 'start': 0.0, 'end': 1.0, 'speaker_id': 'speaker_001', 'confidence': 0.8},
+        {'id': 's2', 'start': 1.2, 'end': 2.0, 'speaker_id': 'speaker_001', 'confidence': 0.8},
+    ]
+
+    assignments = build_item_speaker_assignments(items, turns)
+    inferred = next(row for row in assignments if row['source_id'] == 'e2')
+
+    assert inferred['speaker_id'] == 'speaker_001'
+    assert inferred['assignment_method'] == 'CONTINUITY_INFERENCE'
+    assert inferred['fallback_label'] is True
+    assert len(inferred['supporting_segment_ids']) == 2
+
+
+def test_distant_unmapped_item_is_heuristic_and_identity_gate_uses_direct_rate() -> None:
+    items = [
+        {'id': 'e1', 'start': 0.0, 'end': 1.0},
+        {'id': 'e2', 'start': 5.0, 'end': 6.0},
+    ]
+    turns = [{'id': 's1', 'start': 0.0, 'end': 1.0, 'speaker_id': 'speaker_001', 'confidence': 0.8}]
+    assignments = build_item_speaker_assignments(items, turns)
+    heuristic = next(row for row in assignments if row['source_id'] == 'e2')
+    speaker_map = {
+        'actual_backend': 'pyannote',
+        'diarization_status': 'SUCCESS',
+        'speaker_segments': turns,
+        'diagnostics': {'diarization_status': 'SUCCESS', 'direct_item_rate': 0.5},
+    }
+
+    assert heuristic['assignment_method'] == 'HEURISTIC'
+    assert heuristic['speaker_id'].startswith('unknown_')
+    assert speaker_map_identity_ready(speaker_map) is False
+    assert speaker_map_identity_ready(speaker_map, minimum_direct_rate=0.5) is True
+
+
+def test_overlapping_speakers_record_ambiguity_without_fabricating_certainty() -> None:
+    assignments = build_item_speaker_assignments(
+        [{'id': 'e1', 'start': 0.0, 'end': 1.0}],
+        [
+            {'id': 's1', 'start': 0.0, 'end': 0.9, 'speaker_id': 'speaker_001', 'confidence': 0.8},
+            {'id': 's2', 'start': 0.1, 'end': 0.9, 'speaker_id': 'speaker_002', 'confidence': 0.8},
+        ],
+    )
+
+    assert assignments[0]['assignment_method'] == 'AMBIGUOUS_OVERLAP'
+    assert assignments[0]['evidence_status'] == 'DIRECT_AMBIGUOUS'
+    assert assignments[0]['competing_speakers'][0]['speaker_id'] == 'speaker_002'
+
+
+def test_successful_pyannote_run_stays_successful_when_one_turn_spans_many_items(monkeypatch, tmp_path: Path) -> None:
+    import cinelingus.speakers as speakers
+
+    items = [
+        {'id': 'e1', 'start': 0.0, 'end': 1.0},
+        {'id': 'e2', 'start': 1.0, 'end': 2.0},
+        {'id': 'e3', 'start': 2.0, 'end': 3.0},
+    ]
+    usable_turns = [
+        {
+            'id': 'segment_000001',
+            'start': 0.0,
+            'end': 3.0,
+            'duration': 3.0,
+            'speaker_id': 'speaker_001',
+            'speaker': 'speaker_001',
+            'confidence': 0.8,
+            'speaker_confidence': 0.8,
+            'source_id': 'e1',
+            'valid': True,
+        }
+    ]
+    monkeypatch.setattr(speakers, '_pyannote_unavailable_reason', lambda **kwargs: None)
+    monkeypatch.setattr(
+        speakers,
+        'run_pyannote_diagnostic',
+        lambda **kwargs: {
+            'usable_turns': usable_turns,
+            'actual_backend': 'pyannote',
+            'status': 'success',
+            'fallback_reason': None,
+        },
+    )
+    audio = tmp_path / 'audio.wav'
+    audio.write_bytes(b'placeholder')
+    output = tmp_path / 'speaker_map.json'
+
+    speaker_map = speakers._build_pyannote_speaker_map(
+        media_hash='hash',
+        speech_items=items,
+        output_path=output,
+        audio_path=audio,
+        model_name='test-model',
+        config_signature='signature',
+        device='cpu',
+        hf_token='token',
+    )
+
+    assert speaker_map is not None
+    assert speaker_map['actual_backend'] == 'pyannote'
+    assert speaker_map['diarization_status'] == 'SUCCESS'
+    assert speaker_map['alignment_status'] == 'COMPLETE'
+    assert speaker_map['fallback_status'] == 'NONE'
+    assert speaker_map['diagnostics']['direct_item_count'] == 3
+    validate_artifact('speaker_map', output, Path.cwd() / 'schemas')
 

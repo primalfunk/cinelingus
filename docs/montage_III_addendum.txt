@@ -1,0 +1,642 @@
+CINELINGUS MONTAGE FOUNDATION
+IMPLEMENTATION FORMALIZATION ADDENDUM
+
+Status
+
+Approved.
+
+This addendum supplements the existing Montage Design Authority and Montage Foundation Authorization documents.
+
+It defines implementation-level requirements for:
+
+* evidence language
+* production-readiness measurement
+* calibration-corpus structure
+* reproducibility
+* portable corpus manifests
+* assertion provenance
+* residual-speech evaluation
+* long-take behavior
+* repository documentation
+
+These requirements do not alter the approved creative direction or delay architecture work.
+
+1. HUMAN LABELS AND MACHINE CLAIMS
+
+Human annotations and machine-generated evidence must remain distinct.
+
+The calibration corpus may use semantic human labels such as:
+
+* COMPLETE_ACTION
+* MOUTH_INTERRUPTED
+* COMPLETE_GESTURE
+* REACTION_COVERAGE
+* VISUAL_CONTEXT_MISSING
+* CAMERA_MOTION_INTERRUPTED
+
+These labels represent human editorial judgment or ground truth.
+
+Core analysis must not repeat those labels as machine-established facts unless it possesses evidence sufficient to support the claim.
+
+Core analysis should instead report literal observations such as:
+
+* LOW_OPTICAL_FLOW_AT_BOUNDARY
+* MOTION_MAGNITUDE_DECREASED
+* CAMERA_MOTION_STABILIZED
+* SPEECH_ENDED_BEFORE_BOUNDARY
+* SILENCE_WINDOW_PRESENT
+* HARD_CUT_DETECTED
+* DISSOLVE_INTERVAL_DETECTED
+* FADE_INTERVAL_DETECTED
+* SHOT_SEQUENCE_PRESERVED
+* NO_SAFE_INTERNAL_BOUNDARY_FOUND
+
+Enhanced Vision may report additional evidence such as:
+
+* FACE_TRACK_CONTINUES
+* MOUTH_ACTIVITY_PRESENT
+* MOUTH_ACTIVITY_ENDED
+* POSE_CHANGE_STABILIZED
+* GAZE_DIRECTION_CHANGED
+* SUBJECT_TRACK_INTERRUPTED
+
+Enhanced evidence must still be described as detected evidence rather than human-level interpretation.
+
+For example:
+
+Permitted:
+
+“Pose change stabilized 420 milliseconds before the boundary.”
+
+Not permitted:
+
+“The actor completed the gesture.”
+
+The system may infer that a boundary is likely safe, but the acceptance artifact must preserve the evidence from which that inference was derived.
+
+2. ASSERTION CAPABILITY TAGS
+
+Every machine assertion recorded in analysis, planning, fallback, or acceptance artifacts must identify its origin.
+
+Approved capability tags are:
+
+HUMAN_ANNOTATION
+
+A judgment supplied by an annotator.
+
+CORE_HEURISTIC
+
+Evidence derived from Core analysis, including transitions, speech timing, optical flow, stillness, and conservative shot grouping.
+
+ENHANCED_VISION
+
+Evidence derived from optional face, mouth, gaze, pose, subject-tracking, or related visual models.
+
+ENHANCED_AUDIO
+
+Evidence derived from optional source separation, residual-vocal detection, or stem analysis.
+
+FALLBACK_INFERENCE
+
+A conclusion reached because preferred evidence or capabilities were unavailable.
+
+CONTRACT_RULE
+
+A requirement declared directly by the active filter contract.
+
+PLANNER_DERIVATION
+
+A deterministic conclusion produced by the montage planner from contract rules and available evidence.
+
+Every assertion should record, where applicable:
+
+* assertion name
+* capability tag
+* value
+* confidence
+* backend
+* model or heuristic version
+* source artifact
+* supporting evidence IDs
+* fallback status
+* explanatory note
+
+A fallback inference must never be represented as equivalent to direct Enhanced Vision or Enhanced Audio evidence.
+
+3. PHASE 1 PRODUCTION-READINESS TARGETS
+
+Phase 1 must not be declared production-ready solely because it can render a montage.
+
+Production readiness requires measured performance on the held-out calibration corpus and a documented comparison against a naive shot sampler.
+
+A naive shot sampler is defined as a baseline planner that:
+
+* samples complete detected shots;
+* does not use speech-boundary evidence;
+* does not use motion or stillness evidence;
+* does not classify dissolves or fades beyond ordinary shot detection;
+* does not conservatively group adjacent shots into moments;
+* does not reject unsafe boundaries beyond basic duration constraints.
+
+The exact thresholds may be revised after the first corpus is assembled, but the initial release targets are:
+
+Safety-critical boundary performance
+
+* At least 98% of accepted boundaries must avoid cutting inside an audible word.
+* At least 95% must avoid cutting through a human-annotated sentence onset.
+* At least 95% must avoid beginning or ending inside an annotated dissolve or fade.
+* At least 90% must avoid human-labeled severe subject-motion interruption.
+* At least 90% must avoid human-labeled severe camera-motion interruption.
+* Zero known cases may arise from the planner inventing an internal long-take boundary after declaring that no safe boundary was found.
+
+Positive-boundary usefulness
+
+* At least 85% of machine-accepted boundaries should be judged acceptable by human review.
+* At least 80% of human-annotated acceptable Core-detectable boundaries should remain available to the planner.
+* Conservative rejection is preferable to unsafe acceptance.
+
+Montage-level performance
+
+* At least 90% of held-out Quick Preview plans must satisfy their declared minimum moment count or report an explicit contract fallback.
+* At least 90% of eligible multi-source plans must satisfy required source participation.
+* 100% of completed plans must record complete source, shot, scene, moment, visual-boundary, audio-boundary, law, and fallback provenance.
+* 100% of fixed-seed reruns must reproduce the same plan-level result.
+
+Comparison with the naive sampler
+
+Phase 1 must demonstrate:
+
+* at least a 50% reduction in severe speech-boundary failures;
+* at least a 35% reduction in severe motion-boundary failures;
+* at least a 30% improvement in overall human-rated boundary acceptability;
+* no material loss of required source participation;
+* no increase in silent planner failure or unreported fallback.
+
+A result may be designated Experimental or Preview before these thresholds are achieved.
+
+It may not be designated Production Ready.
+
+4. METRIC REPORTING
+
+Production-readiness reports must include more than a single aggregate pass rate.
+
+Results must be reported separately for:
+
+* positive boundaries
+* negative boundaries
+* speech-heavy material
+* silent or non-dialogue material
+* hard cuts
+* dissolves
+* fades
+* long takes
+* reaction coverage
+* low-motion boundaries
+* high-motion boundaries
+* ambiguous examples
+* single-shot moments
+* multi-shot moments
+
+Reports should include:
+
+* sample count
+* accepted count
+* rejected count
+* true positive rate
+* false positive rate
+* false negative rate
+* severe-failure count
+* confidence distribution
+* fallback frequency
+* comparison with the naive sampler
+
+Safety-critical errors must be visible individually and must not disappear inside an average score.
+
+5. CALIBRATION-CORPUS SPLITS
+
+The calibration corpus must be divided into:
+
+* development
+* tuning
+* held-out acceptance
+
+Each split must independently contain representative examples of:
+
+* acceptable entrances
+* acceptable exits
+* broken entrances
+* broken exits
+* speech boundaries
+* silence
+* hard cuts
+* dissolves
+* fades
+* long takes
+* reaction shots
+* J-cuts
+* L-cuts
+* motion interruption
+* ambiguous boundaries
+
+An example may belong to several categories, but category overlap must not be used to create an artificially large apparent corpus.
+
+Minimum recommended split size for the first useful corpus:
+
+Development:
+
+At least 40 distinct annotated boundary examples.
+
+Tuning:
+
+At least 30 distinct annotated boundary examples.
+
+Held-out acceptance:
+
+At least 40 distinct annotated boundary examples.
+
+The held-out set should include at minimum:
+
+* 10 clearly acceptable boundaries
+* 10 clearly unacceptable boundaries
+* 5 speech-sensitive examples
+* 5 transition-sensitive examples
+* 5 motion-sensitive examples
+* 5 long-take or ambiguous examples
+
+These counts may overlap by category, but the held-out set must still contain at least 40 distinct boundary examples.
+
+No source sequence should appear in more than one split in substantially overlapping form.
+
+Adjacent boundaries from the same scene should normally remain in the same split to reduce leakage.
+
+Threshold selection, feature weighting, and planner tuning must not use the held-out set.
+
+6. PLAN-LEVEL REPRODUCIBILITY
+
+Reproducibility is required at the montage-plan level.
+
+Given identical:
+
+* source media hashes
+* analysis artifacts
+* model and heuristic versions
+* filter contract version
+* configuration
+* capability availability
+* random seed
+* planner version
+
+Cinelingus must produce identical:
+
+* moment IDs
+* candidate eligibility
+* selected moments
+* source-film assignments
+* moment order
+* visual boundaries
+* audio boundaries
+* overlap durations
+* structural roles
+* requested laws
+* actual laws
+* fallback choices
+* provenance records
+* acceptance decisions
+
+Moment IDs should derive from stable source identity and deterministic boundary data rather than database insertion order or transient filesystem paths.
+
+Byte-identical encoded video output is not required across:
+
+* FFmpeg versions
+* codecs
+* operating systems
+* GPU drivers
+* hardware encoders
+* CPU architectures
+
+The rendered file may differ at the binary level while still satisfying reproducibility.
+
+The render acceptance artifact should instead verify that the encoded output conforms to the deterministic plan within declared timing tolerances.
+
+7. PORTABLE CORPUS MANIFESTS
+
+Machine-specific local paths must not appear in the portable committed corpus manifest.
+
+The portable manifest should contain:
+
+* source ID
+* source hash
+* resolver key
+* media duration
+* optional media metadata
+* annotation IDs
+* timestamps
+* shot IDs
+* scene IDs
+* human labels
+* human notes
+* split assignment
+* schema version
+
+A separate ignored local resolver file should map resolver keys to machine-specific paths.
+
+Example conceptual separation:
+
+Portable manifest:
+
+source_id: KUROSAWA_SAMPLE_001
+source_hash: …
+resolver_key: cinema_reference_a
+
+Ignored local resolver:
+
+cinema_reference_a: D:\Local Media\Reference Film.mkv
+
+The resolver file must:
+
+* remain outside version control;
+* support different mappings on different machines;
+* fail clearly when a source is unavailable;
+* verify the source hash before analysis;
+* avoid silently resolving to a different media file.
+
+The repository may include a resolver-file example containing placeholders but no copyrighted-media paths.
+
+8. GHOST-SPEECH MEASUREMENT
+
+Enhanced Audio acceptance must measure residual source speech rather than merely confirm that source separation completed.
+
+The evaluation framework should record:
+
+* requested Audio Law
+* actual Audio Method
+* source-separation backend
+* stem confidence
+* residual-vocal estimate
+* residual-speech intelligibility estimate
+* replacement-dialogue intelligibility
+* overlap between residual and replacement speech
+* fallback method
+* human review result
+
+At minimum, ghost-speech evaluation must distinguish:
+
+NONE
+
+No meaningful vocal residue detected.
+
+NON_SPEECH_VOCAL_RESIDUE
+
+Breaths, crowd vocalization, singing-like texture, or indistinct vocal material without intelligible competing speech.
+
+UNINTELLIGIBLE_SPEECH_RESIDUE
+
+Speech-like residue is present but words cannot be reliably understood.
+
+PARTIALLY_INTELLIGIBLE_GHOST_SPEECH
+
+Some original words or phrases remain understandable.
+
+COMPETING_GHOST_SPEECH
+
+Original speech materially competes with or contradicts replacement dialogue.
+
+PARTIALLY_INTELLIGIBLE_GHOST_SPEECH and COMPETING_GHOST_SPEECH are acceptance failures for a claimed clean ambient bed.
+
+Residual-vocal measurement should combine machine evidence with human calibration.
+
+A single source-separation confidence score is insufficient.
+
+The initial Enhanced Audio corpus should include:
+
+* clean dialogue
+* overlapping dialogue
+* dialogue over music
+* whispered dialogue
+* shouting
+* reverberant interiors
+* crowd scenes
+* singing
+* off-screen speech
+* dialogue mixed with strong effects
+
+Machine thresholds must be calibrated against human judgments of intelligibility and interference.
+
+The acceptance framework should separately answer:
+
+* Is residual speech present?
+* Is it intelligible?
+* Does it compete with authored dialogue?
+* Is the actual Audio Method honestly labeled?
+
+9. LONG-TAKE POLICY
+
+Phase 1 must resolve long takes conservatively.
+
+When a long take exceeds the desired moment duration, the system may search for internal candidate boundaries using literal Core evidence such as:
+
+* speech completion
+* silence
+* low optical flow
+* camera stabilization
+* stable framing
+* transition-like visual reset
+
+If no internal boundary reaches the required safety threshold, the planner must follow this order:
+
+1. use the complete long take;
+2. choose a different eligible moment;
+3. relax target duration;
+4. fail or invoke an explicit contract fallback.
+
+The planner must not:
+
+* insert an arbitrary duration-based cut;
+* lower the boundary threshold silently;
+* describe an unsafe boundary as safe;
+* truncate the take merely to satisfy target length;
+* use Enhanced Vision claims when Enhanced Vision was not run.
+
+When a full long take is used, the acceptance artifact should record:
+
+* desired duration
+* actual duration
+* internal candidates considered
+* reasons for rejection
+* selected fallback step
+* resulting impact on total montage duration
+
+10. DOCUMENTATION AS SOURCE OF TRUTH
+
+The approved design and authorization documents must be preserved inside the Cinelingus repository.
+
+Recommended structure:
+
+docs/architecture/adr-XXX-montage-composition-foundation.md
+
+or:
+
+docs/work_orders/montage_composition_foundation.md
+
+The durable repository document should include or directly reference:
+
+* Montage Design Authority
+* Montage Foundation Authorization
+* this Implementation Formalization Addendum
+* revision history
+* approval status
+* affected contract versions
+* affected schema versions
+* implementation phases
+* unresolved non-blocking questions
+
+Contracts, schemas, implementation plans, tests, and acceptance reports should cite the repository document by stable path and decision identifier.
+
+The document must be versioned with the code.
+
+External chat transcripts and attachments are not the authoritative implementation source.
+
+When a later decision changes the montage doctrine, engineering should:
+
+* add a dated amendment or superseding architecture decision;
+* identify the affected rules;
+* update contract and schema versions where required;
+* preserve the historical decision rather than silently rewriting it.
+
+11. REQUIRED PHASE 1 ACCEPTANCE ARTIFACTS
+
+Every formal Phase 1 evaluation run should produce:
+
+* evaluation configuration
+* source-manifest version
+* corpus-split version
+* planner version
+* filter-contract version
+* model and heuristic inventory
+* capability availability
+* random seed
+* per-boundary evidence
+* assertion capability tags
+* accepted and rejected candidates
+* naive-sampler comparison
+* final selected plan
+* fallback decisions
+* safety-critical failures
+* summary metrics
+* human-review results
+* production-readiness verdict
+
+The verdict must be one of:
+
+EXPERIMENTAL
+
+The architecture works, but validation is incomplete or thresholds are not met.
+
+PREVIEW
+
+Suitable for supervised internal use, with known limitations and complete acceptance reporting.
+
+PRODUCTION_READY
+
+All required safety, reproducibility, provenance, corpus, and baseline-comparison criteria are met.
+
+A verdict must never be inferred merely from successful rendering.
+
+12. FINAL AUTHORIZATION
+
+These formalizations complete the montage-foundation design and product requirements.
+
+Engineering is authorized to begin architecture and implementation immediately.
+
+The implementation should preserve the following hierarchy:
+
+1. cinematic integrity;
+2. speech intelligibility;
+3. honest evidence and capability reporting;
+4. deterministic planning;
+5. filter-law compliance;
+6. source participation and structural shape;
+7. requested duration.
+
+Target duration remains subordinate to safe boundaries.
+
+Machine claims remain subordinate to observed evidence.
+
+Enhanced capabilities may improve confidence, but Core must remain conservative, functional, and honest without them.
+
+The montage foundation is ready to proceed.
+
+13. DESTINATION-INTRO NON-PRIVILEGE RULE
+
+The first eligible source moment must not receive preference merely because it occurs earliest in the destination timeline.
+
+Unless required by the active filter contract:
+
+* the montage may begin anywhere in any eligible source;
+* timeline position must not be used as an implicit primary tie-breaker;
+* no fallback may silently select timestamp zero or the first detected scene;
+* the opening moment must be selected according to its assigned structural role, governing montage relationship, cinematic integrity, and diversity value;
+* repeated selection of the same source opening across seeds or materially different inputs is evidence of planner bias and must be reported.
+
+Every montage plan must record the opening moment's position within the eligible source distribution, whether the earliest eligible moment was selected, whether chronology was required by contract, and the actual selection basis.
+
+Acceptance testing must compare openings across seeds or materially different inputs against the distribution of eligible moments. Production readiness requires openings drawn from across the eligible timeline unless the filter law intentionally favors chronology.
+
+14. UNIVERSAL CINELANGUAGE SEGMENTATION
+
+Montage plans are the common segmentation and sentence-forming layer for every Cinelingus filter.
+
+Every successful filter operation must:
+
+* consume eligible cinematic moments;
+* declare visual, temporal, dialogue, requested-audio, and actual-audio laws;
+* produce a deterministic montage plan;
+* preserve moment, shot, boundary, source, and fallback provenance;
+* record structural roles and opening-selection evidence;
+* render from the selected plan rather than an independent full-length or vignette segmentation path;
+* produce encoded render acceptance against that plan.
+
+Filter identity changes the governing relationship and laws, not the underlying segmentation contract. Legacy, preview, preset, GUI, CLI, and compatibility entry points must converge on the same montage planner.
+
+15. CONTINUOUS-AUDIO RULE
+
+No successful montage may contain dead air. Every selected moment must retain meaningful source soundtrack material as its base audio layer, with authored dialogue ducking or replacing that layer only where required by the active filter law. Sparse dialogue over a generated silent base is prohibited. Encoded acceptance must measure consecutive silence and reject any sustained below-threshold run longer than 0.75 seconds. If the source moment itself cannot provide meaningful audio, the planner must choose another eligible moment or remove the silent region without violating complete-shot, speech-boundary, motion, provenance, or reproducibility requirements.
+
+Montage and audio eligibility must constrain authored placement before seeded filter selection. Post-hoc rejection alone is insufficient when a law-valid audio-safe placement exists. A filter may retain the full destination timeline for structural analysis such as contact, chronology, or progression, but it must author rendered placements only in complete audio-safe cinematic moments. When seeded intensity skips every such placement, a deterministic law-preserving rescue must be attempted and recorded before the run may fail.
+
+16. SOURCE-AUDIO DURATION AND NON-REPETITION RULE
+
+Requested duration is a ceiling, not a quota. When eligible non-repeated source audio cannot support the requested target duration, the planner must shorten the target video to the duration that the available material can support. A configured minimum duration may be relaxed for this reason and must not convert an otherwise valid shorter montage into a failed run.
+
+Repetition, looping, or reuse must not be introduced as a duration fallback. It is permitted only when the active filter contract or an explicit filter-plan parameter defines repetition as part of the governing cinematic relationship. Every montage plan must record:
+
+* requested target duration;
+* configured minimum duration, when present;
+* available non-repeating montage duration;
+* resolved duration;
+* whether the target or configured minimum was relaxed;
+* the default short-audio action;
+* whether repetition was authorized;
+* the contract or parameter that authorized it;
+* repeated source IDs and placement count actually observed.
+
+An unauthorized repeated source placement is a planning error. A short but valid montage is the required outcome when the alternative would be silent padding or undeclared repetition.
+
+17. SAFE-MATERIAL UTILIZATION RULE
+
+Permission to shorten a montage is not permission to return a trivial fragment while substantially more eligible material exists.
+
+For a sparse filter, an audio-safe cinematic moment may serve as contextual connective material even when it contains no authored placement. The completed montage must still contain at least one moment carrying an authored filter placement, and transformed moments receive selection priority over contextual moments. Context must not be mislabeled as transformed material.
+
+The planner must maximize the use of complete audio-safe material within the requested-duration ceiling, subject to cinematic boundaries, the active filter law, non-repetition, and source-participation requirements. Every plan must record:
+
+* total audio-safe candidate duration;
+* candidate duration available within the requested ceiling;
+* selected duration;
+* material-utilization ratio;
+* required minimum utilization ratio;
+* available and selected moment counts;
+* available and selected authored-moment counts;
+* selected contextual-moment count.
+
+A plan using less than 80 percent of the available safe-duration budget is invalid. This adequacy rule prevents a sparse authored schedule from collapsing a feature, episode, or short-reel request to a few seconds when clean material is available to form a meaningful montage.

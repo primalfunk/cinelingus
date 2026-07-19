@@ -1,0 +1,496 @@
+Cinelingus Montage Design Decisions (Design Authority)
+Design Philosophy
+
+Cinelingus is not a video splicer.
+
+It is a cinematic composer.
+
+Every output should feel as though an unseen editor intentionally assembled existing films into a new work. The audience should notice strange narrative relationships, not software artifacts.
+
+The editor's first obligation is therefore cinematic integrity. Every later transformation (dialogue replacement, chronology, infection, translation, identity exchange) operates within that constraint unless a filter explicitly declares otherwise.
+
+1. The Unit of Composition
+
+Decision
+
+The primary selectable object is the cinematic moment, not the individual shot.
+
+A cinematic moment consists of one or more consecutive shots that together express one coherent visual idea.
+
+Examples:
+
+a character noticing something
+entering a room
+sitting down
+one complete exchange
+one uninterrupted action
+one establishing view
+one reaction sequence
+
+The engine may internally operate on shots, but filter authors should think exclusively in moments.
+
+Moments may contain:
+
+one shot
+many shots
+no dialogue
+multiple speakers
+
+They should almost never begin or end arbitrarily.
+
+2. Clean Segment Definition
+
+A clean segment begins and ends where an experienced film editor would naturally cut.
+
+Default requirements:
+
+✓ bounded by detected cuts
+
+✓ complete gestures
+
+✓ complete gaze shifts
+
+✓ completed camera movement
+
+✓ completed spoken thought
+
+✓ no interrupted mouth movement
+
+✓ no interrupted physical action
+
+Optional handles before and after every segment.
+
+Exceptions
+Long takes
+
+Treat internally as virtual sub-scenes.
+
+Never force an arbitrary cut merely because no edit exists.
+
+Instead locate natural pauses:
+
+completed actions
+pauses in speech
+stillness
+framing changes
+Dissolves
+
+Treat dissolve duration as indivisible.
+
+Never begin or end inside a dissolve.
+
+Fades
+
+May begin immediately after fade-in.
+
+May end immediately before fade-out.
+
+Never inside the fade.
+
+Establishing shots
+
+Highly desirable.
+
+Excellent transition material.
+
+May appear without dialogue.
+
+Reaction shots
+
+Among the most reusable assets.
+
+High priority.
+
+Partial spoken sentence
+
+Avoid whenever possible.
+
+If unavoidable:
+
+allow only sentence continuation—
+
+never sentence interruption.
+
+3. Audio Philosophy
+
+This is where I differ most from the proposal.
+
+The visual edit and the sound edit should become partially independent.
+
+Every filter declares an Audio Law.
+
+Supported laws:
+
+Original Reality
+
+Picture and synchronized production sound remain together.
+
+Only montage changes.
+
+Useful for Flashback.
+
+Dialogue Replacement
+
+Original ambience preserved.
+
+Dialogue replaced.
+
+Current Cinelingus default.
+
+Cinematic Bed
+
+Continuous ambience and music flow across cuts.
+
+Dialogue changes normally.
+
+This often makes rapid montage feel surprisingly professional.
+
+Audio Leads Picture
+
+Dialogue begins before visual cut.
+
+Classic cinema grammar.
+
+Highly recommended.
+
+Picture Leads Audio
+
+Visual changes before speech.
+
+Useful for suspense.
+
+Constructed Reality
+
+Entire soundtrack generated from:
+
+dialogue
+
+ambience
+
+music
+
+effects
+
+independently.
+
+Ultimate long-term goal.
+
+Default:
+
+Dialogue Replacement + Continuous Ambient Bed.
+
+That produces the least jarring montage.
+
+4. Montage Grammar
+
+The montage renderer should obey one governing relationship.
+
+Never several equally.
+
+Priority order:
+
+Filter Law
+
+Speech intelligibility
+
+Visual continuity
+
+Rhythm
+
+Source diversity
+
+Novelty
+
+Not vice versa.
+
+Supported montage relationships include:
+
+Identity
+
+Memory
+
+Cause
+
+Contrast
+
+Escalation
+
+Symmetry
+
+Repetition
+
+Irony
+
+Association
+
+Collision
+
+Silence
+
+The filter chooses one.
+
+Everything else supports it.
+
+5. Cross-Film Balance
+
+I like the proposed 60%.
+
+I would strengthen it.
+
+Every required source must become visually recognizable.
+
+Suggested defaults:
+
+Anchor film:
+
+40–60%
+
+Secondary:
+
+20–40%
+
+Tertiary:
+
+10–25%
+
+No film should disappear for long enough that the audience forgets it exists.
+
+6. Speech Integrity
+
+This should be stricter.
+
+Dialogue is sacred.
+
+Rules:
+
+Never cut inside:
+
+word
+
+syllable
+
+mouth opening
+
+breath onset
+
+Never truncate:
+
+question
+
+answer
+
+thought
+
+joke
+
+reaction
+
+Dialogue may continue across cuts.
+
+Cinema has done this for nearly a century.
+
+Reaction shots over continuing dialogue should become one of Cinelingus's defining characteristics.
+
+Off-screen speech:
+
+strongly encouraged.
+
+Subtitles should never influence edit decisions.
+
+They are presentation.
+
+Not cinema.
+
+7. Movement
+
+Movement continuity matters less than movement completion.
+
+Bad:
+
+person starts standing
+
+CUT
+
+already walking
+
+Good:
+
+person finishes standing
+
+CUT
+
+walking elsewhere
+
+Excellent:
+
+matching motion
+
+same screen direction
+
+similar speed
+
+similar framing
+
+This should become a bonus rather than a requirement.
+
+8. Target Shape
+
+I think shorter is better.
+
+Current recommendation:
+
+Standard Output
+
+90–150 seconds
+
+Quick Preview
+
+30–60 seconds
+
+Extended
+
+3–6 minutes
+
+Experimental
+
+Unlimited
+
+Typical segment:
+
+4–12 seconds
+
+Average:
+
+7 seconds
+
+Minimum distinct moments:
+
+8
+
+Preferred:
+
+12–25
+
+Every montage should contain:
+
+Beginning
+
+Development
+
+Climax
+
+Resolution
+
+Even absurd films deserve an ending.
+
+They should never simply stop because the timer expired.
+
+9. Filter Authorship
+
+I largely agree.
+
+One addition:
+
+Every filter should declare four independent laws.
+
+Visual Law
+
+What imagery may be selected.
+
+Temporal Law
+
+How chronology behaves.
+
+Dialogue Law
+
+How speech changes.
+
+Audio Law
+
+How sound behaves.
+
+That makes filters composable.
+
+For example:
+
+Flashback
+
+Visual:
+earlier scenes
+
+Temporal:
+reverse
+
+Dialogue:
+unchanged
+
+Audio:
+original
+
+Dream
+
+Visual:
+free association
+
+Temporal:
+collapsed
+
+Dialogue:
+translated
+
+Audio:
+continuous ambience
+
+Possession
+
+Visual:
+speaker tracking
+
+Temporal:
+linear
+
+Dialogue:
+identity exchange
+
+Audio:
+replacement
+
+No special-case renderer is required.
+
+Only different laws.
+
+10. Positive References
+
+Instead of film titles, I'd specify editing principles that are recognizable across cinema:
+
+Excellent entrance
+
+Enter immediately after a completed cut, with the subject already established in frame.
+
+Excellent exit
+
+Leave after a completed action, before visual energy dissipates.
+
+Excellent reaction cut
+
+Dialogue continues while another character silently processes what was said.
+
+Excellent montage density
+
+Frequent cuts that each contribute new information, without becoming visually exhausting.
+
+Poor interruption
+
+A gesture begins in one segment and completes in another without intentional continuity.
+
+Poor source dominance
+
+One film occupies so much screen time that the others become forgettable.
+
+One Additional Principle
+
+I would add one concept that I think becomes foundational to Cinelingus:
+
+Respect before Surprise.
+
+Every cut should first succeed as a competent piece of film editing. Only then should it surprise the audience.

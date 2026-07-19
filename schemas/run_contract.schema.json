@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cinelingus Run Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kernel_version", "contract_id", "creation_timestamp", "filter_id", "filter_version", "input_scope", "media", "timeline", "audio", "repetition", "analysis", "filter", "acceptance"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "kernel_version": {"type": "string"},
+    "contract_id": {"type": "string", "minLength": 1},
+    "creation_timestamp": {"type": "string"},
+    "filter_id": {"type": "string", "minLength": 1},
+    "filter_version": {"type": "string"},
+    "input_scope": {"type": "string", "const": "complete_media_files"},
+    "media": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+    "timeline": {
+      "type": "object",
+      "required": ["start", "output_duration", "anchor_video_duration", "required_audio_durations", "authority", "policy", "anchor_curtailed"]
+    },
+    "audio": {"type": "object", "required": ["policy", "final_stream_count", "original_anchor_stream_retained"]},
+    "repetition": {"type": "object", "required": ["policy", "authorization_basis", "exhaustion_behavior"]},
+    "analysis": {"type": "object", "required": ["transcription", "speaker_identity", "accepted_speaker_quality"]},
+    "filter": {"type": "object", "required": ["invariants"]},
+    "acceptance": {"type": "object", "required": ["duration_tolerance_seconds", "video_packet_tolerance_seconds", "provenance_required", "audio_activity_required", "required_video_stream_count", "required_audio_stream_count"]}
+  }
+}

@@ -79,7 +79,6 @@
     "sparse_schedule": true,
     "requires_speaker_identity": false,
     "supports_preview": true,
-    "supports_best_short": true,
     "supports_full_length": true,
     "requires_output_acceptance": true
   },

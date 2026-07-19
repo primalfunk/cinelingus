@@ -1,4 +1,4 @@
-from movie_masher.problem_report import build_problem_region_report
+from cinelingus.problem_report import build_problem_region_report
 
 
 def test_problem_region_report_lists_fallback_and_underfilled(tmp_path):

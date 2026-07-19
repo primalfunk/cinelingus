@@ -29,12 +29,12 @@ Generated from the machine-valid contracts in filter_contracts/.
 | Civilization | multiworld | 5+ | Reality Collision | blocked | unavailable | Five or more films form a persistent shared cinematic society. |
 | Contagion | multiworld | 2+ | Narrative Infection | accepted | transformation | Donor films infect the anchor timeline in ordered, non-reverting phases. |
 | Doppelgänger | multiworld | 2 | Identity Exchange | blocked | unavailable | Two films discover recurring doubles in one another. |
-| Echo Chamber | multiworld | 2+ | Dialogue Translation | accepted | transformation | Every selected anchor window becomes a staggered, attenuated echo group containing every film. |
+| Echo Chamber | multiworld | 2+ | Translation | accepted | transformation | Every selected anchor window becomes a staggered, attenuated echo group containing every film. |
 | Mirror World | multiworld | 2 | Reality Collision | blocked | unavailable | An anchor film is reflected through a second cinematic reality. |
-| Movie Masher | multiworld | 2 | Dialogue Translation | accepted | transformation | Dialogue from a donor film fills speaking windows in the anchor film while anchor picture and chronology remain fixed. |
 | Parallel Universes | multiworld | 2+ | Temporal Exchange | blocked | unavailable | Equivalent moments from multiple films coexist on a shared timeline. |
 | Possession | multiworld | 2 | Identity Exchange | accepted | transformation | One film's stable donor identity takes residence inside one recurring anchor-film speaker. |
 | Prophecy | multiworld | 2 | Temporal Exchange | accepted | transformation | Later normalized dialogue from one film predicts earlier positions in the anchor film. |
+| Translation | multiworld | 2 | Translation | accepted | transformation | Dialogue from a donor film fills speaking windows in the anchor film while anchor picture and chronology remain fixed. |
 | Triangle | multiworld | 3 | Narrative Infection | blocked | unavailable | Three films exchange pressure through a closed narrative relationship. |
 | Wormhole | multiworld | 2+ | Temporal Exchange | blocked | unavailable | Selected moments cross between films through deterministic temporal portals. |
 | Flashback | time | 1 | Every replacement source is earlier than its destination by more than the configured minimum distance | accepted | scheduling_strategy | Every replacement source is earlier than its destination by more than the configured minimum distance. |

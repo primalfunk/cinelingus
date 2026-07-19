@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cinelingus Filter Certification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "certification_version", "creation_timestamp", "contract_id", "filter_id", "state", "checks", "evidence", "reasons"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "certification_version": {"type": "string"},
+    "creation_timestamp": {"type": "string"},
+    "contract_id": {"type": "string"},
+    "filter_id": {"type": "string"},
+    "state": {"type": "string", "enum": ["CERTIFIED", "EXPERIMENTAL", "DEGRADED", "BLOCKED", "UNAVAILABLE"]},
+    "checks": {
+      "type": "object",
+      "additionalProperties": {"type": "boolean"}
+    },
+    "evidence": {"type": "object"},
+    "reasons": {"type": "array", "items": {"type": "string"}}
+  }
+}

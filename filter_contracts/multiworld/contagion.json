@@ -96,7 +96,6 @@
     "sparse_schedule": true,
     "requires_speaker_identity": false,
     "supports_preview": false,
-    "supports_best_short": false,
     "supports_full_length": true,
     "requires_output_acceptance": true
   },

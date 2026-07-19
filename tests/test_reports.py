@@ -1,7 +1,7 @@
-﻿from pathlib import Path
+from pathlib import Path
 
-from movie_masher.config import AppConfig
-from movie_masher.reports import build_run_report, write_report_files
+from cinelingus.config import AppConfig
+from cinelingus.reports import build_run_report, write_report_files
 
 
 def test_write_report_files_creates_json_txt_and_csv(tmp_path: Path) -> None:
@@ -16,7 +16,6 @@ def test_write_report_files_creates_json_txt_and_csv(tmp_path: Path) -> None:
         transcription_mode="fast_preview",
         whisper_model="tiny",
         whisper_language=None,
-        quick_test_seconds=60.0,
         quality_modes={},
         filter_min_duration=0.35,
         filter_max_duration=12.0,
@@ -44,22 +43,18 @@ def test_write_report_files_creates_json_txt_and_csv(tmp_path: Path) -> None:
         speaker_diarization_backend="heuristic",
         speaker_diarization_model="pyannote/speaker-diarization-community-1",
         speaker_diarization_device="auto",
-        target_duration_seconds=180.0,
-        minimum_duration_seconds=120.0,
-        maximum_duration_seconds=300.0,
         prefer_high_speaker_confidence=True,
         prefer_clean_dialogue_timing=True,
         prefer_funny_or_surprising_matches=True,
-        allow_full_movie_mode=False,
     )
     audio = config.output_dir / "replacement_dialogue.wav"
-    video = config.output_dir / "movie_masher_output.mp4"
+    video = config.output_dir / "translation_output.mp4"
     audio.parent.mkdir(parents=True)
     audio.write_text("audio")
     video.write_text("video")
     schedule = {
         "scheduling_mode": "strict_order",
-        "transformation_name": "movie_masher",
+        "transformation_name": "translation",
         "transformation_history": [{"verb": "select", "description": "select test", "inputs": ["a"], "outputs": ["b"]}],
         "mappings": [
             {
@@ -169,7 +164,7 @@ def test_write_report_files_creates_json_txt_and_csv(tmp_path: Path) -> None:
     csv_text = paths["csv"].read_text()
     assert "scheduled mappings: 2" in report_text
     assert "enabled mappings: 1" in report_text
-    assert "name: movie_masher" in report_text
+    assert "name: translation" in report_text
     assert "CIR index:" in report_text
     assert "disabled mappings: 1" in report_text
     assert "shot boundary mode: soft" in report_text

@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from movie_masher.shot_context import annotate_windows_with_shots, build_visual_schedule_report
-from movie_masher.validation import validate_artifact
+from cinelingus.shot_context import annotate_windows_with_shots, build_visual_schedule_report
+from cinelingus.validation import validate_artifact
 
 
 def test_annotate_windows_assigns_primary_shot_and_boundary_overlap() -> None:

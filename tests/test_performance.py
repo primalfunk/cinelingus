@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from movie_masher.performance import build_performances, performance_windows
-from movie_masher.performance_library import build_performance_library
-from movie_masher.validation import validate_artifact
+from cinelingus.performance import build_performances, performance_windows
+from cinelingus.performance_library import build_performance_library
+from cinelingus.validation import validate_artifact
 
 
 def test_build_performances_groups_windows_by_pause_and_classifies(tmp_path: Path) -> None:

@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from movie_masher.pipeline import _rewrite_published_video_references
-from movie_masher.util import read_json, write_json
+from cinelingus.pipeline import _rewrite_published_video_references
+from cinelingus.util import read_json, write_json
 
 
 def test_published_video_references_follow_the_surviving_deliverable(tmp_path: Path) -> None:

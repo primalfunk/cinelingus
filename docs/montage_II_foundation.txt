@@ -1,0 +1,406 @@
+CINELINGUS 0.2.x MONTAGE FOUNDATION
+DESIGN AND PRODUCT AUTHORIZATION
+
+Status
+
+The montage direction is approved for architecture and staged implementation.
+
+Engineering may begin immediately on:
+
+* revised filter contracts
+* the cinematic-moment schema
+* shot-to-moment provenance
+* conservative Phase 1 moment detection
+* montage planning
+* structural-role assignment
+* audio-law declarations
+* source-balance enforcement
+* acceptance artifacts
+* incremental migration of the first montage-native filters
+
+No further creative approval is required for those areas.
+
+1. LOCAL MODEL POLICY
+
+Cinelingus may add local computer-vision and audio-separation models.
+
+This authorization is subject to the following product constraints.
+
+Offline-first
+
+All required analysis and rendering must be capable of running locally after model installation.
+
+No source film, extracted frame, audio stem, transcript, face representation, or derived media may be sent to a remote service by default.
+
+Optional future cloud integrations must remain separate, explicit, and disabled by default.
+
+Permissible uses
+
+Local models may be used for:
+
+* face detection and tracking
+* mouth activity
+* gaze direction
+* pose estimation
+* optical motion
+* camera-motion estimation
+* shot-transition classification
+* stillness detection
+* action-boundary evidence
+* speech and voice activity
+* source separation
+* dialogue, music, ambience, and effects estimation
+
+Licensing
+
+Dependencies and model weights must permit legal redistribution or provide a clear user-managed installation path.
+
+Engineering must record for every model:
+
+* model name and version
+* license
+* source
+* redistribution status
+* commercial-use restrictions
+* approximate download size
+* expected memory requirements
+* CPU support
+* GPU support
+* known platform limitations
+
+A model with unclear or incompatible licensing must not become a required bundled dependency.
+
+Installation tiers
+
+The montage system should support three capability tiers.
+
+Core
+
+No heavyweight learned visual model is required.
+
+Uses scene transitions, fades, dissolves, speech boundaries, motion, stillness, and conservative grouping.
+
+This is the minimum supported montage capability.
+
+Enhanced Vision
+
+Adds face, mouth, gaze, and pose evidence.
+
+This improves moment confidence but does not redefine the public moment contract.
+
+Enhanced Audio
+
+Adds local source separation and stem-aware audio rendering.
+
+The GUI may install or enable these capabilities separately.
+
+Cinelingus must remain functional when either enhanced tier is unavailable.
+
+Hardware policy
+
+CPU operation must remain possible for the Core tier.
+
+Enhanced models may use GPU acceleration when available.
+
+A model may not silently fail because the GPU is too small. The runtime must:
+
+* estimate capability before execution where practical
+* report the selected device
+* report model fallback
+* distinguish unavailable, failed, and low-confidence analysis
+* preserve conservative behavior under reduced capability
+
+No feature should require a specific GPU vendor unless explicitly marked experimental.
+
+Footprint
+
+Large models must be optional downloads rather than mandatory application payload.
+
+Model files must live outside the source tree and normal run-artifact directories.
+
+They must not be deleted by Cinelingus run cleanup.
+
+Determinism and provenance
+
+Every analysis artifact must record:
+
+* requested backend
+* actual backend
+* model version
+* device
+* relevant thresholds
+* confidence
+* fallback path
+* analysis timestamp
+
+The same inputs, configuration, model versions, and seed should produce materially reproducible planning results.
+
+Safety rule
+
+Model evidence may justify accepting or rejecting a boundary.
+
+It must never manufacture a supposedly safe boundary where confidence is insufficient.
+
+The approved low-confidence behavior is:
+
+1. preserve the longer complete moment;
+2. choose another candidate;
+3. relax target duration;
+4. fall back to a simpler montage;
+5. reject the montage plan.
+
+Duration compliance is subordinate to cinematic integrity.
+
+2. PHASED VISUAL ANALYSIS
+
+Phase 1 is approved as the production foundation.
+
+Phase 1 evidence may include:
+
+* hard cuts
+* dissolves
+* fades
+* speech starts and ends
+* silence
+* optical motion
+* camera-motion magnitude
+* local stillness
+* shot duration
+* adjacent-shot compatibility
+* conservative moment grouping
+
+Phase 1 must not claim to understand gestures, gaze, performance intention, or completed human action.
+
+Its acceptance language should remain literal:
+
+* cut-bounded
+* transition-complete
+* speech-complete
+* low boundary motion
+* stable boundary
+* conservatively grouped
+
+Phase 2 may add:
+
+* face continuity
+* mouth activity
+* gaze changes
+* pose changes
+* gesture evidence
+* action-completion evidence
+* reaction-shot classification
+
+These signals remain evidence rather than absolute truth.
+
+The system should not expose unsupported semantic certainty such as “the gesture is complete” when it only knows that pose and motion stabilized.
+
+3. AUDIO LAW POLICY
+
+The long-term default remains:
+
+Dialogue Replacement plus Continuous Ambient Bed.
+
+However, the system must describe what it actually rendered rather than what the filter requested.
+
+Requested Audio Law and Actual Audio Method are separate fields.
+
+Approved actual methods include:
+
+Stem-Separated Replacement
+
+Dialogue is removed or suppressed using locally separated stems. Music, ambience, and usable effects are retained.
+
+Mixed-Bed Replacement
+
+The original mixed soundtrack is retained beneath replacement dialogue with aggressive, speech-aware attenuation.
+
+Original Reality
+
+The selected visual moment retains its synchronized source audio.
+
+Generated or Constructed Bed
+
+A separately assembled bed is used according to the filter contract.
+
+Silence or Minimal Bed
+
+Only the authored dialogue and deliberately retained effects are present.
+
+Fallback hierarchy
+
+For filters requesting Dialogue Replacement plus Continuous Ambient Bed:
+
+1. use reliable separated ambience, music, and effects stems;
+2. use a heavily ducked mixed bed when residual speech is acceptably low;
+3. use Original Reality when the filter permits it;
+4. use a minimal or constructed bed;
+5. reject the candidate when none preserve intelligibility.
+
+The renderer must not label mixed-source audio as a clean ambient stem.
+
+Ghost speech is an acceptance failure when it competes with, duplicates, or contradicts the authored dialogue.
+
+Minor indistinct vocal residue may be tolerated only when:
+
+* it is not intelligible;
+* it does not resemble a second clear line;
+* it does not materially confuse speaker identity;
+* the acceptance artifact records the fallback method.
+
+Room-tone handles remain desirable, but they must be drawn from material that does not reintroduce intelligible source dialogue.
+
+4. CALIBRATION CORPUS
+
+A small internal calibration corpus is approved and required before declaring moment-boundary behavior production-ready.
+
+The first corpus should contain at least:
+
+* 20 acceptable entrances
+* 20 acceptable exits
+* 10 acceptable J-cuts or L-cuts
+* 10 strong reaction-shot uses
+* 20 visibly broken boundaries
+* 5 long-take examples
+* 5 dissolve examples
+* 5 fade examples
+* 5 speech-over-reaction examples
+* 5 ambiguous or disputed examples
+
+One example may satisfy more than one category.
+
+Annotation unit
+
+Each example should record:
+
+* source identifier
+* source-film identifier
+* start timestamp
+* end timestamp
+* relevant shot IDs
+* proposed visual boundary
+* proposed audio boundary when different
+* positive or negative label
+* reason codes
+* short human note
+* annotator confidence
+* optional preferred alternative boundary
+
+Approved reason codes should include:
+
+* CLEAN_CUT
+* COMPLETE_SPEECH
+* COMPLETE_ACTION
+* LOW_BOUNDARY_MOTION
+* STABLE_FRAME
+* REACTION_COVERAGE
+* VALID_J_CUT
+* VALID_L_CUT
+* TRANSITION_COMPLETE
+* ESTABLISHING_VALUE
+* MID_WORD
+* MID_SENTENCE_ONSET
+* MOUTH_INTERRUPTED
+* SUBJECT_MOTION_INTERRUPTED
+* CAMERA_MOTION_INTERRUPTED
+* ENTERS_DURING_TRANSITION
+* EXITS_DURING_TRANSITION
+* VISUAL_CONTEXT_MISSING
+* SOURCE_OVERDOMINANCE
+* EXCESSIVE_LENGTH
+* EXCESSIVE_FRAGMENTATION
+* AMBIGUOUS
+
+Annotation philosophy
+
+The corpus is not intended to prove that there is one objectively correct edit.
+
+It exists to establish Cinelingus’s preferred tolerance.
+
+Disagreement is useful. Ambiguous examples should not be forced into artificial consensus.
+
+Where two boundaries are both acceptable, both may be recorded.
+
+Where a boundary is aesthetically strange but intentionally useful, it should be labeled acceptable only under a declared discontinuity law.
+
+Corpus separation
+
+The calibration material must be divided into:
+
+* development examples
+* threshold-tuning examples
+* held-out acceptance examples
+
+The held-out set must not be used to tune thresholds.
+
+Copyright and distribution
+
+The calibration manifest and annotations may live in the project.
+
+Copyrighted source clips and frames should not be committed to a public repository unless distribution rights are clear.
+
+The corpus loader should support local source paths and verify source hashes.
+
+5. ACCEPTANCE STANDARD
+
+Phase 1 is ready for broader use when the held-out corpus demonstrates that the system:
+
+* does not cut inside audible words;
+* does not enter or leave inside detected dissolves or fades;
+* strongly prefers cut-bounded moments;
+* rejects high-motion boundaries unless the filter permits discontinuity;
+* preserves longer material when safe subdivision is uncertain;
+* reports requested and actual audio methods honestly;
+* records source, scene, shot, visual-boundary, and audio-boundary provenance;
+* produces fallback plans without fabricating confidence;
+* can assemble a montage from multiple distinct moments;
+* can enforce required source participation;
+* can complete a Quick Preview without Enhanced Vision;
+* remains deterministic under fixed inputs, models, configuration, and seed.
+
+Production readiness does not require perfect recognition of human actions.
+
+It requires conservative behavior, traceable decisions, honest capability reporting, and visibly fewer broken edits than naive shot sampling.
+
+6. FIRST MONTAGE-NATIVE COHORT
+
+The approved first cohort is:
+
+* Self Shuffle
+* Flashback
+* Foreshadow
+* Recollection
+* Dream
+
+Recommended implementation order:
+
+1. Self Shuffle
+2. Flashback
+3. Foreshadow
+4. Recollection
+5. Dream
+
+Self Shuffle is the clearest architectural proving ground because it requires broad sampling from one film without immediately introducing cross-film normalization.
+
+Flashback and Foreshadow then validate chronology and structural-role assignment.
+
+Recollection validates repetition, partial recurrence, and memory-shaped selection.
+
+Dream should follow only after conservative montage behavior is stable, because its permissive grammar could otherwise conceal editing defects.
+
+7. FINAL PRODUCT PRINCIPLE
+
+Cinelingus may use increasingly sophisticated models, but model sophistication is not the definition of quality.
+
+The product standard remains:
+
+Respect before Surprise.
+
+When uncertain, preserve the cinematic moment.
+
+When transformation conflicts with intelligibility, preserve intelligibility.
+
+When target duration conflicts with a clean boundary, preserve the clean boundary.
+
+When the requested audio law cannot be produced honestly, declare and use the best available fallback.
+
+Engineering has full authority to proceed within these constraints.

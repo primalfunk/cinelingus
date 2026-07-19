@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "speaker_map",
   "type": "object",
-  "required": ["schema_version", "tool_version", "media_hash", "creation_timestamp", "diarization_tool", "model_name", "speaker_count", "speakers", "speaker_segments"],
+  "required": ["schema_version", "tool_version", "media_hash", "creation_timestamp", "diarization_tool", "requested_backend", "actual_backend", "model_name", "speaker_count", "speakers", "speaker_segments", "speaker_assignments", "diarization_status", "alignment_status", "fallback_status", "diagnostics"],
   "properties": {
     "schema_version": { "type": "string" },
     "tool_version": { "type": "string" },
@@ -10,6 +10,10 @@
     "creation_timestamp": { "type": "string" },
     "diarization_tool": { "type": "string" },
     "requested_backend": { "type": "string" },
+    "actual_backend": { "type": "string" },
+    "diarization_status": { "type": "string", "enum": ["SUCCESS", "FALLBACK", "NOT_REQUESTED"] },
+    "alignment_status": { "type": "string", "enum": ["COMPLETE", "PARTIAL", "WEAK", "UNAVAILABLE"] },
+    "fallback_status": { "type": "string", "enum": ["NONE", "CONTINUITY_INFERENCE", "HEURISTIC"] },
     "model_name": { "type": "string" },
     "config_signature": { "type": "string" },
     "speaker_count": { "type": "integer" },
@@ -44,6 +48,30 @@
         }
       }
     },
+    "speaker_assignments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "source_id", "start", "end", "duration", "speaker_id", "confidence", "assignment_method", "evidence_status", "fallback_label"],
+        "properties": {
+          "id": { "type": "string" },
+          "source_id": { "type": "string" },
+          "start": { "type": "number" },
+          "end": { "type": "number" },
+          "duration": { "type": "number" },
+          "speaker_id": { "type": "string" },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "assignment_method": { "type": "string", "enum": ["DIRECT_OVERLAP", "AMBIGUOUS_OVERLAP", "CONTINUITY_INFERENCE", "HEURISTIC"] },
+          "evidence_status": { "type": "string", "enum": ["DIRECT", "DIRECT_AMBIGUOUS", "INFERRED"] },
+          "fallback_label": { "type": "boolean" },
+          "overlap_seconds": { "type": "number", "minimum": 0 },
+          "item_overlap_ratio": { "type": "number", "minimum": 0, "maximum": 1 },
+          "supporting_segment_ids": { "type": "array", "items": { "type": "string" } },
+          "competing_speakers": { "type": "array", "items": { "type": "object" } }
+        }
+      }
+    },
+    "diagnostics": { "type": "object" },
     "warnings": { "type": "array", "items": { "type": "string" } }
   }
 }

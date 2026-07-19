@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cinelingus Schedule Qualification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "qualification_version", "creation_timestamp", "contract_id", "filter_id", "status", "checks", "measurements", "actions", "reasons", "schedule_signature"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "qualification_version": {"type": "string"},
+    "creation_timestamp": {"type": "string"},
+    "contract_id": {"type": "string", "minLength": 1},
+    "filter_id": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["READY", "DEGRADED", "BLOCKED"]},
+    "checks": {"type": "object", "minProperties": 1},
+    "measurements": {"type": "object"},
+    "actions": {"type": "array", "items": {"type": "object"}},
+    "reasons": {"type": "array", "items": {"type": "string"}},
+    "schedule_signature": {"type": "string", "minLength": 1}
+  }
+}

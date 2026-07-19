@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "id": "translation",
+  "name": "Translation",
+  "description": "Transfer donor spoken performances across the complete supported anchor-film timeline.",
+  "input_requirements": [
+    "destination_video",
+    "source_dialogue"
+  ],
+  "transformation_strategy": "translation",
+  "selection_strategy": {
+    "source": "source_dialogue.filtered_dialogue_events",
+    "destination": "destination_video.filtered_timeline"
+  },
+  "scheduling": {
+    "mode": "config.scheduling_mode",
+    "best_fit_lookahead": "config.best_fit_lookahead"
+  },
+  "render_outputs": {
+    "audio": "replacement_dialogue.wav",
+    "video": "translation_output.mp4"
+  },
+  "parameters": {}
+}

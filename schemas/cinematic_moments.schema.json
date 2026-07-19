@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cinelingus Cinematic Moments",
+  "type": "object",
+  "required": ["schema_version", "tool_version", "creation_timestamp", "config_signature", "source_id", "source_media_hash", "requested_backend", "actual_backend", "backend_version", "capability_tags", "fallback_path", "moment_count", "moments"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "tool_version": {"type": "string", "minLength": 1},
+    "creation_timestamp": {"type": "string", "minLength": 1},
+    "config_signature": {"type": "string", "minLength": 1},
+    "source_id": {"type": "string", "minLength": 1},
+    "source_media_hash": {"type": "string", "minLength": 1},
+    "requested_backend": {"type": "string", "minLength": 1},
+    "actual_backend": {"type": "string", "minLength": 1},
+    "backend_version": {"type": "string", "minLength": 1},
+    "capability_tags": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "enum": ["HUMAN_ANNOTATION", "CORE_HEURISTIC", "ENHANCED_VISION", "ENHANCED_AUDIO", "FALLBACK_INFERENCE", "CONTRACT_RULE", "PLANNER_DERIVATION"]}},
+    "fallback_path": {"type": "string", "minLength": 1},
+    "moment_count": {"type": "integer", "minimum": 0},
+    "moments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "source_id", "source_media_hash", "scene_id", "shot_ids", "start", "end", "duration", "visual_boundary", "audio_boundary", "assertions", "fallback_status"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "moment_[a-f0-9]{20}"},
+          "source_id": {"type": "string", "minLength": 1},
+          "source_media_hash": {"type": "string", "minLength": 1},
+          "scene_id": {"type": "string", "minLength": 1},
+          "shot_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "start": {"type": "number", "minimum": 0},
+          "end": {"type": "number", "minimum": 0},
+          "duration": {"type": "number", "minimum": 0},
+          "visual_boundary": {"type": "object", "required": ["start", "end"], "additionalProperties": false, "properties": {"start": {"type": "number", "minimum": 0}, "end": {"type": "number", "minimum": 0}}},
+          "audio_boundary": {"type": "object", "required": ["start", "end"], "additionalProperties": false, "properties": {"start": {"type": "number", "minimum": 0}, "end": {"type": "number", "minimum": 0}}},
+          "audio_activity": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["policy_version", "threshold_dbfs", "window_seconds", "active_ratio", "silence_ratio", "maximum_silent_run_seconds", "maximum_allowed_dead_air_seconds", "eligible", "silent_intervals"],
+            "properties": {
+              "policy_version": {"type": "string", "minLength": 1},
+              "threshold_dbfs": {"type": "number"},
+              "window_seconds": {"type": "number", "exclusiveMinimum": 0},
+              "active_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+              "silence_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+              "maximum_silent_run_seconds": {"type": "number", "minimum": 0},
+              "maximum_allowed_dead_air_seconds": {"type": "number", "minimum": 0},
+              "eligible": {"type": "boolean"},
+              "silent_intervals": {"type": "array", "items": {"type": "object", "required": ["start", "end", "duration"], "additionalProperties": false, "properties": {"start": {"type": "number", "minimum": 0}, "end": {"type": "number", "minimum": 0}, "duration": {"type": "number", "minimum": 0}}}}
+            }
+          },
+          "assertions": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["id", "name", "capability_tag", "value", "confidence", "backend", "backend_version", "source_artifact", "supporting_evidence_ids", "fallback", "note"], "additionalProperties": false, "properties": {"id": {"type": "string", "minLength": 1}, "name": {"type": "string", "minLength": 1}, "capability_tag": {"type": "string", "enum": ["HUMAN_ANNOTATION", "CORE_HEURISTIC", "ENHANCED_VISION", "ENHANCED_AUDIO", "FALLBACK_INFERENCE", "CONTRACT_RULE", "PLANNER_DERIVATION"]}, "value": {"type": ["boolean", "number", "string"]}, "confidence": {"type": "number", "minimum": 0, "maximum": 1}, "backend": {"type": "string", "minLength": 1}, "backend_version": {"type": "string", "minLength": 1}, "source_artifact": {"type": "string", "minLength": 1}, "supporting_evidence_ids": {"type": "array", "items": {"type": "string"}}, "fallback": {"type": "boolean"}, "note": {"type": "string"}}}},
+          "fallback_status": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

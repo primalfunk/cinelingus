@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from movie_masher.publish import publish_single_video
+from cinelingus.publish import publish_single_video
 
 
 def test_publish_keeps_video_and_lightweight_audit_sidecars(tmp_path: Path) -> None:
@@ -10,7 +10,7 @@ def test_publish_keeps_video_and_lightweight_audit_sidecars(tmp_path: Path) -> N
     video = work / "final.mp4"
     video.write_bytes(b"video")
     (output / "run_report.json").write_text("{}")
-    existing = output / "cinelingus_movie-masher_2026-01-01_00-00-00.mp4"
+    existing = output / "cinelingus_cinelingus_2026-01-01_00-00-00.mp4"
     audio = work / "intermediate.wav"
     report = work / "mutation_report.json"
     log = work / "run.log"

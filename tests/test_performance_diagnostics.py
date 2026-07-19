@@ -1,7 +1,7 @@
-﻿from pathlib import Path
+from pathlib import Path
 
-from movie_masher.performance_diagnostics import build_performance_diagnostics
-from movie_masher.validation import validate_artifact
+from cinelingus.performance_diagnostics import build_performance_diagnostics
+from cinelingus.validation import validate_artifact
 
 
 def test_build_performance_diagnostics_explains_low_scoring_matches(tmp_path: Path) -> None:

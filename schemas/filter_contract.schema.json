@@ -66,7 +66,7 @@
     },
     "capabilities": {
       "type": "object", "additionalProperties": false,
-      "required": ["implemented", "implementation_key", "execution_mode", "sparse_schedule", "requires_speaker_identity", "supports_preview", "supports_best_short", "supports_full_length", "requires_output_acceptance"],
+      "required": ["implemented", "implementation_key", "execution_mode", "sparse_schedule", "requires_speaker_identity", "supports_preview", "supports_full_length", "requires_output_acceptance"],
       "properties": {
         "implemented": {"type": "boolean"},
         "implementation_key": {"type": ["string", "null"]},
@@ -74,7 +74,6 @@
         "sparse_schedule": {"type": "boolean"},
         "requires_speaker_identity": {"type": "boolean"},
         "supports_preview": {"type": "boolean"},
-        "supports_best_short": {"type": "boolean"},
         "supports_full_length": {"type": "boolean"},
         "requires_output_acceptance": {"type": "boolean"}
       }

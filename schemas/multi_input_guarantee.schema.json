@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cinelingus Multi-input Render Guarantee",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "guarantee_version", "creation_timestamp", "contract_id", "filter_id", "film_count", "status", "applicable_filter_ids", "checks", "expected_contributor_hashes", "observed_contributor_hashes", "reasons"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "guarantee_version": {"type": "string"},
+    "creation_timestamp": {"type": "string"},
+    "contract_id": {"type": "string"},
+    "filter_id": {"type": "string"},
+    "film_count": {"type": "integer", "minimum": 2},
+    "status": {"type": "string", "enum": ["READY_TO_RENDER", "REJECTED"]},
+    "applicable_filter_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "checks": {"type": "object", "additionalProperties": {"type": "boolean"}},
+    "expected_contributor_hashes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "observed_contributor_hashes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "reasons": {"type": "array", "items": {"type": "string"}}
+  }
+}

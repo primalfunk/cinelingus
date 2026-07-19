@@ -1,22 +1,22 @@
 from pathlib import Path
 
-from movie_masher.operations import RepeatOperation, ReplaceOperation, ShuffleOperation
-from movie_masher.placement import PlaceIntoPerformances
-from movie_masher.selections import SelectDialogue, SelectPerformances
-from movie_masher.transformation_plan import (
+from cinelingus.operations import RepeatOperation, ReplaceOperation, ShuffleOperation
+from cinelingus.placement import PlaceIntoPerformances
+from cinelingus.selections import SelectDialogue, SelectPerformances
+from cinelingus.transformation_plan import (
     TRANSFORMATION_VOCABULARY,
     VERB_PLACE,
     VERB_RENDER,
     VERB_REPLACE,
     VERB_SELECT,
-    build_movie_masher_plan,
+    build_translation_plan,
     write_transformation_plan,
 )
-from movie_masher.validation import validate_artifact
+from cinelingus.validation import validate_artifact
 
 
-def test_build_movie_masher_plan_describes_vocabulary_and_counts(tmp_path: Path) -> None:
-    plan = build_movie_masher_plan(
+def test_build_translation_plan_describes_vocabulary_and_counts(tmp_path: Path) -> None:
+    plan = build_translation_plan(
         root=tmp_path,
         destination_movie={"path": "dest.mp4", "media_hash": "desthash", "duration": 10.0},
         source_movie={"path": "source.mp4", "media_hash": "sourcehash", "duration": 8.0},
@@ -28,9 +28,10 @@ def test_build_movie_masher_plan_describes_vocabulary_and_counts(tmp_path: Path)
         output_dir=tmp_path / "output",
         max_time_stretch=1.1,
     )
+    assert plan["transformation"]["display_name"] == "Translation"
     path = write_transformation_plan(
         plan=plan,
-        output_path=tmp_path / "output" / "movie_masher" / "transformation_plan.json",
+        output_path=tmp_path / "output" / "translation" / "transformation_plan.json",
         latest_path=tmp_path / "output" / "transformation_plan.json",
         schemas_dir=Path.cwd() / "schemas",
     )

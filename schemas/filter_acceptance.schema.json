@@ -3,7 +3,7 @@
   "title": "filter_acceptance",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "filter_id", "contract_version", "status", "checks", "measurements", "outputs", "invariants"],
+  "required": ["schema_version", "filter_id", "contract_version", "status", "checks", "measurements", "placement_qualification", "outputs", "invariants"],
   "properties": {
     "schema_version": {"type": "string", "const": "1.0"},
     "filter_id": {"type": "string"},
@@ -12,13 +12,20 @@
     "checks": {"type": "object"},
     "measurements": {
       "type": "object", "additionalProperties": false,
-      "required": ["dialogue_coverage", "mapped_dialogue_duration", "render_duration", "active_ratio", "silence_ratio", "occupied_timeline_buckets", "timeline_bucket_count", "unique_source_clip_count", "source_placement_count", "unique_source_ratio", "maximum_source_reuse", "minimum_dialogue_coverage", "minimum_occupied_timeline_buckets", "minimum_unique_source_ratio", "maximum_allowed_source_reuse"],
+      "required": ["dialogue_coverage", "mapped_dialogue_duration", "render_duration", "active_ratio", "silence_ratio", "maximum_silent_run_seconds", "maximum_allowed_dead_air_seconds", "audio_activity_threshold_dbfs", "silent_intervals", "dead_air_intervals", "unexplained_dead_air_intervals", "classified_silent_intervals", "occupied_timeline_buckets", "timeline_bucket_count", "unique_source_clip_count", "source_placement_count", "unique_source_ratio", "maximum_source_reuse", "minimum_dialogue_coverage", "minimum_occupied_timeline_buckets", "minimum_unique_source_ratio", "maximum_allowed_source_reuse"],
       "properties": {
         "dialogue_coverage": {"type": "number", "minimum": 0, "maximum": 1},
         "mapped_dialogue_duration": {"type": "number", "minimum": 0},
         "render_duration": {"type": "number", "minimum": 0},
         "active_ratio": {"type": "number", "minimum": 0, "maximum": 1},
         "silence_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "maximum_silent_run_seconds": {"type": "number", "minimum": 0},
+        "maximum_allowed_dead_air_seconds": {"type": "number", "minimum": 0},
+        "audio_activity_threshold_dbfs": {"type": "number"},
+        "silent_intervals": {"type": "array", "items": {"type": "object", "required": ["start", "end", "duration"], "additionalProperties": false, "properties": {"start": {"type": "number", "minimum": 0}, "end": {"type": "number", "minimum": 0}, "duration": {"type": "number", "minimum": 0}}}},
+        "dead_air_intervals": {"type": "array", "items": {"type": "object", "required": ["start", "end", "duration"], "additionalProperties": false, "properties": {"start": {"type": "number", "minimum": 0}, "end": {"type": "number", "minimum": 0}, "duration": {"type": "number", "minimum": 0}}}},
+        "unexplained_dead_air_intervals": {"type": "array", "items": {"type": "object"}},
+        "classified_silent_intervals": {"type": "array", "items": {"type": "object"}},
         "occupied_timeline_buckets": {"type": "integer", "minimum": 0},
         "timeline_bucket_count": {"type": "integer", "minimum": 1},
         "unique_source_clip_count": {"type": "integer", "minimum": 0},
@@ -31,6 +38,7 @@
         "maximum_allowed_source_reuse": {"type": "integer", "minimum": 0}
       }
     },
+    "placement_qualification": {"type": "object", "required": ["policy_version", "cinematic_moments_detected", "preferred_audio_qualified_moments", "dialogue_bearing_moments", "dialogue_windows_examined", "complete_shot_submoments_constructed", "locally_rejected_submoments", "preferred_legal_placements", "local_legal_placements", "final_legal_authored_placements", "deterministic_rescue_invoked", "final_output_dead_air_limit_seconds", "qualification_outcome"]},
     "outputs": {"type": "object"},
     "invariants": {"type": "array", "items": {"type": "object"}}
   }

@@ -1,6 +1,6 @@
 import importlib.util
 
-from movie_masher.module_probe import resilient_find_spec
+from cinelingus.module_probe import resilient_find_spec
 
 
 def test_module_probe_retries_transient_windows_oserror(monkeypatch) -> None:

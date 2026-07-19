@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0",
+  "resolver_version": "example",
+  "sources": {
+    "cinema_reference_a": "D:/Local Media/Reference Film A.mkv",
+    "cinema_reference_b": "D:/Local Media/Reference Film B.mkv"
+  },
+  "instructions": "Copy this file to config/montage_corpus_resolver.local.json, replace placeholders with local paths, and keep that local file outside version control. The corpus loader must verify each resolved file against its portable manifest hash."
+}

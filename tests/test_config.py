@@ -1,21 +1,19 @@
 from pathlib import Path
 
-from movie_masher.cli import build_parser
-from movie_masher.config import load_config
+from cinelingus.cli import build_parser
+from cinelingus.config import load_config
 
 
-def test_config_overrides_paths_mode_and_quick_seconds(tmp_path: Path) -> None:
+def test_config_overrides_paths_and_mode_without_partial_input_controls(tmp_path: Path) -> None:
     config = load_config(Path.cwd())
     updated = config.with_overrides(
         mode="fast_preview",
-        quick_seconds=12.5,
         destination_video=tmp_path / "dest.mp4",
         source_dialogue=tmp_path / "source.mp4",
         output_dir=tmp_path / "out",
     )
 
     assert updated.transcription_mode == "fast_preview"
-    assert updated.quick_test_seconds == 12.5
     assert updated.destination_video == tmp_path / "dest.mp4"
     assert updated.source_dialogue == tmp_path / "source.mp4"
     assert updated.output_dir == tmp_path / "out"
@@ -30,10 +28,8 @@ def test_config_overrides_paths_mode_and_quick_seconds(tmp_path: Path) -> None:
     assert config.speaker_diarization_backend == "pyannote"
     assert config.speaker_diarization_model == "pyannote/speaker-diarization-community-1"
     assert config.speaker_diarization_device == "auto"
-    assert config.target_duration_seconds == 180.0
-    assert config.minimum_duration_seconds == 120.0
-    assert config.maximum_duration_seconds == 300.0
-    assert config.allow_full_movie_mode is False
+    assert not hasattr(config, "quick_test_seconds")
+    assert not hasattr(config, "target_duration_seconds")
 
 
 def test_config_advanced_overrides() -> None:
@@ -72,6 +68,13 @@ def test_cli_accepts_output_dir_override(tmp_path: Path) -> None:
     args = build_parser().parse_args(["--output-dir", str(tmp_path / "chosen"), "inspect"])
 
     assert args.output_dir == tmp_path / "chosen"
+
+
+def test_cli_rejects_removed_quick_prefix_option() -> None:
+    import pytest
+
+    with pytest.raises(SystemExit):
+        build_parser().parse_args(["--quick", "30", "inspect"])
 
 
 def test_quality_modes_keep_tiny_only_for_fast_preview() -> None:

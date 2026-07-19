@@ -1,6 +1,6 @@
-﻿from pathlib import Path
+from pathlib import Path
 
-from movie_masher.schedule import _append_source_exhaustion_reuse_fill_speech_slots, _append_undercovered_speech_slot_fill, _reanchor_single_slot_mappings_to_speech_start, build_schedule
+from cinelingus.schedule import _append_source_exhaustion_reuse_fill_speech_slots, _append_undercovered_speech_slot_fill, _reanchor_single_slot_mappings_to_speech_start, build_schedule
 
 
 def test_build_schedule_keeps_order_and_stops(tmp_path: Path) -> None:
@@ -36,7 +36,7 @@ def test_build_schedule_keeps_order_and_stops(tmp_path: Path) -> None:
         "limit",
     ]
     assert schedule["scheduling_mode"] == "strict_order"
-    assert schedule["transformation_name"] == "movie_masher"
+    assert schedule["transformation_name"] == "translation"
     assert [step["verb"] for step in schedule["transformation_history"]] == ["select", "select", "place", "replace", "render"]
 
 
@@ -1005,7 +1005,7 @@ def test_reanchor_single_slot_mapping_moves_line_to_visible_speech_start() -> No
 
 
 def test_source_exhaustion_speech_slot_fill_advances_when_candidate_trims(monkeypatch) -> None:
-    import movie_masher.schedule as schedule_module
+    import cinelingus.schedule as schedule_module
 
     calls = {"count": 0}
 

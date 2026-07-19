@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from movie_masher.filter_lab.artifacts import materialize_required_artifacts
-from movie_masher.util import read_json, write_json
+from cinelingus.filter_lab.artifacts import materialize_required_artifacts
+from cinelingus.util import read_json, write_json
 
 
 def test_required_artifacts_are_materialized_on_demand(tmp_path: Path) -> None:

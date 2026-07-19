@@ -22,12 +22,12 @@ The next phase will:
 ### Available now
 
 - A 28-filter, seven-family registry with stable namespaced identifiers.
-- Eight runnable filters: Transposition, Self Shuffle, Echo, Drift, Contagion, Possession, Foreshadow, and Bloom.
+- Eight runnable filters: Translation, Self Shuffle, Echo, Drift, Contagion, Possession, Foreshadow, and Bloom.
 - Versioned recipes and normalized transformation plans.
 - Deterministic strategy builders for the four new Filter Laboratory operators and compatibility adapters for the four legacy operators.
 - Shared dialogue-event, performance, speaker, scene, shot, and speaker-graph artifacts.
 - Schema-driven GUI controls, implementation-state gating, progress, reports, previews, publication, and retained audit artifacts.
-- Proven schedule renderers for replacement dialogue, overlay, soundtrack-preserving mutation, muting/ducking, time displacement, and short-form reels.
+- Proven schedule renderers for replacement dialogue, overlay, soundtrack-preserving mutation, muting/ducking, time displacement, and complete-source timelines curtailed only by required supporting audio.
 - Deterministic seeds, explicit rejection reasons, filter metrics, invariant validation, requested/actual backend reporting, and final audio provenance.
 
 ### Conceptual but not executable yet
@@ -65,7 +65,7 @@ Proposed source-of-truth paths:
 
 - `schemas/filter_contract.schema.json`
 - `filter_contracts/<family>/<filter>.json`
-- `src/movie_masher/filter_lab/contracts.py`
+- `src/cinelingus/filter_lab/contracts.py`
 - generated human catalog: `docs/filter_contract_catalog.md`
 
 Each contract will carry:
@@ -165,7 +165,7 @@ Write contracts from current behavior, in this order:
 3. Contagion — graph, exposure, infection state, and progression.
 4. Bloom — field-like progression metrics without claiming a general field engine.
 5. Self Shuffle — legacy behavior and temporal/source-line guarantees.
-6. Transposition — two-film roles, speaker mapping, performance fit, and audio gate.
+6. Translation — two-film roles, speaker mapping, performance fit, and audio gate.
 7. Echo — overlay and ducking behavior.
 8. Drift — positive progressive displacement and soundtrack preservation.
 
@@ -580,7 +580,7 @@ Existing runnable operators:
 
 - Drift
 - Echo
-- Transposition
+- Translation
 - Self Shuffle
 - Contagion
 - Possession

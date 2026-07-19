@@ -4,7 +4,7 @@ The Filter Laboratory is registry-driven. A new filter should not require edits 
 
 ## 1. Define the creative contract
 
-Add one machine-valid JSON contract beneath filter_contracts/<family>/ and one matching FilterDefinition in movie_masher.filter_lab.registry. The contract is the behavioral authority; registry metadata declares runtime capabilities.
+Add one machine-valid JSON contract beneath filter_contracts/<family>/ and one matching FilterDefinition in cinelingus.filter_lab.registry. The contract is the behavioral authority; registry metadata declares runtime capabilities.
 
 - a stable namespaced ID and family;
 - creative and operational descriptions;
@@ -22,13 +22,13 @@ For a Multiworld filter, also declare `minimum_films`, `maximum_films` (`null` m
 
 Multiworld execution follows one reusable sequence: load films, inspect films, create the shared timeline, construct the world model, apply the cinematic law, generate replacement decisions, review, and render. New behavior belongs only in the cinematic-law applicator. Film A is the anchor unless `anchor_behavior` declares a shared or law-defined timeline.
 
-Dialogue-centric laws use movie_masher.filter_lab.multiworld_strategies and Pipeline.run_multiworld_filter. Every mapping must carry source_film_id, destination_film_id, source_media_hash, and destination_media_hash. Do not advertise Best Short until a reel-level test proves the shortened result retains all contract-required films, phases, and layers.
+Dialogue-centric laws use cinelingus.filter_lab.multiworld_strategies and Pipeline.run_multiworld_filter. Every mapping must carry source_film_id, destination_film_id, source_media_hash, and destination_media_hash. Every filter consumes complete media files and exposes Full Length as its only output form. Do not add clip-length controls or a shortened execution path; when required supporting audio is shorter than Film A, declare that duration boundary and curtail the rendered video there.
 
 The normalized plan must expose `inputs`, `outputs`, `affected_artifacts`, and `intermediate_products`. These are Procedure composition boundaries; Procedures themselves are not executed in this release.
 
 ## 3. Produce a normalized plan
 
-Implement a deterministic strategy in `movie_masher.filter_lab.strategies`. It receives analyzed clips/windows, duration, normalized parameters, and a seed. It must return a schedule carrying:
+Implement a deterministic strategy in `cinelingus.filter_lab.strategies`. It receives analyzed clips/windows, duration, normalized parameters, and a seed. It must return a schedule carrying:
 
 - mappings compatible with the established renderer;
 - rejected candidates and reasons;

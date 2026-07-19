@@ -1,31 +1,31 @@
 from pathlib import Path
 
-from movie_masher.transformations import (
-    MovieMasherTransformation,
+from cinelingus.transformations import (
+    TranslationTransformation,
     SelfShuffleTransformation,
     TransformationContext,
     TransformationResult,
     default_registry,
 )
-from movie_masher.transformations.report import write_transformation_report
-from movie_masher.validation import validate_artifact
+from cinelingus.transformations.report import write_transformation_report
+from cinelingus.validation import validate_artifact
 
 
 def test_default_registry_contains_transformations() -> None:
     registry = default_registry()
 
-    assert registry.get("movie_masher") is MovieMasherTransformation
+    assert registry.get("translation") is TranslationTransformation
     assert registry.get("self_shuffle") is SelfShuffleTransformation
-    assert "movie_masher" in registry.ids()
+    assert "translation" in registry.ids()
     assert "self_shuffle" in registry.ids()
 
 
-def test_movie_masher_metadata_declares_contract() -> None:
-    metadata = MovieMasherTransformation.metadata
+def test_translation_metadata_declares_contract() -> None:
+    metadata = TranslationTransformation.metadata
 
-    assert metadata.id == "movie_masher"
+    assert metadata.id == "translation"
     assert metadata.required_inputs == ("films",)
-    assert "movie_masher_output.mp4" in metadata.generated_outputs
+    assert "translation_output.mp4" in metadata.generated_outputs
 
 
 def test_self_shuffle_metadata_declares_contract() -> None:
@@ -58,30 +58,38 @@ def test_write_transformation_report(tmp_path: Path) -> None:
         },
     )()
     result = TransformationResult(
-        transformation_id="movie_masher",
-        outputs={"video": tmp_path / "output" / "movie_masher_output.mp4"},
+        transformation_id="translation",
+        outputs={"video": tmp_path / "output" / "translation_output.mp4"},
     )
 
-    path = write_transformation_report(metadata=MovieMasherTransformation.metadata, pipeline=pipeline, result=result)
+    path = write_transformation_report(metadata=TranslationTransformation.metadata, pipeline=pipeline, result=result)
 
     latest_path = tmp_path / "output" / "transformation_report.json"
 
-    assert path == tmp_path / "output" / "movie_masher" / "transformation_report.json"
+    assert path == tmp_path / "output" / "translation" / "transformation_report.json"
     assert path.exists()
     assert latest_path.exists()
-    assert "movie_masher" in path.read_text(encoding="utf-8")
+    assert "translation" in path.read_text(encoding="utf-8")
     validate_artifact("transformation_report", path, Path.cwd() / "schemas")
     validate_artifact("transformation_report", latest_path, Path.cwd() / "schemas")
 
 
 
-def test_movie_masher_transformation_passes_artifacts_forward(tmp_path: Path) -> None:
+def test_translation_transformation_passes_artifacts_forward(tmp_path: Path, monkeypatch) -> None:
+    import cinelingus.transformations.translation as translation_module
+
     class Config:
         root = tmp_path
         output_dir = tmp_path / "output"
         destination_video = tmp_path / "destination.mp4"
         source_dialogue = tmp_path / "source.mp4"
         max_time_stretch = 1.1
+        target_duration_seconds = 8.0
+        minimum_duration_seconds = 7.0
+        render_sample_rate = 48000
+        render_channels = 2
+        target_lufs = -16.0
+        audio_fade_duration = 0.04
         films = (destination_video, source_dialogue)
 
     class FakePipeline:
@@ -90,7 +98,7 @@ def test_movie_masher_transformation_passes_artifacts_forward(tmp_path: Path) ->
             Config.destination_video.write_text("dest", encoding="utf-8")
             Config.source_dialogue.write_text("source", encoding="utf-8")
             self.config = Config
-            self.destination = type("Dest", (), {"media_hash": "desthash"})()
+            self.destination = type("Dest", (), {"media_hash": "desthash", "media_path": Config.destination_video})()
             self.source = type("Source", (), {"media_hash": "sourcehash"})()
             self.schemas_dir = Path.cwd() / "schemas"
             self.calls: dict[str, int] = {}
@@ -156,6 +164,21 @@ def test_movie_masher_transformation_passes_artifacts_forward(tmp_path: Path) ->
                 ]
             }
 
+        def build_cinematic_moments(self, **kwargs):
+            self._called("build_cinematic_moments")
+            return {
+                "source_id": "film_1", "source_media_hash": "desthash", "moment_count": 3,
+                "moments": [
+                    {"id": "moment_1", "source_id": "film_1", "source_media_hash": "desthash", "scene_id": "scene_1", "shot_ids": ["shot_1"], "start": 0.0, "end": 2.0, "duration": 2.0, "visual_boundary": {"start": 0.0, "end": 2.0}, "audio_boundary": {"start": 0.0, "end": 2.0}, "assertions": [], "fallback_status": "none"},
+                    {"id": "moment_2", "source_id": "film_1", "source_media_hash": "desthash", "scene_id": "scene_2", "shot_ids": ["shot_2"], "start": 2.5, "end": 4.5, "duration": 2.0, "visual_boundary": {"start": 2.5, "end": 4.5}, "audio_boundary": {"start": 2.5, "end": 4.5}, "assertions": [], "fallback_status": "none"},
+                    {"id": "moment_3", "source_id": "film_1", "source_media_hash": "desthash", "scene_id": "scene_3", "shot_ids": ["shot_3"], "start": 5.5, "end": 7.5, "duration": 2.0, "visual_boundary": {"start": 5.5, "end": 7.5}, "audio_boundary": {"start": 5.5, "end": 7.5}, "assertions": [], "fallback_status": "none"},
+                ],
+            }
+
+        def _write_and_validate(self, _kind, path, data):
+            from cinelingus.util import write_json
+            write_json(path, data)
+
         def render_audio_from_schedule(self, **kwargs):
             self._called("render_audio_from_schedule")
             assert kwargs["schedule"]["mappings"][0]["id"] == "m1"
@@ -163,28 +186,31 @@ def test_movie_masher_transformation_passes_artifacts_forward(tmp_path: Path) ->
 
         def render_video_from_audio(self, **kwargs):
             self._called("render_video_from_audio")
-            return self.config.output_dir / "movie_masher_output.mp4"
+            return self.config.output_dir / "translation_output.mp4"
 
         def filter_source_dialogue(self, *, force: bool = False):
-            raise AssertionError("MovieMasherTransformation should use filter_source_dialogue_from_events")
+            raise AssertionError("TranslationTransformation should use filter_source_dialogue_from_events")
 
         def build_clip_library(self, *, force: bool = False):
-            raise AssertionError("MovieMasherTransformation should use build_clip_library_from_events")
+            raise AssertionError("TranslationTransformation should use build_clip_library_from_events")
 
         def filter_destination_timeline(self, *, force: bool = False):
-            raise AssertionError("MovieMasherTransformation should use filter_destination_timeline_from_timeline")
+            raise AssertionError("TranslationTransformation should use filter_destination_timeline_from_timeline")
 
         def schedule(self, *, force: bool = False):
-            raise AssertionError("MovieMasherTransformation should use schedule_from_artifacts")
+            raise AssertionError("TranslationTransformation should use schedule_from_artifacts")
 
         def render_audio(self, *, force: bool = False):
-            raise AssertionError("MovieMasherTransformation should use render_audio_from_schedule")
+            raise AssertionError("TranslationTransformation should use render_audio_from_schedule")
 
         def render_video(self, *, force: bool = False):
-            raise AssertionError("MovieMasherTransformation should use render_video_from_audio")
+            raise AssertionError("TranslationTransformation should use render_video_from_audio")
 
     pipeline = FakePipeline()
-    transformation = MovieMasherTransformation(TransformationContext(pipeline=pipeline))
+    monkeypatch.setattr(translation_module, "render_mutation_media", lambda **kwargs: (kwargs["audio_output"].write_bytes(b"wav"), kwargs["video_output"].write_bytes(b"mp4")))
+    monkeypatch.setattr(translation_module, "validate_filter_output", lambda **_kwargs: {})
+    monkeypatch.setattr(translation_module, "ffprobe_json", lambda _path: {"streams": [{"codec_type": "video"}, {"codec_type": "audio"}], "format": {"duration": "8.0"}})
+    transformation = TranslationTransformation(TransformationContext(pipeline=pipeline))
 
     transformation.validate_inputs()
     selections = transformation.select()
@@ -193,8 +219,8 @@ def test_movie_masher_transformation_passes_artifacts_forward(tmp_path: Path) ->
     outputs = transformation.render(transformed)
 
     assert outputs["audio"].name == "replacement_dialogue.wav"
-    assert outputs["video"].name == "movie_masher_output.mp4"
-    assert (tmp_path / "output" / "movie_masher" / "transformation_plan.json").exists()
+    assert outputs["video"].name == "translation_output.mp4"
+    assert (tmp_path / "output" / "translation" / "transformation_plan.json").exists()
     assert pipeline.calls["inspect"] == 1
     assert pipeline.calls["extract_source_dialogue"] == 1
     assert pipeline.calls["filter_source_dialogue_from_events"] == 1
@@ -205,5 +231,9 @@ def test_movie_masher_transformation_passes_artifacts_forward(tmp_path: Path) ->
     assert pipeline.calls["build_source_performances"] == 1
     assert pipeline.calls["build_destination_performances"] == 1
     assert pipeline.calls["schedule_from_artifacts"] == 1
-    assert pipeline.calls["render_audio_from_schedule"] == 1
-    assert pipeline.calls["render_video_from_audio"] == 1
+    assert transformed["schedule"]["montage_native"] is True
+    assert transformed["schedule"]["full_timeline_native"] is True
+    assert transformed["montage_plan"]["actual_duration"] == 8.0
+    assert transformed["montage_plan"]["duration_resolution"]["shortened"] is True
+    assert transformation._montage_plan_path.exists()
+    assert transformation._montage_acceptance_path.exists()

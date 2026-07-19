@@ -1,4 +1,4 @@
-﻿import importlib.util
+import importlib.util
 from pathlib import Path
 
 def load_runner(script_name: str = "run_cinelingus.py"):
@@ -19,36 +19,20 @@ def test_orchestrator_parser_defaults_to_gui() -> None:
     assert args.action == "gui"
 
 
-def test_legacy_movie_masher_launcher_still_imports() -> None:
-    runner = load_runner("run_movie_masher.py")
+def test_legacy_translation_launcher_still_imports() -> None:
+    runner = load_runner("run_cinelingus.py")
 
     args = runner.build_parser().parse_args([])
 
     assert args.action == "gui"
 
 
-def test_orchestrator_parser_accepts_preview_mappings(tmp_path: Path) -> None:
+def test_orchestrator_parser_rejects_removed_preview_action(tmp_path: Path) -> None:
     runner = load_runner()
 
-    args = runner.build_parser().parse_args(["preview", "--mapping", "2", "--mapping", "4", "--output-dir", str(tmp_path)])
-
-    assert args.mapping == [2, 4]
-    assert args.output_dir == tmp_path
-
-
-def test_default_preview_indices_prefers_cross_shot_mapping() -> None:
-    runner = load_runner()
-
-    class FakePipeline:
-        def schedule(self, force=False):
-            return {
-                "mappings": [
-                    {"mapping_crosses_shot_boundary": False},
-                    {"mapping_crosses_shot_boundary": True},
-                ]
-            }
-
-    assert runner.default_preview_indices(FakePipeline()) == [1]
+    import pytest
+    with pytest.raises(SystemExit):
+        runner.build_parser().parse_args(["preview", "--output-dir", str(tmp_path)])
 
 
 def test_orchestrator_parser_accepts_mutation_action(tmp_path: Path) -> None:
@@ -68,7 +52,7 @@ def test_orchestrator_parser_accepts_mutation_action(tmp_path: Path) -> None:
 
 
 def test_orchestrator_parser_accepts_problem_previews(tmp_path: Path) -> None:
-    import run_movie_masher as runner
+    import run_translation as runner
 
     args = runner.build_parser().parse_args(["problem-previews", "--max-regions", "2", "--output-dir", str(tmp_path)])
 

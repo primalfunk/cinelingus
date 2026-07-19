@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cinelingus Montage Render Acceptance",
+  "type": "object",
+  "required": ["schema_version", "creation_timestamp", "planner_version", "filter_id", "plan_verdict", "acceptance_status", "timing_tolerance_seconds", "planned_duration", "encoded_duration", "selected_moment_ids", "checks", "fallback_decisions", "placement_qualification", "laws", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "creation_timestamp": {"type": "string"},
+    "planner_version": {"type": "string"},
+    "filter_id": {"type": "string"},
+    "plan_verdict": {"type": "string", "enum": ["EXPERIMENTAL", "PREVIEW", "PRODUCTION_READY"]},
+    "acceptance_status": {"type": "string", "enum": ["PASS", "FAIL"]},
+    "timing_tolerance_seconds": {"type": "number", "minimum": 0},
+    "planned_duration": {"type": "number", "minimum": 0},
+    "encoded_duration": {"type": "number", "minimum": 0},
+    "selected_moment_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "checks": {"type": "object", "minProperties": 1},
+    "fallback_decisions": {"type": "array", "items": {"type": "object"}},
+    "placement_qualification": {"type": "object", "required": ["policy_version", "cinematic_moments_detected", "preferred_audio_qualified_moments", "dialogue_bearing_moments", "dialogue_windows_examined", "complete_shot_submoments_constructed", "locally_rejected_submoments", "preferred_legal_placements", "local_legal_placements", "final_legal_authored_placements", "deterministic_rescue_invoked", "final_output_dead_air_limit_seconds", "qualification_outcome"]},
+    "laws": {"type": "object", "minProperties": 1},
+    "provenance": {"type": "object", "minProperties": 1}
+  }
+}

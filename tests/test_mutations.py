@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from movie_masher.mutations import (
+from cinelingus.mutations import (
     MUTATION_CHOICES,
     build_drift_schedule,
     build_echo_schedule,
@@ -10,7 +10,7 @@ from movie_masher.mutations import (
     enforce_self_shuffle_changed_lines,
     get_mutation,
 )
-from movie_masher.validation import validate_artifact
+from cinelingus.validation import validate_artifact
 
 
 def test_mutation_registry_loads_initial_filters() -> None:
@@ -119,7 +119,7 @@ def test_self_shuffle_disables_or_repairs_unchanged_original_lines() -> None:
 
 
 def test_self_shuffle_threads_source_performances_into_scheduler(monkeypatch, tmp_path: Path) -> None:
-    from movie_masher import mutations
+    from cinelingus import mutations
 
     captured = {}
     source_performances = {"performances": [{"id": "sp1"}]}
@@ -172,8 +172,8 @@ def test_self_shuffle_disables_unchanged_line_when_no_replacement_exists() -> No
     assert schedule["self_shuffle_policy"]["disabled_unchanged_mappings"] == 1
 
 
-def test_self_shuffle_mutation_renders_dialogue_only(monkeypatch, tmp_path: Path) -> None:
-    from movie_masher import mutations
+def test_self_shuffle_mutation_renders_over_continuous_source_soundtrack(monkeypatch, tmp_path: Path) -> None:
+    from cinelingus import mutations
 
     original = tmp_path / "movie.mp4"
     audio = tmp_path / "self_shuffle.wav"
@@ -212,6 +212,7 @@ def test_self_shuffle_mutation_renders_dialogue_only(monkeypatch, tmp_path: Path
         ],
     }
 
+    stages = []
     mutations.render_mutation_media(
         original_media=original,
         schedule=schedule,
@@ -222,7 +223,10 @@ def test_self_shuffle_mutation_renders_dialogue_only(monkeypatch, tmp_path: Path
         channels=2,
         target_lufs=-18.0,
         fade_duration=0.015,
+        stage_callback=stages.append,
     )
 
-    assert [name for name, _ in calls] == ["dialogue", "mux"]
-    assert schedule["self_shuffle_render_strategy"] == "dialogue_only_v1"
+    assert [name for name, _ in calls] == ["original", "mux"]
+    assert stages == ["render_audio", "render_video"]
+    assert schedule["self_shuffle_render_strategy"] == "continuous_source_soundtrack_bed_v1"
+    assert schedule["dead_air_policy"] == "SOURCE_SOUNDTRACK_BED_WITH_SUSTAINED_SILENCE_REJECTION"

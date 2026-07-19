@@ -1,8 +1,8 @@
 import pytest
 
-from movie_masher.transformation_verbs import (
+from cinelingus.transformation_verbs import (
     compress_duration,
-    movie_masher_transformation_plan,
+    translation_transformation_plan,
     self_shuffle_transformation_plan,
     remove_disabled_mappings,
     repeat_selection,
@@ -13,8 +13,8 @@ from movie_masher.transformation_verbs import (
 )
 
 
-def test_movie_masher_plan_uses_core_verbs() -> None:
-    verbs = [step["verb"] for step in movie_masher_transformation_plan()]
+def test_translation_plan_uses_core_verbs() -> None:
+    verbs = [step["verb"] for step in translation_transformation_plan()]
     assert verbs == ["select", "select", "place", "replace", "render"]
 
 

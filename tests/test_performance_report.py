@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from movie_masher.performance_report import build_performance_placement_report
-from movie_masher.validation import validate_artifact
+from cinelingus.performance_report import build_performance_placement_report
+from cinelingus.validation import validate_artifact
 
 
 def test_build_performance_placement_report_scores_and_writes_files(tmp_path: Path) -> None:

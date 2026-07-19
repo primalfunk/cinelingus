@@ -1,4 +1,4 @@
-from movie_masher.run_timing import completed_stage_text, estimate_overall_remaining
+from cinelingus.run_timing import completed_stage_text, estimate_overall_remaining
 
 
 def test_overall_eta_uses_run_progress_not_current_stage_progress() -> None:

@@ -106,3 +106,4 @@ tools/ffmpeg/ffmpeg-*/
 *.orig
 *.rej
 *~
+inputs/

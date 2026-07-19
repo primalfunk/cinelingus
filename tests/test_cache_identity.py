@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from movie_masher.cache import ensure_cache
-from movie_masher.util import write_json
+from cinelingus.cache import clear_pipeline_cache, ensure_cache
+from cinelingus.util import write_json
 
 
 def test_same_media_has_distinct_role_cache_directories(tmp_path: Path) -> None:
@@ -27,3 +27,21 @@ def test_cache_reuse_asserts_canonical_media_path(tmp_path: Path) -> None:
     write_json(manifest, data)
     with pytest.raises(RuntimeError, match="Cache identity mismatch"):
         ensure_cache(tmp_path / "cache", media, "source_dialogue")
+
+
+def test_clear_pipeline_cache_removes_only_cache_children(tmp_path: Path) -> None:
+    cache = tmp_path / "cache"
+    artifact = cache / "hash" / "destination_video" / "timeline.json"
+    artifact.parent.mkdir(parents=True)
+    artifact.write_bytes(b"artifact")
+    output = tmp_path / "output" / "finished.mp4"
+    output.parent.mkdir()
+    output.write_bytes(b"movie")
+
+    result = clear_pipeline_cache(cache)
+
+    assert cache.exists()
+    assert list(cache.iterdir()) == []
+    assert output.read_bytes() == b"movie"
+    assert result["files_removed"] == 1
+    assert result["bytes_removed"] == len(b"artifact")

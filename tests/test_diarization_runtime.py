@@ -2,11 +2,23 @@ import multiprocessing as mp
 
 import torch
 
-from movie_masher.diarization_runtime import (
+from cinelingus.diarization_runtime import (
     _configure_cuda_memory_limit,
+    _event_mapping_coverage,
     _receive_worker_result,
     _resolve_pipeline_output,
 )
+
+
+def test_event_mapping_coverage_allows_one_turn_to_cover_split_transcript_items() -> None:
+    turns = [{'start': 0.0, 'end': 3.0, 'valid': True, 'source_id': 'e1'}]
+    items = [
+        {'id': 'e1', 'start': 0.0, 'end': 1.0},
+        {'id': 'e2', 'start': 1.0, 'end': 2.0},
+        {'id': 'e3', 'start': 2.0, 'end': 3.0},
+    ]
+
+    assert _event_mapping_coverage(turns, items) == 1.0
 
 
 def _put_large_worker_result(result_queue) -> None:

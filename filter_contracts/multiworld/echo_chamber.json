@@ -101,13 +101,12 @@
     "sparse_schedule": true,
     "requires_speaker_identity": false,
     "supports_preview": false,
-    "supports_best_short": false,
     "supports_full_length": true,
     "requires_output_acceptance": true
   },
   "blockers": [],
   "multiworld_contract": {
-    "cinematic_law": "Dialogue Translation",
+    "cinematic_law": "Translation",
     "minimum_films": 2,
     "maximum_films": null,
     "anchor_behavior": "anchor_timeline",

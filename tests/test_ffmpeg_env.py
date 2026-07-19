@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from movie_masher.ffmpeg_env import ensure_project_ffmpeg_shared_on_path, find_project_ffmpeg_shared_bin
+from cinelingus.ffmpeg_env import ensure_project_ffmpeg_shared_on_path, find_project_ffmpeg_shared_bin
 
 
 def test_find_project_ffmpeg_shared_bin_prefers_shared_build(tmp_path: Path) -> None:

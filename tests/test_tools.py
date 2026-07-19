@@ -1,6 +1,6 @@
 import subprocess
 
-from movie_masher import tools
+from cinelingus import tools
 
 
 def test_run_uses_utf8_replacement_decoding(monkeypatch) -> None:

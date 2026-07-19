@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cinelingus Montage Calibration Manifest",
+  "type": "object",
+  "required": ["schema_version", "manifest_version", "sources", "annotations"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "manifest_version": {"type": "string", "minLength": 1},
+    "sources": {"type": "array", "items": {"type": "object", "required": ["source_id", "source_hash", "resolver_key", "media_duration"], "additionalProperties": false, "properties": {"source_id": {"type": "string", "minLength": 1}, "source_hash": {"type": "string", "minLength": 1}, "resolver_key": {"type": "string", "minLength": 1}, "media_duration": {"type": "number", "minimum": 0}, "media_metadata": {"type": "object"}}}},
+    "annotations": {"type": "array", "items": {"type": "object", "required": ["annotation_id", "source_id", "start", "end", "shot_ids", "scene_ids", "visual_boundary", "audio_boundary", "label", "reason_codes", "note", "annotator_confidence", "split"], "additionalProperties": false, "properties": {"annotation_id": {"type": "string", "minLength": 1}, "source_id": {"type": "string", "minLength": 1}, "start": {"type": "number", "minimum": 0}, "end": {"type": "number", "minimum": 0}, "shot_ids": {"type": "array", "items": {"type": "string"}}, "scene_ids": {"type": "array", "items": {"type": "string"}}, "visual_boundary": {"type": "number", "minimum": 0}, "audio_boundary": {"type": ["number", "null"], "minimum": 0}, "label": {"type": "string", "enum": ["POSITIVE", "NEGATIVE", "AMBIGUOUS"]}, "reason_codes": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "note": {"type": "string"}, "annotator_confidence": {"type": "number", "minimum": 0, "maximum": 1}, "preferred_alternative_boundary": {"type": ["number", "null"], "minimum": 0}, "split": {"type": "string", "enum": ["DEVELOPMENT", "TUNING", "HELD_OUT"]}}}}
+  }
+}

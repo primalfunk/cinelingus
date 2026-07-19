@@ -3,7 +3,7 @@ import wave
 
 import pytest
 
-from movie_masher.audio_provenance import AudioProvenanceError, compare_wav_audio, verify_audio_provenance
+from cinelingus.audio_provenance import AudioProvenanceError, compare_wav_audio, verify_audio_provenance
 
 
 def _wav(path: Path, samples: list[int]) -> None:

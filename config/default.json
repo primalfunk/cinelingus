@@ -8,7 +8,6 @@
   "transcription_mode": "balanced",
   "whisper_model": "small",
   "whisper_language": "en",
-  "quick_test_seconds": null,
   "quality_modes": {
     "fast_preview": {
       "whisper_model": "tiny"
@@ -46,11 +45,7 @@
   "speaker_diarization_backend": "pyannote",
   "speaker_diarization_model": "pyannote/speaker-diarization-community-1",
   "speaker_diarization_device": "auto",
-  "target_duration_seconds": 180,
-  "minimum_duration_seconds": 120,
-  "maximum_duration_seconds": 300,
   "prefer_high_speaker_confidence": true,
   "prefer_clean_dialogue_timing": true,
-  "prefer_funny_or_surprising_matches": true,
-  "allow_full_movie_mode": false
+  "prefer_funny_or_surprising_matches": true
 }

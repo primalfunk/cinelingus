@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from movie_masher.taste import build_editorial_highlights, default_taste_profile
-from movie_masher.validation import validate_artifact
+from cinelingus.taste import build_editorial_highlights, default_taste_profile
+from cinelingus.validation import validate_artifact
 
 
 def _schedule(review_label: str | None = None) -> dict:

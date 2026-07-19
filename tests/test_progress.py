@@ -1,4 +1,4 @@
-from movie_masher.progress import ProgressState, format_progress_status
+from cinelingus.progress import ProgressState, format_progress_status
 
 
 def test_progress_state_formats_percent_and_eta():

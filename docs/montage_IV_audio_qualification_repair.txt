@@ -1,0 +1,101 @@
+BUILDER AUTHORIZATION
+Montage Audio Qualification Repair
+Status: APPROVED
+
+This authorization revises the architectural unit of audio qualification. It is
+not a threshold adjustment.
+
+1. DESIGN DECISION
+
+A cinematic moment remains the public composition object. It is not
+simultaneously the smallest placement unit, the audio qualification unit, and
+the failure boundary. Dialogue placement eligibility is local. Whole-moment
+audio characteristics may influence scoring but must not invalidate unrelated
+authored dialogue opportunities.
+
+2. AUDIO QUALIFICATION HIERARCHY
+
+Placement Safety evaluates only the dialogue interval, visual and audio
+boundaries, required guard bands, transition overlap, and immediate local
+context. Silence elsewhere in the parent moment is irrelevant to placement
+safety.
+
+Segment Assembly Safety evaluates the selected submoment or complete-shot
+sequence for broken transitions, ghost speech, and unintended discontinuity.
+
+Final Output Acceptance applies the strict dead-air rule to the encoded
+montage. Intentional silence, room tone, ambience, fades, and dramatic pauses
+must remain distinguishable from unintended output gaps.
+
+3. SUBMOMENT CONSTRUCTION
+
+When a parent moment fails preferred whole-moment audio qualification:
+
+1. evaluate dialogue-bearing intervals independently;
+2. expand only to safe complete-shot boundaries;
+3. apply visual and audio guard bands;
+4. preserve every independently safe placement;
+5. reject only locally unsafe submoments.
+
+4. DETERMINISTIC RESCUE
+
+If ordinary qualification yields zero authored placements:
+
+1. attempt normal cinematic-moment qualification;
+2. evaluate dialogue-bearing intervals locally;
+3. construct complete-shot placement submoments;
+4. reject only locally unsafe placements;
+5. relax preferred duration or placement density when necessary;
+6. fail only when no complete-shot, locally audio-safe placement exists.
+
+5. LONG-TAKE POLICY
+
+When no safe internal boundary exists, use the complete take, choose another
+eligible moment, relax target duration, or fail. Arbitrary duration cuts remain
+forbidden.
+
+6. WHOLE-MOMENT AUDIO METRICS
+
+Whole-moment measurements remain scoring, ranking, and planning-preference
+signals. They are not binary placement eligibility.
+
+7. REQUIRED REPORTING
+
+Logs, plans, and acceptance records must distinguish:
+
+* detected cinematic moments;
+* preferred audio-qualified moments;
+* dialogue-bearing moments;
+* dialogue windows examined;
+* complete-shot submoments constructed;
+* submoments rejected locally;
+* final authored placements;
+* whether deterministic rescue was invoked.
+
+Failure wording must identify the exhausted qualification stage accurately.
+
+8. IDENTICAL-MEDIA ANALYSIS
+
+When source and destination hashes are identical, media inspection,
+transcription, diarization, speaker attribution, visual analysis, cinematic
+moments, and performances originate from one canonical analysis record.
+Role-specific planning may diverge; underlying analysis may not.
+
+9. REGRESSION REQUIREMENT
+
+The Red Dwarf failure is a permanent regression fixture. It must demonstrate
+many dialogue windows, whole-moment preference rejection, locally safe
+complete-shot placements, deterministic rescue, unchanged cinematic
+integrity, strict final-output acceptance, deterministic planning, and
+canonical identical-media analysis reuse.
+
+10. NON-GOALS
+
+This authorization does not permit relaxed cinematic boundaries, arbitrary
+shot subdivision, lower safety thresholds for duration, weakened final-output
+acceptance, or reduced provenance.
+
+GOVERNING PRINCIPLE
+
+Qualify the authored placement. Do not reject an entire cinematic moment
+because of unrelated audio elsewhere within it.

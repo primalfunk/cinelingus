@@ -1,4 +1,4 @@
-from movie_masher.intervals import covered_speech_duration
+from cinelingus.intervals import covered_speech_duration
 
 
 def test_coverage_uses_interval_union_and_target_intersection() -> None:

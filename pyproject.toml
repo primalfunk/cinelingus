@@ -1,15 +1,16 @@
 [project]
-name = "movie-masher"
-version = "0.2.0"
+name = "cinelingus"
+version = "0.3.0"
 description = "Cinelingus local cinematic transformation laboratory."
 requires-python = ">=3.11"
 dependencies = [
+    "Pillow>=10.0",
     "pyannote.audio>=4.0.6",
 ]
 
 [project.scripts]
-movie-masher = "movie_masher.cli:main"
-movie-masher-gui = "movie_masher.gui:main"
+cinelingus = "cinelingus.cli:main"
+cinelingus-gui = "cinelingus.gui:main"
 
 [tool.pytest.ini_options]
 pythonpath = ["src", "."]

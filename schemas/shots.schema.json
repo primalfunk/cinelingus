@@ -29,11 +29,29 @@
     "detector": {
       "type": "string"
     },
+    "core_evidence_version": {
+      "type": "string"
+    },
     "threshold": {
       "type": "number"
     },
     "min_shot_duration": {
       "type": "number"
+    },
+    "transitions": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "boundary_stability": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "stillness_intervals": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "core_evidence": {
+      "type": "object"
     },
     "shots": {
       "type": "array",

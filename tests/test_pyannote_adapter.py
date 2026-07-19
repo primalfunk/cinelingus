@@ -1,4 +1,4 @@
-from movie_masher.pyannote_adapter import diarization_tracks
+from cinelingus.pyannote_adapter import diarization_tracks
 
 
 class Annotation:

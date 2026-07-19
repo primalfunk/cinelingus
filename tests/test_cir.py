@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from movie_masher.cir import (
+from cinelingus.cir import (
     CIR_OBJECT_TYPES,
     OBJECT_DIALOGUE_CLIP,
     OBJECT_RENDER_OPERATION,
@@ -9,7 +9,7 @@ from movie_masher.cir import (
     OBJECT_TRANSFORMATION_PLAN,
     build_cinematic_index,
 )
-from movie_masher.validation import validate_artifact
+from cinelingus.validation import validate_artifact
 
 
 def test_build_cinematic_index_links_artifacts_and_counts(tmp_path: Path) -> None:
@@ -20,7 +20,7 @@ def test_build_cinematic_index_links_artifacts_and_counts(tmp_path: Path) -> Non
     destination_cache.mkdir(parents=True)
     source_cache.mkdir(parents=True)
     output.mkdir()
-    (output / "movie_masher").mkdir()
+    (output / "translation").mkdir()
     for path in [
         destination_cache / "movie.json",
         source_cache / "movie.json",
@@ -34,13 +34,13 @@ def test_build_cinematic_index_links_artifacts_and_counts(tmp_path: Path) -> Non
         destination_cache / "replacement_schedule.json",
         destination_cache / "shots.json",
         destination_cache / "visual_report.json",
-        output / "movie_masher" / "transformation_report.json",
-        output / "movie_masher" / "transformation_plan.json",
+        output / "translation" / "transformation_report.json",
+        output / "translation" / "transformation_plan.json",
     ]:
         path.write_text("{}")
 
     schedule = {
-        "transformation_name": "movie_masher",
+        "transformation_name": "translation",
         "transformation_history": [
             {"verb": "select", "description": "select", "inputs": ["a"], "outputs": ["b"]}
         ],
@@ -67,7 +67,7 @@ def test_build_cinematic_index_links_artifacts_and_counts(tmp_path: Path) -> Non
         filtered_destination_timeline={"filter_stats": {"usable_count": 1}},
         schedule=schedule,
         audio_output=output / "replacement_dialogue.wav",
-        video_output=output / "movie_masher_output.mp4",
+        video_output=output / "translation_output.mp4",
         run_report_json=output / "run_report.json",
         schedule_report_csv=output / "schedule_report.csv",
         destination_cache=destination_cache,
@@ -76,8 +76,8 @@ def test_build_cinematic_index_links_artifacts_and_counts(tmp_path: Path) -> Non
         visual_report={"average_shot_duration": 5.0},
         source_performances={"performances": [{"id": "sp1"}]},
         destination_performances={"performances": [{"id": "dp1"}, {"id": "dp2"}]},
-        transformation_report=output / "movie_masher" / "transformation_report.json",
-        transformation_plan=output / "movie_masher" / "transformation_plan.json",
+        transformation_report=output / "translation" / "transformation_report.json",
+        transformation_plan=output / "translation" / "transformation_plan.json",
     )
 
     assert OBJECT_DIALOGUE_CLIP in CIR_OBJECT_TYPES
@@ -89,9 +89,9 @@ def test_build_cinematic_index_links_artifacts_and_counts(tmp_path: Path) -> Non
     assert index["counts"]["average_shot_duration"] == 5.0
     assert index["counts"]["transformation_reports"] == 1
     assert index["counts"]["transformation_plans"] == 1
-    assert index["outputs"]["transformation_report"] == "output/movie_masher/transformation_report.json"
-    assert index["outputs"]["transformation_plan"] == "output/movie_masher/transformation_plan.json"
-    assert index["transformation"]["name"] == "movie_masher"
+    assert index["outputs"]["transformation_report"] == "output/translation/transformation_report.json"
+    assert index["outputs"]["transformation_plan"] == "output/translation/transformation_plan.json"
+    assert index["transformation"]["name"] == "translation"
     assert any(item["cir_object_type"] == OBJECT_RENDER_OPERATION for item in index["artifacts"])
     assert any(item["cir_object_type"] == OBJECT_SHOT for item in index["artifacts"])
     assert any(item["cir_object_type"] == OBJECT_TRANSFORMATION_REPORT for item in index["artifacts"])

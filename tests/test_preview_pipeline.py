@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from movie_masher.pipeline import Pipeline, _attach_performance_speech_windows, _speech_mute_regions, _validate_best_short_render_contract
+from cinelingus.pipeline import Pipeline, _attach_performance_speech_windows, _speech_mute_regions
 
 
 def test_render_preview_uses_selected_mapping_indices(monkeypatch, tmp_path: Path) -> None:
@@ -57,8 +57,8 @@ def test_render_preview_uses_selected_mapping_indices(monkeypatch, tmp_path: Pat
         kwargs["output_path"].parent.mkdir(parents=True, exist_ok=True)
         kwargs["output_path"].write_text("mp4")
 
-    monkeypatch.setattr("movie_masher.pipeline.render_dialogue_wav", fake_render_dialogue_wav)
-    monkeypatch.setattr("movie_masher.pipeline.mux_video_segment", fake_mux_video_segment)
+    monkeypatch.setattr("cinelingus.pipeline.render_dialogue_wav", fake_render_dialogue_wav)
+    monkeypatch.setattr("cinelingus.pipeline.mux_video_segment", fake_mux_video_segment)
 
     result = pipeline.render_preview([1], video=True)
 
@@ -69,7 +69,7 @@ def test_render_preview_uses_selected_mapping_indices(monkeypatch, tmp_path: Pat
     assert Path(result["video"]).exists()
 
 
-def test_movie_masher_audio_render_is_dialogue_only(monkeypatch, tmp_path: Path) -> None:
+def test_translation_audio_render_is_dialogue_only(monkeypatch, tmp_path: Path) -> None:
     config = type(
         "Config",
         (),
@@ -94,10 +94,10 @@ def test_movie_masher_audio_render_is_dialogue_only(monkeypatch, tmp_path: Path)
         kwargs["output_path"].write_text("wav")
 
     def fail_original_bed(**_kwargs):
-        raise AssertionError("Movie Masher audio should not preserve the original bed")
+        raise AssertionError("Translation audio should not preserve the original bed")
 
-    monkeypatch.setattr("movie_masher.pipeline.render_dialogue_wav", fake_render_dialogue_wav)
-    monkeypatch.setattr("movie_masher.pipeline.render_schedule_over_original_audio", fail_original_bed)
+    monkeypatch.setattr("cinelingus.pipeline.render_dialogue_wav", fake_render_dialogue_wav)
+    monkeypatch.setattr("cinelingus.pipeline.render_schedule_over_original_audio", fail_original_bed)
 
     output = pipeline.render_audio_from_schedule(
         schedule={"mappings": [{"enabled": True, "destination_timestamp": 1.0, "planned_render_duration": 2.0}]},
@@ -122,7 +122,7 @@ def test_render_problem_region_previews_cuts_final_output(monkeypatch, tmp_path:
     pipeline.destination = type("Dest", (), {})()
     pipeline.logger = type("Logger", (), {"info": lambda self, message: None})()
     config.output_dir.mkdir(parents=True)
-    (config.output_dir / "movie_masher_output.mp4").write_text("video")
+    (config.output_dir / "translation_output.mp4").write_text("video")
     stale_dir = config.output_dir / "previews" / "problem_regions"
     stale_dir.mkdir(parents=True)
     stale_file = stale_dir / "problem_stale.mp4"
@@ -139,7 +139,7 @@ def test_render_problem_region_previews_cuts_final_output(monkeypatch, tmp_path:
         kwargs["output_path"].parent.mkdir(parents=True, exist_ok=True)
         kwargs["output_path"].write_text("clip")
 
-    monkeypatch.setattr("movie_masher.pipeline.extract_video_segment", fake_extract_video_segment)
+    monkeypatch.setattr("cinelingus.pipeline.extract_video_segment", fake_extract_video_segment)
 
     result = pipeline.render_problem_region_previews()
 
@@ -281,36 +281,3 @@ def test_run_all_keeps_finished_video_when_problem_previews_fail(monkeypatch, tm
     assert any("problem preview generation skipped" in message for message in calls)
 
 
-def test_best_short_render_contract_rejects_unchanged_audio_output() -> None:
-    schedule = {"mappings": [{"enabled": True, "destination_timestamp": 1.0, "planned_render_duration": 2.0}]}
-
-    with pytest.raises(ValueError, match="produced no mute regions"):
-        _validate_best_short_render_contract(
-            short_schedule=schedule,
-            mute_regions=[],
-            duration=10.0,
-            candidate_id="bad",
-        )
-
-
-def test_best_short_render_contract_accepts_in_window_muted_output() -> None:
-    schedule = {"mappings": [{"enabled": True, "destination_timestamp": 1.0, "planned_render_duration": 2.0}]}
-
-    _validate_best_short_render_contract(
-        short_schedule=schedule,
-        mute_regions=[{"start": 0.8, "duration": 2.4}],
-        duration=10.0,
-        candidate_id="good",
-    )
-
-
-def test_best_short_render_contract_allows_dialogue_only_without_mute_regions() -> None:
-    schedule = {"mappings": [{"enabled": True, "destination_timestamp": 1.0, "planned_render_duration": 2.0}]}
-
-    _validate_best_short_render_contract(
-        short_schedule=schedule,
-        mute_regions=[],
-        duration=10.0,
-        candidate_id="dialogue-only",
-        require_mute_regions=False,
-    )

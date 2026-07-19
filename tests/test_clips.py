@@ -1,4 +1,4 @@
-from movie_masher.clips import coalesce_dialogue_events
+from cinelingus.clips import coalesce_dialogue_events
 
 
 def test_coalesce_dialogue_events_joins_incomplete_transcript_fragments() -> None:
