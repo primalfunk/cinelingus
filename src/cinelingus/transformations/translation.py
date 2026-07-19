@@ -45,7 +45,11 @@ class TranslationTransformation(Transformation):
             definition,
             config.films,
             seed=int(self.context.parameters.get("seed", 1)),
-            stage_callback=self.context.pipeline._publish_multiworld_stage,
+            stage_callback=getattr(
+                self.context.pipeline,
+                "_publish_multiworld_stage",
+                lambda stage: self.context.pipeline.logger.info(f"multiworld stage: {stage}"),
+            ),
         )
 
     def select(self) -> dict[str, Any]:
@@ -189,6 +193,7 @@ class TranslationTransformation(Transformation):
     def render(self, transformed: dict[str, Any]) -> dict[str, Path]:
         pipeline = self.context.pipeline
         assert self._multiworld is not None
+        publish_runtime_stage = getattr(pipeline, "_publish_runtime_stage", lambda _stage: None)
         def render_world(_state):
             output_dir = pipeline.config.output_dir / self.metadata.id
             audio = output_dir / "replacement_dialogue.wav"
@@ -204,9 +209,9 @@ class TranslationTransformation(Transformation):
                 target_lufs=pipeline.config.target_lufs,
                 fade_duration=pipeline.config.audio_fade_duration,
                 mute_regions=None,
-                stage_callback=pipeline._publish_runtime_stage,
+                stage_callback=publish_runtime_stage,
             )
-            pipeline._publish_runtime_stage("finalize")
+            publish_runtime_stage("finalize")
             self._filter_acceptance_path = output_dir / "filter_acceptance.json"
             validate_filter_output(
                 filter_id="multiworld.translation",
