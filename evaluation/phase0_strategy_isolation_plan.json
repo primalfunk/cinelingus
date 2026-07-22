@@ -1,0 +1,232 @@
+{
+  "schema_version": "1.0",
+  "plan_version": "bounded_corpus_calibration_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T17:03:13+00:00",
+  "execution_revision": "phase0_strategy_isolation_v1",
+  "tier": "extended",
+  "excerpt_plan": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_excerpt_plan.json",
+  "maximum_cases": 10,
+  "case_count": 4,
+  "planned_input_duration_seconds": 189.0,
+  "source_files_read_only": true,
+  "resume_required": true,
+  "strategy_isolation_of": {
+    "plan": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_calibration_plan_initial.json",
+    "report": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\output\\corpus_calibration\\extended\\calibration_report_initial.json",
+    "coverage": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\phase0_rendered_strategy_coverage_20260721.json"
+  },
+  "unfilled_target_strategies": [
+    "repair_word_boundary",
+    "repair_duration_fit",
+    "repair_speaker_role",
+    "repair_local_suppression",
+    "repair_reuse_pressure",
+    "conservative_uncertainty_retention"
+  ],
+  "cases": [
+    {
+      "case_id": "strategy_001_visual_mismatch",
+      "purpose": "strategy_isolation_visual_mismatch",
+      "variant_index": 2,
+      "destination": {
+        "excerpt_id": "excerpt_0029_345dbfdf",
+        "media_id": "media_b2203a07578ab221",
+        "filename": "The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "content_type": "animation",
+        "category": "animation_dialogue",
+        "start": 26.0,
+        "end": 56.0,
+        "duration": 30.0,
+        "analysis_signature": "5eba5bdd52c94a24bc76062d73ac5f0b67a9820b6d34403e1f1e252f7fa747df",
+        "evidence": {
+          "performance_id": "p000001",
+          "dialogue_density": 1.0,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0024_7b037e6d",
+        "media_id": "media_a0c757cdae48cfdb",
+        "filename": "Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+        "content_type": "live_action",
+        "category": "short_fragmented_lines",
+        "start": 29.42,
+        "end": 42.42,
+        "duration": 13.0,
+        "analysis_signature": "77d519f5b71bb411f22cdceb6f62928f75acd92f2d0392384fbab2205af19e38",
+        "evidence": {
+          "window_id": "w000007",
+          "duration": 1.0,
+          "confidence": 0.9885
+        }
+      },
+      "expected_failure_modes": [
+        "visual_mismatch"
+      ],
+      "status": "planned",
+      "case_signature": "16058fcadad141f545a4f5deb12f07249865fbf645ca01c1e14dc4c6784e8bea",
+      "target_failure_category": "visual_mismatch",
+      "target_repair_strategy": "repair_visual_intent",
+      "strategy_isolation_source_case_id": "case_008_animation_visual_role"
+    },
+    {
+      "case_id": "strategy_002_transition_artifact",
+      "purpose": "strategy_isolation_transition_artifact",
+      "variant_index": 2,
+      "destination": {
+        "excerpt_id": "excerpt_0029_345dbfdf",
+        "media_id": "media_b2203a07578ab221",
+        "filename": "The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "content_type": "animation",
+        "category": "animation_dialogue",
+        "start": 26.0,
+        "end": 56.0,
+        "duration": 30.0,
+        "analysis_signature": "5eba5bdd52c94a24bc76062d73ac5f0b67a9820b6d34403e1f1e252f7fa747df",
+        "evidence": {
+          "performance_id": "p000001",
+          "dialogue_density": 1.0,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0024_7b037e6d",
+        "media_id": "media_a0c757cdae48cfdb",
+        "filename": "Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+        "content_type": "live_action",
+        "category": "short_fragmented_lines",
+        "start": 29.42,
+        "end": 42.42,
+        "duration": 13.0,
+        "analysis_signature": "77d519f5b71bb411f22cdceb6f62928f75acd92f2d0392384fbab2205af19e38",
+        "evidence": {
+          "window_id": "w000007",
+          "duration": 1.0,
+          "confidence": 0.9885
+        }
+      },
+      "expected_failure_modes": [
+        "transition_artifact"
+      ],
+      "status": "planned",
+      "case_signature": "bf9c663a5cce9a90efab0a0b279721a400da1305a140725e4f6141acd9502606",
+      "target_failure_category": "transition_artifact",
+      "target_repair_strategy": "repair_transition_edges",
+      "strategy_isolation_source_case_id": "case_008_animation_visual_role"
+    },
+    {
+      "case_id": "strategy_003_masking",
+      "purpose": "strategy_isolation_masking",
+      "variant_index": 2,
+      "destination": {
+        "excerpt_id": "excerpt_0029_345dbfdf",
+        "media_id": "media_b2203a07578ab221",
+        "filename": "The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "content_type": "animation",
+        "category": "animation_dialogue",
+        "start": 26.0,
+        "end": 56.0,
+        "duration": 30.0,
+        "analysis_signature": "5eba5bdd52c94a24bc76062d73ac5f0b67a9820b6d34403e1f1e252f7fa747df",
+        "evidence": {
+          "performance_id": "p000001",
+          "dialogue_density": 1.0,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0024_7b037e6d",
+        "media_id": "media_a0c757cdae48cfdb",
+        "filename": "Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+        "content_type": "live_action",
+        "category": "short_fragmented_lines",
+        "start": 29.42,
+        "end": 42.42,
+        "duration": 13.0,
+        "analysis_signature": "77d519f5b71bb411f22cdceb6f62928f75acd92f2d0392384fbab2205af19e38",
+        "evidence": {
+          "window_id": "w000007",
+          "duration": 1.0,
+          "confidence": 0.9885
+        }
+      },
+      "expected_failure_modes": [
+        "masking"
+      ],
+      "status": "planned",
+      "case_signature": "80ea850dfa303e97d732f88a43032e19a4daf8168279b7310d2ecbc3320eebe2",
+      "target_failure_category": "masking",
+      "target_repair_strategy": "repair_audio_masking",
+      "strategy_isolation_source_case_id": "case_008_animation_visual_role"
+    },
+    {
+      "case_id": "strategy_004_performance_mismatch",
+      "purpose": "strategy_isolation_performance_mismatch",
+      "variant_index": 2,
+      "destination": {
+        "excerpt_id": "excerpt_0023_a6a45fec",
+        "media_id": "media_9b626c297fcc6fb8",
+        "filename": "Christian TV stuff - American Saints.ia.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Christian TV stuff - American Saints.ia.mp4",
+        "content_type": "live_action",
+        "category": "rapid_speaker_exchange",
+        "start": 1641.0,
+        "end": 1671.0,
+        "duration": 30.0,
+        "analysis_signature": "f827f8ac3e659fb36fe69e3a078aae9d75eb58094856506cb4b6dae3d2a34d12",
+        "evidence": {
+          "performance_id": "p000015",
+          "dialogue_density": 0.7778,
+          "turn_count": 14,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0029_345dbfdf",
+        "media_id": "media_b2203a07578ab221",
+        "filename": "The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "content_type": "animation",
+        "category": "animation_dialogue",
+        "start": 26.0,
+        "end": 56.0,
+        "duration": 30.0,
+        "analysis_signature": "5eba5bdd52c94a24bc76062d73ac5f0b67a9820b6d34403e1f1e252f7fa747df",
+        "evidence": {
+          "performance_id": "p000001",
+          "dialogue_density": 1.0,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "performance_mismatch"
+      ],
+      "status": "planned",
+      "case_signature": "2a8abcc71093d7345530829aced2200901bf0956530fc94f59b2b4b599a15a70",
+      "target_failure_category": "performance_mismatch",
+      "target_repair_strategy": "repair_performance_structure",
+      "strategy_isolation_source_case_id": "case_006_exchange_continuity"
+    }
+  ]
+}

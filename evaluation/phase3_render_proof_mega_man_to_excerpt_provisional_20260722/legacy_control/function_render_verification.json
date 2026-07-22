@@ -1,0 +1,406 @@
+{
+  "schema_version": "1.0",
+  "verification_version": "function_render_verification_v1",
+  "creation_timestamp": "2026-07-22T19:09:57+00:00",
+  "schedule_signature": "aaa5c63071de1225221e4030217e719bdff3572a6b92b6264b21c20863fe1792",
+  "baseline_schedule_signature": null,
+  "classifier": {
+    "classifier_type": "deterministic_rules",
+    "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+    "taxonomy_version": "dialogue_function_taxonomy_v1",
+    "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+    "language_scope": "en",
+    "dependencies": [],
+    "local_only": true,
+    "general_purpose_llm_required": false,
+    "approach": "ordered lexical and punctuation rules with explicit confidence, ambiguity, and abstention"
+  },
+  "calibration_state": "NOT_PROVIDED",
+  "claim_state": "PROVISIONAL_PENDING_REVIEWED_CALIBRATION",
+  "status": "WARN",
+  "changed_mapping_count": 4,
+  "counts": {
+    "VERIFIED": 0,
+    "FUNCTION_MISMATCH": 0,
+    "TECHNICAL_FAILURE": 0,
+    "UNVERIFIABLE": 4
+  },
+  "minimum_transcript_confidence": 0.45,
+  "minimum_function_compatibility": 0.5,
+  "mappings": [
+    {
+      "mapping_index": 0,
+      "placement_key": "editorial_placement_000001",
+      "window_id": "w000001",
+      "clip_id": "c000030",
+      "changed_from_baseline": true,
+      "destination_function_distribution": null,
+      "donor_function_distribution": null,
+      "intended_function_preservation_score": null,
+      "planned_classification_confidence": null,
+      "rendered_transcript": "secrets but they're safe now thanks to this spray",
+      "rendered_transcript_confidence": 0.9952,
+      "rendered_transcript_reliability_basis": "DIRECT_CONFIDENCE",
+      "rendered_transcript_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "provide_information",
+                "label_id": "interaction_function.provide_information",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "provide_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "rendered_to_donor_function": null,
+      "rendered_to_destination_function": null,
+      "technical_evidence": {
+        "duration_fit": 1.0,
+        "performance_fit": 0.0,
+        "speaker_compatibility": false,
+        "visual_compatibility": 0.265,
+        "rendered_word_coverage_percentage": 77.78,
+        "rendered_dialogue_verification": "WARNING",
+        "editorial_state": "UNCHANGED"
+      },
+      "verification_state": "UNVERIFIABLE",
+      "verification_reason": "PLANNED_FUNCTION_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "mapping_index": 1,
+      "placement_key": "editorial_placement_000002",
+      "window_id": "w000002",
+      "clip_id": "c000060",
+      "changed_from_baseline": true,
+      "destination_function_distribution": null,
+      "donor_function_distribution": null,
+      "intended_function_preservation_score": null,
+      "planned_classification_confidence": null,
+      "rendered_transcript": "spray hi you guys hey do i seem any different to",
+      "rendered_transcript_confidence": 0.9988,
+      "rendered_transcript_reliability_basis": "DIRECT_CONFIDENCE",
+      "rendered_transcript_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "greeting_or_address",
+                "label_id": "interaction_function.greeting_or_address",
+                "confidence": 0.91
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.78,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.greeting",
+            "observation": "greeting_or_address"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "rendered_to_donor_function": null,
+      "rendered_to_destination_function": null,
+      "technical_evidence": {
+        "duration_fit": 1.0,
+        "performance_fit": 0.0,
+        "speaker_compatibility": false,
+        "visual_compatibility": 0.265,
+        "rendered_word_coverage_percentage": 90.91,
+        "rendered_dialogue_verification": "WARNING",
+        "editorial_state": "UNCHANGED"
+      },
+      "verification_state": "UNVERIFIABLE",
+      "verification_reason": "PLANNED_FUNCTION_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "mapping_index": 2,
+      "placement_key": "editorial_placement_000003",
+      "window_id": "w000003",
+      "clip_id": "c000061",
+      "changed_from_baseline": true,
+      "destination_function_distribution": null,
+      "donor_function_distribution": null,
+      "intended_function_preservation_score": null,
+      "planned_classification_confidence": null,
+      "rendered_transcript": "you don't tell me you took a titanium acid bath",
+      "rendered_transcript_confidence": 0.9995,
+      "rendered_transcript_reliability_basis": "DIRECT_CONFIDENCE",
+      "rendered_transcript_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "provide_information",
+                "label_id": "interaction_function.provide_information",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "provide_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "rendered_to_donor_function": null,
+      "rendered_to_destination_function": null,
+      "technical_evidence": {
+        "duration_fit": 1.0,
+        "performance_fit": 0.0,
+        "speaker_compatibility": false,
+        "visual_compatibility": 0.265,
+        "rendered_word_coverage_percentage": 100.0,
+        "rendered_dialogue_verification": "WARNING",
+        "editorial_state": "UNCHANGED"
+      },
+      "verification_state": "UNVERIFIABLE",
+      "verification_reason": "PLANNED_FUNCTION_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "mapping_index": 3,
+      "placement_key": "editorial_placement_000004",
+      "window_id": "w000004",
+      "clip_id": "c000076",
+      "changed_from_baseline": true,
+      "destination_function_distribution": null,
+      "donor_function_distribution": null,
+      "intended_function_preservation_score": null,
+      "planned_classification_confidence": null,
+      "rendered_transcript": "this job with his time bombs",
+      "rendered_transcript_confidence": 0.9853,
+      "rendered_transcript_reliability_basis": "DIRECT_CONFIDENCE",
+      "rendered_transcript_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "provide_information",
+                "label_id": "interaction_function.provide_information",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "provide_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "rendered_to_donor_function": null,
+      "rendered_to_destination_function": null,
+      "technical_evidence": {
+        "duration_fit": 1.0,
+        "performance_fit": 0.0,
+        "speaker_compatibility": false,
+        "visual_compatibility": 0.265,
+        "rendered_word_coverage_percentage": 11.11,
+        "rendered_dialogue_verification": "FAIL",
+        "editorial_state": "UNCHANGED"
+      },
+      "verification_state": "UNVERIFIABLE",
+      "verification_reason": "PLANNED_FUNCTION_EVIDENCE_UNAVAILABLE"
+    }
+  ],
+  "claim_scope": "Observed rendered transcript function only; no emotion, character, relationship, scene, genre, irony, comedy, or narrative claim.",
+  "verification_signature": "d8ad0e2939c53fc5f4ff0c72deabc9f9da88bc06581717f51a2ee1d63209febf"
+}

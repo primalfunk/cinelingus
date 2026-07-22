@@ -34,9 +34,12 @@ def build_problem_region_report(
         if mapping.get("enabled", True)
         and (_float(mapping.get("score"), 1.0) < 0.55 or _float(mapping.get("visual_fit_score"), 1.0) < 0.75)
     ]
+    residue = _residue_problems(schedule)
+    silence_fallbacks = _ambience_fallback_problems(schedule)
+    uncertain_boundaries = _uncertain_boundary_problems(schedule)
     rows = sorted(
-        fallback_mappings + underfilled + undercovered_slots + low_fit,
-        key=lambda row: (_float(row.get("start"), 0.0), row.get("problem_type", "")),
+        residue + silence_fallbacks + uncertain_boundaries + fallback_mappings + underfilled + undercovered_slots + low_fit,
+        key=lambda row: (-_severity_rank(row.get("severity")), _float(row.get("start"), 0.0), row.get("problem_type", "")),
     )
     report = {
         "schema_version": "1.0",
@@ -49,6 +52,10 @@ def build_problem_region_report(
             "uncovered_speech_performance_count": len(uncovered),
             "undercovered_speech_window_count": len(undercovered_slots),
             "low_fit_mapping_count": len(low_fit),
+            "possible_residue_count": len(residue),
+            "ambience_silence_fallback_count": len(silence_fallbacks),
+            "uncertain_speech_boundary_count": len(uncertain_boundaries),
+            "residue_verification_status": (schedule.get("voice_residue_verification") or {}).get("status", "NOT_MEASURED"),
         },
         "problems": rows,
     }
@@ -57,6 +64,84 @@ def build_problem_region_report(
     _write_csv(rows, output_csv)
     output_txt.write_text(_format_text(report), encoding="utf-8")
     return report
+
+
+def _residue_problems(schedule: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = []
+    for region in (schedule.get("voice_residue_verification") or {}).get("regions", []):
+        if not region.get("possible_residue"):
+            continue
+        start = _float(region.get("start"), 0.0)
+        end = _float(region.get("end"), start)
+        rows.append({
+            "problem_type": "possible_destination_speech_residue",
+            "severity": "critical",
+            "start": round(start, 3),
+            "end": round(end, 3),
+            "duration": round(max(0.0, end - start), 3),
+            "mapping_indices": [],
+            "window_id": region.get("destination_region_id"),
+            "reason": (
+                f"rendered transcript resembles displaced destination speech "
+                f"({region.get('destination_similarity')}) more than donor speech ({region.get('donor_similarity')})"
+            ),
+            "preview_hint": "Review the completed mix against the original destination dialogue.",
+            "transcript": region.get("rendered_transcript", ""),
+        })
+    return rows
+
+
+def _ambience_fallback_problems(schedule: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = []
+    for region in (schedule.get("background_reconstruction_report") or {}).get("silence_fallback_targets", []):
+        start = _float(region.get("start"), 0.0)
+        end = _float(region.get("end"), start)
+        rows.append({
+            "problem_type": "ambience_silence_fallback",
+            "severity": "medium",
+            "start": round(start, 3),
+            "end": round(end, 3),
+            "duration": round(max(0.0, end - start), 3),
+            "mapping_indices": [],
+            "reason": "no speech-safe neighboring ambience source was available",
+            "preview_hint": "Listen for an audible hole beneath the replacement dialogue.",
+        })
+    return rows
+
+
+def _uncertain_boundary_problems(schedule: dict[str, Any]) -> list[dict[str, Any]]:
+    speech_by_id = {
+        str(row.get("id")): row for row in schedule.get("destination_speech_regions", [])
+        if row.get("id") is not None
+    }
+    rows = []
+    for padding in (schedule.get("suppression_padding_report") or {}).get("regions", []):
+        confidence = _float(padding.get("confidence"), 0.7)
+        recovered = padding.get("source_kind") == "recovered_filtered_speech_window"
+        if confidence >= 0.6 and not recovered:
+            continue
+        speech = speech_by_id.get(str(padding.get("speech_region_id")), {})
+        start = _float(speech.get("start"), 0.0)
+        end = _float(speech.get("end"), start)
+        rows.append({
+            "problem_type": "uncertain_speech_boundary",
+            "severity": "medium" if recovered or confidence < 0.45 else "low",
+            "start": round(start, 3),
+            "end": round(end, 3),
+            "duration": round(max(0.0, end - start), 3),
+            "mapping_indices": [],
+            "window_id": padding.get("speech_region_id"),
+            "reason": (
+                f"speech boundary confidence {confidence:.2f}; "
+                f"adaptive padding {padding.get('leading_padding')}s/{padding.get('trailing_padding')}s"
+            ),
+            "preview_hint": "Listen specifically for clipped attacks, breaths, and consonant tails.",
+        })
+    return rows
+
+
+def _severity_rank(value: Any) -> int:
+    return {"critical": 4, "high": 3, "medium": 2, "low": 1}.get(str(value), 0)
 
 
 def _mapping_problem(index: int, mapping: dict[str, Any], problem_type: str) -> dict[str, Any]:
@@ -216,6 +301,10 @@ def _format_text(report: dict[str, Any]) -> str:
         f"  performances with uncovered speech windows: {summary.get('uncovered_speech_performance_count')}",
         f"  undercovered speech windows: {summary.get('undercovered_speech_window_count')}",
         f"  low-fit mappings: {summary.get('low_fit_mapping_count')}",
+        f"  possible destination-speech residue: {summary.get('possible_residue_count')}",
+        f"  ambience silence fallbacks: {summary.get('ambience_silence_fallback_count')}",
+        f"  uncertain speech boundaries: {summary.get('uncertain_speech_boundary_count')}",
+        f"  residue verification: {summary.get('residue_verification_status')}",
         "",
         "Top Problems",
     ]

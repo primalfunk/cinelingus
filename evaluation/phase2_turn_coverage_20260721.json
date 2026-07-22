@@ -1,0 +1,190 @@
+{
+  "schema_version": "1.0",
+  "audit_version": "film_model_turn_coverage_v1",
+  "model_count": 8,
+  "speech_passage_count": 3946,
+  "dialogue_turn_count": 4,
+  "passages_assigned_to_turns": 4,
+  "passage_assignment_percent": 0.1014,
+  "turns_with_deterministic_passage_order": 4,
+  "performances_with_ordered_turns": 1,
+  "models_with_zero_turns": 7,
+  "models": [
+    {
+      "model_path": "C:/Users/erinm/Desktop/2026 - Work/06.26 Cinelingus/temp/phase1_corpus_models/animation_mega_man/film_model.json",
+      "film_id": "film_16fa9f4eb0552a562e65",
+      "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+      "speech_passage_count": 299,
+      "dialogue_turn_count": 0,
+      "passages_assigned_to_turns": 0,
+      "passage_assignment_percent": 0.0,
+      "turns_with_deterministic_passage_order": 0,
+      "performance_count": 49,
+      "performances_with_ordered_turns": 0,
+      "passages_referenced_by_performances": 0,
+      "performance_passage_coverage_percent": 0.0,
+      "artifact_sources_responsible": [
+        "performance",
+        "timeline"
+      ],
+      "structural_id_mismatch_suspected": true,
+      "missing_structural_evidence": [
+        "No ordered_turns evidence was present in the performance artifact.",
+        "Performance window IDs do not map to the canonical speech-passage source IDs."
+      ]
+    },
+    {
+      "model_path": "C:/Users/erinm/Desktop/2026 - Work/06.26 Cinelingus/temp/phase1_corpus_models/feature_wallace_gromit/film_model.json",
+      "film_id": "film_c354c296f196aedd3b4f",
+      "filename": "Wallace and Gromit.mp4",
+      "speech_passage_count": 370,
+      "dialogue_turn_count": 0,
+      "passages_assigned_to_turns": 0,
+      "passage_assignment_percent": 0.0,
+      "turns_with_deterministic_passage_order": 0,
+      "performance_count": 275,
+      "performances_with_ordered_turns": 0,
+      "passages_referenced_by_performances": 370,
+      "performance_passage_coverage_percent": 100.0,
+      "artifact_sources_responsible": [
+        "performance",
+        "timeline"
+      ],
+      "structural_id_mismatch_suspected": false,
+      "missing_structural_evidence": [
+        "No ordered_turns evidence was present in the performance artifact."
+      ]
+    },
+    {
+      "model_path": "C:/Users/erinm/Desktop/2026 - Work/06.26 Cinelingus/temp/phase1_corpus_models/live_action_wkyk/film_model.json",
+      "film_id": "film_ad00f29166f9dbb6b1a6",
+      "filename": "WKYK - S1E6.mp4",
+      "speech_passage_count": 473,
+      "dialogue_turn_count": 0,
+      "passages_assigned_to_turns": 0,
+      "passage_assignment_percent": 0.0,
+      "turns_with_deterministic_passage_order": 0,
+      "performance_count": 22,
+      "performances_with_ordered_turns": 0,
+      "passages_referenced_by_performances": 473,
+      "performance_passage_coverage_percent": 100.0,
+      "artifact_sources_responsible": [
+        "dialogue_events",
+        "performance"
+      ],
+      "structural_id_mismatch_suspected": false,
+      "missing_structural_evidence": [
+        "No ordered_turns evidence was present in the performance artifact."
+      ]
+    },
+    {
+      "model_path": "C:/Users/erinm/Desktop/2026 - Work/06.26 Cinelingus/temp/phase1_corpus_models/short_form_excerpt/film_model.json",
+      "film_id": "film_f696039d2fed48f3573a",
+      "filename": "destination.mp4",
+      "speech_passage_count": 4,
+      "dialogue_turn_count": 4,
+      "passages_assigned_to_turns": 4,
+      "passage_assignment_percent": 100.0,
+      "turns_with_deterministic_passage_order": 4,
+      "performance_count": 1,
+      "performances_with_ordered_turns": 1,
+      "passages_referenced_by_performances": 4,
+      "performance_passage_coverage_percent": 100.0,
+      "artifact_sources_responsible": [
+        "performance",
+        "timeline"
+      ],
+      "structural_id_mismatch_suspected": false,
+      "missing_structural_evidence": []
+    },
+    {
+      "model_path": "C:/Users/erinm/Desktop/2026 - Work/06.26 Cinelingus/temp/phase1_corpus_models/standard_magic_schoolbus/film_model.json",
+      "film_id": "film_e9514a5b78526719590e",
+      "filename": "The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+      "speech_passage_count": 398,
+      "dialogue_turn_count": 0,
+      "passages_assigned_to_turns": 0,
+      "passage_assignment_percent": 0.0,
+      "turns_with_deterministic_passage_order": 0,
+      "performance_count": 56,
+      "performances_with_ordered_turns": 0,
+      "passages_referenced_by_performances": 398,
+      "performance_passage_coverage_percent": 100.0,
+      "artifact_sources_responsible": [
+        "performance",
+        "timeline"
+      ],
+      "structural_id_mismatch_suspected": false,
+      "missing_structural_evidence": [
+        "No ordered_turns evidence was present in the performance artifact."
+      ]
+    },
+    {
+      "model_path": "C:/Users/erinm/Desktop/2026 - Work/06.26 Cinelingus/temp/phase1_corpus_models/standard_red_dwarf/film_model.json",
+      "film_id": "film_87a25cfebac025a84d52",
+      "filename": "Red_Dwarf-s01e01.mp4",
+      "speech_passage_count": 605,
+      "dialogue_turn_count": 0,
+      "passages_assigned_to_turns": 0,
+      "passage_assignment_percent": 0.0,
+      "turns_with_deterministic_passage_order": 0,
+      "performance_count": 31,
+      "performances_with_ordered_turns": 0,
+      "passages_referenced_by_performances": 0,
+      "performance_passage_coverage_percent": 0.0,
+      "artifact_sources_responsible": [
+        "performance",
+        "timeline"
+      ],
+      "structural_id_mismatch_suspected": true,
+      "missing_structural_evidence": [
+        "No ordered_turns evidence was present in the performance artifact.",
+        "Performance window IDs do not map to the canonical speech-passage source IDs."
+      ]
+    },
+    {
+      "model_path": "C:/Users/erinm/Desktop/2026 - Work/06.26 Cinelingus/temp/phase1_corpus_models/standard_sleeping_beauty/film_model.json",
+      "film_id": "film_ef0c425a5b58f8481c69",
+      "filename": "Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+      "speech_passage_count": 975,
+      "dialogue_turn_count": 0,
+      "passages_assigned_to_turns": 0,
+      "passage_assignment_percent": 0.0,
+      "turns_with_deterministic_passage_order": 0,
+      "performance_count": 65,
+      "performances_with_ordered_turns": 0,
+      "passages_referenced_by_performances": 975,
+      "performance_passage_coverage_percent": 100.0,
+      "artifact_sources_responsible": [
+        "performance",
+        "timeline"
+      ],
+      "structural_id_mismatch_suspected": false,
+      "missing_structural_evidence": [
+        "No ordered_turns evidence was present in the performance artifact."
+      ]
+    },
+    {
+      "model_path": "C:/Users/erinm/Desktop/2026 - Work/06.26 Cinelingus/temp/phase1_corpus_models/standard_star_trek/film_model.json",
+      "film_id": "film_ffebefb9187cc0e1ac21",
+      "filename": "Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+      "speech_passage_count": 822,
+      "dialogue_turn_count": 0,
+      "passages_assigned_to_turns": 0,
+      "passage_assignment_percent": 0.0,
+      "turns_with_deterministic_passage_order": 0,
+      "performance_count": 119,
+      "performances_with_ordered_turns": 0,
+      "passages_referenced_by_performances": 822,
+      "performance_passage_coverage_percent": 100.0,
+      "artifact_sources_responsible": [
+        "performance",
+        "timeline"
+      ],
+      "structural_id_mismatch_suspected": false,
+      "missing_structural_evidence": [
+        "No ordered_turns evidence was present in the performance artifact."
+      ]
+    }
+  ]
+}

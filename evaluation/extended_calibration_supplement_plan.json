@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "plan_version": "bounded_corpus_calibration_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T16:11:24+00:00",
+  "execution_revision": "rendered_failure_exploration_v1",
+  "tier": "extended",
+  "excerpt_plan": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_excerpt_plan.json",
+  "maximum_cases": 2,
+  "case_count": 2,
+  "planned_input_duration_seconds": 84.0,
+  "source_files_read_only": true,
+  "resume_required": true,
+  "supplement_of": [
+    "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_calibration_plan_initial.json",
+    "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_calibration_followup_plan.json"
+  ],
+  "cases": [
+    {
+      "case_id": "supplement_001_exchange_continuity",
+      "purpose": "exchange_continuity",
+      "variant_index": 3,
+      "destination": {
+        "excerpt_id": "excerpt_0027_3997208a",
+        "media_id": "media_a0c757cdae48cfdb",
+        "filename": "Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+        "content_type": "live_action",
+        "category": "rapid_speaker_exchange",
+        "start": 2357.42,
+        "end": 2373.42,
+        "duration": 16.0,
+        "analysis_signature": "77d519f5b71bb411f22cdceb6f62928f75acd92f2d0392384fbab2205af19e38",
+        "evidence": {
+          "performance_id": "p000087",
+          "dialogue_density": 1.0,
+          "performance_duration": 4.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0028_345dbfdf",
+        "media_id": "media_b2203a07578ab221",
+        "filename": "The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "content_type": "animation",
+        "category": "animation_dialogue",
+        "start": 26.0,
+        "end": 56.0,
+        "duration": 30.0,
+        "analysis_signature": "5eba5bdd52c94a24bc76062d73ac5f0b67a9820b6d34403e1f1e252f7fa747df",
+        "evidence": {
+          "performance_id": "p000001",
+          "dialogue_density": 1.0,
+          "performance_duration": 31.44,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "speaker_mismatch",
+        "performance_mismatch",
+        "masking"
+      ],
+      "status": "planned",
+      "case_signature": "a9fcbe16f1538793213328a21b2bf6fd1c0a2ce5409fb91e1173a1c6a713462d",
+      "followup_reason": "adds_untried_case_after_recipe_refinement"
+    },
+    {
+      "case_id": "supplement_002_transition_sentence_integrity",
+      "purpose": "transition_sentence_integrity",
+      "variant_index": 3,
+      "destination": {
+        "excerpt_id": "excerpt_0034_2505f14b",
+        "media_id": "media_ce3fe024b4f9dff2",
+        "filename": "GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat.mp4",
+        "content_type": "live_action",
+        "category": "transition_near_dialogue",
+        "start": 134.5,
+        "end": 149.5,
+        "duration": 15.0,
+        "analysis_signature": "b071140a51345f6d41a5a7b729794514c3e01c1d60533a3b72380da47affbbec",
+        "evidence": {
+          "transition_id": "gradual_transition_000017",
+          "transition_kind": "GRADUAL_TRANSITION_CANDIDATE",
+          "speech_distance_seconds": 0.0
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0038_53885645",
+        "media_id": "media_cfdb81cf9f0df5d7",
+        "filename": "Fries With That S01E01 - The Expendables.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Fries With That S01E01 - The Expendables.mp4",
+        "content_type": "live_action",
+        "category": "dense_dialogue",
+        "start": 678.0,
+        "end": 701.0,
+        "duration": 23.0,
+        "analysis_signature": "26b458cb6889e12f0ee1ebe3bdfa46ed64d489e518b40e1a043fef6d73afbd2a",
+        "evidence": {
+          "performance_id": "p000021",
+          "dialogue_density": 1.0,
+          "performance_duration": 23.0,
+          "turn_count": 5,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "transition_artifact",
+        "incomplete_sentence",
+        "duration_failure"
+      ],
+      "status": "planned",
+      "case_signature": "0c288b1f85946ee34988cd33f684bccf6fafebbf870f8e0ddb6ee60dab7eb953",
+      "followup_reason": "adds_untried_case_after_recipe_refinement"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "record_type": "phase0_completion_audit",
+  "created_on": "2026-07-21",
+  "status": "COMPLETE_WITH_EMPIRICAL_LIMITATIONS",
+  "phase0_exit_gate_passed": true,
+  "requested_state": {
+    "neighborhood_repair": {
+      "status": "IMPLEMENTED_AND_PROVEN",
+      "mechanical_evidence": "Two-placement neighborhoods commit atomically when every member improves and roll back atomically when members regress.",
+      "corpus_evidence": "Fourteen coordinated candidates were rendered across performance, transition, and masking cases; all were correctly rolled back after regression.",
+      "limitation": "No naturally occurring multi-placement neighborhood has yet survived corpus verification."
+    },
+    "performance_group_repair": {
+      "status": "IMPLEMENTED_AND_PROVEN",
+      "single_placement_measured_benefit": 0.0886,
+      "atomic_group_regression_survivors": 2,
+      "limitation": "The positive all-member group proof uses deterministic rendered-verification evidence; real-corpus multi-member survival remains open empirical coverage."
+    },
+    "candidate_level_interruption_recovery": {
+      "status": "IMPLEMENTED_AND_CORPUS_DRILLED",
+      "interrupted_stage": "editorial_candidate_prepared",
+      "prepared_repair_count": 2,
+      "donor_selection_replayed": false,
+      "completed_after_resume": true,
+      "quality_after_resume": 0.8537
+    },
+    "quality_threshold_calibration": {
+      "status": "CALIBRATED",
+      "selected_threshold": 0.72,
+      "stable_tested_interval": [0.68, 0.75],
+      "counterfactual_case_count": 2,
+      "hard_failures_independent_of_average": true
+    },
+    "evidence_selected_repair_benchmarks": {
+      "status": "EXIT_GATE_PASSED",
+      "declared_strategies": 12,
+      "executable_contracts": 12,
+      "runtime_attempted_strategies": 8,
+      "appropriate_empirical_evidence_satisfied": 7,
+      "rendered_strategies": 6,
+      "surviving_strategies": 3,
+      "remaining_empirical_evidence": [
+        "repair_word_boundary",
+        "repair_duration_fit",
+        "repair_visual_intent",
+        "repair_local_suppression",
+        "repair_reuse_pressure"
+      ]
+    },
+    "multi_pair_corpus_execution": {
+      "status": "PASSED",
+      "unique_completed_case_signatures": 45,
+      "completed_cases_mapped_to_source_plans": 40,
+      "source_films": 14,
+      "ordered_film_pairs": 22,
+      "film_pairs_with_informative_editorial_evidence": 14,
+      "content_pair_types": [
+        "animation_to_animation",
+        "animation_to_live_action",
+        "live_action_to_animation",
+        "live_action_to_live_action",
+        "mixed_or_uncertain_cross_type"
+      ],
+      "materially_beneficial_pairs": 5
+    }
+  },
+  "written_exit_gates": {
+    "every_repair_strategy_has_executable_benchmark": true,
+    "neighborhood_repair_working": true,
+    "performance_group_repair_working": true,
+    "multiple_corpus_strata_measured": true,
+    "final_placement_states_describe_outcomes": true,
+    "hard_failures_not_concealed_by_average": true,
+    "candidate_or_placement_granularity_resume": true,
+    "known_successful_repairs_regression_tested": true,
+    "two_materially_different_pairs_show_benefit": true
+  },
+  "production_quality_warning": {
+    "phase0_completion_does_not_mean_existing_long_form_outputs_pass_quality_acceptance": true,
+    "animation_dense_hard_failure_count": 52,
+    "live_rapid_editorial_evidence_available": false,
+    "accepted_long_form_reference_count": 0
+  },
+  "primary_artifacts": [
+    "evaluation/phase0_strategy_contract_benchmarks_20260721.json",
+    "evaluation/phase0_rendered_strategy_coverage_20260721.json",
+    "evaluation/phase0_candidate_recovery_outcome_20260721.json",
+    "evaluation/phase0_coordinated_repair_outcome_20260721.json",
+    "evaluation/phase0_quality_threshold_calibration_20260721.json",
+    "evaluation/phase0_run_acceptance_outcome_20260721.json",
+    "evaluation/extended_calibration_outcome_20260721.json"
+  ]
+}

@@ -47,7 +47,7 @@ def _world(count: int):
                 "duration": 2.5,
                 "speaker_id": f"speaker_{index % 2}",
             }
-            for index in range(12)
+            for index in range(16)
         ]
         artifacts[film.id] = {
             "movie": {"duration": 140.0},
@@ -80,6 +80,7 @@ def test_applicable_filter_matrix_is_exhaustive_by_declared_arity() -> None:
     assert set(applicable_multi_input_filter_ids(3)) == {
         "multiworld.contagion",
         "multiworld.echo_chamber",
+        "multiworld.triangle",
     }
     assert set(applicable_multi_input_filter_ids(7)) == {
         "multiworld.contagion",
@@ -99,6 +100,7 @@ def test_applicable_filter_matrix_is_exhaustive_by_declared_arity() -> None:
         ("multiworld.echo_chamber", 2),
         ("multiworld.echo_chamber", 3),
         ("multiworld.echo_chamber", 5),
+        ("multiworld.triangle", 3),
     ],
 )
 def test_every_general_multiworld_filter_reaches_ready_to_render(filter_id: str, film_count: int) -> None:

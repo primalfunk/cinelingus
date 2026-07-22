@@ -1,0 +1,28 @@
+{
+  "cases": [
+    {
+      "case_id": "mega_man_to_short_excerpt",
+      "screen": "../phase2_performance_schedule_screen_mega_man_to_excerpt_20260721/semantic_schedule_screen.json",
+      "source_class": "animation_series",
+      "destination_class": "live_action_short_form"
+    },
+    {
+      "case_id": "wkyk_to_short_excerpt",
+      "screen": "../phase2_performance_schedule_screen_wkyk_to_excerpt_20260721/semantic_schedule_screen.json",
+      "source_class": "live_action_sketch",
+      "destination_class": "live_action_short_form"
+    },
+    {
+      "case_id": "wallace_gromit_to_short_excerpt",
+      "screen": "../phase2_performance_schedule_screen_wallace_to_excerpt_20260721/semantic_schedule_screen.json",
+      "source_class": "animated_feature",
+      "destination_class": "live_action_short_form"
+    },
+    {
+      "case_id": "magic_schoolbus_to_short_excerpt",
+      "screen": "../phase2_performance_schedule_screen_magic_schoolbus_to_excerpt_20260721/semantic_schedule_screen.json",
+      "source_class": "animation_series",
+      "destination_class": "live_action_short_form"
+    }
+  ]
+}

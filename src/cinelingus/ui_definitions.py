@@ -2,8 +2,11 @@ from __future__ import annotations
 
 
 QUALITY_DEFINITIONS = {
+    "Glimpse": "Fast Preview: a faster examination suitable for exploratory work, with reduced transcription precision.",
+    "Study": "Balanced: measured transcription fidelity and processing time for routine invocations.",
+    "Divination": "High Accuracy: a more exacting examination at substantially greater processing cost.",
     "Preview": "Uses a faster examination suitable for exploratory work, with reduced transcription precision.",
-    "Balanced": "Balances transcription fidelity and processing time for routine experiments.",
+    "Balanced": "Balances transcription fidelity and processing time for routine invocations.",
     "Precision": "Uses a more exacting examination at substantially greater processing cost.",
     "Fast Preview": "Legacy name for Preview fidelity.",
     "High Accuracy": "Legacy name for Precision fidelity.",
@@ -37,6 +40,12 @@ MATCHING_DEFINITIONS = {
     "Contrast": "Rewards source and destination performances that differ in energy or dramatic character.",
     "Low Repetition": "Penalizes reuse more strongly and searches farther for distinct donor material.",
     "Surreal": "Rewards unusual contrast and energetic mismatch while relaxing conventional similarity.",
+    "Rhythm": "Prioritizes timing, turn duration, pause rhythm, and dialogue density.",
+    "Dense Comedy": "Favors energetic, dense, fast-moving replacements with less dead air.",
+    "Minimal Reuse": "Strongly protects source variety and avoids repeated donor material.",
+    "Chaos": "Encourages unusual contrast while preserving technical and whole-line safety.",
+    "Volatile": "Favors high-energy, rapidly alternating, interruption-heavy performances while retaining structural safeguards.",
+    "Structural": "Prioritizes speaker count, turn count, participant sequence, performance type, and duration.",
 }
 
 

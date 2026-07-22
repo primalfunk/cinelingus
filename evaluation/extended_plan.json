@@ -1,0 +1,1111 @@
+{
+  "schema_version": "1.0",
+  "plan_version": "movie_corpus_evaluation_plan_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T05:05:47+00:00",
+  "manifest": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\corpus_manifest.json",
+  "manifest_version": "movie_corpus_manifest_v1",
+  "tier": "extended",
+  "seed": 20260720,
+  "dry_run": true,
+  "limits": {
+    "maximum_files": 64,
+    "maximum_pairings": 24,
+    "maximum_total_source_duration_seconds": Infinity,
+    "maximum_rendered_duration_seconds": 14400.0,
+    "maximum_disk_bytes": null,
+    "maximum_runtime_seconds": null
+  },
+  "selected_file_count": 64,
+  "selected_pairing_count": 24,
+  "selected_source_duration_seconds": 159615.291,
+  "estimated_analysis_cached_count": 16,
+  "expected_output_count": 24,
+  "selected_media": [
+    {
+      "media_id": "media_1879b4266b454698",
+      "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+      "duration_seconds": 1436.224,
+      "content_type": "animation",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "dialogue_heavy",
+        "episode_form"
+      ]
+    },
+    {
+      "media_id": "media_0e67c8df91810b40",
+      "filename": "Dark Side of the Ring S04E04 What Happened to Doink the Clown.mp4",
+      "duration_seconds": 2642.731,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_fc2180bbf179ac04",
+      "filename": "The Sword in the Stone (1996 VHS) - 09of19.mp4",
+      "duration_seconds": 666.517,
+      "content_type": "animation",
+      "duration_class": "short",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "short_form"
+      ]
+    },
+    {
+      "media_id": "media_8203e58fa9811bb3",
+      "filename": "Scared Silly.mp4",
+      "duration_seconds": 2411.242,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_2f95a2ac048a4567",
+      "filename": "The Muppets Take Manhattan (1999 VHS).mp4",
+      "duration_seconds": 6242.499,
+      "content_type": "mixed_or_uncertain",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "feature_form",
+        "mixed_or_uncertain"
+      ]
+    },
+    {
+      "media_id": "media_a07d059872fd8f02",
+      "filename": "Christian TV stuff - Parker\u2019s Puzzle (9).ia.mp4",
+      "duration_seconds": 1844.85,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_18f6b6ed542cca53",
+      "filename": "Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+      "duration_seconds": 3473.04,
+      "content_type": "mixed_or_uncertain",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "mixed_or_uncertain"
+      ]
+    },
+    {
+      "media_id": "media_dd11e14de5e805cf",
+      "filename": "Fraggle Rock S01 E15 - I Don't Care.mp4",
+      "duration_seconds": 1484.985,
+      "content_type": "mixed_or_uncertain",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "mixed_or_uncertain"
+      ]
+    },
+    {
+      "media_id": "media_4121ae2102f20e1f",
+      "filename": "Annie Oakley S01_E17 Annie and the Mystery Woman.mp4",
+      "duration_seconds": 1499.13,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_b5c0d64d4c13e986",
+      "filename": "Abbott and Costello in Life Insurance.mp4",
+      "duration_seconds": 1401.927,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_91398926505d6269",
+      "filename": "Quatermass S01 - The Quatermass Experiment - 02 - Persons Reported Missing.mp4",
+      "duration_seconds": 2091.42,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_ec484f1580b5975e",
+      "filename": "Robocop Cartoon - Ep 02.mp4",
+      "duration_seconds": 1282.36,
+      "content_type": "animation",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "dialogue_heavy",
+        "episode_form"
+      ]
+    },
+    {
+      "media_id": "media_cfdb81cf9f0df5d7",
+      "filename": "Fries With That S01E01 - The Expendables.mp4",
+      "duration_seconds": 1398.236,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_bcd657789dbe1941",
+      "filename": "Doogie Howser, M.D. - S01E01 - Pilot.mp4",
+      "duration_seconds": 1457.315,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_df0f39501952c203",
+      "filename": "The Little Mermaid (1990 VHS) (2).mp4",
+      "duration_seconds": 5003.669,
+      "content_type": "animation",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "feature_form"
+      ]
+    },
+    {
+      "media_id": "media_f7d393468f242420",
+      "filename": "THE SIGN OF THE CROSS - 1932 - Fredric March Elissa Landi Claudette Colbert Charles Laughton - Director Cecil B Demille - Play by Wison Barrett.mp4",
+      "duration_seconds": 7542.89,
+      "content_type": "live_action",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "feature_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_f8def6364f025875",
+      "filename": "The Fox and he Hound (1994 VHS).mp4",
+      "duration_seconds": 5185.782,
+      "content_type": "animation",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "feature_form"
+      ]
+    },
+    {
+      "media_id": "media_a0c757cdae48cfdb",
+      "filename": "Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+      "duration_seconds": 3031.693,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_f3cd1040fe856699",
+      "filename": "Little Bear 1x03 Up All Night _ Little Bear's Bath _ Father Bear Comes Home.mp4",
+      "duration_seconds": 1451.061,
+      "content_type": "animation",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "episode_form"
+      ]
+    },
+    {
+      "media_id": "media_ac53264b4ea4918a",
+      "filename": "Mission Impossible (1988) - S01E01 - The Killer - SDTV.mp4",
+      "duration_seconds": 2921.4,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_61836c7b0549bf2d",
+      "filename": "1x06-TheManTrap.mp4",
+      "duration_seconds": 3025.48,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_558a5818fe48b42e",
+      "filename": "Golden Queen's Commando (1982).mp4",
+      "duration_seconds": 5181.068,
+      "content_type": "live_action",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "feature_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_ceccde443a600a25",
+      "filename": "Hey.Dude.S01E01.Day.One.at.the.Bar.None.mp4",
+      "duration_seconds": 1442.475,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_7a98d9ba7cb2246b",
+      "filename": "Ms. Marple.mp4",
+      "duration_seconds": 3368.289,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_8b2ee33208bcfb71",
+      "filename": "The Chronicles of Narnia - S03E01 - The Silver Chair - Part 2.mp4",
+      "duration_seconds": 1650.016,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_73d7903e2a4e16f1",
+      "filename": "WKYK - S1E6.mp4",
+      "duration_seconds": 1312.052,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_af3c9081b698d5b3",
+      "filename": "Robocop Cartoon S2E7.mp4",
+      "duration_seconds": 1285.013,
+      "content_type": "animation",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "episode_form"
+      ]
+    },
+    {
+      "media_id": "media_91c15997c660fe41",
+      "filename": "[BlueLobster] The Wonderful Wizard of Oz - 06 [480p].mp4",
+      "duration_seconds": 1355.116,
+      "content_type": "animation",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "episode_form"
+      ]
+    },
+    {
+      "media_id": "media_1188af40325a4018",
+      "filename": "The Littlest Hobo (1979) 01x02 - Manhunt (Part1).mp4",
+      "duration_seconds": 1428.996,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_d8f348a6441985db",
+      "filename": "Red_Dwarf-s01e01.mp4",
+      "duration_seconds": 1802.803,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_d947a42b610cb425",
+      "filename": "Star Trek Original Series - 1x14-TheGalileoSeven.mp4",
+      "duration_seconds": 3023.937,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_62311279e6dad494",
+      "filename": "Wallace and Gromit.mp4",
+      "duration_seconds": 5005.804,
+      "content_type": "animation",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "feature_form",
+        "moderate_dialogue"
+      ]
+    },
+    {
+      "media_id": "media_9253495cf09e5826",
+      "filename": "Fries With That S01E10 - Undercover Guy.mp4",
+      "duration_seconds": 1413.28,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_6a45d26eb77a63e2",
+      "filename": "Mulan (1999 VHS).mp4",
+      "duration_seconds": 5789.983,
+      "content_type": "animation",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "feature_form"
+      ]
+    },
+    {
+      "media_id": "media_c644e9f1dc00a1f2",
+      "filename": "Otherworld 1985) S01E01 Rules of Attraction.mp4",
+      "duration_seconds": 2706.804,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_d0151c0f2c0df5c5",
+      "filename": "the avengers s4e9.mp4",
+      "duration_seconds": 3120.106,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_9337015fcd55f3ab",
+      "filename": "An American Hippie in Israel (1972) \u05d4\u05d8\u05e8\u05de\u05e4\u05d9\u05e1\u05d8.mp4",
+      "duration_seconds": 5584.631,
+      "content_type": "live_action",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "feature_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_9ceeb2294b8592bd",
+      "filename": "Japanese Bee Show Episode I Dont Know.mp4",
+      "duration_seconds": 1412.911,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_4201d0692a0a7c30",
+      "filename": "The-Benny-Hill-Show-_1988_.mp4",
+      "duration_seconds": 1317.8,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_1dcc3e38a27c902b",
+      "filename": "Hey_Duggee_Series_2_-_16._The_Medicine_Badge_b08v9rwt_signed.mp4",
+      "duration_seconds": 420.0,
+      "content_type": "live_action",
+      "duration_class": "short",
+      "evaluation_strata": [
+        "live_action",
+        "short_form"
+      ]
+    },
+    {
+      "media_id": "media_b2203a07578ab221",
+      "filename": "The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+      "duration_seconds": 1991.689,
+      "content_type": "animation",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "dialogue_heavy",
+        "episode_form"
+      ]
+    },
+    {
+      "media_id": "media_ebc1b65994e02086",
+      "filename": "Anything But Love s02 e07-\u00a0Bang You're Dead\u00a0( Dir. M. Lessac +Writers Jane M + Billy Van Zandt.mp4",
+      "duration_seconds": 1364.278,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_ba01cdc31429b05d",
+      "filename": "MADtv - S01 E19 .mp4",
+      "duration_seconds": 2526.59,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_c7ba52ed758770f9",
+      "filename": "Uncle Muscle Ep 8.mp4",
+      "duration_seconds": 1247.097,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_ee695743235c7162",
+      "filename": "Gummi Bears S01E09 - A Gummi By Any Other Name.mp4",
+      "duration_seconds": 1321.169,
+      "content_type": "animation",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "episode_form"
+      ]
+    },
+    {
+      "media_id": "media_f4e66df3b000d6f0",
+      "filename": "The Hitchhiker's Guide to the Galaxy - E01.mp4",
+      "duration_seconds": 1972.76,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_1ffdfdf8f428ad19",
+      "filename": "The Little Mermaid II Return To The Sea (2000 VHS).mp4",
+      "duration_seconds": 5195.499,
+      "content_type": "animation",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "feature_form"
+      ]
+    },
+    {
+      "media_id": "media_8d622c62543808b0",
+      "filename": "Speed Racer X Episode 05.mp4",
+      "duration_seconds": 1357.818,
+      "content_type": "animation",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "episode_form"
+      ]
+    },
+    {
+      "media_id": "media_a73534d88492769d",
+      "filename": "Faerie Tale Theatre - 02 - Rumplestiltskin.mp4",
+      "duration_seconds": 2371.872,
+      "content_type": "mixed_or_uncertain",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "mixed_or_uncertain"
+      ]
+    },
+    {
+      "media_id": "media_e36a6bc9174a6dd5",
+      "filename": "227 - S01E06.mp4",
+      "duration_seconds": 1433.265,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_0aba10b58ad04abf",
+      "filename": "Saved by the Bell - 01x02 - Dancing to the Maxx.mp4",
+      "duration_seconds": 1336.848,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_9b626c297fcc6fb8",
+      "filename": "Christian TV stuff - American Saints.ia.mp4",
+      "duration_seconds": 2159.6,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_8f7099d5498a11fb",
+      "filename": "Abbott and Costello in Cheap Skates.mp4",
+      "duration_seconds": 1397.126,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_25b49b780a95ff7c",
+      "filename": "227 - S01E08.mp4",
+      "duration_seconds": 1433.365,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_b7ecb812ba5a9d5c",
+      "filename": "Death Note Ep 2.mp4",
+      "duration_seconds": 1376.937,
+      "content_type": "animation",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "episode_form"
+      ]
+    },
+    {
+      "media_id": "media_ddbd3c6d9f51fe35",
+      "filename": "The Room, by Tommy Wiseau (2003).mp4",
+      "duration_seconds": 5975.803,
+      "content_type": "live_action",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "feature_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_01334067e7bce8bd",
+      "filename": "Fairie Tale Theatre -01 - The Tale of the Frog Prince.mp4",
+      "duration_seconds": 3276.076,
+      "content_type": "mixed_or_uncertain",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "mixed_or_uncertain"
+      ]
+    },
+    {
+      "media_id": "media_54f727943a6cc68f",
+      "filename": "Anything But Love s02 e10-\u00a0Hearts and Bones\u00a0(1989) .Dir. James Widdoes -written by Alan Kirschenbaum.mp4",
+      "duration_seconds": 1402.608,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_b4638e7e7a7bfe4e",
+      "filename": "In The Mood For Love - Chinese film in Italian.mp4",
+      "duration_seconds": 5904.0,
+      "content_type": "live_action",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "feature_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_a7d2b7e401b3ab4e",
+      "filename": "Green Acres - 016 - Give Me Land, Lots Of Land.mpg",
+      "duration_seconds": 1282.536,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_7a596f2be7ff829c",
+      "filename": "OlivetheOtherReindeer2000FPUO.mp4",
+      "duration_seconds": 2994.31,
+      "content_type": "animation",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "episode_form"
+      ]
+    },
+    {
+      "media_id": "media_8edd1abdceb11bc1",
+      "filename": "Fraggle Rock S01 E03 - Let the Water Run.mp4",
+      "duration_seconds": 1486.42,
+      "content_type": "mixed_or_uncertain",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "mixed_or_uncertain"
+      ]
+    },
+    {
+      "media_id": "media_d9c440ac12fd96f5",
+      "filename": "Beverly Hillbillies.mp4",
+      "duration_seconds": 1356.855,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_ce3fe024b4f9dff2",
+      "filename": "GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat.mp4",
+      "duration_seconds": 1335.235,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ]
+    }
+  ],
+  "pairings": [
+    {
+      "pairing_id": "pair_001",
+      "purpose": "animation_to_animation",
+      "source_media_id": "media_1879b4266b454698",
+      "destination_media_id": "media_1ffdfdf8f428ad19",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "visual_mismatch",
+        "speaker_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_002",
+      "purpose": "live_action_to_live_action",
+      "source_media_id": "media_0aba10b58ad04abf",
+      "destination_media_id": "media_25b49b780a95ff7c",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "residual_dialogue",
+        "masking",
+        "speaker_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_003",
+      "purpose": "animation_to_live_action",
+      "source_media_id": "media_0e67c8df91810b40",
+      "destination_media_id": "media_62311279e6dad494",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "visual_mismatch",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_004",
+      "purpose": "intentional_duration_mismatch",
+      "source_media_id": "media_01334067e7bce8bd",
+      "destination_media_id": "media_54f727943a6cc68f",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "duration_failure",
+        "low_rendered_coverage"
+      ]
+    },
+    {
+      "pairing_id": "pair_005",
+      "purpose": "similar_duration_dialogue_exchange",
+      "source_media_id": "media_1188af40325a4018",
+      "destination_media_id": "media_4201d0692a0a7c30",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "speaker_mismatch",
+        "performance_mismatch",
+        "transition_artifact"
+      ]
+    },
+    {
+      "pairing_id": "pair_006",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_18f6b6ed542cca53",
+      "destination_media_id": "media_1dcc3e38a27c902b",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_007",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_2f95a2ac048a4567",
+      "destination_media_id": "media_4121ae2102f20e1f",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_008",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_558a5818fe48b42e",
+      "destination_media_id": "media_6a45d26eb77a63e2",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_009",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_61836c7b0549bf2d",
+      "destination_media_id": "media_73d7903e2a4e16f1",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_010",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_7a596f2be7ff829c",
+      "destination_media_id": "media_8edd1abdceb11bc1",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_011",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_7a98d9ba7cb2246b",
+      "destination_media_id": "media_8b2ee33208bcfb71",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_012",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_8203e58fa9811bb3",
+      "destination_media_id": "media_8d622c62543808b0",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_013",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_8f7099d5498a11fb",
+      "destination_media_id": "media_a7d2b7e401b3ab4e",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_014",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_91398926505d6269",
+      "destination_media_id": "media_91c15997c660fe41",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_015",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_9253495cf09e5826",
+      "destination_media_id": "media_9337015fcd55f3ab",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_016",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_9b626c297fcc6fb8",
+      "destination_media_id": "media_b4638e7e7a7bfe4e",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_017",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_9ceeb2294b8592bd",
+      "destination_media_id": "media_a73534d88492769d",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_018",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_a07d059872fd8f02",
+      "destination_media_id": "media_a0c757cdae48cfdb",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_019",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_ac53264b4ea4918a",
+      "destination_media_id": "media_af3c9081b698d5b3",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_020",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_b2203a07578ab221",
+      "destination_media_id": "media_b7ecb812ba5a9d5c",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_021",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_b5c0d64d4c13e986",
+      "destination_media_id": "media_ba01cdc31429b05d",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_022",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_bcd657789dbe1941",
+      "destination_media_id": "media_c644e9f1dc00a1f2",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_023",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_c7ba52ed758770f9",
+      "destination_media_id": "media_ce3fe024b4f9dff2",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_024",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_ceccde443a600a25",
+      "destination_media_id": "media_d0151c0f2c0df5c5",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    }
+  ],
+  "execution_policy": {
+    "source_files_read_only": true,
+    "write_sidecars_to_source": false,
+    "cache_reuse": true,
+    "resume_required": true,
+    "excerpt_policy": "analysis_selected_bounded_excerpt_when_available_otherwise_plan_only"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "evaluation_type": "phase2_production_provider_resource_supplement",
+  "measurement_date": "2026-07-22",
+  "provider": "local_e5_transformers",
+  "model_id": "intfloat/multilingual-e5-small",
+  "model_revision": "d829207ab28e6a5fb3aafb5d4c44111b8146db32",
+  "asset_digest": "327ab8a846605d1bdac7f2cf14cfc259e53c28fa4303766665ac4c991c6e7cfd",
+  "batch_size": 32,
+  "input_description": "Synthetic short English passages used only to measure the pinned local provider path.",
+  "cpu": {
+    "cold_load_and_encode_seconds": 10.487314900034107,
+    "warm_encode_seconds_mean": 0.10722009998668607,
+    "warm_encode_seconds_runs": [
+      0.09876129997428507,
+      0.1159400999895297,
+      0.10695889999624342
+    ],
+    "working_set_before_bytes": 19709952,
+    "working_set_after_first_encode_bytes": 1213927424,
+    "working_set_final_bytes": 1216262144,
+    "process_peak_working_set_bytes": 1216262144,
+    "process_private_bytes_final": 3081957376
+  },
+  "cuda": {
+    "device_available": true,
+    "warm_encode_seconds_mean": 0.014343633335859826,
+    "warm_encode_seconds_runs": [
+      0.014793400012422353,
+      0.013644899998325855,
+      0.014592599996831268
+    ],
+    "peak_allocated_bytes": 489932800,
+    "peak_reserved_bytes": 511705088
+  },
+  "limitations": [
+    "This is a single-session local measurement, not a statistically sampled hardware benchmark.",
+    "Windows process working set and private bytes include Python, PyTorch, Transformers, tokenizer, and model runtime rather than model weights alone.",
+    "CUDA cold-start timing was excluded because driver/runtime initialization varied materially between sessions.",
+    "Quality is not inferred from runtime measurements."
+  ]
+}

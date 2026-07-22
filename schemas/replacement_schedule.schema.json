@@ -241,6 +241,35 @@
           },
           "review_note": {
             "type": "string"
+          },
+          "scheduler_tier": {
+            "type": "integer"
+          },
+          "scheduler_tier_name": {
+            "type": "string"
+          },
+          "matching_profile": {
+            "type": "string"
+          },
+          "hard_constraints_passed": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "soft_constraints_violated": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "local_speaker_mapping": {
+            "type": "object"
+          },
+          "suppression_mode": {
+            "type": "string"
+          },
+          "fallback_reason": {
+            "type": ["string", "null"]
+          },
+          "candidate_rejection_reasons": {
+            "type": "array"
           }
         }
       }
@@ -256,6 +285,22 @@
       "items": {
         "type": "object"
       }
+    },
+    "performance_decisions": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "performance_summary": {
+      "type": "object"
+    },
+    "dialogue_suppression": {
+      "type": "string"
+    },
+    "unmatched_policy": {
+      "type": "string"
+    },
+    "background_reconstruction": {
+      "type": "string"
     },
     "transformation_name": {
       "type": "string"

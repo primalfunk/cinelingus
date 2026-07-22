@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "comparison_id": "animation_dense_repair_allocation_20260720",
+  "configuration": "config/corpus_animation_dense.local.json",
+  "control": {
+    "strategy": "alternative_donor_and_atomic_swap",
+    "initial_quality": 0.6732,
+    "final_quality": 0.6794,
+    "placements_repaired": 2,
+    "placements_unresolved": 188,
+    "attempted_placements": 48,
+    "rendered_candidates": 41,
+    "surviving_candidates": 6,
+    "candidate_survival_rate": 0.1463,
+    "atomic_swap_rendered": 32,
+    "atomic_swap_survived": 0,
+    "alternative_donor_rendered": 9,
+    "alternative_donor_survived": 6
+  },
+  "treatment": {
+    "strategy": "boundary_first_and_integrity_aware_candidate_allocation",
+    "initial_quality": 0.6732,
+    "final_quality": 0.6816,
+    "placements_repaired": 3,
+    "placements_unresolved": 187,
+    "attempted_placements": 48,
+    "rendered_candidates": 39,
+    "surviving_candidates": 12,
+    "candidate_survival_rate": 0.3077,
+    "alternative_donor_rendered": 39,
+    "alternative_donor_survived": 12,
+    "source_boundary_extension_rendered": 0,
+    "source_boundary_extension_survived": 0
+  },
+  "delta": {
+    "final_quality": 0.0022,
+    "placements_repaired": 1,
+    "placements_unresolved": -1,
+    "candidate_survival_rate": 0.1614,
+    "surviving_candidates": 6
+  },
+  "interpretation": {
+    "accepted_change": true,
+    "primary_cause": "Atomic swaps with zero observed survival were skipped for rendered-integrity failures, allowing substantially more unused alternative donors to reach verification.",
+    "boundary_extension_result": "No selected placement had sufficient source and slot headroom in this run; the executable family remains available but did not cause the measured gain.",
+    "next_calibration_target": "Separate failure-category prioritization so speaker, visual, and performance defects do not inherit the same candidate route as rendered boundary failures."
+  }
+}

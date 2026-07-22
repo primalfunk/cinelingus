@@ -1,0 +1,28 @@
+{
+  "cases": [
+    {
+      "case_id": "mega_man_to_magic_schoolbus",
+      "screen": "../phase2_crossfilm_mega_to_magic_20260721/semantic_schedule_screen.json",
+      "source_class": "animation_series",
+      "destination_class": "animation_series"
+    },
+    {
+      "case_id": "wkyk_to_wallace_gromit",
+      "screen": "../phase2_crossfilm_wkyk_to_wallace_harmonized_20260721/semantic_schedule_screen.json",
+      "source_class": "live_action_sketch",
+      "destination_class": "animated_feature"
+    },
+    {
+      "case_id": "wallace_gromit_to_mega_man",
+      "screen": "../phase2_crossfilm_wallace_to_mega_harmonized_20260721/semantic_schedule_screen.json",
+      "source_class": "animated_feature",
+      "destination_class": "animation_series"
+    },
+    {
+      "case_id": "magic_schoolbus_to_wkyk",
+      "screen": "../phase2_crossfilm_magic_to_wkyk_20260721/semantic_schedule_screen.json",
+      "source_class": "animation_series",
+      "destination_class": "live_action_sketch"
+    }
+  ]
+}

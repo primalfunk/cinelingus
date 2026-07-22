@@ -1,0 +1,9 @@
+{
+  "seed": "phase3-function-proof-v1",
+  "answer_key": {
+    "A": "legacy_control",
+    "B": "function_preserving_repaired",
+    "C": "semantic_only",
+    "D": "function_report_only"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "review_state": "OPTIONAL_HUMAN_REVIEW_DEFERRED",
+  "cases": [
+    {
+      "label": "A",
+      "media": "media/phase3_A.mp4"
+    },
+    {
+      "label": "B",
+      "media": "media/phase3_B.mp4"
+    },
+    {
+      "label": "C",
+      "media": "media/phase3_C.mp4"
+    },
+    {
+      "label": "D",
+      "media": "media/phase3_D.mp4"
+    }
+  ],
+  "separate_questions": [
+    "function_fit",
+    "semantic_fit",
+    "performance_fit",
+    "completeness",
+    "overall_preference"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "record_type": "phase0_run_acceptance_outcome",
+  "created_on": "2026-07-21",
+  "status": "implemented_and_measured",
+  "contract": {
+    "editorial_evidence_required_by_default": true,
+    "accepted_editorial_statuses": ["PASS", "LIMIT_REACHED"],
+    "maximum_hard_gate_failure_count": 0,
+    "maximum_failed_delivery_count": 0,
+    "average_quality_can_override_hard_failure": false
+  },
+  "audit": {
+    "manifest": "evaluation/phase0_run_acceptance_manifest.json",
+    "report": "evaluation/performance_quality_corpus_report.json",
+    "passed_cases": 0,
+    "case_count": 2,
+    "cases": [
+      {
+        "id": "animation_dense",
+        "editorial_evidence_available": true,
+        "editorial_status": "LIMIT_REACHED",
+        "editorial_final_quality": 0.6913,
+        "minimum_placement_quality": 0.3444,
+        "hard_gate_failure_count": 52,
+        "hard_gate_failure_categories": ["low_rendered_coverage"],
+        "accepted": false
+      },
+      {
+        "id": "live_rapid",
+        "editorial_evidence_available": false,
+        "hard_gate_failure_count": 0,
+        "accepted": false,
+        "reason": "required_editorial_evidence_unavailable"
+      }
+    ]
+  },
+  "interpretation": "The revised contract exposes both existing long-form runs as unsuitable acceptance references. This is the intended result: a favorable aggregate or unrelated technical metrics can no longer conceal hard placement failures or missing editorial verification."
+}

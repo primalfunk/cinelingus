@@ -1,0 +1,187 @@
+{
+  "schema_version": "1.0",
+  "repair_version": "semantic_word_boundary_repair_v1",
+  "creation_timestamp": "2026-07-22T06:07:09+00:00",
+  "repair_signature": "1575c5fa6f8e06a852fb225629d24b7c9fcf8f5a9b2da5807e0dcdbd241e831f",
+  "source_evidence_signature": "ed1596231024963d7663a4ee471f87f35ae06b1d3e7d2a80a48c3ea1fbd5ce2b",
+  "rejected_clip_count": 2,
+  "repaired_clip_count": 1,
+  "unrecovered_clip_count": 1,
+  "repaired_clip_ids": [
+    "c000102"
+  ],
+  "clips": [
+    {
+      "clip_id": "c000076",
+      "intended_transcript": "Touchdown! Hey, this must be what humans call fun.",
+      "repair_state": "UNRECOVERED",
+      "reason": "derived_clip_failed_independent_verification",
+      "original_start": 462.0,
+      "original_duration": 3.0,
+      "repaired_start": 470.24,
+      "repaired_duration": 3.38,
+      "aligned_words": [
+        "Touchdown!",
+        "Hey,",
+        "this",
+        "must",
+        "be",
+        "what",
+        "humans",
+        "call",
+        "fun!"
+      ],
+      "verification": {
+        "mapping_index": 0,
+        "mapping_id": "c000076",
+        "editorial_placement_id": null,
+        "window_id": null,
+        "clip_id": "c000076",
+        "destination_start": 0.0,
+        "destination_end": 3.38,
+        "intended_transcript": "Touchdown! Hey, this must be what humans call fun.",
+        "rendered_transcript": "Hey, this must be what humans call fun!",
+        "word_coverage_percentage": 88.89,
+        "missing_sentence_beginning": true,
+        "missing_sentence_ending": false,
+        "unexpected_word_loss": 0.1111,
+        "mid_word_cut": false,
+        "incomplete_phrase": true,
+        "speaking_rate_anomaly": false,
+        "observed_words_per_second": 2.367,
+        "fade_masking_possible": false,
+        "audio_masking_possible": true,
+        "adjacent_dialogue_before": false,
+        "adjacent_dialogue_after": false,
+        "poor_intelligibility": true,
+        "confidence": 0.3278,
+        "labels": [
+          {
+            "domain": "audio",
+            "label": "sentence_beginning",
+            "status": "fail",
+            "score": 0.0,
+            "confidence": 0.3278
+          },
+          {
+            "domain": "audio",
+            "label": "sentence_ending",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.3278
+          },
+          {
+            "domain": "audio",
+            "label": "word_coverage",
+            "status": "pass",
+            "score": 0.8889,
+            "confidence": 0.3278
+          },
+          {
+            "domain": "audio",
+            "label": "speaking_rate",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.3278
+          },
+          {
+            "domain": "audio",
+            "label": "intelligibility",
+            "status": "fail",
+            "score": 0.3278,
+            "confidence": 0.3278
+          }
+        ],
+        "status": "warning"
+      }
+    },
+    {
+      "clip_id": "c000102",
+      "intended_transcript": "I guess so. At least I'm not missing any parts.",
+      "repair_state": "REPAIRED",
+      "reason": null,
+      "original_start": 630.0,
+      "original_duration": 3.0,
+      "repaired_start": 639.58,
+      "repaired_duration": 2.78,
+      "aligned_words": [
+        "I",
+        "guess",
+        "so.",
+        "At",
+        "least",
+        "I'm",
+        "not",
+        "missing",
+        "any",
+        "parts."
+      ],
+      "verification": {
+        "mapping_index": 0,
+        "mapping_id": "c000102",
+        "editorial_placement_id": null,
+        "window_id": null,
+        "clip_id": "c000102",
+        "destination_start": 0.0,
+        "destination_end": 2.78,
+        "intended_transcript": "I guess so. At least I'm not missing any parts.",
+        "rendered_transcript": "I guess so. At least I'm not missing any parts.",
+        "word_coverage_percentage": 100.0,
+        "missing_sentence_beginning": false,
+        "missing_sentence_ending": false,
+        "unexpected_word_loss": 0.0,
+        "mid_word_cut": false,
+        "incomplete_phrase": false,
+        "speaking_rate_anomaly": false,
+        "observed_words_per_second": 3.597,
+        "fade_masking_possible": false,
+        "audio_masking_possible": false,
+        "adjacent_dialogue_before": false,
+        "adjacent_dialogue_after": false,
+        "poor_intelligibility": false,
+        "confidence": 0.9174,
+        "labels": [
+          {
+            "domain": "audio",
+            "label": "sentence_beginning",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.9174
+          },
+          {
+            "domain": "audio",
+            "label": "sentence_ending",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.9174
+          },
+          {
+            "domain": "audio",
+            "label": "word_coverage",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.9174
+          },
+          {
+            "domain": "audio",
+            "label": "speaking_rate",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.9174
+          },
+          {
+            "domain": "audio",
+            "label": "intelligibility",
+            "status": "pass",
+            "score": 0.9174,
+            "confidence": 0.9174
+          }
+        ],
+        "status": "pass"
+      }
+    }
+  ],
+  "repaired_clip_library": "evaluation\\phase2_word_boundary_repair_mega_man_c76_c102_wide_20260721\\repaired_clip_library.json",
+  "repair_state": "PARTIAL_REPAIR",
+  "claim_scope": "Word-timestamp boundary recovery with independent lexical verification; no speaker, visual-fit, semantic-preference, or phoneme-perfect-boundary claim."
+}

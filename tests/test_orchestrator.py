@@ -19,6 +19,25 @@ def test_orchestrator_parser_defaults_to_gui() -> None:
     assert args.action == "gui"
 
 
+def test_root_launcher_dispatches_default_to_qt_gui_without_leaking_cli_arguments(monkeypatch) -> None:
+    runner = load_runner()
+    calls = []
+    monkeypatch.setattr("run_translation.gui_main", lambda args: calls.append(args) or 0)
+
+    assert runner.main([]) == 0
+    assert calls == [[]]
+
+
+def test_root_launcher_forwards_qt_window_and_explicit_legacy_options(monkeypatch) -> None:
+    runner = load_runner()
+    calls = []
+    monkeypatch.setattr("run_translation.gui_main", lambda args: calls.append(args) or 0)
+
+    assert runner.main(["gui", "--windowed"]) == 0
+    assert runner.main(["gui", "--legacy-tk"]) == 0
+    assert calls == [["--windowed"], ["--legacy-tk"]]
+
+
 def test_legacy_translation_launcher_still_imports() -> None:
     runner = load_runner("run_cinelingus.py")
 
@@ -58,6 +77,28 @@ def test_orchestrator_parser_accepts_problem_previews(tmp_path: Path) -> None:
 
     assert args.action == "problem-previews"
     assert args.max_regions == 2
+
+
+def test_orchestrator_parser_accepts_performance_previews(tmp_path: Path) -> None:
+    import run_translation as runner
+
+    args = runner.build_parser().parse_args(["performance-previews", "--max-regions", "2", "--output-dir", str(tmp_path)])
+
+    assert args.action == "performance-previews"
+    assert args.max_regions == 2
+
+
+def test_orchestrator_parser_accepts_quality_corpus(tmp_path: Path) -> None:
+    runner = load_runner()
+
+    args = runner.build_parser().parse_args([
+        "quality-corpus",
+        "--corpus-manifest", str(tmp_path / "corpus.json"),
+        "--runs-root", str(tmp_path / "runs"),
+    ])
+
+    assert args.action == "quality-corpus"
+    assert args.corpus_manifest == tmp_path / "corpus.json"
 
 
 

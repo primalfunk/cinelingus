@@ -36,6 +36,14 @@
           "pause_statistics",
           "dialogue_density",
           "conversation_type",
+          "performance_model_version",
+          "audio",
+          "visual",
+          "conversation",
+          "editing",
+          "movement",
+          "emotion",
+          "metadata",
           "confidence"
         ],
         "properties": {
@@ -47,6 +55,10 @@
           "speaking_window_ids": { "type": "array", "items": { "type": "string" } },
           "dialogue_event_ids": { "type": "array", "items": { "type": "string" } },
           "shot_ids": { "type": "array", "items": { "type": "string" } },
+          "source_shot_boundaries": { "type": "array", "items": { "type": "object" } },
+          "ordered_turns": { "type": "array", "items": { "type": "object" } },
+          "speech_intervals": { "type": "array", "items": { "type": "object" } },
+          "silence_intervals": { "type": "array", "items": { "type": "object" } },
           "estimated_speaker_count": { "type": "integer" },
           "estimated_turn_count": { "type": "integer" },
           "speaker_sequence": { "type": "array", "items": { "type": "string" } },
@@ -54,9 +66,21 @@
           "pause_statistics": { "type": "object" },
           "dialogue_density": { "type": "number" },
           "pause_ratio": { "type": "number" },
+          "interruption_frequency": { "type": "number" },
+          "cadence": { "type": "object" },
           "conversation_type": { "type": "string" },
+          "scene_category": { "type": "string" },
+          "adaptability": { "type": "object" },
           "signature": { "type": "object" },
           "confidence": { "type": "number" }
+          ,"performance_model_version": { "type": "string" }
+          ,"audio": { "type": "object" }
+          ,"visual": { "type": "object" }
+          ,"conversation": { "type": "object" }
+          ,"editing": { "type": "object" }
+          ,"movement": { "type": "object" }
+          ,"emotion": { "type": "object" }
+          ,"metadata": { "type": "object" }
         }
       }
     }

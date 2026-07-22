@@ -1,0 +1,509 @@
+{
+  "schema_version": "1.0",
+  "plan_version": "bounded_corpus_calibration_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T15:40:36+00:00",
+  "execution_revision": "rendered_failure_exploration_v1",
+  "tier": "extended",
+  "excerpt_plan": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_excerpt_plan.json",
+  "maximum_cases": 10,
+  "case_count": 10,
+  "planned_input_duration_seconds": 431.36,
+  "source_files_read_only": true,
+  "resume_required": true,
+  "cases": [
+    {
+      "case_id": "case_001_exchange_continuity",
+      "purpose": "exchange_continuity",
+      "variant_index": 1,
+      "destination": {
+        "excerpt_id": "excerpt_0003_00f561dd",
+        "media_id": "media_1879b4266b454698",
+        "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "content_type": "animation",
+        "category": "rapid_speaker_exchange",
+        "start": 561.0,
+        "end": 579.0,
+        "duration": 18.0,
+        "analysis_signature": "6600be2a189605bfec1c6b5c5add25a757d437dbf78b6670aafdb703a5a5c1f4",
+        "evidence": {
+          "performance_id": "p000015",
+          "dialogue_density": 1.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0005_894f9564",
+        "media_id": "media_18f6b6ed542cca53",
+        "filename": "Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+        "content_type": "mixed_or_uncertain",
+        "category": "dense_dialogue",
+        "start": 1599.16,
+        "end": 1629.16,
+        "duration": 30.0,
+        "analysis_signature": "663a190e0f28ee5c10b3df6ac5e99212fbd06d6b723a88c0a495c126e7c9107e",
+        "evidence": {
+          "performance_id": "p000022",
+          "dialogue_density": 1.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "speaker_mismatch",
+        "performance_mismatch",
+        "masking"
+      ],
+      "status": "planned",
+      "case_signature": "750b394b6a7b73be8afc83cd9f589ba22289c66386c4f8d72c54fa93dd42e7f8"
+    },
+    {
+      "case_id": "case_002_transition_sentence_integrity",
+      "purpose": "transition_sentence_integrity",
+      "variant_index": 1,
+      "destination": {
+        "excerpt_id": "excerpt_0007_f6d1bca1",
+        "media_id": "media_18f6b6ed542cca53",
+        "filename": "Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+        "content_type": "mixed_or_uncertain",
+        "category": "transition_near_dialogue",
+        "start": 3007.625,
+        "end": 3022.625,
+        "duration": 15.0,
+        "analysis_signature": "663a190e0f28ee5c10b3df6ac5e99212fbd06d6b723a88c0a495c126e7c9107e",
+        "evidence": {
+          "transition_id": "gradual_transition_000077",
+          "transition_kind": "GRADUAL_TRANSITION_CANDIDATE",
+          "speech_distance_seconds": 0.035
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0001_1e59ed68",
+        "media_id": "media_1879b4266b454698",
+        "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "content_type": "animation",
+        "category": "long_monologue",
+        "start": 0.0,
+        "end": 26.0,
+        "duration": 26.0,
+        "analysis_signature": "6600be2a189605bfec1c6b5c5add25a757d437dbf78b6670aafdb703a5a5c1f4",
+        "evidence": {
+          "performance_id": "p000001",
+          "dialogue_density": 1.0,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "transition_artifact",
+        "incomplete_sentence",
+        "duration_failure"
+      ],
+      "status": "planned",
+      "case_signature": "d39f3c06dd7ed847b868fa199439402a81a629f2731aeb31e74eb4c4f471f70f"
+    },
+    {
+      "case_id": "case_003_animation_visual_role",
+      "purpose": "animation_visual_role",
+      "variant_index": 1,
+      "destination": {
+        "excerpt_id": "excerpt_0012_aa9e5635",
+        "media_id": "media_62311279e6dad494",
+        "filename": "Wallace and Gromit.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Wallace and Gromit.mp4",
+        "content_type": "animation",
+        "category": "animation_dialogue",
+        "start": 0.0,
+        "end": 10.0,
+        "duration": 10.0,
+        "analysis_signature": "7363d62b1f7f27d199feb3732002604ff6a3c025d30a82bbaf614c72ded53c06",
+        "evidence": {
+          "performance_id": "p000001",
+          "dialogue_density": 1.0,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0009_3113a51d",
+        "media_id": "media_25b49b780a95ff7c",
+        "filename": "227 - S01E08.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\227 - S01E08.mp4",
+        "content_type": "live_action",
+        "category": "dense_dialogue",
+        "start": 0.0,
+        "end": 30.0,
+        "duration": 30.0,
+        "analysis_signature": "eac58a14e29e3e60e890bc611685e68ffa8a3e1cd1a13b3e710ca17d77e17721",
+        "evidence": {
+          "performance_id": "p000001",
+          "dialogue_density": 1.0,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "visual_mismatch",
+        "speaker_mismatch",
+        "performance_mismatch"
+      ],
+      "status": "planned",
+      "case_signature": "2be3e94f74c24d7085feb965efc0f8b0e87080057ca0811a908f2fd60f500774"
+    },
+    {
+      "case_id": "case_004_quiet_residue_masking",
+      "purpose": "quiet_residue_masking",
+      "variant_index": 1,
+      "destination": {
+        "excerpt_id": "excerpt_0010_d6e972aa",
+        "media_id": "media_25b49b780a95ff7c",
+        "filename": "227 - S01E08.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\227 - S01E08.mp4",
+        "content_type": "live_action",
+        "category": "quiet_room_tone",
+        "start": 262.0,
+        "end": 273.0,
+        "duration": 11.0,
+        "analysis_signature": "eac58a14e29e3e60e890bc611685e68ffa8a3e1cd1a13b3e710ca17d77e17721",
+        "evidence": {
+          "gap_seconds": 11.0
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0014_674bb2f1",
+        "media_id": "media_62311279e6dad494",
+        "filename": "Wallace and Gromit.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Wallace and Gromit.mp4",
+        "content_type": "animation",
+        "category": "long_monologue",
+        "start": 367.16,
+        "end": 389.72,
+        "duration": 22.56,
+        "analysis_signature": "7363d62b1f7f27d199feb3732002604ff6a3c025d30a82bbaf614c72ded53c06",
+        "evidence": {
+          "performance_id": "p000021",
+          "dialogue_density": 0.8032,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "residual_dialogue",
+        "masking"
+      ],
+      "status": "planned",
+      "case_signature": "d45fedd436d4d9430e3a626b19190821858da1f117c2cbceecc3a349aa559197"
+    },
+    {
+      "case_id": "case_005_fragment_duration_edges",
+      "purpose": "fragment_duration_edges",
+      "variant_index": 1,
+      "destination": {
+        "excerpt_id": "excerpt_0019_416016e0",
+        "media_id": "media_73d7903e2a4e16f1",
+        "filename": "WKYK - S1E6.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\WKYK - S1E6.mp4",
+        "content_type": "live_action",
+        "category": "short_fragmented_lines",
+        "start": 1184.12,
+        "end": 1196.92,
+        "duration": 12.8,
+        "analysis_signature": "fca5311b904bc2be3e765d2d26768289acb3f271d4141e0b25063d32789e4cda",
+        "evidence": {
+          "window_id": "w000517",
+          "duration": 0.8,
+          "confidence": 0.9831
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0022_0b235ac2",
+        "media_id": "media_9b626c297fcc6fb8",
+        "filename": "Christian TV stuff - American Saints.ia.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Christian TV stuff - American Saints.ia.mp4",
+        "content_type": "live_action",
+        "category": "long_monologue",
+        "start": 443.0,
+        "end": 473.0,
+        "duration": 30.0,
+        "analysis_signature": "f827f8ac3e659fb36fe69e3a078aae9d75eb58094856506cb4b6dae3d2a34d12",
+        "evidence": {
+          "performance_id": "p000007",
+          "dialogue_density": 0.9945,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "mid_word_cut",
+        "duration_failure",
+        "transition_artifact"
+      ],
+      "status": "planned",
+      "case_signature": "7c5f5f9b11016036de7b824df5f8f07661ab98b99ae98867af69b5eec11f0dbe"
+    },
+    {
+      "case_id": "case_006_exchange_continuity",
+      "purpose": "exchange_continuity",
+      "variant_index": 2,
+      "destination": {
+        "excerpt_id": "excerpt_0023_a6a45fec",
+        "media_id": "media_9b626c297fcc6fb8",
+        "filename": "Christian TV stuff - American Saints.ia.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Christian TV stuff - American Saints.ia.mp4",
+        "content_type": "live_action",
+        "category": "rapid_speaker_exchange",
+        "start": 1641.0,
+        "end": 1671.0,
+        "duration": 30.0,
+        "analysis_signature": "f827f8ac3e659fb36fe69e3a078aae9d75eb58094856506cb4b6dae3d2a34d12",
+        "evidence": {
+          "performance_id": "p000015",
+          "dialogue_density": 0.7778,
+          "turn_count": 14,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0029_345dbfdf",
+        "media_id": "media_b2203a07578ab221",
+        "filename": "The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "content_type": "animation",
+        "category": "animation_dialogue",
+        "start": 26.0,
+        "end": 56.0,
+        "duration": 30.0,
+        "analysis_signature": "5eba5bdd52c94a24bc76062d73ac5f0b67a9820b6d34403e1f1e252f7fa747df",
+        "evidence": {
+          "performance_id": "p000001",
+          "dialogue_density": 1.0,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "speaker_mismatch",
+        "performance_mismatch",
+        "masking"
+      ],
+      "status": "planned",
+      "case_signature": "e5c97bb73edc441da98ccf7bf2d3c5ff94c0333b2927141732ca22843b610d51"
+    },
+    {
+      "case_id": "case_007_transition_sentence_integrity",
+      "purpose": "transition_sentence_integrity",
+      "variant_index": 2,
+      "destination": {
+        "excerpt_id": "excerpt_0025_da0b75b3",
+        "media_id": "media_a0c757cdae48cfdb",
+        "filename": "Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+        "content_type": "live_action",
+        "category": "transition_near_dialogue",
+        "start": 228.875,
+        "end": 243.875,
+        "duration": 15.0,
+        "analysis_signature": "77d519f5b71bb411f22cdceb6f62928f75acd92f2d0392384fbab2205af19e38",
+        "evidence": {
+          "transition_id": "gradual_transition_000029",
+          "transition_kind": "GRADUAL_TRANSITION_CANDIDATE",
+          "speech_distance_seconds": 0.045
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0018_e26c3153",
+        "media_id": "media_73d7903e2a4e16f1",
+        "filename": "WKYK - S1E6.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\WKYK - S1E6.mp4",
+        "content_type": "live_action",
+        "category": "long_monologue",
+        "start": 549.12,
+        "end": 579.12,
+        "duration": 30.0,
+        "analysis_signature": "fca5311b904bc2be3e765d2d26768289acb3f271d4141e0b25063d32789e4cda",
+        "evidence": {
+          "performance_id": "p000007",
+          "dialogue_density": 0.8063,
+          "turn_count": 17,
+          "speaker_count": 1,
+          "performance_type": "group_conversation",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "transition_artifact",
+        "incomplete_sentence",
+        "duration_failure"
+      ],
+      "status": "planned",
+      "case_signature": "8d77dd28fff63dfa7451f5628d3492ef5f73d9e256eb1b02206ca215670146b0"
+    },
+    {
+      "case_id": "case_008_animation_visual_role",
+      "purpose": "animation_visual_role",
+      "variant_index": 2,
+      "destination": {
+        "excerpt_id": "excerpt_0029_345dbfdf",
+        "media_id": "media_b2203a07578ab221",
+        "filename": "The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "content_type": "animation",
+        "category": "animation_dialogue",
+        "start": 26.0,
+        "end": 56.0,
+        "duration": 30.0,
+        "analysis_signature": "5eba5bdd52c94a24bc76062d73ac5f0b67a9820b6d34403e1f1e252f7fa747df",
+        "evidence": {
+          "performance_id": "p000001",
+          "dialogue_density": 1.0,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0024_7b037e6d",
+        "media_id": "media_a0c757cdae48cfdb",
+        "filename": "Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+        "content_type": "live_action",
+        "category": "short_fragmented_lines",
+        "start": 29.42,
+        "end": 42.42,
+        "duration": 13.0,
+        "analysis_signature": "77d519f5b71bb411f22cdceb6f62928f75acd92f2d0392384fbab2205af19e38",
+        "evidence": {
+          "window_id": "w000007",
+          "duration": 1.0,
+          "confidence": 0.9885
+        }
+      },
+      "expected_failure_modes": [
+        "visual_mismatch",
+        "speaker_mismatch",
+        "performance_mismatch"
+      ],
+      "status": "planned",
+      "case_signature": "fc7457df8c5a326ae1112d73063eab0be712f2a35a85162c38a5bb68c91e246d"
+    },
+    {
+      "case_id": "case_009_quiet_residue_masking",
+      "purpose": "quiet_residue_masking",
+      "variant_index": 2,
+      "destination": {
+        "excerpt_id": "excerpt_0037_09319457",
+        "media_id": "media_ce3fe024b4f9dff2",
+        "filename": "GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat.mp4",
+        "content_type": "live_action",
+        "category": "quiet_room_tone",
+        "start": 1294.0,
+        "end": 1314.0,
+        "duration": 20.0,
+        "analysis_signature": "b071140a51345f6d41a5a7b729794514c3e01c1d60533a3b72380da47affbbec",
+        "evidence": {
+          "gap_seconds": 40.0
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0031_102aad1b",
+        "media_id": "media_bcd657789dbe1941",
+        "filename": "Doogie Howser, M.D. - S01E01 - Pilot.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Doogie Howser, M.D. - S01E01 - Pilot.mp4",
+        "content_type": "live_action",
+        "category": "dense_dialogue",
+        "start": 199.0,
+        "end": 229.0,
+        "duration": 30.0,
+        "analysis_signature": "f5cc2ea4705131efe470821bd7c748c02e3c1d2e29e4ad94f38ed2a7a89c6045",
+        "evidence": {
+          "performance_id": "p000006",
+          "dialogue_density": 1.0,
+          "turn_count": 19,
+          "speaker_count": 4,
+          "performance_type": "group_conversation",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "residual_dialogue",
+        "masking"
+      ],
+      "status": "planned",
+      "case_signature": "f00370a78adee14fd5f3256245463721c4616b178bf8de55cc1b7c8f2ec8ae39"
+    },
+    {
+      "case_id": "case_010_fragment_duration_edges",
+      "purpose": "fragment_duration_edges",
+      "variant_index": 2,
+      "destination": {
+        "excerpt_id": "excerpt_0040_68466b77",
+        "media_id": "media_d8f348a6441985db",
+        "filename": "Red_Dwarf-s01e01.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Red_Dwarf-s01e01.mp4",
+        "content_type": "live_action",
+        "category": "short_fragmented_lines",
+        "start": 65.16,
+        "end": 78.16,
+        "duration": 13.0,
+        "analysis_signature": "439827df985ab31eb4bab6969cf93dc271cb5bbc6386b9b1929144390863d024",
+        "evidence": {
+          "window_id": "w000003",
+          "duration": 1.0,
+          "confidence": 0.7082
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0035_a4f1b671",
+        "media_id": "media_ce3fe024b4f9dff2",
+        "filename": "GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat.mp4",
+        "content_type": "live_action",
+        "category": "dense_dialogue",
+        "start": 947.0,
+        "end": 962.0,
+        "duration": 15.0,
+        "analysis_signature": "b071140a51345f6d41a5a7b729794514c3e01c1d60533a3b72380da47affbbec",
+        "evidence": {
+          "performance_id": "p000023",
+          "dialogue_density": 1.0,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "mid_word_cut",
+        "duration_failure",
+        "transition_artifact"
+      ],
+      "status": "planned",
+      "case_signature": "c2d04377357c76afccbc27a642c5404955b913022123ab422f10d23d91f011db"
+    }
+  ]
+}

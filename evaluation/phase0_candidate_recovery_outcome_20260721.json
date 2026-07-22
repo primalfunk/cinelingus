@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "record_type": "phase0_candidate_recovery_outcome",
+  "created_on": "2026-07-21",
+  "status": "implemented_regression_tested_and_corpus_drilled",
+  "recovery_boundary": "prepared_editorial_candidate",
+  "checkpoint_contents": [
+    "candidate_schedule",
+    "affected_regions",
+    "placement_decisions",
+    "completed_pass_history",
+    "repaired_placement_keys",
+    "invalidated_problem_placements",
+    "problem_report",
+    "editorial_avoidance_memory"
+  ],
+  "resume_contract": {
+    "donor_selection_replayed": false,
+    "candidate_render_replayed": true,
+    "incremental_wav_replacement_atomic": true,
+    "avoidance_memory_restored": true,
+    "incomplete_checkpoint_resumed_when_forced": true,
+    "completed_render_rebuilt_when_forced": true
+  },
+  "regression_test": "test_pass_manager_resumes_prepared_candidate_without_reselecting_donor",
+  "corpus_drill": {
+    "plan": "evaluation/phase0_performance_strategy_plan.json",
+    "output_root": "output/corpus_calibration/phase0_interruption_drill2",
+    "interrupted_stage": "editorial_candidate_prepared",
+    "interrupted_pass": 1,
+    "prepared_repair_count": 2,
+    "resume_observed_in_run_log": true,
+    "completed_after_resume": true,
+    "initial_quality": 0.7651,
+    "final_quality": 0.8537,
+    "quality_improvement": 0.0886
+  },
+  "phase0_effect": "Satisfies the candidate-level interruption-recovery implementation and corpus-drill requirements."
+}

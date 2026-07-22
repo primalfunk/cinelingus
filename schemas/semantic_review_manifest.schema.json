@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "semantic_review_manifest",
+  "type": "object",
+  "required": ["schema_version", "review_version", "creation_timestamp", "package_signature", "blinding_state", "case_count", "cases", "instructions", "claim_scope"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "review_version": {"const": "semantic_blinded_review_v1"},
+    "blinding_state": {"const": "BLINDED"},
+    "case_count": {"type": "integer", "minimum": 1},
+    "cases": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["case_id", "options", "questions"]}}
+  }
+}

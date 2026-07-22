@@ -50,7 +50,7 @@ def render_parameter_controls(
     if advanced_row:
         ttk.Checkbutton(parent, text="Show advanced controls", variable=advanced_toggle, command=toggle).grid(row=1, column=0, sticky="w", pady=(6, 0))
     if not definition.parameters:
-        ttk.Label(normal, text="This filter uses its established defaults.", style="Hint.TLabel").grid(row=0, column=0, sticky="w")
+        ttk.Label(normal, text="This apparatus uses its established defaults.", style="Hint.TLabel").grid(row=0, column=0, sticky="w")
     return variables
 
 

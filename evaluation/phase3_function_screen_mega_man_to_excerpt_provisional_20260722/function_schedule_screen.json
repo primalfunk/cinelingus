@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0",
+  "experiment_version": "function_preserving_schedule_screen_v1",
+  "creation_timestamp": "2026-07-22T18:32:07+00:00",
+  "experiment_signature": "dff07a2f21e6f4b390aebeeaa9944ee025971ec1e43d2a38ef38a4d322dd84e8",
+  "source_hash": "1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b",
+  "destination_hash": "3e396cdd138eb12c11ee8614e463d2abe8dc4bfd134f9fa5deddae74791a6718",
+  "scheduling_mode": "best_fit",
+  "semantic_weight": 0.05,
+  "function_weight": 0.15,
+  "semantic_model_identity": {
+    "provider": "local_e5_transformers",
+    "model_id": "intfloat/multilingual-e5-small",
+    "model_revision": "d829207ab28e6a5fb3aafb5d4c44111b8146db32",
+    "tokenizer_id": "intfloat/multilingual-e5-small",
+    "dimensions": 384,
+    "token_limit": 256,
+    "pooling_policy": "attention_mask_mean",
+    "normalization": "l2",
+    "precision": "float32",
+    "asset_digest": "327ab8a846605d1bdac7f2cf14cfc259e53c28fa4303766665ac4c991c6e7cfd",
+    "source_bundle_signature": "845744b12b7ed584164d8f508478c0744f97ee075713026f57b7cc73ede79873",
+    "destination_bundle_signature": "a89a2ba244b2242bbbc05900197d96d22d6bb95665714095858ec1e3b267ece4"
+  },
+  "function_model_identity": {
+    "taxonomy_version": "dialogue_function_taxonomy_v1",
+    "taxonomy_signature": "a5faac1459497e38c828009a77fc0825ba958a0720160e877b279188564fca4c",
+    "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+    "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+    "source_bundle_signature": "01987b7874a89231fb3f2bc0bc12e092202a9ba579cc9cd10bba1035e671b674",
+    "destination_bundle_signature": "da5aea11a2a51b67d4d86890c6c8e6707b3fb5e1eb58c2053cbfa652beff5b8b"
+  },
+  "calibration_state": "PENDING_HUMAN_ANNOTATION",
+  "invariants": {
+    "report_only_selection_equivalent_to_semantic_only": true,
+    "report_only_scores_equivalent_to_semantic_only": true,
+    "zero_weight_selection_equivalent_to_semantic_only": true,
+    "zero_weight_scores_equivalent_to_semantic_only": true,
+    "candidate_generation_policy": "EXISTING_LEGAL_CANDIDATES_ONLY",
+    "hard_constraints_remain_authoritative": true,
+    "semantic_assistance_remains_available": true
+  },
+  "variants": [
+    {
+      "variant_id": "legacy_control",
+      "mode": "FUNCTION_DISABLED",
+      "mapping_count": 4,
+      "placements_changed_from_legacy": 0,
+      "placements_changed_from_report_only": 2,
+      "available_function_placement_count": 0,
+      "confidence_covered_placement_count": 0,
+      "ambiguous_placement_count": 0,
+      "mean_function_preservation": null,
+      "mean_semantic_similarity": null,
+      "technical_regression_count": 0,
+      "technical_regressions": [],
+      "unique_donor_count": 4,
+      "schedule_file": "legacy_control_schedule.json"
+    },
+    {
+      "variant_id": "semantic_only",
+      "mode": "FUNCTION_DISABLED",
+      "mapping_count": 4,
+      "placements_changed_from_legacy": 2,
+      "placements_changed_from_report_only": 0,
+      "available_function_placement_count": 0,
+      "confidence_covered_placement_count": 0,
+      "ambiguous_placement_count": 0,
+      "mean_function_preservation": null,
+      "mean_semantic_similarity": 0.797048,
+      "technical_regression_count": 0,
+      "technical_regressions": [],
+      "unique_donor_count": 4,
+      "schedule_file": "semantic_only_schedule.json"
+    },
+    {
+      "variant_id": "function_report_only",
+      "mode": "FUNCTION_REPORT_ONLY",
+      "mapping_count": 4,
+      "placements_changed_from_legacy": 2,
+      "placements_changed_from_report_only": 0,
+      "available_function_placement_count": 4,
+      "confidence_covered_placement_count": 4,
+      "ambiguous_placement_count": 0,
+      "mean_function_preservation": 0.5,
+      "mean_semantic_similarity": 0.797048,
+      "technical_regression_count": 0,
+      "technical_regressions": [],
+      "unique_donor_count": 4,
+      "schedule_file": "function_report_only_schedule.json"
+    },
+    {
+      "variant_id": "function_preserving",
+      "mode": "FUNCTION_PRESERVING",
+      "mapping_count": 4,
+      "placements_changed_from_legacy": 3,
+      "placements_changed_from_report_only": 1,
+      "available_function_placement_count": 4,
+      "confidence_covered_placement_count": 4,
+      "ambiguous_placement_count": 0,
+      "mean_function_preservation": 0.666667,
+      "mean_semantic_similarity": 0.775076,
+      "technical_regression_count": 0,
+      "technical_regressions": [],
+      "unique_donor_count": 4,
+      "schedule_file": "function_preserving_schedule.json"
+    }
+  ],
+  "counterfactuals": {
+    "high_cosine_wrong_function_candidates": [
+      {
+        "placement_index": 1,
+        "window_id": "w000002",
+        "before_clip_id": "c000042",
+        "after_clip_id": "c000042",
+        "semantic_similarity": 0.8179382321167019,
+        "function_compatibility": 0.333333
+      },
+      {
+        "placement_index": 2,
+        "window_id": "w000003",
+        "before_clip_id": "c000056",
+        "after_clip_id": "c000056",
+        "semantic_similarity": 0.7968092158764882,
+        "function_compatibility": 0.333333
+      },
+      {
+        "placement_index": 3,
+        "window_id": "w000004",
+        "before_clip_id": "c000076",
+        "after_clip_id": "c000073",
+        "semantic_similarity": 0.8109963674382356,
+        "function_compatibility": 0.333333
+      }
+    ],
+    "lower_cosine_right_function_candidates": [
+      {
+        "placement_index": 3,
+        "window_id": "w000004",
+        "before_clip_id": "c000076",
+        "after_clip_id": "c000073",
+        "semantic_delta": -0.087889,
+        "function_delta": 0.666667
+      }
+    ],
+    "review_status": "CANDIDATES_ONLY_UNTIL_HUMAN_CALIBRATION"
+  },
+  "render_selection": [],
+  "render_selection_state": "BLOCKED_PENDING_REVIEWED_CALIBRATION",
+  "claim_scope": "Schedule-only provisional dialogue-function screening; render quality and human preference are not established."
+}

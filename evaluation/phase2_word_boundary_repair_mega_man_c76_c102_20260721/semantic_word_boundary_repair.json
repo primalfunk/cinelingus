@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "repair_version": "semantic_word_boundary_repair_v1",
+  "creation_timestamp": "2026-07-22T06:05:17+00:00",
+  "repair_signature": "22a02596dda2d8e34a3c51402b12b8931dc2073521c8f8d02d36f85a2b6dd8ef",
+  "source_evidence_signature": "ed1596231024963d7663a4ee471f87f35ae06b1d3e7d2a80a48c3ea1fbd5ce2b",
+  "rejected_clip_count": 2,
+  "repaired_clip_count": 0,
+  "unrecovered_clip_count": 2,
+  "repaired_clip_ids": [],
+  "clips": [
+    {
+      "clip_id": "c000076",
+      "intended_transcript": "Touchdown! Hey, this must be what humans call fun.",
+      "repair_state": "UNRECOVERED",
+      "reason": "intended_words_not_found_in_context",
+      "context_start": 458.0,
+      "observed_context_text": "Hey, step aside, Megatman! It's time for Crashman to finish this job with his time bombs!"
+    },
+    {
+      "clip_id": "c000102",
+      "intended_transcript": "I guess so. At least I'm not missing any parts.",
+      "repair_state": "UNRECOVERED",
+      "reason": "intended_words_not_found_in_context",
+      "context_start": 626.0,
+      "observed_context_text": "Bye-bye!"
+    }
+  ],
+  "repaired_clip_library": "evaluation\\phase2_word_boundary_repair_mega_man_c76_c102_20260721\\repaired_clip_library.json",
+  "repair_state": "NO_REPAIR",
+  "claim_scope": "Word-timestamp boundary recovery with independent lexical verification; no speaker, visual-fit, semantic-preference, or phoneme-perfect-boundary claim."
+}

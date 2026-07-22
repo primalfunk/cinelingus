@@ -5,7 +5,13 @@ import wave
 
 import pytest
 
-from cinelingus.filter_lab.acceptance import FilterAcceptanceError, validate_filter_output, validate_schedule_quality
+from cinelingus.filter_lab.acceptance import (
+    FilterAcceptanceError,
+    _classify_silent_intervals,
+    _triangle_carrier_speech_suppression_verified,
+    validate_filter_output,
+    validate_schedule_quality,
+)
 from cinelingus.filter_lab.contracts import default_contract_catalog
 from cinelingus.filter_lab.registry import default_filter_registry
 from cinelingus.filter_lab.strategies import has_strategy
@@ -19,6 +25,38 @@ def _wav(path: Path, *, active: bool) -> None:
         handle.setsampwidth(2)
         handle.setframerate(48000)
         handle.writeframes(sample.to_bytes(2, "little", signed=True) * 48000)
+
+
+def test_triangle_acceptance_requires_hard_suppression_for_every_declared_region() -> None:
+    schedule = {
+        "carrier_speech_policy": "HARD_SUPPRESS_ALL_DETECTED_CARRIER_SPEECH",
+        "carrier_speech_regions": [
+            {"id": "replaced", "start": 1.0, "duration": 1.0},
+            {"id": "unmatched", "start": 4.0, "duration": 2.0},
+        ],
+        "audio_ducking": {
+            "strategy": "hard_carrier_speech_suppression_v1",
+            "requested_region_count": 2,
+            "rendered_region_count": 2,
+            "suppression_mode": "hard_mute",
+            "suppression_floor": "DIGITAL_SILENCE",
+        },
+    }
+    assert _triangle_carrier_speech_suppression_verified("multiworld.triangle", schedule) is True
+
+    schedule["audio_ducking"]["suppression_mode"] = "duck"
+    assert _triangle_carrier_speech_suppression_verified("multiworld.triangle", schedule) is False
+
+
+def test_triangle_authored_silence_is_classified_by_carrier_speech_region() -> None:
+    classified = _classify_silent_intervals(
+        [{"start": 4.2, "end": 5.8, "duration": 1.6}],
+        {
+            "carrier_speech_regions": [{"id": "unmatched", "start": 4.0, "duration": 2.0}],
+            "montage_audio_segments": [{"moment_id": "phase", "output_start": 0.0, "output_end": 8.0}],
+        },
+    )
+    assert classified[0]["classification"] == "FILTER_AUTHORED_CARRIER_SPEECH_SUPPRESSION"
 
 
 def _echo_schedule(tmp_path: Path) -> dict:

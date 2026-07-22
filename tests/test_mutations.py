@@ -230,3 +230,31 @@ def test_self_shuffle_mutation_renders_over_continuous_source_soundtrack(monkeyp
     assert stages == ["render_audio", "render_video"]
     assert schedule["self_shuffle_render_strategy"] == "continuous_source_soundtrack_bed_v1"
     assert schedule["dead_air_policy"] == "SOURCE_SOUNDTRACK_BED_WITH_SUSTAINED_SILENCE_REJECTION"
+
+
+def test_triangle_hard_suppresses_all_carrier_speech_regions(monkeypatch, tmp_path: Path) -> None:
+    from cinelingus import mutations
+
+    calls = []
+    monkeypatch.setattr(mutations, "render_schedule_over_original_audio", lambda **kwargs: calls.append(kwargs))
+    monkeypatch.setattr(mutations, "mux_video", lambda **_kwargs: None)
+    schedule = {
+        "montage_native": True,
+        "carrier_speech_policy": "HARD_SUPPRESS_ALL_DETECTED_CARRIER_SPEECH",
+        "carrier_speech_regions": [
+            {"id": "replaced", "start": 1.0, "duration": 1.0},
+            {"id": "unmatched", "start": 4.0, "duration": 2.0},
+        ],
+        "mappings": [{"enabled": True, "destination_timestamp": 1.0, "planned_render_duration": 1.0}],
+    }
+
+    mutations.render_mutation_media(
+        original_media=tmp_path / "triangle.mp4", schedule=schedule, duration=8.0,
+        audio_output=tmp_path / "triangle.wav", video_output=tmp_path / "out.mp4",
+        sample_rate=48000, channels=2, target_lufs=-18.0, fade_duration=0.015,
+    )
+
+    assert calls[0]["mute_regions"] == schedule["carrier_speech_regions"]
+    assert calls[0]["suppression_mode"] == "hard_mute"
+    assert schedule["self_shuffle_render_strategy"] == "carrier_speech_suppressed_soundtrack_bed_v1"
+    assert schedule["dead_air_policy"] == "FILTER_AUTHORED_CARRIER_SPEECH_SUPPRESSION"

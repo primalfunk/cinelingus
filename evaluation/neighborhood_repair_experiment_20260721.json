@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "coordinated_repair_neighborhood_gate_20260721",
+  "purpose": "Determine whether adjacent failed placements should be repaired and accepted as atomic neighborhoods.",
+  "benchmark": "animation_dense",
+  "variants": [
+    {
+      "name": "independent_repair_control",
+      "neighborhood_policy": "disabled",
+      "final_quality": 0.688,
+      "placements_repaired": 5,
+      "placements_unresolved": 185
+    },
+    {
+      "name": "secondary_failure_over_grouping",
+      "neighborhood_policy": "group adjacent placements when any performance, speaker, transition, masking, or residue failure is present",
+      "final_quality": 0.6834,
+      "placements_repaired": 4,
+      "placements_unresolved": 186,
+      "coordinated_candidate_count": 17,
+      "coordinated_surviving_count": 2,
+      "candidate_survival_rate": 0.2812,
+      "outcome": "rejected"
+    },
+    {
+      "name": "primary_strategy_evidence_gate",
+      "neighborhood_policy": "group only when the routed primary repair strategy requires shared performance, speaker, transition, suppression, or masking context",
+      "final_quality": 0.688,
+      "placements_repaired": 5,
+      "placements_unresolved": 185,
+      "rendered_candidate_count": 32,
+      "surviving_repair_count": 17,
+      "candidate_survival_rate": 0.5312,
+      "coordinated_candidate_count": 0,
+      "coordinated_surviving_count": 0,
+      "outcome": "accepted"
+    }
+  ],
+  "conclusion": "Retain coordinated repair neighborhoods, but activate them only from the primary routed strategy. Secondary mismatch annotations are not sufficient evidence for atomic grouping. This benchmark is dominated by sentence-boundary repair, so dedicated strategy-isolation excerpts are required to evaluate coordinated performance repairs.",
+  "artifacts": {
+    "repair_effectiveness": "output/quality_corpus_runs/animation_dense/repair_effectiveness.json",
+    "editorial_report": "output/quality_corpus_runs/animation_dense/editorial_report.json",
+    "rendered_output": "output/quality_corpus_runs/animation_dense/translation/translation_output.mp4"
+  }
+}

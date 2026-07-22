@@ -1,0 +1,47 @@
+{
+  "type": "object",
+  "required": [
+    "schema_version", "tool_version", "analysis_version", "creation_timestamp",
+    "media_hash", "config_signature", "backend", "backend_status", "shot_count", "shots"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "tool_version": {"type": "string"},
+    "analysis_version": {"type": "string"},
+    "creation_timestamp": {"type": "string"},
+    "media_hash": {"type": "string"},
+    "config_signature": {"type": "string"},
+    "backend": {"type": "string"},
+    "backend_status": {"type": "string"},
+    "shot_count": {"type": "integer"},
+    "shots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "shot_id", "start", "end", "duration", "visible_face_count", "faces",
+          "mouth_activity_probability", "eye_gaze", "head_orientation",
+          "camera_motion_probability", "subject_motion_probability", "optical_motion_magnitude",
+          "action_level", "stillness_probability", "conversation_probability",
+          "reaction_shot_probability", "listening_shot_probability", "action_shot_probability",
+          "establishing_shot_probability", "close_up_probability", "wide_shot_probability",
+          "speaker_cut_probability", "cinematic_intent", "overall_confidence"
+        ],
+        "properties": {
+          "shot_id": {"type": "string"}, "start": {"type": "number"},
+          "end": {"type": "number"}, "duration": {"type": "number"},
+          "visible_face_count": {"type": "object"}, "faces": {"type": "array"},
+          "mouth_activity_probability": {"type": "number"}, "eye_gaze": {"type": "object"},
+          "head_orientation": {"type": "object"}, "camera_motion_probability": {"type": "number"},
+          "subject_motion_probability": {"type": "number"}, "optical_motion_magnitude": {"type": "number"},
+          "action_level": {"type": "number"}, "stillness_probability": {"type": "number"},
+          "conversation_probability": {"type": "number"}, "reaction_shot_probability": {"type": "number"},
+          "listening_shot_probability": {"type": "number"}, "action_shot_probability": {"type": "number"},
+          "establishing_shot_probability": {"type": "number"}, "close_up_probability": {"type": "number"},
+          "wide_shot_probability": {"type": "number"}, "speaker_cut_probability": {"type": "number"},
+          "cinematic_intent": {"type": "object"}, "overall_confidence": {"type": "number"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "schema_version": "1.0",
+  "report_version": "phase0_strategy_contract_benchmarks_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T16:48:57+00:00",
+  "benchmark_level": "deterministic_pre_render_contract",
+  "case_count": 12,
+  "passed_case_count": 12,
+  "failed_case_count": 0,
+  "all_declared_strategies_executable": true,
+  "rendered_evidence_claimed": false,
+  "cases": [
+    {
+      "benchmark_id": "strategy_incomplete_sentence",
+      "failure_category": "incomplete_sentence",
+      "repair_strategy": "repair_sentence_boundaries",
+      "expected_behavior": "proposal",
+      "actual_behavior": "proposal",
+      "candidate_family": "alternative_donor",
+      "candidate_loss_stage": null,
+      "mapping_changed": true,
+      "passed": true
+    },
+    {
+      "benchmark_id": "strategy_mid_word_cut",
+      "failure_category": "mid_word_cut",
+      "repair_strategy": "repair_word_boundary",
+      "expected_behavior": "proposal",
+      "actual_behavior": "proposal",
+      "candidate_family": "alternative_donor",
+      "candidate_loss_stage": null,
+      "mapping_changed": true,
+      "passed": true
+    },
+    {
+      "benchmark_id": "strategy_low_rendered_coverage",
+      "failure_category": "low_rendered_coverage",
+      "repair_strategy": "repair_rendered_coverage",
+      "expected_behavior": "proposal",
+      "actual_behavior": "proposal",
+      "candidate_family": "alternative_donor",
+      "candidate_loss_stage": null,
+      "mapping_changed": true,
+      "passed": true
+    },
+    {
+      "benchmark_id": "strategy_duration_failure",
+      "failure_category": "duration_failure",
+      "repair_strategy": "repair_duration_fit",
+      "expected_behavior": "proposal",
+      "actual_behavior": "proposal",
+      "candidate_family": "time_adaptation",
+      "candidate_loss_stage": null,
+      "mapping_changed": true,
+      "passed": true
+    },
+    {
+      "benchmark_id": "strategy_speaker_mismatch",
+      "failure_category": "speaker_mismatch",
+      "repair_strategy": "repair_speaker_role",
+      "expected_behavior": "proposal",
+      "actual_behavior": "proposal",
+      "candidate_family": "alternative_donor",
+      "candidate_loss_stage": null,
+      "mapping_changed": true,
+      "passed": true
+    },
+    {
+      "benchmark_id": "strategy_visual_mismatch",
+      "failure_category": "visual_mismatch",
+      "repair_strategy": "repair_visual_intent",
+      "expected_behavior": "proposal",
+      "actual_behavior": "proposal",
+      "candidate_family": "alternative_donor",
+      "candidate_loss_stage": null,
+      "mapping_changed": true,
+      "passed": true
+    },
+    {
+      "benchmark_id": "strategy_transition_artifact",
+      "failure_category": "transition_artifact",
+      "repair_strategy": "repair_transition_edges",
+      "expected_behavior": "proposal",
+      "actual_behavior": "proposal",
+      "candidate_family": "audio_edge_adjustment",
+      "candidate_loss_stage": null,
+      "mapping_changed": true,
+      "passed": true
+    },
+    {
+      "benchmark_id": "strategy_residual_dialogue",
+      "failure_category": "residual_dialogue",
+      "repair_strategy": "repair_local_suppression",
+      "expected_behavior": "proposal",
+      "actual_behavior": "proposal",
+      "candidate_family": "suppression_expansion",
+      "candidate_loss_stage": null,
+      "mapping_changed": true,
+      "passed": true
+    },
+    {
+      "benchmark_id": "strategy_masking",
+      "failure_category": "masking",
+      "repair_strategy": "repair_audio_masking",
+      "expected_behavior": "proposal",
+      "actual_behavior": "proposal",
+      "candidate_family": "audio_treatment",
+      "candidate_loss_stage": null,
+      "mapping_changed": true,
+      "passed": true
+    },
+    {
+      "benchmark_id": "strategy_performance_mismatch",
+      "failure_category": "performance_mismatch",
+      "repair_strategy": "repair_performance_structure",
+      "expected_behavior": "proposal",
+      "actual_behavior": "proposal",
+      "candidate_family": "alternative_donor",
+      "candidate_loss_stage": null,
+      "mapping_changed": true,
+      "passed": true
+    },
+    {
+      "benchmark_id": "strategy_reuse_exhaustion",
+      "failure_category": "reuse_exhaustion",
+      "repair_strategy": "repair_reuse_pressure",
+      "expected_behavior": "proposal",
+      "actual_behavior": "proposal",
+      "candidate_family": "alternative_donor",
+      "candidate_loss_stage": null,
+      "mapping_changed": true,
+      "passed": true
+    },
+    {
+      "benchmark_id": "strategy_confidence_collapse",
+      "failure_category": "confidence_collapse",
+      "repair_strategy": "conservative_uncertainty_retention",
+      "expected_behavior": "conservative_retention",
+      "actual_behavior": "conservative_retention",
+      "candidate_family": null,
+      "candidate_loss_stage": "conservative_retention",
+      "mapping_changed": false,
+      "passed": true
+    }
+  ]
+}

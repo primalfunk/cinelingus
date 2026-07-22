@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "repair_version": "semantic_word_boundary_repair_v1",
+  "creation_timestamp": "2026-07-22T06:03:41+00:00",
+  "repair_signature": "436f504448d27c4400fddb1d4f6093e6fed4bba0f50dc26753fd20701a22007b",
+  "source_evidence_signature": "ff923ac2764c128be77693ae6260d7eb5ccf7fccb5ef96f97a7ef8d85b8413ef",
+  "rejected_clip_count": 1,
+  "repaired_clip_count": 1,
+  "unrecovered_clip_count": 0,
+  "repaired_clip_ids": [
+    "c000042"
+  ],
+  "clips": [
+    {
+      "clip_id": "c000042",
+      "intended_transcript": "In order to modify your life cell, I must shut you down, Mega.",
+      "repair_state": "REPAIRED",
+      "reason": null,
+      "original_start": 283.0,
+      "original_duration": 5.0,
+      "repaired_start": 286.8,
+      "repaired_duration": 4.3,
+      "aligned_words": [
+        "In",
+        "order",
+        "to",
+        "modify",
+        "your",
+        "life",
+        "cell,",
+        "I",
+        "must",
+        "shut",
+        "you",
+        "down,",
+        "Mega."
+      ],
+      "verification": {
+        "mapping_index": 0,
+        "mapping_id": "c000042",
+        "editorial_placement_id": null,
+        "window_id": null,
+        "clip_id": "c000042",
+        "destination_start": 0.0,
+        "destination_end": 4.3,
+        "intended_transcript": "In order to modify your life cell, I must shut you down, Mega.",
+        "rendered_transcript": "In order to modify your life cell, I must shut you down, Mega.",
+        "word_coverage_percentage": 100.0,
+        "missing_sentence_beginning": false,
+        "missing_sentence_ending": false,
+        "unexpected_word_loss": 0.0,
+        "mid_word_cut": false,
+        "incomplete_phrase": false,
+        "speaking_rate_anomaly": false,
+        "observed_words_per_second": 3.023,
+        "fade_masking_possible": false,
+        "audio_masking_possible": false,
+        "adjacent_dialogue_before": false,
+        "adjacent_dialogue_after": false,
+        "poor_intelligibility": false,
+        "confidence": 0.8197,
+        "labels": [
+          {
+            "domain": "audio",
+            "label": "sentence_beginning",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.8197
+          },
+          {
+            "domain": "audio",
+            "label": "sentence_ending",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.8197
+          },
+          {
+            "domain": "audio",
+            "label": "word_coverage",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.8197
+          },
+          {
+            "domain": "audio",
+            "label": "speaking_rate",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.8197
+          },
+          {
+            "domain": "audio",
+            "label": "intelligibility",
+            "status": "pass",
+            "score": 0.8197,
+            "confidence": 0.8197
+          }
+        ],
+        "status": "pass"
+      }
+    }
+  ],
+  "repaired_clip_library": "evaluation\\phase2_word_boundary_repair_mega_man_c42_20260721\\repaired_clip_library.json",
+  "repair_state": "ALL_REPAIRED",
+  "claim_scope": "Word-timestamp boundary recovery with independent lexical verification; no speaker, visual-fit, semantic-preference, or phoneme-perfect-boundary claim."
+}

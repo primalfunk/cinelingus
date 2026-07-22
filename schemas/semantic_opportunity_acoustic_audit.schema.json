@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "semantic_opportunity_acoustic_audit",
+  "type": "object",
+  "required": [
+    "schema_version", "audit_version", "creation_timestamp", "screen_signature",
+    "audit_signature", "whisper_configuration", "verifier_version",
+    "minimum_word_coverage", "maximum_source_performances",
+    "audited_source_performance_count", "audited_clip_count",
+    "accepted_source_performance_count", "rejected_source_performance_count",
+    "rejected_source_performance_ids", "transcription_cache_state",
+    "transcription_batch_count", "confirmation_transcription_count", "context_policy", "confirmation_policy",
+    "source_performances", "clips", "audit_state", "claim_scope"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "audit_version": {"const": "semantic_opportunity_acoustic_audit_v2_adjacent_dialogue_rejection"},
+    "minimum_word_coverage": {"type": "number", "minimum": 0, "maximum": 1},
+    "maximum_source_performances": {"type": "integer", "minimum": 1},
+    "audited_source_performance_count": {"type": "integer", "minimum": 0},
+    "audited_clip_count": {"type": "integer", "minimum": 0},
+    "accepted_source_performance_count": {"type": "integer", "minimum": 0},
+    "rejected_source_performance_count": {"type": "integer", "minimum": 0},
+    "rejected_source_performance_ids": {"type": "array", "items": {"type": "string"}},
+    "transcription_batch_count": {"type": "integer", "minimum": 0},
+    "confirmation_transcription_count": {"type": "integer", "minimum": 0},
+    "context_policy": {"type": "string", "minLength": 1},
+    "confirmation_policy": {"type": "string", "minLength": 1},
+    "source_performances": {"type": "array", "items": {"type": "object", "required": ["source_performance_id", "health_state"]}},
+    "clips": {"type": "array", "items": {"type": "object", "required": ["clip_id", "health_state"]}},
+    "audit_state": {"enum": ["REJECTIONS_AVAILABLE", "ALL_AUDITED_CANDIDATES_ACCEPTED"]}
+  }
+}

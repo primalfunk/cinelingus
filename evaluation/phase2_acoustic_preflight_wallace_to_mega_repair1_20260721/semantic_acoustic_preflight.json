@@ -1,0 +1,186 @@
+{
+  "schema_version": "1.0",
+  "preflight_version": "semantic_acoustic_preflight_v1",
+  "creation_timestamp": "2026-07-22T01:54:45+00:00",
+  "screen_signature": "69cb114609016ac374067a7790224f217fbc2984c1cfce9cbc3883c1dab907a0",
+  "semantic_variant": "pareto_guarded",
+  "preflight_signature": "7615042e73d33550f1cd53f21e627625cbe19e20196698e14b7989e7fd7260c7",
+  "whisper_configuration": {
+    "requested_model": "medium",
+    "language": "en",
+    "transcription_mode": "quality"
+  },
+  "minimum_word_coverage": 0.72,
+  "changed_mapping_count": 2,
+  "reel": "changed_donor_reel.wav",
+  "reel_manifest": "changed_donor_reel_manifest.json",
+  "transcription": "changed_donor_transcription.json",
+  "transcription_cache_state": "REUSED",
+  "verification": {
+    "schema_version": "1.0",
+    "verification_version": "rendered_dialogue_verification_v4_expressive_elongation",
+    "status": "PASS",
+    "mapping_count": 2,
+    "measurable_mapping_count": 2,
+    "failed_mapping_count": 0,
+    "warning_mapping_count": 0,
+    "average_word_coverage_percentage": 100.0,
+    "limitations": "Transcript alignment is conservative and cannot prove acoustic source separation or literal phoneme-boundary integrity. Neighboring words inside broad Whisper windows are labeled as adjacent overlap, not line truncation.",
+    "mappings": [
+      {
+        "mapping_index": 0,
+        "mapping_id": "preflight_001",
+        "editorial_placement_id": null,
+        "window_id": "p000017",
+        "clip_id": "c000158",
+        "destination_start": 1.0,
+        "destination_end": 3.0,
+        "intended_transcript": "Geronimo!",
+        "rendered_transcript": "Geronimo!",
+        "word_coverage_percentage": 100.0,
+        "missing_sentence_beginning": false,
+        "missing_sentence_ending": false,
+        "unexpected_word_loss": 0.0,
+        "mid_word_cut": false,
+        "incomplete_phrase": false,
+        "speaking_rate_anomaly": false,
+        "observed_words_per_second": 0.5,
+        "fade_masking_possible": false,
+        "audio_masking_possible": false,
+        "adjacent_dialogue_before": false,
+        "adjacent_dialogue_after": false,
+        "poor_intelligibility": false,
+        "confidence": 0.4555,
+        "labels": [
+          {
+            "domain": "audio",
+            "label": "sentence_beginning",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.4555
+          },
+          {
+            "domain": "audio",
+            "label": "sentence_ending",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.4555
+          },
+          {
+            "domain": "audio",
+            "label": "word_coverage",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.4555
+          },
+          {
+            "domain": "audio",
+            "label": "speaking_rate",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.4555
+          },
+          {
+            "domain": "audio",
+            "label": "intelligibility",
+            "status": "pass",
+            "score": 0.4555,
+            "confidence": 0.4555
+          }
+        ],
+        "status": "pass"
+      },
+      {
+        "mapping_index": 1,
+        "mapping_id": "preflight_002",
+        "editorial_placement_id": null,
+        "window_id": "p000028",
+        "clip_id": "c000249",
+        "destination_start": 4.0,
+        "destination_end": 6.0,
+        "intended_transcript": "Ah!",
+        "rendered_transcript": "AAAAAAAH!",
+        "word_coverage_percentage": 100.0,
+        "missing_sentence_beginning": false,
+        "missing_sentence_ending": false,
+        "unexpected_word_loss": 0.0,
+        "mid_word_cut": false,
+        "incomplete_phrase": false,
+        "speaking_rate_anomaly": false,
+        "observed_words_per_second": 0.5,
+        "fade_masking_possible": false,
+        "audio_masking_possible": false,
+        "adjacent_dialogue_before": false,
+        "adjacent_dialogue_after": false,
+        "poor_intelligibility": false,
+        "confidence": 0.4555,
+        "labels": [
+          {
+            "domain": "audio",
+            "label": "sentence_beginning",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.4555
+          },
+          {
+            "domain": "audio",
+            "label": "sentence_ending",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.4555
+          },
+          {
+            "domain": "audio",
+            "label": "word_coverage",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.4555
+          },
+          {
+            "domain": "audio",
+            "label": "speaking_rate",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.4555
+          },
+          {
+            "domain": "audio",
+            "label": "intelligibility",
+            "status": "pass",
+            "score": 0.4555,
+            "confidence": 0.4555
+          }
+        ],
+        "status": "pass"
+      }
+    ]
+  },
+  "mapping_decisions": [
+    {
+      "clip_id": "c000158",
+      "window_id": "p000017",
+      "source_performance_id": "p000115",
+      "destination_performance_id": "p000017",
+      "word_coverage_percentage": 100.0,
+      "missing_sentence_beginning": false,
+      "missing_sentence_ending": false,
+      "state": "ACCEPTED",
+      "reasons": []
+    },
+    {
+      "clip_id": "c000249",
+      "window_id": "p000028",
+      "source_performance_id": "p000163",
+      "destination_performance_id": "p000028",
+      "word_coverage_percentage": 100.0,
+      "missing_sentence_beginning": false,
+      "missing_sentence_ending": false,
+      "state": "ACCEPTED",
+      "reasons": []
+    }
+  ],
+  "rejected_source_performance_ids": [],
+  "preflight_state": "ACCEPTED_FOR_RENDER",
+  "rejection_count": 0,
+  "claim_scope": "Selected-donor acoustic transcript integrity only; this does not establish render quality, semantic preference, voice separation, or visual fit."
+}

@@ -17,6 +17,7 @@ MONTAGE_AUDIO_POLICY_VERSION = "source_soundtrack_activity_v1"
 PLACEMENT_AUDIO_POLICY_VERSION = "placement_audio_qualification_v2"
 PLACEMENT_GUARD_SECONDS = 0.35
 FULL_TIMELINE_POLICY_VERSION = "full_source_timeline_v1"
+SHARED_TIMELINE_POLICY_VERSION = "shared_world_timeline_v1"
 
 
 class CapabilityTag(StrEnum):
@@ -961,6 +962,115 @@ def build_full_timeline_plan(
     }
 
 
+def build_shared_timeline_plan(
+    *,
+    filter_id: str,
+    filter_contract_version: str,
+    anchor_source_id: str,
+    anchor_media_hash: str,
+    anchor_duration: float,
+    supporting_audio_durations: list[float] | tuple[float, ...],
+    random_seed: int,
+    governing_relationship: str,
+    laws: dict[str, str],
+    schedule: dict[str, Any],
+) -> dict[str, Any]:
+    """Compile an ordered, non-repeating timeline whose picture comes from several films."""
+    plan = build_full_timeline_plan(
+        filter_id=filter_id,
+        filter_contract_version=filter_contract_version,
+        anchor_source_id=anchor_source_id,
+        anchor_media_hash=anchor_media_hash,
+        anchor_duration=anchor_duration,
+        supporting_audio_durations=supporting_audio_durations,
+        random_seed=random_seed,
+        governing_relationship=governing_relationship,
+        laws=laws,
+        schedule=schedule,
+    )
+    segments = list(schedule.get("visual_segments", []))
+    if len(segments) < 2:
+        raise ValueError("Shared-timeline planning requires at least two visual source segments.")
+    selected = []
+    participation: dict[str, dict[str, Any]] = {}
+    roles = [StructuralRole.BEGINNING.value, StructuralRole.DEVELOPMENT.value, StructuralRole.RESOLUTION.value]
+    for index, segment in enumerate(segments):
+        source_start = float(segment["source_start"])
+        source_end = float(segment["source_end"])
+        duration = round(source_end - source_start, 3)
+        source_id = str(segment["source_film_id"])
+        selected.append({
+            "id": str(segment["id"]),
+            "source_id": source_id,
+            "source_media_hash": str(segment["source_media_hash"]),
+            "source_path": str(segment["source_path"]),
+            "scene_id": f"shared_phase_{index + 1}",
+            "shot_ids": list(segment["shot_ids"]),
+            "start": source_start,
+            "end": source_end,
+            "duration": duration,
+            "visual_boundary": {"start": source_start, "end": source_end},
+            "audio_boundary": {"start": source_start, "end": source_end},
+            "carrier_speech_regions": list(segment.get("carrier_speech_regions", [])),
+            "assertions": [],
+            "fallback_status": "NONE",
+            "montage_index": index,
+            "structural_role": roles[min(index, len(roles) - 1)],
+            "planner_assertions": [{
+                "name": "DECLARED_MULTI_SOURCE_PHASE_SELECTED",
+                "value": True,
+                "note": f"Phase {index + 1} preserves its declared source-film picture and soundtrack.",
+            }],
+        })
+        participation[source_id] = {"moment_count": 1, "duration": duration, "share": round(duration / plan["actual_duration"], 4)}
+    plan.update({
+        "planner_version": SHARED_TIMELINE_POLICY_VERSION,
+        "requested_minimum_moments": len(selected),
+        "structural_roles": roles[:len(selected)],
+        "source_participation": participation,
+        "selected_moments": selected,
+        "opening_selection": {
+            "moment_id": selected[0]["id"],
+            "source_id": selected[0]["source_id"],
+            "source_start": selected[0]["start"],
+            "eligible_moment_count_for_source": 1,
+            "eligible_timeline_rank": 0,
+            "normalized_timeline_position": 0.0,
+            "earliest_eligible_selected": True,
+            "chronology_required_by_filter": True,
+            "timeline_position_primary_tiebreaker": False,
+            "selection_basis": ["DECLARED_CYCLIC_FILM_ORDER"],
+        },
+    })
+    plan["duration_resolution"]["policy"] = "SHARED_TIMELINE_LIMITED_BY_SHORTEST_FILM"
+    plan["material_utilization"].update({
+        "policy": "BUILD_SHARED_TIMELINE_WITHOUT_REPETITION",
+        "available_moment_count": len(selected),
+        "selected_moment_count": len(selected),
+        "available_authored_moment_count": len(selected),
+        "selected_authored_moment_count": len(selected),
+    })
+    plan["placement_qualification"].update({
+        "cinematic_moments_detected": len(selected),
+        "preferred_audio_qualified_moments": len(selected),
+        "dialogue_bearing_moments": len(selected),
+        "qualification_outcome": "DECLARED_MULTI_SOURCE_PHASES",
+    })
+    plan["provenance"].update({
+        "source_artifact_ids": [row["source_id"] for row in selected],
+        "source_media_hashes": sorted({row["source_media_hash"] for row in selected}),
+        "planner_capability_tag": CapabilityTag.CONTRACT_RULE.value,
+        "input_scope": "COMPLETE_MEDIA_FILES",
+    })
+    for decision in plan["fallback_decisions"]:
+        if decision.get("action") == "CURTAILED_VIDEO_TO_SUPPORTING_AUDIO":
+            decision.update({
+                "reason": "SHARED_TIMELINE_BOUNDED_BY_SHORTEST_FILM",
+                "action": "BUILT_SHARED_TIMELINE_TO_COMMON_DURATION",
+            })
+    return plan
+
+
 def _repetition_policy(
     *,
     schedule: dict[str, Any] | None,
@@ -1081,19 +1191,65 @@ def rebase_schedule_to_montage(schedule: dict[str, Any], plan: dict[str, Any]) -
     """Map full-film dialogue placements into the deterministic montage timeline."""
     rebased = dict(schedule)
     source_mappings = [row for row in schedule.get("mappings", []) if row.get("enabled", True)]
+    source_speech_regions = list(schedule.get("destination_speech_regions", []))
+    source_performance_fills = list(schedule.get("destination_performance_fills", []))
     mappings = []
     audio_segments = []
+    carrier_speech_regions = []
+    destination_speech_regions = []
+    destination_performance_fills = []
     cursor = 0.0
     for moment in plan.get("selected_moments", []):
         start, end = float(moment["start"]), float(moment["end"])
+        moment_id = str(moment["id"])
+        speech_region_ids: dict[str, str] = {}
+        speech_region_rows: dict[str, dict[str, Any]] = {}
         audio_segments.append({
-            "moment_id": str(moment["id"]),
+            "moment_id": moment_id,
             "output_start": round(cursor, 3),
             "output_end": round(cursor + end - start, 3),
             "source_start": round(start, 3),
             "source_end": round(end, 3),
+            "source_id": moment.get("source_id"),
+            "source_media_hash": moment.get("source_media_hash"),
             "classification_basis": "CONTINUOUS_SELECTED_SOURCE_SOUNDTRACK",
         })
+        for region_index, region in enumerate(source_speech_regions):
+            region_start = float(region.get("start", 0.0) or 0.0)
+            region_end = float(region.get("end", region_start + float(region.get("duration", 0.0) or 0.0)) or region_start)
+            overlap_start, overlap_end = max(start, region_start), min(end, region_end)
+            if overlap_end <= overlap_start:
+                continue
+            source_id = str(region.get("id") or f"speech_{region_index + 1:06d}")
+            rebased_id = f"{source_id}@{moment_id}"
+            row = dict(region)
+            row.update({
+                "id": rebased_id,
+                "source_region_id": source_id,
+                "source_start": round(overlap_start, 3),
+                "source_end": round(overlap_end, 3),
+                "start": round(cursor + overlap_start - start, 3),
+                "end": round(cursor + overlap_end - start, 3),
+                "duration": round(overlap_end - overlap_start, 3),
+                "montage_moment_id": moment_id,
+            })
+            destination_speech_regions.append(row)
+            speech_region_ids[source_id] = rebased_id
+            speech_region_rows[source_id] = row
+        for region in moment.get("carrier_speech_regions", []):
+            source_start = max(start, float(region.get("source_start", start)))
+            source_end = min(end, float(region.get("source_end", source_start)))
+            if source_end <= source_start:
+                continue
+            carrier_speech_regions.append({
+                "id": str(region.get("id") or f"carrier_speech_{len(carrier_speech_regions) + 1}"),
+                "source_film_id": str(region.get("source_film_id") or moment.get("source_id") or ""),
+                "triangle_phase": region.get("triangle_phase"),
+                "source_start": round(source_start, 3),
+                "source_end": round(source_end, 3),
+                "start": round(cursor + source_start - start, 3),
+                "duration": round(source_end - source_start, 3),
+            })
         for mapping in source_mappings:
             timestamp = float(mapping.get("destination_timestamp", -1.0))
             mapping_end = timestamp + float(mapping.get("planned_render_duration", mapping.get("clip_trim_duration", 0.0)) or 0.0)
@@ -1102,20 +1258,108 @@ def rebase_schedule_to_montage(schedule: dict[str, Any], plan: dict[str, Any]) -
             row = dict(mapping)
             row["source_destination_timestamp"] = round(timestamp, 3)
             row["destination_timestamp"] = round(cursor + timestamp - start, 3)
-            row["montage_moment_id"] = str(moment["id"])
+            row["montage_moment_id"] = moment_id
             row["montage_index"] = int(moment["montage_index"])
+            source_window_ids = [str(item) for item in row.get("alignment_source_window_ids", [])]
+            row["alignment_source_window_ids"] = [
+                speech_region_ids[item] for item in source_window_ids if item in speech_region_ids
+            ]
+            if row.get("window_id") is not None and str(row["window_id"]) in speech_region_ids:
+                row["source_window_id"] = str(row["window_id"])
+                row["window_id"] = speech_region_ids[str(row["window_id"])]
+            slot_start = row.get("alignment_slot_start")
+            slot_end = row.get("alignment_slot_end")
+            if slot_start is not None and slot_end is not None:
+                row["source_alignment_slot_start"] = round(float(slot_start), 3)
+                row["source_alignment_slot_end"] = round(float(slot_end), 3)
+                row["alignment_slot_start"] = round(cursor + max(start, float(slot_start)) - start, 3)
+                row["alignment_slot_end"] = round(cursor + min(end, float(slot_end)) - start, 3)
             mappings.append(row)
+        for fill_index, fill in enumerate(source_performance_fills):
+            fill_start = float(fill.get("start", 0.0) or 0.0)
+            fill_end = fill_start + float(fill.get("duration", 0.0) or 0.0)
+            overlap_start, overlap_end = max(start, fill_start), min(end, fill_end)
+            if overlap_end <= overlap_start:
+                continue
+            speech_windows = [
+                dict(speech_region_rows[str(slot.get("id"))])
+                for slot in fill.get("speech_windows", [])
+                if str(slot.get("id")) in speech_region_rows
+            ]
+            if not speech_windows:
+                continue
+            row = dict(fill)
+            row.update({
+                "start": round(cursor + overlap_start - start, 3),
+                "duration": round(overlap_end - overlap_start, 3),
+                "speech_windows": speech_windows,
+                "montage_moment_id": moment_id,
+                "source_performance_fill_index": fill_index,
+            })
+            destination_performance_fills.append(row)
         cursor += end - start
     rebased["mappings"] = sorted(mappings, key=lambda row: (float(row["destination_timestamp"]), str(row.get("clip_id"))))
+    if source_speech_regions:
+        rebased["destination_speech_regions"] = destination_speech_regions
+    if source_performance_fills:
+        _refresh_rebased_fill_coverage(destination_performance_fills, rebased["mappings"])
+        rebased["destination_performance_fills"] = destination_performance_fills
     rebased["render_duration"] = round(cursor, 3)
     rebased["self_shuffle_render_strategy"] = "shot_aware_montage_v1"
     rebased["montage_plan_verdict"] = plan.get("verdict", "EXPERIMENTAL")
     rebased["montage_plan_selected_moment_ids"] = [row["id"] for row in plan.get("selected_moments", [])]
     rebased["montage_audio_segments"] = audio_segments
+    if carrier_speech_regions:
+        rebased["carrier_speech_regions"] = carrier_speech_regions
+        rebased["carrier_speech_policy"] = "HARD_SUPPRESS_ALL_DETECTED_CARRIER_SPEECH"
     if plan.get("planner_version") == FULL_TIMELINE_POLICY_VERSION:
         rebased["audio_continuity_policy"] = "FULL_SOURCE_SOUNDTRACK_BED"
         rebased["input_scope"] = "complete_media_files"
+    elif plan.get("planner_version") == SHARED_TIMELINE_POLICY_VERSION:
+        rebased["audio_continuity_policy"] = (
+            "MULTI_SOURCE_NON_SPEECH_BED_WITH_CARRIER_SPEECH_SUPPRESSION"
+            if carrier_speech_regions
+            else "DECLARED_MULTI_SOURCE_SOUNDTRACK_BED"
+        )
+        rebased["input_scope"] = "complete_media_files"
     return rebased
+
+
+def _refresh_rebased_fill_coverage(fills: list[dict[str, Any]], mappings: list[dict[str, Any]]) -> None:
+    """Make montage diagnostics describe output coordinates, not the source timeline."""
+    for fill in fills:
+        windows = list(fill.get("speech_windows", []))
+        total_duration = sum(float(row.get("duration", 0.0) or 0.0) for row in windows)
+        covered_duration = 0.0
+        covered_windows = 0
+        for window in windows:
+            window_id = str(window.get("id"))
+            window_start = float(window.get("start", 0.0) or 0.0)
+            window_end = float(window.get("end", window_start + float(window.get("duration", 0.0) or 0.0)) or window_start)
+            intervals = []
+            for mapping in mappings:
+                if window_id not in {str(item) for item in mapping.get("alignment_source_window_ids", [])}:
+                    continue
+                mapping_start = float(mapping.get("destination_timestamp", 0.0) or 0.0)
+                mapping_end = mapping_start + float(mapping.get("planned_render_duration", mapping.get("clip_trim_duration", 0.0)) or 0.0)
+                left, right = max(window_start, mapping_start), min(window_end, mapping_end)
+                if right > left:
+                    intervals.append((left, right))
+            intervals.sort()
+            merged = []
+            for left, right in intervals:
+                if merged and left <= merged[-1][1]:
+                    merged[-1] = (merged[-1][0], max(merged[-1][1], right))
+                else:
+                    merged.append((left, right))
+            window_coverage = sum(right - left for left, right in merged)
+            covered_duration += window_coverage
+            if window_coverage > 0:
+                covered_windows += 1
+        fill["speech_window_count"] = len(windows)
+        fill["covered_speech_window_count"] = covered_windows
+        fill["uncovered_speech_window_count"] = max(0, len(windows) - covered_windows)
+        fill["coverage"] = round(min(1.0, covered_duration / total_duration), 4) if total_duration else 0.0
 
 
 def build_montage_render_acceptance(

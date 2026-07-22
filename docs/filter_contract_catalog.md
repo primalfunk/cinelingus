@@ -2,6 +2,8 @@
 
 Generated from the machine-valid contracts in filter_contracts/.
 
+This is the engineering contract view. Stable filter IDs, internal families, execution modes, and artifact names remain unchanged for compatibility. Public names, disciplines, operating modes, availability, capability tiers, and single-operator Procedure status are defined in [the public apparatus catalog](architecture/public_apparatus_catalog.md). Where the names differ, the public catalog controls presentation and this document controls executable behavior.
+
 | Filter | Family | Films | Cinematic law | Status | Execution | Contract proposition |
 |---|---|---:|---|---:|---|---|
 | Exhaustion | emotion | 1 | The film speaks through exhaustion | accepted | scheduling_strategy | The film speaks through exhaustion. |
@@ -35,7 +37,7 @@ Generated from the machine-valid contracts in filter_contracts/.
 | Possession | multiworld | 2 | Identity Exchange | accepted | transformation | One film's stable donor identity takes residence inside one recurring anchor-film speaker. |
 | Prophecy | multiworld | 2 | Temporal Exchange | accepted | transformation | Later normalized dialogue from one film predicts earlier positions in the anchor film. |
 | Translation | multiworld | 2 | Translation | accepted | transformation | Dialogue from a donor film fills speaking windows in the anchor film while anchor picture and chronology remain fixed. |
-| Triangle | multiworld | 3 | Narrative Infection | blocked | unavailable | Three films exchange pressure through a closed narrative relationship. |
+| Triangle | multiworld | 3 | Narrative Infection | accepted | transformation | Three films exchange visual and spoken pressure through one closed cinematic cycle. |
 | Wormhole | multiworld | 2+ | Temporal Exchange | blocked | unavailable | Selected moments cross between films through deterministic temporal portals. |
 | Flashback | time | 1 | Every replacement source is earlier than its destination by more than the configured minimum distance | accepted | scheduling_strategy | Every replacement source is earlier than its destination by more than the configured minimum distance. |
 | Foreshadow | time | 1 | Dialogue normally comes from sufficiently later moments; any configured wraparound is explicit and separately counted | accepted | scheduling_strategy | Dialogue normally comes from sufficiently later moments; any configured wraparound is explicit and separately counted. |

@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "calibration_version": "dialogue_function_calibration_v1",
+  "package_signature": "c6d739397a4eca9a2986c74e5c2176ddd88980a15c468a83b5d3a8517216c378",
+  "samples": [
+    {
+      "sample_id": "function_sample_001",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_002",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_003",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_004",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_005",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_006",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_007",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_008",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_009",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_010",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_011",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_012",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_013",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_014",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_015",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_016",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_017",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_018",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_019",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_020",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_021",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_022",
+      "annotations": []
+    },
+    {
+      "sample_id": "function_sample_023",
+      "annotations": []
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "function_acoustic_preflight",
+  "type": "object",
+  "required": ["schema_version", "preflight_version", "creation_timestamp", "screen_signature", "baseline_variant", "function_variant", "preflight_signature", "whisper_configuration", "minimum_word_coverage", "changed_mapping_count", "verification", "mapping_decisions", "preflight_state", "rejection_count", "claim_scope"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "preflight_version": {"const": "function_acoustic_preflight_v1"},
+    "preflight_state": {"enum": ["ACCEPTED_FOR_RENDER", "REJECTED_ACOUSTIC_INTEGRITY"]},
+    "changed_mapping_count": {"type": "integer", "minimum": 1},
+    "rejection_count": {"type": "integer", "minimum": 0},
+    "mapping_decisions": {"type": "array"}
+  }
+}

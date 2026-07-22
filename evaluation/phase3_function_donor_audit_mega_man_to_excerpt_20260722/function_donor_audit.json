@@ -1,0 +1,2978 @@
+{
+  "schema_version": "1.0",
+  "audit_version": "phase3_function_donor_audit_v1",
+  "creation_timestamp": "2026-07-22T19:04:35+00:00",
+  "candidate_count": 12,
+  "candidates": [
+    {
+      "clip_id": "c000031",
+      "clip_path": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache\\1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b\\source_dialogue\\clips\\000031.wav",
+      "metadata_transcript": "Actually, I'm not a boy, sir, technically speaking.",
+      "observed_transcript": "I'm not a boy, sir. Actually, I'm not a boy, sir.",
+      "transcript_confidence": 0.3743,
+      "metadata_word_coverage_percentage": 75.0,
+      "observed_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "provide_information",
+                "label_id": "interaction_function.provide_information",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "provide_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "destination_function_compatibility": {
+        "source_function_entity_ids": [],
+        "destination_function_entity_ids": [],
+        "source_distribution": {
+          "taxonomy_version": "dialogue_function_taxonomy_v1",
+          "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+          "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+          "input_context": {
+            "mode": "passage_alone",
+            "previous_speech_passage_id": null,
+            "previous_transcript_signature": null,
+            "next_speech_passage_id": null,
+            "next_transcript_signature": null,
+            "dialogue_turn_id": null,
+            "containing_performance_ids": [],
+            "ordered_turn_evidence": false,
+            "preceding_turn_reference": null,
+            "following_turn_reference": null,
+            "sequence_position": null
+          },
+          "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "unavailable",
+                  "label_id": "sequence_position.unavailable",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false
+            }
+          },
+          "confidence": 0.66,
+          "abstention": {
+            "abstained": false,
+            "reason": null,
+            "threshold": 0.62
+          },
+          "ambiguity_state": "UNAMBIGUOUS",
+          "evidence": [
+            {
+              "rule_id": "interaction.form_fallback",
+              "observation": "provide_information"
+            }
+          ],
+          "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+        },
+        "destination_distribution": {
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "continuing",
+                  "label_id": "sequence_position.continuing",
+                  "confidence": 0.64
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            }
+          },
+          "confidence": 0.66,
+          "ambiguity_state": "UNAMBIGUOUS",
+          "abstention": {
+            "abstained": false
+          }
+        },
+        "per_axis_compatibility": {
+          "surface_form": {
+            "supported": true,
+            "compatibility": 1.0,
+            "axis_weight": 0.3,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "declarative": 0.78
+            },
+            "destination_labels": {
+              "declarative": 0.78
+            }
+          },
+          "interaction_function": {
+            "supported": true,
+            "compatibility": 1.0,
+            "axis_weight": 0.6,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "provide_information": 0.66
+            },
+            "destination_labels": {
+              "provide_information": 0.66
+            }
+          },
+          "sequence_position": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.0,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          }
+        },
+        "normalized_function_contribution": 1.0,
+        "confidence": 0.66,
+        "ambiguity": false,
+        "configured_weight": 0.0,
+        "effective_weighted_contribution": 0.0,
+        "taxonomy_and_classifier_identity": {},
+        "source_evidence_scope": "rendered_transcript",
+        "destination_evidence_scope": "planned_distribution",
+        "fallback_state": "NONE",
+        "warnings": [],
+        "mode": "FUNCTION_REPORT_ONLY",
+        "available": true,
+        "scoring_policy": "dialogue_function_axis_compatibility_v1"
+      },
+      "function_score": 1.0,
+      "eligible_for_isolated_confirmation": true
+    },
+    {
+      "clip_id": "c000225",
+      "clip_path": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache\\1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b\\source_dialogue\\clips\\000225.wav",
+      "metadata_transcript": "Little brother, you're on, Proto Man.",
+      "observed_transcript": "Little brother. You're on, protoman.",
+      "transcript_confidence": 0.3743,
+      "metadata_word_coverage_percentage": 66.67,
+      "observed_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "provide_information",
+                "label_id": "interaction_function.provide_information",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "provide_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "destination_function_compatibility": {
+        "source_function_entity_ids": [],
+        "destination_function_entity_ids": [],
+        "source_distribution": {
+          "taxonomy_version": "dialogue_function_taxonomy_v1",
+          "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+          "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+          "input_context": {
+            "mode": "passage_alone",
+            "previous_speech_passage_id": null,
+            "previous_transcript_signature": null,
+            "next_speech_passage_id": null,
+            "next_transcript_signature": null,
+            "dialogue_turn_id": null,
+            "containing_performance_ids": [],
+            "ordered_turn_evidence": false,
+            "preceding_turn_reference": null,
+            "following_turn_reference": null,
+            "sequence_position": null
+          },
+          "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "unavailable",
+                  "label_id": "sequence_position.unavailable",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false
+            }
+          },
+          "confidence": 0.66,
+          "abstention": {
+            "abstained": false,
+            "reason": null,
+            "threshold": 0.62
+          },
+          "ambiguity_state": "UNAMBIGUOUS",
+          "evidence": [
+            {
+              "rule_id": "interaction.form_fallback",
+              "observation": "provide_information"
+            }
+          ],
+          "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+        },
+        "destination_distribution": {
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "continuing",
+                  "label_id": "sequence_position.continuing",
+                  "confidence": 0.64
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            }
+          },
+          "confidence": 0.66,
+          "ambiguity_state": "UNAMBIGUOUS",
+          "abstention": {
+            "abstained": false
+          }
+        },
+        "per_axis_compatibility": {
+          "surface_form": {
+            "supported": true,
+            "compatibility": 1.0,
+            "axis_weight": 0.3,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "declarative": 0.78
+            },
+            "destination_labels": {
+              "declarative": 0.78
+            }
+          },
+          "interaction_function": {
+            "supported": true,
+            "compatibility": 1.0,
+            "axis_weight": 0.6,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "provide_information": 0.66
+            },
+            "destination_labels": {
+              "provide_information": 0.66
+            }
+          },
+          "sequence_position": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.0,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          }
+        },
+        "normalized_function_contribution": 1.0,
+        "confidence": 0.66,
+        "ambiguity": false,
+        "configured_weight": 0.0,
+        "effective_weighted_contribution": 0.0,
+        "taxonomy_and_classifier_identity": {},
+        "source_evidence_scope": "rendered_transcript",
+        "destination_evidence_scope": "planned_distribution",
+        "fallback_state": "NONE",
+        "warnings": [],
+        "mode": "FUNCTION_REPORT_ONLY",
+        "available": true,
+        "scoring_policy": "dialogue_function_axis_compatibility_v1"
+      },
+      "function_score": 1.0,
+      "eligible_for_isolated_confirmation": false
+    },
+    {
+      "clip_id": "c000129",
+      "clip_path": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache\\1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b\\source_dialogue\\clips\\000129.wav",
+      "metadata_transcript": "Patience, my finely-pooned machine.",
+      "observed_transcript": "Patience, my finely-pwned machine.",
+      "transcript_confidence": 0.3743,
+      "metadata_word_coverage_percentage": 80.0,
+      "observed_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "provide_information",
+                "label_id": "interaction_function.provide_information",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "provide_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "destination_function_compatibility": {
+        "source_function_entity_ids": [],
+        "destination_function_entity_ids": [],
+        "source_distribution": {
+          "taxonomy_version": "dialogue_function_taxonomy_v1",
+          "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+          "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+          "input_context": {
+            "mode": "passage_alone",
+            "previous_speech_passage_id": null,
+            "previous_transcript_signature": null,
+            "next_speech_passage_id": null,
+            "next_transcript_signature": null,
+            "dialogue_turn_id": null,
+            "containing_performance_ids": [],
+            "ordered_turn_evidence": false,
+            "preceding_turn_reference": null,
+            "following_turn_reference": null,
+            "sequence_position": null
+          },
+          "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "unavailable",
+                  "label_id": "sequence_position.unavailable",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false
+            }
+          },
+          "confidence": 0.66,
+          "abstention": {
+            "abstained": false,
+            "reason": null,
+            "threshold": 0.62
+          },
+          "ambiguity_state": "UNAMBIGUOUS",
+          "evidence": [
+            {
+              "rule_id": "interaction.form_fallback",
+              "observation": "provide_information"
+            }
+          ],
+          "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+        },
+        "destination_distribution": {
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "continuing",
+                  "label_id": "sequence_position.continuing",
+                  "confidence": 0.64
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            }
+          },
+          "confidence": 0.66,
+          "ambiguity_state": "UNAMBIGUOUS",
+          "abstention": {
+            "abstained": false
+          }
+        },
+        "per_axis_compatibility": {
+          "surface_form": {
+            "supported": true,
+            "compatibility": 1.0,
+            "axis_weight": 0.3,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "declarative": 0.78
+            },
+            "destination_labels": {
+              "declarative": 0.78
+            }
+          },
+          "interaction_function": {
+            "supported": true,
+            "compatibility": 1.0,
+            "axis_weight": 0.6,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "provide_information": 0.66
+            },
+            "destination_labels": {
+              "provide_information": 0.66
+            }
+          },
+          "sequence_position": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.0,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          }
+        },
+        "normalized_function_contribution": 1.0,
+        "confidence": 0.66,
+        "ambiguity": false,
+        "configured_weight": 0.0,
+        "effective_weighted_contribution": 0.0,
+        "taxonomy_and_classifier_identity": {},
+        "source_evidence_scope": "rendered_transcript",
+        "destination_evidence_scope": "planned_distribution",
+        "fallback_state": "NONE",
+        "warnings": [],
+        "mode": "FUNCTION_REPORT_ONLY",
+        "available": true,
+        "scoring_policy": "dialogue_function_axis_compatibility_v1"
+      },
+      "function_score": 1.0,
+      "eligible_for_isolated_confirmation": true
+    },
+    {
+      "clip_id": "c000022",
+      "clip_path": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache\\1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b\\source_dialogue\\clips\\000022.wav",
+      "metadata_transcript": "My, oh my, you sure are one tough cookie.",
+      "observed_transcript": "Incredible. Internal weapons.",
+      "transcript_confidence": 0.2916,
+      "metadata_word_coverage_percentage": 0.0,
+      "observed_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "fragment",
+                "label_id": "surface_form.fragment",
+                "confidence": 0.72
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "evaluation_or_reaction",
+                "label_id": "interaction_function.evaluation_or_reaction",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "evaluation_or_reaction"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "destination_function_compatibility": {
+        "source_function_entity_ids": [],
+        "destination_function_entity_ids": [],
+        "source_distribution": {
+          "taxonomy_version": "dialogue_function_taxonomy_v1",
+          "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+          "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+          "input_context": {
+            "mode": "passage_alone",
+            "previous_speech_passage_id": null,
+            "previous_transcript_signature": null,
+            "next_speech_passage_id": null,
+            "next_transcript_signature": null,
+            "dialogue_turn_id": null,
+            "containing_performance_ids": [],
+            "ordered_turn_evidence": false,
+            "preceding_turn_reference": null,
+            "following_turn_reference": null,
+            "sequence_position": null
+          },
+          "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "fragment",
+                  "label_id": "surface_form.fragment",
+                  "confidence": 0.72
+                }
+              ],
+              "supported": true
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "evaluation_or_reaction",
+                  "label_id": "interaction_function.evaluation_or_reaction",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "unavailable",
+                  "label_id": "sequence_position.unavailable",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false
+            }
+          },
+          "confidence": 0.66,
+          "abstention": {
+            "abstained": false,
+            "reason": null,
+            "threshold": 0.62
+          },
+          "ambiguity_state": "UNAMBIGUOUS",
+          "evidence": [
+            {
+              "rule_id": "interaction.form_fallback",
+              "observation": "evaluation_or_reaction"
+            }
+          ],
+          "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+        },
+        "destination_distribution": {
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "continuing",
+                  "label_id": "sequence_position.continuing",
+                  "confidence": 0.64
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            }
+          },
+          "confidence": 0.66,
+          "ambiguity_state": "UNAMBIGUOUS",
+          "abstention": {
+            "abstained": false
+          }
+        },
+        "per_axis_compatibility": {
+          "surface_form": {
+            "supported": true,
+            "compatibility": 0.2,
+            "axis_weight": 0.3,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "fragment": 0.72
+            },
+            "destination_labels": {
+              "declarative": 0.78
+            }
+          },
+          "interaction_function": {
+            "supported": true,
+            "compatibility": 0.0,
+            "axis_weight": 0.6,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "evaluation_or_reaction": 0.66
+            },
+            "destination_labels": {
+              "provide_information": 0.66
+            }
+          },
+          "sequence_position": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.0,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          }
+        },
+        "normalized_function_contribution": 0.066667,
+        "confidence": 0.66,
+        "ambiguity": false,
+        "configured_weight": 0.0,
+        "effective_weighted_contribution": 0.0,
+        "taxonomy_and_classifier_identity": {},
+        "source_evidence_scope": "rendered_transcript",
+        "destination_evidence_scope": "planned_distribution",
+        "fallback_state": "NONE",
+        "warnings": [],
+        "mode": "FUNCTION_REPORT_ONLY",
+        "available": true,
+        "scoring_policy": "dialogue_function_axis_compatibility_v1"
+      },
+      "function_score": 0.066667,
+      "eligible_for_isolated_confirmation": false
+    },
+    {
+      "clip_id": "c000034",
+      "clip_path": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache\\1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b\\source_dialogue\\clips\\000034.wav",
+      "metadata_transcript": "Gosh, sir, I never thought about it before.",
+      "observed_transcript": "Gosh, sir, I never thought about it before.",
+      "transcript_confidence": 0.2916,
+      "metadata_word_coverage_percentage": 100.0,
+      "observed_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "provide_information",
+                "label_id": "interaction_function.provide_information",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "provide_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "destination_function_compatibility": {
+        "source_function_entity_ids": [],
+        "destination_function_entity_ids": [],
+        "source_distribution": {
+          "taxonomy_version": "dialogue_function_taxonomy_v1",
+          "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+          "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+          "input_context": {
+            "mode": "passage_alone",
+            "previous_speech_passage_id": null,
+            "previous_transcript_signature": null,
+            "next_speech_passage_id": null,
+            "next_transcript_signature": null,
+            "dialogue_turn_id": null,
+            "containing_performance_ids": [],
+            "ordered_turn_evidence": false,
+            "preceding_turn_reference": null,
+            "following_turn_reference": null,
+            "sequence_position": null
+          },
+          "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "unavailable",
+                  "label_id": "sequence_position.unavailable",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false
+            }
+          },
+          "confidence": 0.66,
+          "abstention": {
+            "abstained": false,
+            "reason": null,
+            "threshold": 0.62
+          },
+          "ambiguity_state": "UNAMBIGUOUS",
+          "evidence": [
+            {
+              "rule_id": "interaction.form_fallback",
+              "observation": "provide_information"
+            }
+          ],
+          "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+        },
+        "destination_distribution": {
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "continuing",
+                  "label_id": "sequence_position.continuing",
+                  "confidence": 0.64
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            }
+          },
+          "confidence": 0.66,
+          "ambiguity_state": "UNAMBIGUOUS",
+          "abstention": {
+            "abstained": false
+          }
+        },
+        "per_axis_compatibility": {
+          "surface_form": {
+            "supported": true,
+            "compatibility": 1.0,
+            "axis_weight": 0.3,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "declarative": 0.78
+            },
+            "destination_labels": {
+              "declarative": 0.78
+            }
+          },
+          "interaction_function": {
+            "supported": true,
+            "compatibility": 1.0,
+            "axis_weight": 0.6,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "provide_information": 0.66
+            },
+            "destination_labels": {
+              "provide_information": 0.66
+            }
+          },
+          "sequence_position": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.0,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          }
+        },
+        "normalized_function_contribution": 1.0,
+        "confidence": 0.66,
+        "ambiguity": false,
+        "configured_weight": 0.0,
+        "effective_weighted_contribution": 0.0,
+        "taxonomy_and_classifier_identity": {},
+        "source_evidence_scope": "rendered_transcript",
+        "destination_evidence_scope": "planned_distribution",
+        "fallback_state": "NONE",
+        "warnings": [],
+        "mode": "FUNCTION_REPORT_ONLY",
+        "available": true,
+        "scoring_policy": "dialogue_function_axis_compatibility_v1"
+      },
+      "function_score": 1.0,
+      "eligible_for_isolated_confirmation": true
+    },
+    {
+      "clip_id": "c000142",
+      "clip_path": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache\\1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b\\source_dialogue\\clips\\000142.wav",
+      "metadata_transcript": "Doc, this is a trash compactor.",
+      "observed_transcript": "Dump this in the trash compactor!",
+      "transcript_confidence": 0.2916,
+      "metadata_word_coverage_percentage": 50.0,
+      "observed_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "exclamatory",
+                "label_id": "surface_form.exclamatory",
+                "confidence": 0.84
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "evaluation_or_reaction",
+                "label_id": "interaction_function.evaluation_or_reaction",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "evaluation_or_reaction"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "destination_function_compatibility": {
+        "source_function_entity_ids": [],
+        "destination_function_entity_ids": [],
+        "source_distribution": {
+          "taxonomy_version": "dialogue_function_taxonomy_v1",
+          "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+          "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+          "input_context": {
+            "mode": "passage_alone",
+            "previous_speech_passage_id": null,
+            "previous_transcript_signature": null,
+            "next_speech_passage_id": null,
+            "next_transcript_signature": null,
+            "dialogue_turn_id": null,
+            "containing_performance_ids": [],
+            "ordered_turn_evidence": false,
+            "preceding_turn_reference": null,
+            "following_turn_reference": null,
+            "sequence_position": null
+          },
+          "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "exclamatory",
+                  "label_id": "surface_form.exclamatory",
+                  "confidence": 0.84
+                }
+              ],
+              "supported": true
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "evaluation_or_reaction",
+                  "label_id": "interaction_function.evaluation_or_reaction",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "unavailable",
+                  "label_id": "sequence_position.unavailable",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false
+            }
+          },
+          "confidence": 0.66,
+          "abstention": {
+            "abstained": false,
+            "reason": null,
+            "threshold": 0.62
+          },
+          "ambiguity_state": "UNAMBIGUOUS",
+          "evidence": [
+            {
+              "rule_id": "interaction.form_fallback",
+              "observation": "evaluation_or_reaction"
+            }
+          ],
+          "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+        },
+        "destination_distribution": {
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "continuing",
+                  "label_id": "sequence_position.continuing",
+                  "confidence": 0.64
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            }
+          },
+          "confidence": 0.66,
+          "ambiguity_state": "UNAMBIGUOUS",
+          "abstention": {
+            "abstained": false
+          }
+        },
+        "per_axis_compatibility": {
+          "surface_form": {
+            "supported": true,
+            "compatibility": 0.2,
+            "axis_weight": 0.3,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "exclamatory": 0.84
+            },
+            "destination_labels": {
+              "declarative": 0.78
+            }
+          },
+          "interaction_function": {
+            "supported": true,
+            "compatibility": 0.0,
+            "axis_weight": 0.6,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "evaluation_or_reaction": 0.66
+            },
+            "destination_labels": {
+              "provide_information": 0.66
+            }
+          },
+          "sequence_position": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.0,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          }
+        },
+        "normalized_function_contribution": 0.066667,
+        "confidence": 0.66,
+        "ambiguity": false,
+        "configured_weight": 0.0,
+        "effective_weighted_contribution": 0.0,
+        "taxonomy_and_classifier_identity": {},
+        "source_evidence_scope": "rendered_transcript",
+        "destination_evidence_scope": "planned_distribution",
+        "fallback_state": "NONE",
+        "warnings": [],
+        "mode": "FUNCTION_REPORT_ONLY",
+        "available": true,
+        "scoring_policy": "dialogue_function_axis_compatibility_v1"
+      },
+      "function_score": 0.066667,
+      "eligible_for_isolated_confirmation": false
+    },
+    {
+      "clip_id": "c000126",
+      "clip_path": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache\\1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b\\source_dialogue\\clips\\000126.wav",
+      "metadata_transcript": "Maybe I need to be one or the other.",
+      "observed_transcript": "Maybe I need to be one or the other.",
+      "transcript_confidence": 0.3138,
+      "metadata_word_coverage_percentage": 100.0,
+      "observed_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "provide_information",
+                "label_id": "interaction_function.provide_information",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "provide_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "destination_function_compatibility": {
+        "source_function_entity_ids": [],
+        "destination_function_entity_ids": [],
+        "source_distribution": {
+          "taxonomy_version": "dialogue_function_taxonomy_v1",
+          "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+          "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+          "input_context": {
+            "mode": "passage_alone",
+            "previous_speech_passage_id": null,
+            "previous_transcript_signature": null,
+            "next_speech_passage_id": null,
+            "next_transcript_signature": null,
+            "dialogue_turn_id": null,
+            "containing_performance_ids": [],
+            "ordered_turn_evidence": false,
+            "preceding_turn_reference": null,
+            "following_turn_reference": null,
+            "sequence_position": null
+          },
+          "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "unavailable",
+                  "label_id": "sequence_position.unavailable",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false
+            }
+          },
+          "confidence": 0.66,
+          "abstention": {
+            "abstained": false,
+            "reason": null,
+            "threshold": 0.62
+          },
+          "ambiguity_state": "UNAMBIGUOUS",
+          "evidence": [
+            {
+              "rule_id": "interaction.form_fallback",
+              "observation": "provide_information"
+            }
+          ],
+          "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+        },
+        "destination_distribution": {
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "continuing",
+                  "label_id": "sequence_position.continuing",
+                  "confidence": 0.64
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            }
+          },
+          "confidence": 0.66,
+          "ambiguity_state": "UNAMBIGUOUS",
+          "abstention": {
+            "abstained": false
+          }
+        },
+        "per_axis_compatibility": {
+          "surface_form": {
+            "supported": true,
+            "compatibility": 1.0,
+            "axis_weight": 0.3,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "declarative": 0.78
+            },
+            "destination_labels": {
+              "declarative": 0.78
+            }
+          },
+          "interaction_function": {
+            "supported": true,
+            "compatibility": 1.0,
+            "axis_weight": 0.6,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "provide_information": 0.66
+            },
+            "destination_labels": {
+              "provide_information": 0.66
+            }
+          },
+          "sequence_position": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.0,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          }
+        },
+        "normalized_function_contribution": 1.0,
+        "confidence": 0.66,
+        "ambiguity": false,
+        "configured_weight": 0.0,
+        "effective_weighted_contribution": 0.0,
+        "taxonomy_and_classifier_identity": {},
+        "source_evidence_scope": "rendered_transcript",
+        "destination_evidence_scope": "planned_distribution",
+        "fallback_state": "NONE",
+        "warnings": [],
+        "mode": "FUNCTION_REPORT_ONLY",
+        "available": true,
+        "scoring_policy": "dialogue_function_axis_compatibility_v1"
+      },
+      "function_score": 1.0,
+      "eligible_for_isolated_confirmation": true
+    },
+    {
+      "clip_id": "c000120",
+      "clip_path": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache\\1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b\\source_dialogue\\clips\\000120.wav",
+      "metadata_transcript": "But we humans learn from our mistakes.",
+      "observed_transcript": "But we humans learn from our mistakes.",
+      "transcript_confidence": 0.3138,
+      "metadata_word_coverage_percentage": 100.0,
+      "observed_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "provide_information",
+                "label_id": "interaction_function.provide_information",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "provide_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "destination_function_compatibility": {
+        "source_function_entity_ids": [],
+        "destination_function_entity_ids": [],
+        "source_distribution": {
+          "taxonomy_version": "dialogue_function_taxonomy_v1",
+          "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+          "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+          "input_context": {
+            "mode": "passage_alone",
+            "previous_speech_passage_id": null,
+            "previous_transcript_signature": null,
+            "next_speech_passage_id": null,
+            "next_transcript_signature": null,
+            "dialogue_turn_id": null,
+            "containing_performance_ids": [],
+            "ordered_turn_evidence": false,
+            "preceding_turn_reference": null,
+            "following_turn_reference": null,
+            "sequence_position": null
+          },
+          "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "unavailable",
+                  "label_id": "sequence_position.unavailable",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false
+            }
+          },
+          "confidence": 0.66,
+          "abstention": {
+            "abstained": false,
+            "reason": null,
+            "threshold": 0.62
+          },
+          "ambiguity_state": "UNAMBIGUOUS",
+          "evidence": [
+            {
+              "rule_id": "interaction.form_fallback",
+              "observation": "provide_information"
+            }
+          ],
+          "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+        },
+        "destination_distribution": {
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "continuing",
+                  "label_id": "sequence_position.continuing",
+                  "confidence": 0.64
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            }
+          },
+          "confidence": 0.66,
+          "ambiguity_state": "UNAMBIGUOUS",
+          "abstention": {
+            "abstained": false
+          }
+        },
+        "per_axis_compatibility": {
+          "surface_form": {
+            "supported": true,
+            "compatibility": 1.0,
+            "axis_weight": 0.3,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "declarative": 0.78
+            },
+            "destination_labels": {
+              "declarative": 0.78
+            }
+          },
+          "interaction_function": {
+            "supported": true,
+            "compatibility": 1.0,
+            "axis_weight": 0.6,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "provide_information": 0.66
+            },
+            "destination_labels": {
+              "provide_information": 0.66
+            }
+          },
+          "sequence_position": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.0,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          }
+        },
+        "normalized_function_contribution": 1.0,
+        "confidence": 0.66,
+        "ambiguity": false,
+        "configured_weight": 0.0,
+        "effective_weighted_contribution": 0.0,
+        "taxonomy_and_classifier_identity": {},
+        "source_evidence_scope": "rendered_transcript",
+        "destination_evidence_scope": "planned_distribution",
+        "fallback_state": "NONE",
+        "warnings": [],
+        "mode": "FUNCTION_REPORT_ONLY",
+        "available": true,
+        "scoring_policy": "dialogue_function_axis_compatibility_v1"
+      },
+      "function_score": 1.0,
+      "eligible_for_isolated_confirmation": true
+    },
+    {
+      "clip_id": "c000110",
+      "clip_path": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache\\1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b\\source_dialogue\\clips\\000110.wav",
+      "metadata_transcript": "They say robots are only as good as their programmer.",
+      "observed_transcript": "They say robots are only as good as their programmers.",
+      "transcript_confidence": 0.3138,
+      "metadata_word_coverage_percentage": 90.0,
+      "observed_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "provide_information",
+                "label_id": "interaction_function.provide_information",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "provide_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "destination_function_compatibility": {
+        "source_function_entity_ids": [],
+        "destination_function_entity_ids": [],
+        "source_distribution": {
+          "taxonomy_version": "dialogue_function_taxonomy_v1",
+          "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+          "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+          "input_context": {
+            "mode": "passage_alone",
+            "previous_speech_passage_id": null,
+            "previous_transcript_signature": null,
+            "next_speech_passage_id": null,
+            "next_transcript_signature": null,
+            "dialogue_turn_id": null,
+            "containing_performance_ids": [],
+            "ordered_turn_evidence": false,
+            "preceding_turn_reference": null,
+            "following_turn_reference": null,
+            "sequence_position": null
+          },
+          "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "unavailable",
+                  "label_id": "sequence_position.unavailable",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false
+            }
+          },
+          "confidence": 0.66,
+          "abstention": {
+            "abstained": false,
+            "reason": null,
+            "threshold": 0.62
+          },
+          "ambiguity_state": "UNAMBIGUOUS",
+          "evidence": [
+            {
+              "rule_id": "interaction.form_fallback",
+              "observation": "provide_information"
+            }
+          ],
+          "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+        },
+        "destination_distribution": {
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "continuing",
+                  "label_id": "sequence_position.continuing",
+                  "confidence": 0.64
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            }
+          },
+          "confidence": 0.66,
+          "ambiguity_state": "UNAMBIGUOUS",
+          "abstention": {
+            "abstained": false
+          }
+        },
+        "per_axis_compatibility": {
+          "surface_form": {
+            "supported": true,
+            "compatibility": 1.0,
+            "axis_weight": 0.3,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "declarative": 0.78
+            },
+            "destination_labels": {
+              "declarative": 0.78
+            }
+          },
+          "interaction_function": {
+            "supported": true,
+            "compatibility": 1.0,
+            "axis_weight": 0.6,
+            "reason": "DISTRIBUTION_OVERLAP",
+            "source_labels": {
+              "provide_information": 0.66
+            },
+            "destination_labels": {
+              "provide_information": 0.66
+            }
+          },
+          "sequence_position": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.0,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          }
+        },
+        "normalized_function_contribution": 1.0,
+        "confidence": 0.66,
+        "ambiguity": false,
+        "configured_weight": 0.0,
+        "effective_weighted_contribution": 0.0,
+        "taxonomy_and_classifier_identity": {},
+        "source_evidence_scope": "rendered_transcript",
+        "destination_evidence_scope": "planned_distribution",
+        "fallback_state": "NONE",
+        "warnings": [],
+        "mode": "FUNCTION_REPORT_ONLY",
+        "available": true,
+        "scoring_policy": "dialogue_function_axis_compatibility_v1"
+      },
+      "function_score": 1.0,
+      "eligible_for_isolated_confirmation": true
+    },
+    {
+      "clip_id": "c000072",
+      "clip_path": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache\\1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b\\source_dialogue\\clips\\000072.wav",
+      "metadata_transcript": "The police are unable to stop them.",
+      "observed_transcript": "",
+      "transcript_confidence": 0.0,
+      "metadata_word_coverage_percentage": 0.0,
+      "observed_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "unknown",
+                "label_id": "surface_form.unknown",
+                "confidence": 1.0
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "unknown",
+                "label_id": "surface_form.unknown",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.0,
+        "abstention": {
+          "abstained": true,
+          "reason": "BELOW_THRESHOLD_OR_UNSUPPORTED",
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "destination_function_compatibility": {
+        "source_function_entity_ids": [],
+        "destination_function_entity_ids": [],
+        "source_distribution": {
+          "taxonomy_version": "dialogue_function_taxonomy_v1",
+          "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+          "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+          "input_context": {
+            "mode": "passage_alone",
+            "previous_speech_passage_id": null,
+            "previous_transcript_signature": null,
+            "next_speech_passage_id": null,
+            "next_transcript_signature": null,
+            "dialogue_turn_id": null,
+            "containing_performance_ids": [],
+            "ordered_turn_evidence": false,
+            "preceding_turn_reference": null,
+            "following_turn_reference": null,
+            "sequence_position": null
+          },
+          "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "unknown",
+                  "label_id": "surface_form.unknown",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": true
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "unknown",
+                  "label_id": "surface_form.unknown",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "unavailable",
+                  "label_id": "sequence_position.unavailable",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false
+            }
+          },
+          "confidence": 0.0,
+          "abstention": {
+            "abstained": true,
+            "reason": "BELOW_THRESHOLD_OR_UNSUPPORTED",
+            "threshold": 0.62
+          },
+          "ambiguity_state": "UNAMBIGUOUS",
+          "evidence": [],
+          "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+        },
+        "destination_distribution": {
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "continuing",
+                  "label_id": "sequence_position.continuing",
+                  "confidence": 0.64
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            }
+          },
+          "confidence": 0.66,
+          "ambiguity_state": "UNAMBIGUOUS",
+          "abstention": {
+            "abstained": false
+          }
+        },
+        "per_axis_compatibility": {
+          "surface_form": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.3,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          },
+          "interaction_function": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.6,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          },
+          "sequence_position": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.0,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          }
+        },
+        "normalized_function_contribution": 0.5,
+        "confidence": 0.0,
+        "ambiguity": false,
+        "configured_weight": 0.0,
+        "effective_weighted_contribution": 0.0,
+        "taxonomy_and_classifier_identity": {},
+        "source_evidence_scope": "rendered_transcript",
+        "destination_evidence_scope": "planned_distribution",
+        "fallback_state": "NONE",
+        "warnings": [
+          "Function evidence is ambiguous or below calibrated confidence; contribution is weakened toward neutral."
+        ],
+        "mode": "FUNCTION_REPORT_ONLY",
+        "available": true,
+        "scoring_policy": "dialogue_function_axis_compatibility_v1"
+      },
+      "function_score": 0.5,
+      "eligible_for_isolated_confirmation": false
+    },
+    {
+      "clip_id": "c000173",
+      "clip_path": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache\\1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b\\source_dialogue\\clips\\000173.wav",
+      "metadata_transcript": "I'll figure out a way to get him out.",
+      "observed_transcript": "",
+      "transcript_confidence": 0.0,
+      "metadata_word_coverage_percentage": 0.0,
+      "observed_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "unknown",
+                "label_id": "surface_form.unknown",
+                "confidence": 1.0
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "unknown",
+                "label_id": "surface_form.unknown",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.0,
+        "abstention": {
+          "abstained": true,
+          "reason": "BELOW_THRESHOLD_OR_UNSUPPORTED",
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "destination_function_compatibility": {
+        "source_function_entity_ids": [],
+        "destination_function_entity_ids": [],
+        "source_distribution": {
+          "taxonomy_version": "dialogue_function_taxonomy_v1",
+          "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+          "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+          "input_context": {
+            "mode": "passage_alone",
+            "previous_speech_passage_id": null,
+            "previous_transcript_signature": null,
+            "next_speech_passage_id": null,
+            "next_transcript_signature": null,
+            "dialogue_turn_id": null,
+            "containing_performance_ids": [],
+            "ordered_turn_evidence": false,
+            "preceding_turn_reference": null,
+            "following_turn_reference": null,
+            "sequence_position": null
+          },
+          "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "unknown",
+                  "label_id": "surface_form.unknown",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": true
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "unknown",
+                  "label_id": "surface_form.unknown",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "unavailable",
+                  "label_id": "sequence_position.unavailable",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false
+            }
+          },
+          "confidence": 0.0,
+          "abstention": {
+            "abstained": true,
+            "reason": "BELOW_THRESHOLD_OR_UNSUPPORTED",
+            "threshold": 0.62
+          },
+          "ambiguity_state": "UNAMBIGUOUS",
+          "evidence": [],
+          "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+        },
+        "destination_distribution": {
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "continuing",
+                  "label_id": "sequence_position.continuing",
+                  "confidence": 0.64
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            }
+          },
+          "confidence": 0.66,
+          "ambiguity_state": "UNAMBIGUOUS",
+          "abstention": {
+            "abstained": false
+          }
+        },
+        "per_axis_compatibility": {
+          "surface_form": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.3,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          },
+          "interaction_function": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.6,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          },
+          "sequence_position": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.0,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          }
+        },
+        "normalized_function_contribution": 0.5,
+        "confidence": 0.0,
+        "ambiguity": false,
+        "configured_weight": 0.0,
+        "effective_weighted_contribution": 0.0,
+        "taxonomy_and_classifier_identity": {},
+        "source_evidence_scope": "rendered_transcript",
+        "destination_evidence_scope": "planned_distribution",
+        "fallback_state": "NONE",
+        "warnings": [
+          "Function evidence is ambiguous or below calibrated confidence; contribution is weakened toward neutral."
+        ],
+        "mode": "FUNCTION_REPORT_ONLY",
+        "available": true,
+        "scoring_policy": "dialogue_function_axis_compatibility_v1"
+      },
+      "function_score": 0.5,
+      "eligible_for_isolated_confirmation": false
+    },
+    {
+      "clip_id": "c000150",
+      "clip_path": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache\\1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b\\source_dialogue\\clips\\000150.wav",
+      "metadata_transcript": "We now return to Mega Man.",
+      "observed_transcript": "",
+      "transcript_confidence": 0.0,
+      "metadata_word_coverage_percentage": 0.0,
+      "observed_function": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "unknown",
+                "label_id": "surface_form.unknown",
+                "confidence": 1.0
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "unknown",
+                "label_id": "surface_form.unknown",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.0,
+        "abstention": {
+          "abstained": true,
+          "reason": "BELOW_THRESHOLD_OR_UNSUPPORTED",
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "destination_function_compatibility": {
+        "source_function_entity_ids": [],
+        "destination_function_entity_ids": [],
+        "source_distribution": {
+          "taxonomy_version": "dialogue_function_taxonomy_v1",
+          "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+          "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+          "input_context": {
+            "mode": "passage_alone",
+            "previous_speech_passage_id": null,
+            "previous_transcript_signature": null,
+            "next_speech_passage_id": null,
+            "next_transcript_signature": null,
+            "dialogue_turn_id": null,
+            "containing_performance_ids": [],
+            "ordered_turn_evidence": false,
+            "preceding_turn_reference": null,
+            "following_turn_reference": null,
+            "sequence_position": null
+          },
+          "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "unknown",
+                  "label_id": "surface_form.unknown",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": true
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "unknown",
+                  "label_id": "surface_form.unknown",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "unavailable",
+                  "label_id": "sequence_position.unavailable",
+                  "confidence": 1.0
+                }
+              ],
+              "supported": false
+            }
+          },
+          "confidence": 0.0,
+          "abstention": {
+            "abstained": true,
+            "reason": "BELOW_THRESHOLD_OR_UNSUPPORTED",
+            "threshold": 0.62
+          },
+          "ambiguity_state": "UNAMBIGUOUS",
+          "evidence": [],
+          "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+        },
+        "destination_distribution": {
+          "axes": {
+            "surface_form": {
+              "labels": [
+                {
+                  "label": "declarative",
+                  "label_id": "surface_form.declarative",
+                  "confidence": 0.78
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            },
+            "interaction_function": {
+              "labels": [
+                {
+                  "label": "provide_information",
+                  "label_id": "interaction_function.provide_information",
+                  "confidence": 0.66
+                }
+              ],
+              "supported": true,
+              "multi_label": true
+            },
+            "sequence_position": {
+              "labels": [
+                {
+                  "label": "continuing",
+                  "label_id": "sequence_position.continuing",
+                  "confidence": 0.64
+                }
+              ],
+              "supported": true,
+              "multi_label": false
+            }
+          },
+          "confidence": 0.66,
+          "ambiguity_state": "UNAMBIGUOUS",
+          "abstention": {
+            "abstained": false
+          }
+        },
+        "per_axis_compatibility": {
+          "surface_form": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.3,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          },
+          "interaction_function": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.6,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          },
+          "sequence_position": {
+            "supported": false,
+            "compatibility": 0.5,
+            "axis_weight": 0.0,
+            "reason": "UNAVAILABLE_OR_STATE_ONLY"
+          }
+        },
+        "normalized_function_contribution": 0.5,
+        "confidence": 0.0,
+        "ambiguity": false,
+        "configured_weight": 0.0,
+        "effective_weighted_contribution": 0.0,
+        "taxonomy_and_classifier_identity": {},
+        "source_evidence_scope": "rendered_transcript",
+        "destination_evidence_scope": "planned_distribution",
+        "fallback_state": "NONE",
+        "warnings": [
+          "Function evidence is ambiguous or below calibrated confidence; contribution is weakened toward neutral."
+        ],
+        "mode": "FUNCTION_REPORT_ONLY",
+        "available": true,
+        "scoring_policy": "dialogue_function_axis_compatibility_v1"
+      },
+      "function_score": 0.5,
+      "eligible_for_isolated_confirmation": false
+    }
+  ],
+  "isolated_confirmation": {
+    "clip_id": "c000120",
+    "observed_transcript": "But we humans learn from our mistakes.",
+    "transcript_confidence": 0.3188,
+    "metadata_word_coverage_percentage": 100.0,
+    "observed_function": {
+      "taxonomy_version": "dialogue_function_taxonomy_v1",
+      "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+      "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+      "input_context": {
+        "mode": "passage_alone",
+        "previous_speech_passage_id": null,
+        "previous_transcript_signature": null,
+        "next_speech_passage_id": null,
+        "next_transcript_signature": null,
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+      "axes": {
+        "surface_form": {
+          "labels": [
+            {
+              "label": "declarative",
+              "label_id": "surface_form.declarative",
+              "confidence": 0.78
+            }
+          ],
+          "supported": true
+        },
+        "interaction_function": {
+          "labels": [
+            {
+              "label": "provide_information",
+              "label_id": "interaction_function.provide_information",
+              "confidence": 0.66
+            }
+          ],
+          "supported": true,
+          "multi_label": true
+        },
+        "sequence_position": {
+          "labels": [
+            {
+              "label": "unavailable",
+              "label_id": "sequence_position.unavailable",
+              "confidence": 1.0
+            }
+          ],
+          "supported": false
+        }
+      },
+      "confidence": 0.66,
+      "abstention": {
+        "abstained": false,
+        "reason": null,
+        "threshold": 0.62
+      },
+      "ambiguity_state": "UNAMBIGUOUS",
+      "evidence": [
+        {
+          "rule_id": "interaction.form_fallback",
+          "observation": "provide_information"
+        }
+      ],
+      "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+    },
+    "destination_function_compatibility": {
+      "source_function_entity_ids": [],
+      "destination_function_entity_ids": [],
+      "source_distribution": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "d9eebf53aff3e8203c5a9ff1fc8147f80c0b82e08d504397b785002aeadf9ee6",
+        "input_context": {
+          "mode": "passage_alone",
+          "previous_speech_passage_id": null,
+          "previous_transcript_signature": null,
+          "next_speech_passage_id": null,
+          "next_transcript_signature": null,
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "123bce18d924aed4d763f7129937be2bb3969a9d65924473083037e037ff80c8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "provide_information",
+                "label_id": "interaction_function.provide_information",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "provide_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "destination_distribution": {
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true,
+            "multi_label": false
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "provide_information",
+                "label_id": "interaction_function.provide_information",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "continuing",
+                "label_id": "sequence_position.continuing",
+                "confidence": 0.64
+              }
+            ],
+            "supported": true,
+            "multi_label": false
+          }
+        },
+        "confidence": 0.66,
+        "ambiguity_state": "UNAMBIGUOUS",
+        "abstention": {
+          "abstained": false
+        }
+      },
+      "per_axis_compatibility": {
+        "surface_form": {
+          "supported": true,
+          "compatibility": 1.0,
+          "axis_weight": 0.3,
+          "reason": "DISTRIBUTION_OVERLAP",
+          "source_labels": {
+            "declarative": 0.78
+          },
+          "destination_labels": {
+            "declarative": 0.78
+          }
+        },
+        "interaction_function": {
+          "supported": true,
+          "compatibility": 1.0,
+          "axis_weight": 0.6,
+          "reason": "DISTRIBUTION_OVERLAP",
+          "source_labels": {
+            "provide_information": 0.66
+          },
+          "destination_labels": {
+            "provide_information": 0.66
+          }
+        },
+        "sequence_position": {
+          "supported": false,
+          "compatibility": 0.5,
+          "axis_weight": 0.0,
+          "reason": "UNAVAILABLE_OR_STATE_ONLY"
+        }
+      },
+      "normalized_function_contribution": 1.0,
+      "confidence": 0.66,
+      "ambiguity": false,
+      "configured_weight": 0.0,
+      "effective_weighted_contribution": 0.0,
+      "taxonomy_and_classifier_identity": {},
+      "source_evidence_scope": "rendered_transcript",
+      "destination_evidence_scope": "planned_distribution",
+      "fallback_state": "NONE",
+      "warnings": [],
+      "mode": "FUNCTION_REPORT_ONLY",
+      "available": true,
+      "scoring_policy": "dialogue_function_axis_compatibility_v1"
+    },
+    "function_score": 1.0,
+    "confirmation_state": "CONFIRMED"
+  },
+  "audit_state": "CONFIRMED_DONOR_AVAILABLE",
+  "claim_scope": "Acoustic transcript and dialogue-function evidence for a bounded legal donor shortlist; not preference or narrative interpretation.",
+  "audit_signature": "597b53da69d0c97f46c85b64bb1356055cc362e762b2bb6ac6f352b3e981d121"
+}

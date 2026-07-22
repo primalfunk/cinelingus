@@ -172,6 +172,7 @@ def _definition(
     affected_artifacts: tuple[str, ...] | None = None,
     intermediate_products: tuple[str, ...] = ("filter_plan",),
     supported_output_forms: tuple[str, ...] | None = None,
+    version: str = "1.0.0",
 ) -> FilterDefinition:
     return FilterDefinition(
         id=filter_id,
@@ -189,7 +190,7 @@ def _definition(
         parameters=parameters,
         implemented=implemented,
         experimental=experimental,
-        version="1.0.0",
+        version=version,
         implementation_key=implementation_key,
         implementation_class=implementation_class or PLANNED_IMPLEMENTATION_CLASSES.get(filter_id, "F"),
         execution_mode=execution_mode,
@@ -290,6 +291,9 @@ def _multiworld_dialogue_definition(
     parameters: tuple[FilterParameter, ...] = (INTENSITY,),
     requires_speaker_identity: bool = False,
     preserves: dict[str, str] | None = None,
+    anchor_behavior: str = "anchor_timeline",
+    implementation_class: str = "F",
+    version: str = "1.0.0",
 ) -> FilterDefinition:
     dimensions = tuple(D(item) for item in affected_elements if item in {row.value for row in D})
     return _definition(
@@ -299,7 +303,7 @@ def _multiworld_dialogue_definition(
         parameters=parameters,
         implemented=True,
         implementation_key=f"multiworld_{key}",
-        implementation_class="F",
+        implementation_class=implementation_class,
         execution_mode="transformation",
         sparse_schedule=True,
         requires_speaker_identity=requires_speaker_identity,
@@ -307,6 +311,7 @@ def _multiworld_dialogue_definition(
         preserves=preserves,
         minimum_films=minimum_films,
         maximum_films=maximum_films,
+        anchor_behavior=anchor_behavior,
         cinematic_law=law,
         affected_elements=affected_elements,
         quality_requirements=("Cinematic-law invariants pass", "Output provenance names every contributing film"),
@@ -314,6 +319,7 @@ def _multiworld_dialogue_definition(
         affected_artifacts=("shared_timeline", "world_model", "replacement_decisions"),
         intermediate_products=("film_inspections", "shared_timeline", "world_model", "replacement_decisions", "filter_plan"),
         supported_output_forms=("full_length",),
+        version=version,
     )
 
 
@@ -673,7 +679,18 @@ DEFINITIONS = (
     _multiworld_stub("parallel_universes", "Parallel Universes", "Temporal Exchange", "Equivalent moments from multiple films coexist on a shared timeline.", maximum_films=None, affected_elements=("time", "scene_order", "shot_selection")),
     _multiworld_stub("wormhole", "Wormhole", "Temporal Exchange", "Selected moments cross between films through deterministic temporal portals.", maximum_films=None, affected_elements=("time", "scene_order", "shot_selection")),
     _multiworld_stub("chimera", "Chimera", "Genre Mutation", "Three films combine into one hybrid cinematic organism.", minimum_films=3, maximum_films=3, affected_elements=("dialogue", "identity", "music", "soundscape", "genre")),
-    _multiworld_stub("triangle", "Triangle", "Narrative Infection", "Three films exchange pressure through a closed narrative relationship.", minimum_films=3, maximum_films=3, affected_elements=("dialogue", "identity", "scene_order")),
+    _multiworld_dialogue_definition(
+        "triangle", "Triangle", "Narrative Infection",
+        "Three films exchange pressure through a closed narrative relationship.",
+        "Divide the shortest shared duration into visual phases A, B, and C; each phase receives dialogue from the next film, closing the cycle B, C, A.",
+        minimum_films=3,
+        maximum_films=3,
+        affected_elements=("dialogue", "identity", "scene_order", "shot_selection"),
+        preserves={"cycle": "Visual A-B-C and dialogue B-C-A never change", "provenance": "Every phase names both contributing films"},
+        anchor_behavior="law_defined_timeline",
+        implementation_class="B",
+        version="1.1.0",
+    ),
     _multiworld_stub("civilization", "Civilization", "Reality Collision", "Five or more films form a persistent shared cinematic society.", minimum_films=5, maximum_films=None, affected_elements=("dialogue", "identity", "scene_order", "music", "soundscape", "shot_selection", "genre")),
 )
 

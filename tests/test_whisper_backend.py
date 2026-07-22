@@ -44,3 +44,13 @@ def test_transcribe_with_model_fallback_reports_actual_model(tmp_path: Path):
     assert result["segments"] == []
     assert "fell back to 'small'" in warning
     assert fake.loaded[:2] == [("medium", "cpu"), ("small", "cpu")]
+
+
+def test_model_fallback_forwards_word_timestamp_options(tmp_path: Path):
+    fake = FakeWhisper(failures=set())
+    model_name, _, _ = _transcribe_with_model_fallback(
+        whisper=fake, transcription_audio=tmp_path / "audio.wav",
+        requested_model="small", device="cpu", language="en",
+        transcribe_options={"word_timestamps": True, "condition_on_previous_text": False},
+    )
+    assert model_name == "small"

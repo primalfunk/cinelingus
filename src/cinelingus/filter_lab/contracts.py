@@ -90,6 +90,8 @@ class FilterContractCatalog:
             "",
             "Generated from the machine-valid contracts in filter_contracts/.",
             "",
+            "This is the engineering contract view. Stable filter IDs, internal families, execution modes, and artifact names remain unchanged for compatibility. Public names, disciplines, operating modes, availability, capability tiers, and single-operator Procedure status are defined in [the public apparatus catalog](architecture/public_apparatus_catalog.md). Where the names differ, the public catalog controls presentation and this document controls executable behavior.",
+            "",
             "| Filter | Family | Films | Cinematic law | Status | Execution | Contract proposition |",
             "|---|---|---:|---|---:|---|---|",
         ]

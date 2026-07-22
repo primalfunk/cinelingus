@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "dialogue_function_calibration",
+  "type": "object",
+  "required": ["schema_version", "calibration_version", "package_signature", "review_state", "sample_count", "samples"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "calibration_version": {"const": "dialogue_function_calibration_v1"},
+    "package_signature": {"type": "string", "minLength": 1},
+    "review_state": {"enum": ["PENDING_HUMAN_ANNOTATION", "COMPLETE", "INCOMPLETE"]},
+    "sample_count": {"type": "integer", "minimum": 1},
+    "samples": {"type": "array", "minItems": 1, "items": {"type": "object"}}
+  }
+}

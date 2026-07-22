@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "corpus_evaluation_plan",
+  "type": "object",
+  "required": [
+    "schema_version", "plan_version", "tool_version", "manifest", "manifest_version",
+    "tier", "seed", "dry_run", "limits", "selected_file_count",
+    "selected_pairing_count", "selected_media", "pairings", "execution_policy"
+  ],
+  "properties": {
+    "plan_version": {"const": "movie_corpus_evaluation_plan_v1"},
+    "tier": {"enum": ["smoke", "standard", "extended"]},
+    "dry_run": {"const": true},
+    "selected_file_count": {"type": "integer", "minimum": 0},
+    "selected_pairing_count": {"type": "integer", "minimum": 0},
+    "limits": {"type": "object"},
+    "selected_media": {"type": "array", "items": {"type": "object"}},
+    "pairings": {"type": "array", "items": {"type": "object"}},
+    "execution_policy": {"type": "object"}
+  }
+}

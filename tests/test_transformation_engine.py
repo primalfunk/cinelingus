@@ -8,7 +8,21 @@ from cinelingus.transformations import (
     default_registry,
 )
 from cinelingus.transformations.report import write_transformation_report
+from cinelingus.transformations.translation import _primary_stream_duration
 from cinelingus.validation import validate_artifact
+
+
+def test_translation_duration_uses_default_stream_instead_of_container_padding() -> None:
+    movie = {
+        "duration": 12.0,
+        "streams": [
+            {"codec_type": "audio", "duration": "11.2", "disposition": {"default": 1}},
+            {"codec_type": "audio", "duration": "11.8", "disposition": {"default": 0}},
+        ],
+    }
+
+    assert _primary_stream_duration(movie, "audio") == 11.2
+    assert _primary_stream_duration(movie, "video") == 12.0
 
 
 def test_default_registry_contains_transformations() -> None:

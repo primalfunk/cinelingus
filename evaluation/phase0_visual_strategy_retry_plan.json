@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "plan_version": "bounded_corpus_calibration_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T17:16:39+00:00",
+  "execution_revision": "phase0_strategy_isolation_target_authority_v2",
+  "tier": "extended",
+  "excerpt_plan": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_excerpt_plan.json",
+  "maximum_cases": 1,
+  "case_count": 1,
+  "planned_input_duration_seconds": 43.0,
+  "source_files_read_only": true,
+  "resume_required": true,
+  "strategy_isolation_of": {
+    "plan": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_calibration_plan_initial.json",
+    "report": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\output\\corpus_calibration\\extended\\calibration_report_initial.json",
+    "coverage": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\phase0_rendered_strategy_coverage_20260721.json"
+  },
+  "unfilled_target_strategies": [
+    "repair_word_boundary",
+    "repair_duration_fit",
+    "repair_speaker_role",
+    "repair_local_suppression",
+    "repair_reuse_pressure",
+    "conservative_uncertainty_retention"
+  ],
+  "cases": [
+    {
+      "case_id": "strategy_retry_001_visual_mismatch",
+      "purpose": "strategy_isolation_visual_mismatch",
+      "variant_index": 2,
+      "destination": {
+        "excerpt_id": "excerpt_0029_345dbfdf",
+        "media_id": "media_b2203a07578ab221",
+        "filename": "The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+        "content_type": "animation",
+        "category": "animation_dialogue",
+        "start": 26.0,
+        "end": 56.0,
+        "duration": 30.0,
+        "analysis_signature": "5eba5bdd52c94a24bc76062d73ac5f0b67a9820b6d34403e1f1e252f7fa747df",
+        "evidence": {
+          "performance_id": "p000001",
+          "dialogue_density": 1.0,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0024_7b037e6d",
+        "media_id": "media_a0c757cdae48cfdb",
+        "filename": "Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+        "content_type": "live_action",
+        "category": "short_fragmented_lines",
+        "start": 29.42,
+        "end": 42.42,
+        "duration": 13.0,
+        "analysis_signature": "77d519f5b71bb411f22cdceb6f62928f75acd92f2d0392384fbab2205af19e38",
+        "evidence": {
+          "window_id": "w000007",
+          "duration": 1.0,
+          "confidence": 0.9885
+        }
+      },
+      "expected_failure_modes": [
+        "visual_mismatch"
+      ],
+      "status": "planned",
+      "case_signature": "95e1157d20e0e68f88c99712550c9e7dcafe7fd7f7c5c517c057053c1eed2247",
+      "target_failure_category": "visual_mismatch",
+      "target_repair_strategy": "repair_visual_intent",
+      "strategy_isolation_source_case_id": "case_008_animation_visual_role"
+    }
+  ]
+}

@@ -180,7 +180,7 @@ def test_run_truth_summary_distinguishes_translation_and_single_film(tmp_path):
         matching_style="Balanced",
     )
 
-    assert "Experiment: Translation" in translation
+    assert "Apparatus: Transposition" in translation
     assert "Anchor Film:" in translation
     assert "Film B:" in translation
     assert "Film:" in single
@@ -223,7 +223,7 @@ def test_completed_run_truth_summary_migrates_legacy_translation_name(tmp_path):
 
     summary = completed_run_truth_summary(output, output.parent, "Translation")
 
-    assert "Translation" in summary
+    assert "Transposition" in summary
     assert "dest.mp4" in summary
     assert "source.mp4" in summary
     assert "translation_output.mp4" in summary
@@ -257,7 +257,7 @@ def test_quality_preset_mapping_is_user_facing():
     assert quality_preset_mode("Fast Preview") == "fast_preview"
     assert quality_preset_mode("Balanced") == "balanced"
     assert quality_preset_mode("High Accuracy") == "quality"
-    assert quality_preset_label("quality") == "Precision"
+    assert quality_preset_label("quality") == "Divination"
     assert quality_preset_mode("High Accuracy") == "quality"
 
 
@@ -325,8 +325,8 @@ def test_detailed_stages_map_to_compact_progress_milestones():
 
 
 def test_quality_detail_names_purpose_and_model():
-    assert quality_detail("Balanced") == "A measured balance of speed and fidelity."
-    assert quality_detail("High Accuracy") == "A more exacting examination for final work. This examination may require substantially more time."
+    assert quality_detail("Balanced") == "Balanced — measured speed and fidelity."
+    assert quality_detail("High Accuracy") == "High Accuracy — exacting final examination. This examination may require substantially more time."
 
 
 def test_quality_runtime_warning_flags_high_accuracy_on_cpu():

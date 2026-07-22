@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "thresholds": {
+    "accepted_residue_statuses": ["NONE_DETECTED"],
+    "maximum_silence_fallback_ratio": 0.1,
+    "minimum_performance_first_ratio": 0.75,
+    "maximum_linewise_fallback_ratio": 0.1,
+    "maximum_preserved_original_ratio": 0.25,
+    "maximum_problem_count": 10,
+    "require_editorial_evidence": true,
+    "accepted_editorial_statuses": ["PASS", "LIMIT_REACHED"],
+    "maximum_hard_gate_failure_count": 0,
+    "maximum_failed_delivery_count": 0
+  },
+  "cases": [
+    {
+      "id": "clean_monologue",
+      "run_report": "clean_monologue/run_report.json",
+      "tags": ["monologue", "clean-dialogue"]
+    },
+    {
+      "id": "rapid_exchange",
+      "run_report": "rapid_exchange/run_report.json",
+      "tags": ["dialogue", "rapid-turns", "interruptions"]
+    },
+    {
+      "id": "music_under_dialogue",
+      "run_report": "music_under_dialogue/run_report.json",
+      "tags": ["dialogue", "music-bed"]
+    }
+  ]
+}

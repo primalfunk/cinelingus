@@ -1,0 +1,184 @@
+{
+  "schema_version": "1.0",
+  "preflight_version": "semantic_acoustic_preflight_v1",
+  "creation_timestamp": "2026-07-21T23:35:13+00:00",
+  "screen_signature": "9fa25218b94531083cd861b4c9d008320a9fe8cced7b7814f6b796f84434de4a",
+  "semantic_variant": "assisted_005",
+  "preflight_signature": "ff923ac2764c128be77693ae6260d7eb5ccf7fccb5ef96f97a7ef8d85b8413ef",
+  "whisper_configuration": {
+    "requested_model": "medium",
+    "language": "en",
+    "transcription_mode": "quality"
+  },
+  "minimum_word_coverage": 0.72,
+  "changed_mapping_count": 2,
+  "reel": "changed_donor_reel.wav",
+  "reel_manifest": "changed_donor_reel_manifest.json",
+  "transcription": "changed_donor_transcription.json",
+  "transcription_cache_state": "CREATED",
+  "verification": {
+    "schema_version": "1.0",
+    "verification_version": "rendered_dialogue_verification_v3_editorial_keys",
+    "status": "FAIL",
+    "mapping_count": 2,
+    "measurable_mapping_count": 2,
+    "failed_mapping_count": 1,
+    "warning_mapping_count": 1,
+    "average_word_coverage_percentage": 69.23,
+    "limitations": "Transcript alignment is conservative and cannot prove acoustic source separation or literal phoneme-boundary integrity. Neighboring words inside broad Whisper windows are labeled as adjacent overlap, not line truncation.",
+    "mappings": [
+      {
+        "mapping_index": 0,
+        "mapping_id": "preflight_001",
+        "editorial_placement_id": null,
+        "window_id": "w000002",
+        "clip_id": "c000042",
+        "destination_start": 1.0,
+        "destination_end": 6.0,
+        "intended_transcript": "In order to modify your life cell, I must shut you down, Mega.",
+        "rendered_transcript": "That's my boy. In order to modify your- That's it, my boy!",
+        "word_coverage_percentage": 38.46,
+        "missing_sentence_beginning": false,
+        "missing_sentence_ending": true,
+        "unexpected_word_loss": 0.6154,
+        "mid_word_cut": false,
+        "incomplete_phrase": true,
+        "speaking_rate_anomaly": false,
+        "observed_words_per_second": 1.0,
+        "fade_masking_possible": false,
+        "audio_masking_possible": true,
+        "adjacent_dialogue_before": false,
+        "adjacent_dialogue_after": false,
+        "poor_intelligibility": true,
+        "confidence": 0.2464,
+        "labels": [
+          {
+            "domain": "audio",
+            "label": "sentence_beginning",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.2464
+          },
+          {
+            "domain": "audio",
+            "label": "sentence_ending",
+            "status": "fail",
+            "score": 0.0,
+            "confidence": 0.2464
+          },
+          {
+            "domain": "audio",
+            "label": "word_coverage",
+            "status": "fail",
+            "score": 0.3846,
+            "confidence": 0.2464
+          },
+          {
+            "domain": "audio",
+            "label": "speaking_rate",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.2464
+          },
+          {
+            "domain": "audio",
+            "label": "intelligibility",
+            "status": "fail",
+            "score": 0.2464,
+            "confidence": 0.2464
+          }
+        ],
+        "status": "fail"
+      },
+      {
+        "mapping_index": 1,
+        "mapping_id": "preflight_002",
+        "editorial_placement_id": null,
+        "window_id": "w000003",
+        "clip_id": "c000056",
+        "destination_start": 7.0,
+        "destination_end": 10.0,
+        "intended_transcript": "That's it, my boy. You've got it.",
+        "rendered_transcript": "That's it, my boy! You've got it!",
+        "word_coverage_percentage": 100.0,
+        "missing_sentence_beginning": false,
+        "missing_sentence_ending": false,
+        "unexpected_word_loss": 0.0,
+        "mid_word_cut": false,
+        "incomplete_phrase": false,
+        "speaking_rate_anomaly": false,
+        "observed_words_per_second": 2.333,
+        "fade_masking_possible": false,
+        "audio_masking_possible": true,
+        "adjacent_dialogue_before": false,
+        "adjacent_dialogue_after": false,
+        "poor_intelligibility": true,
+        "confidence": 0.2464,
+        "labels": [
+          {
+            "domain": "audio",
+            "label": "sentence_beginning",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.2464
+          },
+          {
+            "domain": "audio",
+            "label": "sentence_ending",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.2464
+          },
+          {
+            "domain": "audio",
+            "label": "word_coverage",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.2464
+          },
+          {
+            "domain": "audio",
+            "label": "speaking_rate",
+            "status": "pass",
+            "score": 1.0,
+            "confidence": 0.2464
+          },
+          {
+            "domain": "audio",
+            "label": "intelligibility",
+            "status": "fail",
+            "score": 0.2464,
+            "confidence": 0.2464
+          }
+        ],
+        "status": "warning"
+      }
+    ]
+  },
+  "mapping_decisions": [
+    {
+      "clip_id": "c000042",
+      "window_id": "w000002",
+      "word_coverage_percentage": 38.46,
+      "missing_sentence_beginning": false,
+      "missing_sentence_ending": true,
+      "state": "REJECTED",
+      "reasons": [
+        "word_coverage_below_threshold",
+        "sentence_ending_missing"
+      ]
+    },
+    {
+      "clip_id": "c000056",
+      "window_id": "w000003",
+      "word_coverage_percentage": 100.0,
+      "missing_sentence_beginning": false,
+      "missing_sentence_ending": false,
+      "state": "ACCEPTED",
+      "reasons": []
+    }
+  ],
+  "preflight_state": "REJECTED_ACOUSTIC_INTEGRITY",
+  "rejection_count": 1,
+  "claim_scope": "Selected-donor acoustic transcript integrity only; this does not establish render quality, semantic preference, voice separation, or visual fit."
+}

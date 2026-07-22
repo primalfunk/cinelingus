@@ -1,0 +1,1411 @@
+CINELINGUS DEEP TRANSFORMATION PROGRAM
+OVERALL IMPLEMENTATION PLAN
+===========================
+
+## Purpose
+
+This document defines the phased development program required to evolve
+Cinelingus from a reflective dialogue-transformation engine into a system that
+can represent, alter, verify, and repair deeper cinematic properties.
+
+This is not a single implementation work order.
+
+It is the governing program plan from which a separate, detailed work order
+will be written for each phase.
+
+Each phase must:
+
+1. Begin from the verified state produced by the previous phase.
+2. Deliver one coherent capability or vertical slice.
+3. Include measurable acceptance criteria.
+4. Preserve existing working behavior.
+5. Produce evidence sufficient to shape the following phase.
+6. Avoid implementing later abstractions prematurely.
+7. End with a builder capability report and recommendation.
+
+The program should remain adaptable.
+
+Later phases may be revised, divided, reordered, or cancelled based on measured
+results from earlier phases.
+
+======================================================================
+CURRENT VERIFIED BASELINE
+=========================
+
+Cinelingus currently provides:
+
+* Whisper transcription
+* Pyannote speaker diarization
+* shot and transition analysis
+* cinematic moments
+* cross-modal Performance objects
+* performance-aware Translation scheduling
+* full-timeline audio and video rendering
+* rendered-output retranscription
+* residue verification
+* placement-level quality decisions
+* failure taxonomy
+* failure-specific repair strategies
+* multi-pass editorial refinement
+* rollback of measured regressions
+* editorial memory
+* repair telemetry and preflight elimination
+* deterministic corpus inventory and evaluation plans
+* 64 compatible source films
+* approximately 44.34 hours of corpus media
+* read-only corpus protection
+* 498 passing tests at the latest reported milestone
+
+Latest measured repair result:
+
+* initial quality: 0.6732
+* final quality: 0.6880
+* accepted repairs: 5
+* candidate survival: 53.1%
+* unresolved placements: 185
+* pre-render eliminations: 14
+* safely restored regressions: 15
+
+The immediate technical limitation is no longer the absence of a reflective
+pipeline.
+
+The limitations are:
+
+* repair effectiveness remains uneven
+* many placements remain unresolved
+* coordinated repair is incomplete
+* visible speakers are not reliably identified
+* semantic meaning is represented weakly
+* cinematic functions are not explicit
+* no unified Cinematic Model exists
+* transformation laws cannot yet target character, meaning, relationship, or
+  narrative structure directly
+
+======================================================================
+PROGRAM PRINCIPLES
+==================
+
+1. VERTICAL SLICES BEFORE BROAD FRAMEWORKS
+
+Every phase should prove one end-to-end capability:
+
+observe
+represent
+transform
+render
+verify
+repair
+
+Do not build large abstract systems without a transformation that demonstrates
+their value.
+
+2. OBSERVATION BEFORE INTERPRETATION
+
+Represent measurable evidence before assigning cinematic meaning.
+
+Examples:
+
+* establish recurring visual tracks before claiming character identity
+* classify turn behavior before claiming relationship meaning
+* measure interaction change before claiming friendship or hostility
+
+3. UNCERTAINTY IS A VALID RESULT
+
+Every inferred property must support:
+
+* confidence
+* evidence
+* contradiction
+* unknown
+* abstention
+
+A confident wrong answer is more damaging than an explicit unknown.
+
+4. ADDITIVE ARCHITECTURE
+
+New capabilities should enrich the current pipeline.
+
+Do not rewrite the working transcription, scheduling, rendering, verification,
+or editorial systems unless evidence proves that replacement is necessary.
+
+5. NO CAPABILITY THEATER
+
+The system must disclose whether an apparatus is operating with:
+
+* full capability
+* degraded capability
+* legacy heuristics
+* unavailable capability
+
+Do not present heuristic behavior as semantic or cinematic understanding.
+
+6. MEASURABLE TRANSFORMATION LAWS
+
+A transformation is not complete merely because it produces an output.
+
+The system must measure whether the intended property changed and whether
+preserved properties remained intact.
+
+7. CORPUS-GROUNDED DEVELOPMENT
+
+The local movie corpus should be used as:
+
+* a development laboratory
+* a calibration set
+* a regression corpus
+* a source of difficult cases
+
+It must not become an uncontrolled exhaustive workload.
+
+8. SOURCE MEDIA REMAINS READ-ONLY
+
+No phase may write into, rename, move, delete, or alter source media.
+
+======================================================================
+PHASE 0 — REFLECTIVE FOUNDATION COMPLETION
+==========================================
+
+## Goal
+
+Complete and calibrate the repair system before adding deeper cinematic
+constraints.
+
+## Primary Deliverables
+
+* evidence-selected repair excerpts
+* benchmark cases for every repair strategy
+* coordinated neighborhood repair
+* performance-group repair
+* shared-boundary and shared-ambience repair
+* candidate-level interruption recovery
+* multi-pair corpus calibration
+* quality-threshold calibration
+* revised run-level acceptance contract
+* repair strategy effectiveness report
+
+## Required Capabilities
+
+The engine must be able to repair a bounded group of related placements when
+an atomic change cannot resolve:
+
+* duration pressure
+* turn continuity
+* speaker continuity
+* transition artifacts
+* masking
+* residual dialogue
+* shared room tone
+* performance-level mismatch
+
+## Evaluation Scope
+
+At minimum:
+
+* animation to animation
+* live action to live action
+* animation to live action
+* dialogue-dense material
+* sparse dialogue
+* music-heavy dialogue
+* action-heavy visuals
+* rapid turn-taking
+* short-form material
+* feature-length material
+
+## Exit Gate
+
+Proceed only when:
+
+* every repair strategy has an executable benchmark case
+* neighborhood repair is working
+* performance-group repair is working
+* results are measured across multiple corpus strata
+* final placement states accurately describe outcomes
+* hard failures cannot be concealed by an average quality score
+* repair work can resume at candidate or placement granularity
+* known successful repairs are covered by regression tests
+* at least two materially different film pairs show measured benefit
+
+## Required End-of-Phase Report
+
+The builder must report:
+
+* final implementation status
+* repair effectiveness by strategy
+* successful and failed neighborhood repairs
+* unresolved failure distribution
+* quality calibration findings
+* corpus strata tested
+* regressions discovered
+* recommended scope for Phase 1
+
+======================================================================
+PHASE 1 — MINIMAL CINEMATIC MODEL CORE
+======================================
+
+## Goal
+
+Create a stable, versioned representation that unifies existing Cinelingus
+artifacts without yet attempting semantic scene or character understanding.
+
+This phase is architectural, but deliberately narrow.
+
+## Primary Deliverables
+
+A minimal FilmModel containing references to:
+
+* media identity
+* timeline
+* shots
+* transitions
+* speech passages
+* speaker clusters
+* dialogue turns
+* performances
+* cinematic moments
+* editorial observations
+* provenance
+* confidence
+
+Additional deliverables:
+
+* stable film-local entity IDs
+* versioned schema
+* deterministic serialization
+* cache integration
+* model validation
+* migration from existing artifacts
+* human-readable model report
+* capability declarations
+
+## Explicitly Excluded
+
+Do not add during this phase:
+
+* semantic embeddings
+* character recognition
+* active-speaker detection
+* relationship inference
+* dialogue-function classification
+* scene meaning
+* new public transformations
+
+## Proof Requirement
+
+Use the model to reproduce one existing Translation schedule and its provenance
+without changing the rendered result.
+
+The purpose is to prove that the model can become the common representation
+without destabilizing current execution.
+
+## Exit Gate
+
+Proceed only when:
+
+* current artifacts can be represented without loss
+* IDs remain stable under unchanged analysis signatures
+* cache invalidation works correctly
+* legacy filters continue to run
+* existing schedules can be traced through the model
+* the model adds no fabricated semantic claims
+* all model fields have provenance
+* serialization and reload are deterministic
+
+## Required End-of-Phase Report
+
+The builder must report:
+
+* final schema
+* fields intentionally omitted
+* migration risks
+* cache impact
+* runtime and storage impact
+* compatibility findings
+* recommended Phase 2 semantic scope
+
+======================================================================
+PHASE 2 — SEMANTIC TURN REPRESENTATION
+======================================
+
+## Goal
+
+Add meaning-level similarity for speech turns without attempting broad film
+understanding.
+
+This is the first semantic vertical slice.
+
+## Primary Deliverables
+
+* local semantic embedding provider abstraction
+* selected default embedding model
+* CPU and optional GPU execution
+* deterministic embedding cache
+* language and model metadata
+* turn-level embeddings
+* turn-sequence embeddings
+* exact similarity search
+* explainable semantic-similarity reports
+* semantic compatibility added as an optional scheduling contributor
+
+## Technical Decisions Required
+
+The dedicated Phase 2 work order must select:
+
+* the initial embedding model
+* hardware limits
+* multilingual expectations
+* batching behavior
+* cache format
+* dimensionality handling
+* similarity metric
+* fallback behavior
+* model version isolation
+
+## Proof Transformation
+
+Semantic-Assisted Translation
+
+Compare:
+
+A. Current Translation
+B. Translation with semantic compatibility enabled
+
+The semantic layer must not replace existing timing, performance, speaker,
+visual, or completeness constraints.
+
+## Evaluation
+
+Measure:
+
+* semantic similarity
+* performance compatibility
+* rendered quality
+* complete-line rate
+* donor diversity
+* repair success
+* human preference on a small reviewed set
+* cases where semantic similarity worsens performance fit
+
+## Exit Gate
+
+Proceed only when:
+
+* embeddings are deterministic and cached
+* semantic similarity produces inspectable results
+* semantic scoring can be enabled or disabled
+* fallback behavior is clean
+* current Translation does not regress materially
+* at least one benchmark demonstrates useful semantic matching
+* no claim of dialogue function is made yet
+
+## Required End-of-Phase Report
+
+The builder must report:
+
+* selected model and rationale
+* semantic retrieval quality
+* runtime and memory cost
+* multilingual limitations
+* observed false similarities
+* effect on rendered quality
+* recommendation for Phase 3 taxonomy design
+
+======================================================================
+PHASE 3 — DIALOGUE FUNCTION AND FUNCTION-PRESERVING TRANSLATION
+===============================================================
+
+## Goal
+
+Represent what a dialogue turn appears to do within a conversational exchange,
+then prove that this property can be preserved through transformation.
+
+## Initial Taxonomy
+
+The first taxonomy should remain compact:
+
+* question
+* answer
+* acknowledgment
+* agreement
+* disagreement
+* refusal
+* request
+* command
+* warning
+* accusation
+* defense
+* explanation
+* reassurance
+* confession
+* threat
+* revelation
+* interruption
+* deflection
+* narration
+* unknown
+
+Taxonomy changes should be based on corpus evidence rather than theoretical
+completeness.
+
+## Primary Deliverables
+
+* versioned dialogue-function taxonomy
+* probabilistic function inference
+* context-aware classification
+* confidence and abstention
+* rule/model provenance
+* reviewed calibration set
+* function compatibility scoring
+* dialogue-function verification
+* dialogue-function repair behavior
+
+## Proof Transformation
+
+Function-Preserving Translation
+
+The system should attempt to preserve the destination function sequence while
+replacing dialogue content.
+
+Examples:
+
+* questions remain questions
+* answers remain answers
+* refusals remain refusals
+* interruptions remain interruptions
+* explanations remain explanations
+
+## Required Verification
+
+For every transformed turn:
+
+* original function probabilities
+* replacement function probabilities
+* preservation score
+* confidence
+* transcript completeness
+* performance compatibility
+* rendered verification
+
+## Required Repair
+
+When a function mismatch occurs:
+
+* search another donor turn
+* search another turn sequence when context determines function
+* retain the best-known version when confidence is insufficient
+* never repair semantic function by violating hard timing or completeness gates
+
+## Exit Gate
+
+Proceed only when:
+
+* the taxonomy is calibrated on reviewed examples
+* unknown and ambiguous cases are preserved
+* Function-Preserving Translation runs end to end
+* function preservation is measurably better than standard Translation
+* rendered quality remains within agreed tolerance
+* function-specific repair succeeds in benchmark cases
+* the architecture does not require natural-language directing or an LLM
+
+## Required End-of-Phase Report
+
+The builder must report:
+
+* confusion matrix or equivalent calibration evidence
+* taxonomy weaknesses
+* function-preservation score
+* effect on technical quality
+* successful and failed function repairs
+* reviewer findings
+* recommendation for Phase 4 visual work
+
+======================================================================
+PHASE 4 — VISUAL TRACKS AND ACTIVE-SPEAKER EVIDENCE
+===================================================
+
+## Goal
+
+Move from isolated face and mouth observations to persistent visual tracks and
+time-local active-speaker evidence.
+
+This phase does not yet promise reliable film-wide character identity.
+
+## Primary Deliverables
+
+* persistent within-shot visual tracks
+* conservative across-shot track linking
+* improved mouth-motion representation
+* head-motion compensation
+* per-track speaking likelihood
+* off-screen-speech probability
+* listening-state probability
+* multiple-face handling
+* explicit unknown state
+* active-speaker evaluation set
+* live-action and animation comparison
+
+## Implementation Sequence
+
+Stage 1:
+
+* strengthen existing face and mouth evidence
+* construct stable within-shot tracks
+* evaluate track fragmentation and identity switches
+
+Stage 2:
+
+* add conservative cross-shot continuity
+* use temporal and shot-pattern evidence
+* avoid forced merging
+
+Stage 3:
+
+* evaluate a local pretrained active-speaker model if it materially improves
+  results over the strengthened heuristic baseline
+
+Do not commit to a new model before the baseline comparison is complete.
+
+## Proof Requirement
+
+Create a report identifying, for selected excerpts:
+
+* visible tracks
+* likely active speaker
+* likely listeners
+* likely off-screen speech
+* uncertain intervals
+* supporting evidence
+
+Do not yet use this evidence as a hard scheduling constraint.
+
+## Exit Gate
+
+Proceed only when:
+
+* within-shot tracking is stable enough for evaluation
+* false confident attribution is measured
+* animation and live-action results are separated
+* the system abstains when evidence is weak
+* active-speaker evidence improves on the prior mouth-motion heuristic
+* model or heuristic provenance is recorded
+* no real-world identity recognition is used
+
+## Required End-of-Phase Report
+
+The builder must report:
+
+* tracking method
+* active-speaker method
+* precision and recall
+* abstention rate
+* false confident attribution rate
+* live-action versus animation performance
+* runtime cost
+* recommendation for Phase 5 character continuity
+
+======================================================================
+PHASE 5 — FILM-LOCAL CHARACTER CONTINUITY
+=========================================
+
+## Goal
+
+Construct conservative film-local CharacterHypothesis objects by combining
+visual tracks and speaker evidence.
+
+A CharacterHypothesis is not an actor name or externally identified person.
+
+## Primary Deliverables
+
+* CharacterHypothesis schema
+* visual-track clustering
+* appearance intervals
+* shot and scene-unit appearances
+* candidate speaker associations
+* merge and split history
+* contradiction evidence
+* confidence-aware identity graph
+* reconciled speaker view
+* raw-evidence preservation
+
+## Association Evidence
+
+Use:
+
+* temporal speech overlap
+* active mouth evidence
+* single-face intervals
+* off-screen-speech probability
+* repeated co-occurrence
+* shot/reverse-shot behavior
+* speaker-turn consistency
+* negative evidence
+* visual continuity
+* diarization confidence
+
+## Proof Transformation
+
+Character-Aware Translation
+
+Use character evidence to reduce:
+
+* visible silent-speech contradiction
+* dialogue placed over likely listeners
+* unstable speaker-role switching
+* continuity errors inside performances
+
+Character evidence should initially be soft unless confidence is very high.
+
+## Evaluation
+
+Measure:
+
+* speaker-character association accuracy
+* false confident association
+* unknown rate
+* visual track fragmentation
+* character identity switches
+* visible-speaking contradiction rate
+* effect on Translation quality
+* live-action versus animation behavior
+
+## Exit Gate
+
+Proceed only when:
+
+* character hypotheses are reversible and evidence-based
+* raw diarization and raw visual tracks remain preserved
+* association probabilities are calibrated
+* unknown is used appropriately
+* Character-Aware Translation reduces visible contradictions on reviewed cases
+* low-confidence evidence does not create broad scheduling regressions
+
+## Required End-of-Phase Report
+
+The builder must report:
+
+* association accuracy
+* failure modes
+* animation limitations
+* diarization reconciliation effects
+* scheduling impact
+* recommended scope for Phase 6 performance functions
+
+======================================================================
+PHASE 6 — PERFORMANCE FUNCTIONS AND CONVERSATIONAL ROLES
+========================================================
+
+## Goal
+
+Represent the behavioral purpose and internal role structure of a complete
+performance.
+
+## Initial Performance Functions
+
+* exchange
+* argument
+* interrogation
+* explanation
+* negotiation
+* confession
+* comfort
+* warning
+* confrontation
+* planning
+* command sequence
+* comic escalation
+* awkward exchange
+* collective reaction
+* monologue
+* narration
+* fragmented conversation
+* unknown
+
+## Initial Local Roles
+
+* initiator
+* responder
+* questioner
+* answerer
+* commander
+* recipient
+* accuser
+* defender
+* interrupter
+* dominant participant
+* passive participant
+* narrator
+* unknown
+
+## Primary Deliverables
+
+* versioned performance-function taxonomy
+* probabilistic inference
+* conversational-role representation
+* dominance and reciprocity measures
+* performance-function similarity
+* role-sequence compatibility
+* performance-level verification
+* performance-level repair
+
+## Proof Transformation
+
+Role Inversion
+
+For selected two-person performances, invert a measurable conversational
+relationship such as:
+
+* initiator and responder
+* commander and recipient
+* interrupter and interrupted participant
+* dominant and passive participant
+
+The proof must operate at the performance level, not by independently swapping
+isolated lines.
+
+## Exit Gate
+
+Proceed only when:
+
+* performance-function inference is calibrated
+* local roles remain performance-specific
+* Role Inversion produces measurable changes
+* character continuity is not materially degraded
+* performance-level repair can replace coordinated turns
+* the transformation cannot be reduced to random speaker swapping
+
+## Required End-of-Phase Report
+
+The builder must report:
+
+* taxonomy accuracy
+* role-assignment quality
+* role-inversion strength
+* continuity failures
+* repair outcomes
+* recommended Phase 7 scene-unit scope
+
+======================================================================
+PHASE 7 — CONSERVATIVE SCENE UNITS
+==================================
+
+## Goal
+
+Create richer scene-like units without claiming complete narrative scene
+understanding.
+
+## Primary Deliverables
+
+A SceneUnit derived from:
+
+* shot continuity
+* transitions
+* performance grouping
+* speaker participation
+* character hypotheses
+* silence
+* audio changes
+* motion changes
+* editing rhythm
+* semantic continuity
+
+Each SceneUnit should contain:
+
+* boundaries
+* boundary confidence
+* shots
+* performances
+* character hypotheses
+* speakers
+* dialogue occupancy
+* silence
+* editing pace
+* visual activity
+* semantic summary
+* performance-function distribution
+* continuity evidence
+* contradiction evidence
+
+## Proof Requirement
+
+Use SceneUnits to improve:
+
+* performance search
+* neighborhood repair boundaries
+* donor selection context
+* transformation progression measurement
+
+Do not yet attempt relationship or narrative labels.
+
+## Exit Gate
+
+Proceed only when:
+
+* scene units are deterministic under unchanged signatures
+* boundaries are inspectable
+* uncertainty is represented
+* units improve at least one scheduling or repair task
+* units do not cause material regression on long takes or animation
+* the engine does not imply location or narrative purpose without evidence
+
+## Required End-of-Phase Report
+
+The builder must report:
+
+* segmentation method
+* boundary quality
+* difficult cases
+* effect on scheduling and repair
+* storage and runtime impact
+* recommendation for Phase 8 trajectory work
+
+======================================================================
+PHASE 8 — MEASURABLE CINEMATIC TRAJECTORIES
+===========================================
+
+## Goal
+
+Represent how observable cinematic properties change across a film.
+
+This phase should avoid speculative narrative claims.
+
+## Initial Trajectories
+
+* energy
+* tension proxy
+* interruption frequency
+* conversational dominance
+* silence
+* dialogue density
+* editing pace
+* semantic similarity
+* contradiction
+* reciprocity
+* character participation
+* function prevalence
+
+## Primary Deliverables
+
+* trajectory representation
+* smoothing and confidence rules
+* scene-unit aggregation
+* target progression curves
+* trajectory verification
+* trajectory-aware donor search
+* progression-failure taxonomy
+* progression repair
+
+## Proof Transformation
+
+Escalation
+
+The system should make selected conversations progressively more intense across
+the film while preserving delivery and continuity constraints.
+
+Possible evidence:
+
+* rising speaking rate
+* rising interruption
+* reduced pause duration
+* increased tension proxy
+* stronger donor-performance intensity
+* changed dialogue-function distribution
+
+## Exit Gate
+
+Proceed only when:
+
+* trajectories are derived from measurable properties
+* Escalation produces a verified progression
+* progression repair can correct weak regions
+* no unsupported emotion claim is required
+* quality degradation remains within an accepted tolerance
+* the effect is distinguishable from random high-energy donor selection
+
+## Required End-of-Phase Report
+
+The builder must report:
+
+* target versus measured trajectory
+* transformation strength
+* quality cost
+* scene-unit continuity
+* repair effectiveness
+* recommendation for Phase 9 transformation-language design
+
+======================================================================
+PHASE 9 — TRANSFORMATION LAW LANGUAGE
+=====================================
+
+## Goal
+
+Generalize proven transformation concepts into a structured internal language.
+
+Do not begin with unrestricted natural-language direction.
+
+## Primary Constructs
+
+PRESERVE
+
+TRANSFORM
+
+TRANSFER
+
+INCREASE
+
+DECREASE
+
+ALTERNATE
+
+REPEAT
+
+INFECT
+
+INVERT
+
+DELAY
+
+FORBID
+
+ACCEPT WHEN
+
+## Primary Deliverables
+
+* TransformationState schema
+* transformation-law parser or builder API
+* capability requirements
+* preservation rules
+* alteration rules
+* progression rules
+* permitted repair actions
+* forbidden repair actions
+* acceptance conditions
+* execution planning
+* full/degraded/legacy/blocked states
+* law-verification report
+
+## Proof Requirement
+
+Re-express the proven prototypes as transformation programs:
+
+* Function-Preserving Translation
+* Character-Aware Translation
+* Role Inversion
+* Escalation
+
+The new language must reproduce their behavior without embedding apparatus-
+specific logic into the core interpreter.
+
+## Exit Gate
+
+Proceed only when:
+
+* the four prior prototypes can be represented
+* laws remain inspectable
+* capabilities are checked before execution
+* degraded behavior is explicit
+* preservation and transformation claims are verified
+* apparatus-specific custom code is reduced rather than merely relocated
+* legacy filters remain operational
+
+## Required End-of-Phase Report
+
+The builder must report:
+
+* final language primitives
+* unsupported concepts
+* apparatus migration results
+* contract complexity
+* execution-planner behavior
+* recommendation for Phase 10 cross-film work
+
+======================================================================
+PHASE 10 — CROSS-FILM CINEMATIC TRANSFER
+========================================
+
+## Goal
+
+Move beyond dialogue donation by allowing one film to contribute a cinematic
+property while another contributes the visible timeline.
+
+## Initial Transferable Properties
+
+* semantic subject
+* dialogue-function sequence
+* performance rhythm
+* conversational roles
+* performance-function structure
+* energy trajectory
+* editing-context compatibility
+* character-role pattern
+
+## Primary Deliverables
+
+* property-specific donor search
+* cross-film provenance
+* transfer compatibility
+* multi-source transformation state
+* cross-film verification
+* transfer-specific repair
+* controlled source-participation contracts
+
+## Proof Transformation
+
+Functional Contagion
+
+Cause a selected dialogue or performance function from one film to spread
+progressively through another.
+
+Examples:
+
+* questions increasingly replace answers
+* refusals spread through ordinary exchanges
+* confessions replace explanations
+* warnings infect neutral dialogue
+
+## Evaluation
+
+Measure:
+
+* prevalence over time
+* source-film participation
+* character continuity
+* dialogue completeness
+* performance compatibility
+* progression-law adherence
+* technical quality
+* repair success
+
+## Exit Gate
+
+Proceed only when:
+
+* a non-dialogue cinematic property can be transferred between films
+* transfer is measurable
+* source provenance remains complete
+* multi-film laws remain deterministic
+* the effect cannot be explained as chronological replacement alone
+* current Multiworld filters are not destabilized
+
+## Required End-of-Phase Report
+
+The builder must report:
+
+* transfer strength
+* quality cost
+* donor diversity
+* progression quality
+* continuity failures
+* implications for future Multiworld apparatuses
+
+======================================================================
+PHASE 11 — PERSISTENT CINEMATIC LIBRARY
+=======================================
+
+## Goal
+
+Convert the mature analysis cache into a managed, searchable, reusable cinematic
+library.
+
+This phase is intentionally late.
+
+The library should be built only after the representations it stores have
+demonstrated value.
+
+## Primary Deliverables
+
+* managed film catalog
+* analysis-status index
+* versioned model registry
+* turn search
+* performance search
+* scene-unit search
+* character-hypothesis summaries
+* semantic and functional indexes
+* provenance
+* index rebuilding
+* deletion and invalidation
+* corpus browser or developer query interface
+
+## Initial Queries
+
+* two-person performances with rising tension
+* short refusals compatible with a question
+* low-motion listening shots
+* confession-like monologues
+* exchanges with similar rhythm but different content
+* performances containing dominant-role reversal
+* scene units with increasing interruption
+* animation cases with weak visual confidence
+
+## Exit Gate
+
+Proceed only when:
+
+* the library reuses existing analysis safely
+* model versions remain isolated
+* queries are reproducible
+* deletion and rebuild are supported
+* storage and indexing remain bounded
+* the library demonstrably speeds or improves transformation planning
+* source media protection remains intact
+
+## Required End-of-Phase Report
+
+The builder must report:
+
+* catalog schema
+* index types
+* query performance
+* storage use
+* cache integration
+* transformation-planning improvement
+* recommended future interface scope
+
+======================================================================
+PHASE 12 — APPARATUS COMPOSITION
+================================
+
+## Goal
+
+Allow proven transformation laws to be combined into authored apparatuses.
+
+This is not yet unrestricted user-authored programming.
+
+## Primary Deliverables
+
+* law composition rules
+* conflict detection
+* precedence rules
+* capability resolution
+* repair-policy composition
+* combined verification
+* apparatus templates
+* deterministic recipe serialization
+
+## Example Composition
+
+PRESERVE:
+destination timeline
+visible-character continuity
+
+TRANSFER:
+performance rhythm from Film B
+
+TRANSFORM:
+answers into refusals
+
+INCREASE:
+interruption across time
+
+INFECT:
+confession function from Film C
+
+FORBID:
+incomplete speech
+high-confidence visible-speaker contradiction
+
+ACCEPT WHEN:
+progression law passes
+catastrophic failures equal zero
+completeness exceeds threshold
+
+## Proof Requirement
+
+Create one composed developer-facing apparatus using at least three previously
+proven law types.
+
+## Exit Gate
+
+Proceed only when:
+
+* law conflicts are detected
+* composition remains explainable
+* verification measures every active law
+* repair actions do not violate another law
+* provenance identifies every contributing film and property
+* the result is substantially different from any single existing apparatus
+
+## Required End-of-Phase Report
+
+The builder must report:
+
+* composition behavior
+* conflict cases
+* verification complexity
+* repair interactions
+* quality cost
+* recommendation for public exposure
+
+======================================================================
+PHASE 13 — INTENT PLANNING, OPTIONAL FUTURE PROGRAM
+===================================================
+
+## Goal
+
+Translate high-level user intent into a structured transformation program.
+
+This phase is optional and should not begin until the transformation language
+and composition system are proven.
+
+## Possible Inputs
+
+* make the conversations progressively hostile
+* turn every explanation into a confession
+* let another film gradually infect this one
+* invert the conversational hierarchy
+* make the film remember events before they happen
+
+## Primary Deliverables
+
+* intent-to-law planner
+* explicit proposed plan
+* capability check
+* ambiguity disclosure
+* user-reviewable transformation contract
+* no direct uncontrolled execution
+* deterministic saved recipe
+
+## Important Constraint
+
+The intent planner must produce a structured transformation law that the existing
+engine can validate.
+
+It must not directly manipulate media or bypass contracts.
+
+This phase should receive its own separate strategic review before approval.
+
+======================================================================
+PROGRAM-WIDE QUALITY GATES
+==========================
+
+Every phase-specific work order must include:
+
+1. PRECISE BASELINE
+
+Document the repository state, current metrics, relevant modules, and known
+limitations.
+
+2. LIMITED SCOPE
+
+State what the phase will and will not implement.
+
+3. TECHNICAL DECISIONS
+
+Select concrete models, schemas, algorithms, thresholds, and interfaces where
+required.
+
+4. VERTICAL PROOF
+
+Deliver one complete capability from analysis through verified output.
+
+5. CORPUS EVALUATION
+
+Test representative material rather than one convenient example.
+
+6. REGRESSION PROTECTION
+
+Preserve existing tests and add deterministic fixtures.
+
+7. EXPLAINABILITY
+
+Record evidence, confidence, provenance, and unknown states.
+
+8. RESOURCE CONTROL
+
+Bound runtime, memory, disk, and corpus use.
+
+9. INTERRUPTION RECOVERY
+
+Persist enough state to resume expensive work.
+
+10. END-OF-PHASE AUDIT
+
+Require the builder to distinguish:
+
+* complete
+* partial
+* experimental
+* blocked
+* not implemented
+
+11. NO AUTOMATIC ASSUMPTION OF THE NEXT PHASE
+
+Completion of one phase does not authorize the next.
+
+The builder’s report must be reviewed before the following work order is
+written.
+
+======================================================================
+PROGRAM SUCCESS DEFINITION
+==========================
+
+The program succeeds when Cinelingus can demonstrate the following complete
+cycle for multiple cinematic properties:
+
+OBSERVE
+
+The system detects a cinematic property using explicit evidence.
+
+REPRESENT
+
+The property exists in a stable, versioned model.
+
+TRANSFORM
+
+A transformation law deliberately changes or transfers it.
+
+RENDER
+
+The altered structure is compiled into a film.
+
+VERIFY
+
+The system measures whether the intended change occurred.
+
+REPAIR
+
+The system attempts bounded correction when the law or delivery contract fails.
+
+The minimum final demonstration should include:
+
+* semantic dialogue transformation
+* dialogue-function preservation
+* character-aware placement
+* performance-role transformation
+* measurable progression across a film
+* cross-film transfer of a cinematic property
+* composition of multiple transformation laws
+
+The final system must remain:
+
+* local-first
+* inspectable
+* uncertainty-aware
+* provenance-preserving
+* contract-driven
+* reversible where practical
+* compatible with existing apparatuses
+* protective of source media
+
+======================================================================
+IMMEDIATE NEXT ACTION
+=====================
+
+Do not issue the entire program as one builder assignment.
+
+The next dedicated work order should cover only:
+
+PHASE 0 — REFLECTIVE FOUNDATION COMPLETION
+
+That work order should be written after the builder confirms the exact current
+state of:
+
+* neighborhood repair
+* performance-group repair
+* candidate-level interruption recovery
+* quality-threshold calibration
+* evidence-selected repair benchmarks
+* multi-pair corpus execution
+
+After Phase 0 is completed and audited, prepare the dedicated Phase 1 work order
+using the measured results and architecture actually present at that time.

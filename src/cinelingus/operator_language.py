@@ -109,7 +109,7 @@ def _structured_operator_message(text: str) -> OperatorMessage | None:
         return None
     return OperatorMessage(
         event_id=str(payload['event_id']),
-        title=str(payload.get('title') or 'Continuing the experiment'),
+        title=str(payload.get('title') or 'Continuing the invocation'),
         message=str(payload.get('message') or 'The current operation is continuing.'),
         severity=str(payload.get('severity') or 'info'),
         stage_key=str(payload['stage_key']) if payload.get('stage_key') else None,
@@ -125,7 +125,7 @@ STAGE_MESSAGES = {
     "clips": OperatorMessage("clip_slicing", "Constructing the dialogue archive", "Usable spoken fragments are being catalogued.", stage_key="clips"),
     "destination_speech": OperatorMessage("speaker_diarization", "Examining recurring voices", "Recurring vocal identities are under examination.", stage_key="destination_speech"),
     "performances": OperatorMessage("performance_grouping", "Assembling related performances", "Related spoken performances are being assembled.", stage_key="performances"),
-    "schedule": OperatorMessage("scheduling", "Arranging the experiment", "Possible exchanges are being compared and arranged.", stage_key="schedule"),
+    "schedule": OperatorMessage("scheduling", "Arranging the invocation", "Possible exchanges are being compared and arranged.", stage_key="schedule"),
     "render_audio": OperatorMessage("rendering", "Reconstructing the specimen", "The selected spoken performances are being reconstructed.", stage_key="render_audio"),
     "render_video": OperatorMessage("muxing", "Completing the cinematic artifact", "Picture and reconstructed sound are being assembled.", stage_key="render_video"),
     "finalize": OperatorMessage("validation", "Examining the completed artifact", "The completed artifact is undergoing final examination.", stage_key="finalize"),
@@ -135,7 +135,7 @@ MAJOR_STAGE_KEYS = tuple(STAGE_MESSAGES)
 
 
 def stage_message(stage_key: str) -> OperatorMessage:
-    return STAGE_MESSAGES.get(stage_key, OperatorMessage("operation", "Continuing the experiment", "The current operation is continuing.", stage_key=stage_key, journal=False))
+    return STAGE_MESSAGES.get(stage_key, OperatorMessage("operation", "Continuing the invocation", "The current operation is continuing.", stage_key=stage_key, journal=False))
 
 
 def operator_message_for_log(line: str) -> OperatorMessage | None:

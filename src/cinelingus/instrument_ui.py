@@ -27,7 +27,269 @@ INSTRUMENT_COLORS = {
     "cyan_bright": "#c9ffff",
     "text": "#e8e1d2",
     "muted": "#879294",
+    "dormant": "#4d554f",
+    "amber": "#d09a48",
+    "red": "#b9584f",
 }
+
+INSTRUMENT_SPACING = {"hairline": 1, "micro": 4, "unit": 8, "compact": 12, "panel": 16, "large": 24, "major": 32}
+INSTRUMENT_DIMENSIONS = {"compact_height": 24, "control_height": 28, "standard_height": 32, "actuator_height": 60}
+INSTRUMENT_FONTS = {
+    "display": ("Georgia", 10, "bold"),
+    "display_large": ("Georgia", 13, "bold"),
+    "technical": ("Consolas", 9),
+    "caps": ("Segoe UI", 7, "bold"),
+}
+
+CONTROL_STATES = ("normal", "hover", "focused", "pressed", "selected", "disabled", "active", "warning", "failed")
+
+
+def ellipsize_text(value: str, maximum: int = 34) -> str:
+    text = str(value)
+    if len(text) <= maximum:
+        return text
+    keep = max(4, (maximum - 1) // 2)
+    return f"{text[:keep]}…{text[-keep:]}"
+
+
+def concise_material_name(value: str, *, empty: str = "EMPTY CHAMBER") -> str:
+    text = str(value or "").strip()
+    return ellipsize_text(Path(text).name, 38) if text else empty
+
+
+def control_palette(state: str, role: str = "key") -> dict[str, str]:
+    if state not in CONTROL_STATES:
+        raise ValueError(f"Unknown machine control state: {state}")
+    border = INSTRUMENT_COLORS["brass_dim"]
+    foreground = INSTRUMENT_COLORS["text"]
+    fill = INSTRUMENT_COLORS["surface_raised"]
+    if state in {"selected", "active"}:
+        border, foreground, fill = INSTRUMENT_COLORS["cyan"], INSTRUMENT_COLORS["cyan_bright"], "#183135"
+    elif state == "warning":
+        border, foreground, fill = INSTRUMENT_COLORS["amber"], "#f3d6a0", "#352719"
+    elif state == "failed":
+        border, foreground, fill = INSTRUMENT_COLORS["red"], "#ffd2cb", "#351b1a"
+    elif state == "disabled":
+        border, foreground, fill = "#443d30", "#77736c", "#101617"
+    elif state in {"hover", "focused"}:
+        border = INSTRUMENT_COLORS["cyan"] if state == "focused" else INSTRUMENT_COLORS["brass_bright"]
+        foreground, fill = INSTRUMENT_COLORS["cyan_bright"], "#263033"
+    elif state == "pressed":
+        fill = INSTRUMENT_COLORS["surface_deep"]
+    if role == "guarded" and state not in {"disabled", "failed"}:
+        border = INSTRUMENT_COLORS["amber"]
+    if role == "actuator" and state == "normal":
+        border, foreground, fill = INSTRUMENT_COLORS["brass_bright"], "#111318", "#9c8350"
+    return {"border": border, "foreground": foreground, "fill": fill}
+
+
+class MachineKey(tk.Canvas):
+    """Canvas-drawn engraved key with consistent mouse, keyboard, and state behavior."""
+
+    role = "key"
+
+    def __init__(self, parent, *, text: str, command=None, state: str = "normal", **kwargs) -> None:
+        height = kwargs.pop("height", INSTRUMENT_DIMENSIONS["standard_height"])
+        super().__init__(parent, height=height, background=INSTRUMENT_COLORS["surface"], highlightthickness=0, borderwidth=0, takefocus=True, cursor="hand2", **kwargs)
+        self.text = text
+        self.command = command
+        self.control_state = "disabled" if state == "disabled" else "normal"
+        self._hovered = False
+        self._focused = False
+        self._pressed = False
+        self._selected = False
+        self.bind("<Configure>", self._redraw)
+        self.bind("<Enter>", lambda _e: self._set_flag("_hovered", True))
+        self.bind("<Leave>", self._leave)
+        self.bind("<FocusIn>", lambda _e: self._set_flag("_focused", True))
+        self.bind("<FocusOut>", lambda _e: self._set_flag("_focused", False))
+        self.bind("<ButtonPress-1>", lambda _e: self._set_flag("_pressed", True))
+        self.bind("<ButtonRelease-1>", self._release)
+        self.bind("<Return>", lambda _e: self.invoke())
+        self.bind("<space>", lambda _e: self.invoke())
+
+    def configure(self, cnf=None, **kwargs):
+        if cnf:
+            kwargs.update(cnf)
+        if "text" in kwargs:
+            self.text = str(kwargs.pop("text"))
+        if "state" in kwargs:
+            self.control_state = "disabled" if str(kwargs.pop("state")) == "disabled" else "normal"
+        kwargs.pop("style", None)
+        result = super().configure(**kwargs) if kwargs else None
+        self._redraw()
+        return result
+
+    config = configure
+
+    def set_selected(self, selected: bool) -> None:
+        self._selected = bool(selected)
+        self._redraw()
+
+    def set_visual_state(self, state: str) -> None:
+        if state not in CONTROL_STATES:
+            raise ValueError(f"Unknown machine control state: {state}")
+        self.control_state = state
+        self._redraw()
+
+    def invoke(self) -> None:
+        if self.control_state not in {"disabled", "active"} and self.command is not None:
+            self.command()
+
+    def _set_flag(self, name: str, value: bool) -> None:
+        setattr(self, name, value)
+        self._redraw()
+
+    def _leave(self, _event=None) -> None:
+        self._hovered = self._pressed = False
+        self._redraw()
+
+    def _release(self, _event=None) -> None:
+        was_pressed = self._pressed
+        self._pressed = False
+        self._redraw()
+        if was_pressed:
+            self.invoke()
+
+    def _effective_state(self) -> str:
+        if self.control_state != "normal":
+            return self.control_state
+        if self._pressed:
+            return "pressed"
+        if self._selected:
+            return "selected"
+        if self._focused:
+            return "focused"
+        if self._hovered:
+            return "hover"
+        return "normal"
+
+    def _redraw(self, _event=None) -> None:
+        self.delete("all")
+        width, height = max(8, self.winfo_width()), max(8, self.winfo_height())
+        state = self._effective_state()
+        palette = control_palette(state, self.role)
+        offset = 2 if state == "pressed" else 0
+        self.create_rectangle(1, 1, width - 2, height - 2, fill="#070a0b", outline=INSTRUMENT_COLORS["brass_dim"], width=1)
+        self.create_rectangle(3 + offset, 3 + offset, width - 4 + offset, height - 4 + offset, fill=palette["fill"], outline=palette["border"], width=2)
+        self.create_line(5 + offset, 5 + offset, width - 6 + offset, 5 + offset, fill="#766642", width=1)
+        marker = "◆ " if state in {"selected", "active"} else "! " if state in {"warning", "failed"} else ""
+        self.create_text(width / 2 + offset, height / 2 + offset, text=marker + self.text, fill=palette["foreground"], font=INSTRUMENT_FONTS["display"], width=max(20, width - 12))
+
+
+class MachineActuator(MachineKey):
+    role = "actuator"
+
+
+class MachineGuardedControl(MachineKey):
+    role = "guarded"
+
+
+class MachineServiceControl(MachineKey):
+    role = "key"
+
+
+class MachineVerdictTag(MachineKey):
+    def __init__(self, parent, *, text: str, command=None, state: str = "normal", **kwargs) -> None:
+        super().__init__(parent, text=text, command=command, state=state, height=kwargs.pop("height", 28), **kwargs)
+
+
+class MachineSelectorRail(tk.Canvas):
+    """Discrete selector rendered as a brass rail rather than a native dropdown."""
+
+    def __init__(self, parent, *, variable: tk.StringVar, values=(), command=None, display_values=None, **kwargs) -> None:
+        super().__init__(parent, height=kwargs.pop("height", 30), background=INSTRUMENT_COLORS["surface"], highlightthickness=1, highlightbackground=INSTRUMENT_COLORS["brass_dim"], highlightcolor=INSTRUMENT_COLORS["cyan"], takefocus=True, cursor="hand2", **kwargs)
+        self.variable, self.values, self.command = variable, list(values), command
+        self.display_values = dict(display_values or {})
+        self.control_state = "normal"
+        self.variable.trace_add("write", lambda *_args: self._redraw())
+        self.bind("<Configure>", self._redraw)
+        self.bind("<Button-1>", self._click)
+        self.bind("<Left>", lambda _e: self.step(-1))
+        self.bind("<Right>", lambda _e: self.step(1))
+        self.bind("<Up>", lambda _e: self.step(-1))
+        self.bind("<Down>", lambda _e: self.step(1))
+        self.bind("<Return>", lambda _e: self.step(1))
+        self.bind("<space>", lambda _e: self.step(1))
+
+    def configure(self, cnf=None, **kwargs):
+        if cnf:
+            kwargs.update(cnf)
+        if "values" in kwargs:
+            self.values = list(kwargs.pop("values") or [])
+        if "state" in kwargs:
+            self.control_state = str(kwargs.pop("state"))
+        result = super().configure(**kwargs) if kwargs else None
+        self._redraw()
+        return result
+
+    config = configure
+
+    def step(self, delta: int) -> None:
+        if self.control_state == "disabled" or not self.values:
+            return
+        try:
+            index = self.values.index(self.variable.get())
+        except ValueError:
+            index = 0
+        self.variable.set(self.values[(index + delta) % len(self.values)])
+        if self.command:
+            self.command()
+
+    def _click(self, event) -> None:
+        self.step(-1 if event.x < self.winfo_width() * 0.25 else 1)
+
+    def _redraw(self, _event=None) -> None:
+        self.delete("all")
+        width, height = max(8, self.winfo_width()), max(8, self.winfo_height())
+        disabled = self.control_state == "disabled"
+        value = self.variable.get()
+        display = self.display_values.get(value, value).upper()
+        self.create_rectangle(1, 1, width - 2, height - 2, fill=INSTRUMENT_COLORS["surface_deep"], outline=INSTRUMENT_COLORS["brass_dim"], width=2)
+        self.create_line(11, height / 2, width - 11, height / 2, fill="#4b422f", width=2)
+        self.create_text(12, height / 2, text="‹", fill=INSTRUMENT_COLORS["brass"], font=INSTRUMENT_FONTS["display"], anchor="w")
+        self.create_text(width - 12, height / 2, text="›", fill=INSTRUMENT_COLORS["brass"], font=INSTRUMENT_FONTS["display"], anchor="e")
+        self.create_rectangle(25, 4, width - 25, height - 5, fill="#11191b", outline=INSTRUMENT_COLORS["dormant"] if disabled else INSTRUMENT_COLORS["brass"], width=1)
+        self.create_text(width / 2, height / 2, text=display, fill="#77736c" if disabled else INSTRUMENT_COLORS["text"], font=INSTRUMENT_FONTS["caps"], width=max(20, width - 58))
+
+
+class MachineInsetTrough(tk.Canvas):
+    def __init__(self, parent, *, variable: tk.StringVar, formatter=concise_material_name, **kwargs) -> None:
+        super().__init__(parent, height=kwargs.pop("height", INSTRUMENT_DIMENSIONS["control_height"]), background=INSTRUMENT_COLORS["surface"], highlightthickness=0, borderwidth=0, takefocus=True, **kwargs)
+        self.variable, self.formatter = variable, formatter
+        self.variable.trace_add("write", lambda *_args: self._redraw())
+        self.bind("<Configure>", self._redraw)
+        self.bind("<FocusIn>", self._redraw)
+        self.bind("<FocusOut>", self._redraw)
+
+    def _redraw(self, _event=None) -> None:
+        self.delete("all")
+        width, height = max(8, self.winfo_width()), max(8, self.winfo_height())
+        focused = self.focus_get() is self
+        self.create_rectangle(1, 1, width - 2, height - 2, fill="#05090a", outline=INSTRUMENT_COLORS["cyan"] if focused else INSTRUMENT_COLORS["brass_dim"], width=2)
+        self.create_line(4, height - 4, width - 4, height - 4, fill="#343e3e", width=1)
+        self.create_text(9, height / 2, text=self.formatter(self.variable.get()), anchor="w", fill=INSTRUMENT_COLORS["text"] if self.variable.get().strip() else INSTRUMENT_COLORS["muted"], font=INSTRUMENT_FONTS["technical"], width=max(20, width - 16))
+
+
+class MachinePlaque(tk.Canvas):
+    def __init__(self, parent, *, variable: tk.StringVar, display_values=None, command=None, **kwargs) -> None:
+        super().__init__(parent, height=kwargs.pop("height", 28), background=INSTRUMENT_COLORS["surface"], highlightthickness=0, borderwidth=0, takefocus=bool(command), cursor="hand2" if command else "", **kwargs)
+        self.variable, self.display_values, self.command = variable, dict(display_values or {}), command
+        self.variable.trace_add("write", lambda *_args: self._redraw())
+        self.bind("<Configure>", self._redraw)
+        if command:
+            self.bind("<Button-1>", lambda _e: command())
+            self.bind("<Return>", lambda _e: command())
+            self.bind("<space>", lambda _e: command())
+
+    def _redraw(self, _event=None) -> None:
+        self.delete("all")
+        width, height = max(8, self.winfo_width()), max(8, self.winfo_height())
+        value = self.variable.get()
+        display = self.display_values.get(value, value).upper()
+        self.create_rectangle(1, 1, width - 2, height - 2, fill="#111719", outline=INSTRUMENT_COLORS["brass"], width=1)
+        self.create_line(5, 4, width - 5, 4, fill=INSTRUMENT_COLORS["brass_bright"], width=1)
+        self.create_text(width / 2, height / 2 + 1, text=display, fill=INSTRUMENT_COLORS["text"], font=INSTRUMENT_FONTS["display"], width=max(20, width - 12))
 
 
 def selector_angle(index: int, count: int) -> float:
@@ -59,8 +321,24 @@ class OverlayBox:
             max(1, round(self.height * height)),
         )
 
+    def inset(self, horizontal: float, vertical: float) -> "OverlayBox":
+        """Return a content box inset from a decorative recess footprint."""
+        if horizontal < 0 or vertical < 0:
+            raise ValueError("Overlay insets must be non-negative")
+        if horizontal * 2 >= self.width or vertical * 2 >= self.height:
+            raise ValueError("Overlay insets must leave a positive content area")
+        return OverlayBox(
+            self.x + horizontal,
+            self.y + vertical,
+            self.width - horizontal * 2,
+            self.height - vertical * 2,
+        )
 
-INSTRUMENT_OVERLAY_BOXES = {
+
+# These boxes describe the full engraved recesses in the plate artwork. Native
+# widgets must not occupy their perimeter: that is where the plate's bevels,
+# corner ornaments, and separator rules live.
+INSTRUMENT_RECESS_BOXES = {
     "transformation": OverlayBox(0.055, 0.075, 0.215, 0.190),
     "material": OverlayBox(0.290, 0.075, 0.410, 0.190),
     "quality": OverlayBox(0.735, 0.075, 0.210, 0.190),
@@ -71,6 +349,23 @@ INSTRUMENT_OVERLAY_BOXES = {
     "stages": OverlayBox(0.220, 0.725, 0.560, 0.080),
     "curator": OverlayBox(0.065, 0.820, 0.405, 0.125),
     "notes": OverlayBox(0.525, 0.820, 0.410, 0.125),
+}
+
+
+# Insets are normalized to the plate rather than to the window, so the exposed
+# bezel scales with the artwork. The shallow stage and footer recesses need a
+# smaller vertical allowance to retain their useful content height.
+_STANDARD_RECESS_INSET = (12 / PLATE_WIDTH, 10 / PLATE_HEIGHT)
+_SHALLOW_RECESS_INSETS = {
+    "progress": (12 / PLATE_WIDTH, 7 / PLATE_HEIGHT),
+    "stages": (10 / PLATE_WIDTH, 4 / PLATE_HEIGHT),
+    "curator": (12 / PLATE_WIDTH, 7 / PLATE_HEIGHT),
+    "notes": (12 / PLATE_WIDTH, 7 / PLATE_HEIGHT),
+}
+
+INSTRUMENT_OVERLAY_BOXES = {
+    name: recess.inset(*_SHALLOW_RECESS_INSETS.get(name, _STANDARD_RECESS_INSET))
+    for name, recess in INSTRUMENT_RECESS_BOXES.items()
 }
 
 
@@ -173,7 +468,7 @@ class InstrumentPlateCanvas(tk.Canvas):
 class RotarySelector(tk.Canvas):
     """Keyboard-accessible rotary selector backed by a normal Tk variable."""
 
-    def __init__(self, parent, *, variable: tk.StringVar, values=(), command=None, **kwargs) -> None:
+    def __init__(self, parent, *, variable: tk.StringVar, values=(), command=None, display_values=None, **kwargs) -> None:
         background = kwargs.pop("background", INSTRUMENT_COLORS["surface"])
         super().__init__(
             parent,
@@ -188,6 +483,7 @@ class RotarySelector(tk.Canvas):
         self.variable = variable
         self.values = list(values)
         self.command = command
+        self.display_values = dict(display_values or {})
         self.control_state = "normal"
         self.variable.trace_add("write", lambda *_args: self._redraw())
         self.bind("<Configure>", self._redraw)
@@ -263,7 +559,7 @@ class RotarySelector(tk.Canvas):
         self.create_oval(cx - 5, cy - 5, cx + 5, cy + 5, fill="#292e2e", outline=outline, width=1, tags="dial")
         readout_y = min(height - 13, cy + radius + 18)
         self.create_rectangle(8, readout_y - 11, width - 8, readout_y + 11, fill=INSTRUMENT_COLORS["surface_deep"], outline=INSTRUMENT_COLORS["brass_dim"], width=1, tags="dial")
-        self.create_text(width / 2, readout_y, text=current, fill=INSTRUMENT_COLORS["text"] if not muted else "#77736c", font=("Georgia", max(8, int(height * 0.078)), "bold"), width=max(60, width - 20), tags="dial")
+        self.create_text(width / 2, readout_y, text=self.display_values.get(current, current), fill=INSTRUMENT_COLORS["text"] if not muted else "#77736c", font=("Georgia", max(8, int(height * 0.078)), "bold"), width=max(60, width - 20), tags="dial")
 
 
 class InstrumentMeter(tk.Canvas):
@@ -310,7 +606,7 @@ class ActivityLamp(tk.Canvas):
         self.set_state("active" if active else "off")
 
     def set_state(self, state: str) -> None:
-        if state not in {"off", "active", "complete"}:
+        if state not in {"off", "active", "complete", "skipped", "warning", "failed"}:
             raise ValueError(f"Unknown lamp state: {state}")
         self.state = state
         self.phase = False
@@ -332,6 +628,12 @@ class ActivityLamp(tk.Canvas):
         elif self.state == "complete":
             fill = "#72d4d2"
             outline = "#c8ffff"
+        elif self.state == "warning":
+            fill, outline = INSTRUMENT_COLORS["amber"], "#f4d29a"
+        elif self.state == "failed":
+            fill, outline = INSTRUMENT_COLORS["red"], "#ffd0c8"
+        elif self.state == "skipped":
+            fill, outline = INSTRUMENT_COLORS["surface_deep"], INSTRUMENT_COLORS["muted"]
         else:
             fill = "#253033"
             outline = "#776748"
@@ -339,6 +641,164 @@ class ActivityLamp(tk.Canvas):
         self.create_oval(inset + 3, inset + 3, width - inset - 3, height - inset - 3, fill=fill, outline=outline, width=2)
         if self.state != "off":
             self.create_oval(inset + 6, inset + 5, width * .48, height * .42, fill=INSTRUMENT_COLORS["cyan_bright"], outline="")
+        if self.state == "skipped":
+            self.create_line(inset + 4, height - inset - 4, width - inset - 4, inset + 4, fill=INSTRUMENT_COLORS["muted"], width=2)
+
+
+class MachineProcessStation(tk.Frame):
+    def __init__(self, parent, *, text: str, **kwargs) -> None:
+        super().__init__(parent, background=INSTRUMENT_COLORS["surface"], **kwargs)
+        self.columnconfigure(0, weight=1)
+        self.lamp = ActivityLamp(self, diameter=18)
+        self.lamp.grid(row=0, column=0)
+        self.label = tk.Label(self, text=text, background=INSTRUMENT_COLORS["surface"], foreground=INSTRUMENT_COLORS["text"], font=INSTRUMENT_FONTS["caps"], anchor="center")
+        self.label.grid(row=1, column=0, sticky="ew")
+
+    def set_state(self, state: str) -> None:
+        self.lamp.set_state(state)
+        colors = {
+            "off": INSTRUMENT_COLORS["dormant"], "active": INSTRUMENT_COLORS["cyan_bright"],
+            "complete": INSTRUMENT_COLORS["cyan"], "skipped": INSTRUMENT_COLORS["muted"],
+            "warning": INSTRUMENT_COLORS["amber"], "failed": INSTRUMENT_COLORS["red"],
+        }
+        self.label.configure(foreground=colors[state])
+
+
+class ObservationTrace(tk.Canvas):
+    """Low-cost abstract process-activity trace driven only by reported progress state."""
+
+    def __init__(self, parent, *, progress_variable: tk.Variable, active_getter=None, reduced_motion: bool = False, **kwargs) -> None:
+        super().__init__(parent, height=kwargs.pop("height", 74), background=INSTRUMENT_COLORS["surface_deep"], highlightthickness=1, highlightbackground=INSTRUMENT_COLORS["brass_dim"], borderwidth=0, **kwargs)
+        self.progress_variable = progress_variable
+        self.active_getter = active_getter or (lambda: False)
+        self.reduced_motion = bool(reduced_motion)
+        self.phase = 0
+        self.bind("<Configure>", self._redraw)
+        self.after(250, self._tick)
+
+    def _tick(self) -> None:
+        visible = self.winfo_toplevel().state() != "iconic"
+        if visible and self.active_getter() and not self.reduced_motion:
+            self.phase = (self.phase + 1) % 120
+        if visible:
+            self._redraw()
+        self.after(500 if self.reduced_motion else 250, self._tick)
+
+    def _redraw(self, _event=None) -> None:
+        self.delete("all")
+        width, height = max(20, self.winfo_width()), max(20, self.winfo_height())
+        for division in range(1, 6):
+            x = width * division / 6
+            self.create_line(x, 8, x, height - 8, fill="#222a27", width=1)
+        for division in range(1, 3):
+            y = 8 + (height - 16) * division / 3
+            self.create_line(6, y, width - 6, y, fill="#222a27", width=1)
+        active = bool(self.active_getter())
+        try:
+            progress = meter_fraction(float(self.progress_variable.get()))
+        except (TypeError, ValueError, tk.TclError):
+            progress = 0.0
+        center = height * 0.56
+        points = []
+        for x in range(6, width - 5, 4):
+            if active:
+                amplitude = 5 + progress * 12
+                y = center + math.sin((x + self.phase * 5) * 0.075) * amplitude * (0.45 + 0.55 * math.sin(x * 0.021) ** 2)
+            else:
+                y = center
+            points.extend((x, y))
+        if len(points) >= 4:
+            self.create_line(*points, fill=INSTRUMENT_COLORS["cyan"] if active else INSTRUMENT_COLORS["dormant"], width=2, smooth=True)
+        self.create_text(8, 8, text="PROCESS ACTIVITY", anchor="nw", fill=INSTRUMENT_COLORS["brass_dim"], font=INSTRUMENT_FONTS["caps"])
+
+
+class MachineComponentGallery(tk.Toplevel):
+    """Isolated review sheet for the machine control vocabulary and states."""
+
+    def __init__(self, parent: tk.Misc) -> None:
+        super().__init__(parent, background=INSTRUMENT_COLORS["surface"])
+        self.title("Cinelingus Machine Component Gallery")
+        self.geometry("1180x720")
+        self.minsize(960, 620)
+        self._variables: list[tk.Variable] = []
+        self._build()
+
+    def _label(self, parent, text: str, *, large: bool = False) -> tk.Label:
+        return tk.Label(
+            parent,
+            text=text,
+            background=INSTRUMENT_COLORS["surface"],
+            foreground=INSTRUMENT_COLORS["brass_bright"],
+            font=INSTRUMENT_FONTS["display_large" if large else "caps"],
+            anchor="w",
+        )
+
+    def _remember(self, value: tk.Variable) -> tk.Variable:
+        self._variables.append(value)
+        return value
+
+    def _build(self) -> None:
+        self.columnconfigure(0, weight=1)
+        self._label(self, "MACHINE CONTROL LIBRARY", large=True).grid(row=0, column=0, sticky="ew", padx=16, pady=(16, 4))
+        self._label(self, "Canonical controls and semantic states — review at 100%, 125%, and 150% scale").grid(row=1, column=0, sticky="ew", padx=16)
+
+        state_frame = tk.Frame(self, background=INSTRUMENT_COLORS["surface"])
+        state_frame.grid(row=2, column=0, sticky="ew", padx=16, pady=(18, 12))
+        for column, state in enumerate(CONTROL_STATES):
+            state_frame.columnconfigure(column, weight=1, uniform="states")
+            self._label(state_frame, state.upper()).grid(row=0, column=column, sticky="ew", padx=3, pady=(0, 4))
+            key = MachineKey(state_frame, text="KEY", width=112)
+            key.grid(row=1, column=column, sticky="ew", padx=3)
+            key.set_visual_state(state)
+
+        components = tk.Frame(self, background=INSTRUMENT_COLORS["surface"])
+        components.grid(row=3, column=0, sticky="nsew", padx=16, pady=8)
+        self.rowconfigure(3, weight=1)
+        for column in range(4):
+            components.columnconfigure(column, weight=1, uniform="components")
+
+        self._label(components, "READOUTS").grid(row=0, column=0, sticky="ew", padx=4)
+        material = self._remember(tk.StringVar(value=r"C:\\archive\\specimens\\a_very_long_cinematic_material_name.mov"))
+        MachineInsetTrough(components, variable=material).grid(row=1, column=0, sticky="ew", padx=4, pady=4)
+        plaque_value = self._remember(tk.StringVar(value="TRIANGLE"))
+        MachinePlaque(components, variable=plaque_value).grid(row=2, column=0, sticky="ew", padx=4, pady=4)
+
+        self._label(components, "SELECTORS").grid(row=0, column=1, sticky="ew", padx=4)
+        rail_value = self._remember(tk.StringVar(value="Several Films"))
+        MachineSelectorRail(components, variable=rail_value, values=("One Film", "Several Films")).grid(row=1, column=1, sticky="ew", padx=4, pady=4)
+        dial_value = self._remember(tk.StringVar(value="Study"))
+        RotarySelector(components, variable=dial_value, values=("Glimpse", "Study", "Divination"), height=150).grid(row=2, column=1, rowspan=4, sticky="nsew", padx=4, pady=4)
+
+        self._label(components, "ACTIONS").grid(row=0, column=2, sticky="ew", padx=4)
+        MachineActuator(components, text="INVOKE", height=60).grid(row=1, column=2, sticky="ew", padx=4, pady=4)
+        MachineGuardedControl(components, text="SAFE INTERRUPT").grid(row=2, column=2, sticky="ew", padx=4, pady=4)
+        MachineServiceControl(components, text="SERVICE").grid(row=3, column=2, sticky="ew", padx=4, pady=4)
+        verdict = MachineVerdictTag(components, text="RARE ALIGNMENT")
+        verdict.grid(row=4, column=2, sticky="ew", padx=4, pady=4)
+        verdict.set_selected(True)
+
+        self._label(components, "INSTRUMENTS").grid(row=0, column=3, sticky="ew", padx=4)
+        lamp_row = tk.Frame(components, background=INSTRUMENT_COLORS["surface"])
+        lamp_row.grid(row=1, column=3, sticky="ew", padx=4, pady=4)
+        for state in ("off", "active", "complete", "skipped", "warning", "failed"):
+            lamp = ActivityLamp(lamp_row, diameter=24)
+            lamp.pack(side="left", padx=3)
+            lamp.set_state(state)
+        progress = self._remember(tk.DoubleVar(value=62))
+        InstrumentMeter(components, variable=progress).grid(row=2, column=3, sticky="ew", padx=4, pady=8)
+        station = MachineProcessStation(components, text="RENDER")
+        station.grid(row=3, column=3, sticky="ew", padx=4, pady=4)
+        station.set_state("active")
+        ObservationTrace(components, progress_variable=progress, active_getter=lambda: True, reduced_motion=True).grid(row=4, column=3, rowspan=2, sticky="nsew", padx=4, pady=4)
+
+
+def show_component_gallery() -> None:
+    """Launch the isolated machine component review sheet."""
+    root = tk.Tk()
+    root.withdraw()
+    gallery = MachineComponentGallery(root)
+    gallery.protocol("WM_DELETE_WINDOW", root.destroy)
+    root.mainloop()
 
 
 class ToolTip:
@@ -364,3 +824,7 @@ class ToolTip:
         if self.window is not None:
             self.window.destroy()
             self.window = None
+
+
+if __name__ == "__main__":  # pragma: no cover - visual review utility
+    show_component_gallery()

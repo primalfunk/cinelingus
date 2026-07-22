@@ -1,6 +1,123 @@
 from pathlib import Path
 
-from cinelingus.schedule import _append_source_exhaustion_reuse_fill_speech_slots, _append_undercovered_speech_slot_fill, _reanchor_single_slot_mappings_to_speech_start, build_schedule
+from cinelingus.schedule import (
+    _append_source_exhaustion_reuse_fill_speech_slots,
+    _append_undercovered_speech_slot_fill,
+    _find_next_whole_clip_that_fits,
+    _reanchor_single_slot_mappings_to_speech_start,
+    build_editorial_repair_mapping,
+    build_schedule,
+    score_editorial_repair_candidate,
+)
+
+
+def _editorial_signature(sequence: list[str]) -> dict:
+    return {
+        "duration": 2.0, "speaker_count": len(set(sequence)), "turn_count": len(sequence),
+        "speaker_sequence": sequence, "average_turn_duration": 1.0,
+        "average_pause_duration": 0.1, "dialogue_density": 0.9,
+        "estimated_energy": 0.6, "shot_change_rate": 0.1,
+    }
+
+
+def test_editorial_candidate_compares_speaker_roles_not_cross_film_labels() -> None:
+    window = {
+        "id": "destination", "start": 10.0, "duration": 2.0,
+        "signature": _editorial_signature(["destination_a", "destination_b"]),
+        "speaker_sequence": ["destination_a", "destination_b"],
+    }
+    clip = {
+        "id": "donor", "path": "donor.wav", "duration": 2.0, "confidence": 0.9,
+        "transcript": "Are you ready?", "source_performance_type": "exchange",
+        "source_performance_signature": _editorial_signature(["A", "B"]),
+        "source_speaker_sequence": ["A", "B"],
+    }
+
+    scored = score_editorial_repair_candidate(
+        window, clip, max_time_stretch=0.1, shot_boundary_mode="off",
+    )
+
+    assert scored["performance_similarity"]["components"]["speaker_pattern"] == 1.0
+    assert scored["editorial_score_model"] == "failure_aware_performance_candidate_v2"
+
+
+def test_editorial_candidate_prefers_complete_renderable_sentence() -> None:
+    window = {
+        "id": "destination", "start": 10.0, "duration": 2.0,
+        "signature": _editorial_signature(["A"]),
+        "speaker_sequence": ["A"],
+        "editorial_failure_categories": ["incomplete_sentence", "low_rendered_coverage"],
+    }
+    common = {
+        "path": "donor.wav", "duration": 2.0, "confidence": 0.9,
+        "source_performance_signature": _editorial_signature(["A"]),
+        "source_speaker_sequence": ["A"],
+    }
+    complete = score_editorial_repair_candidate(
+        window, {**common, "id": "complete", "transcript": "We leave now."},
+        max_time_stretch=0.1, shot_boundary_mode="off",
+    )
+    fragment = score_editorial_repair_candidate(
+        window, {**common, "id": "fragment", "transcript": "we leave now"},
+        max_time_stretch=0.1, shot_boundary_mode="off",
+    )
+
+    assert complete["score"] > fragment["score"]
+    assert complete["editorial_weights"]["sentence_fit"] > complete["editorial_weights"]["visual_fit"]
+
+
+def test_editorial_repair_respects_cross_film_speaker_role() -> None:
+    window = {
+        "id": "destination", "start": 10.0, "duration": 2.0,
+        "speaker_id": "destination_b", "speaker_sequence": ["destination_a", "destination_b"],
+        "signature": _editorial_signature(["destination_a", "destination_b"]),
+    }
+    clip = {
+        "id": "donor", "path": "donor.wav", "duration": 2.0, "confidence": 0.9,
+        "transcript": "My turn.", "speaker_id": "source_b",
+        "source_speaker_ids": ["source_a", "source_b"],
+        "source_performance_signature": _editorial_signature(["A", "B"]),
+        "source_speaker_sequence": ["A", "B"],
+    }
+    score = score_editorial_repair_candidate(
+        window, clip, max_time_stretch=0.1, shot_boundary_mode="off",
+    )
+    mapping = build_editorial_repair_mapping(
+        window, clip, score, max_time_stretch=0.1,
+        shot_boundary_mode="off", cinematic_filter="balanced",
+    )
+
+    assert score["editorial_components"]["speaker_role_fit"] == 1.0
+    assert mapping["speaker_match_preserved"] is True
+    assert mapping["mapped_destination_speaker_id"] == "destination_b"
+
+
+def test_whole_line_fit_does_not_admit_a_clip_the_renderer_would_trim() -> None:
+    # At 10% compression this is still 0.0009s too long. The former 1ms
+    # selection tolerance admitted it even though predicted timing trimmed it.
+    clips = [{"id": "edge", "duration": 1.112111111111111}]
+
+    assert _find_next_whole_clip_that_fits(
+        clips,
+        start_index=0,
+        remaining=1.0,
+        max_time_stretch=0.1,
+        allow_skip=True,
+        max_window_duration=1.0,
+    ) is None
+
+
+def test_whole_line_no_skip_branch_checks_the_next_clip_before_returning_it() -> None:
+    clips = [{"id": "too_long_1", "duration": 4.0}, {"id": "too_long_2", "duration": 3.0}]
+
+    assert _find_next_whole_clip_that_fits(
+        clips,
+        start_index=0,
+        remaining=1.0,
+        max_time_stretch=0.1,
+        allow_skip=False,
+        max_window_duration=2.0,
+    ) is None
 
 
 def test_build_schedule_keeps_order_and_stops(tmp_path: Path) -> None:
@@ -715,6 +832,196 @@ def test_performance_fill_uses_signature_v2_behavior_fields(tmp_path: Path) -> N
     assert mapping["performance_similarity_components"]["words_per_second"] == 1.0
 
 
+def test_performance_first_schedule_records_tier_decision_and_hard_suppression(tmp_path: Path) -> None:
+    signature = {
+        "duration": 2.0, "speaker_count": 2, "turn_count": 2,
+        "speaker_sequence": ["A", "B"], "average_turn_duration": 1.0,
+        "average_pause_duration": 0.2, "dialogue_density": 0.8,
+        "estimated_energy": 0.6, "shot_change_rate": 0.1,
+        "performance_type": "dialogue_exchange",
+    }
+    schedule = build_schedule(
+        clips=[
+            {"id": "a", "path": "a.wav", "movie_timestamp": 0.0, "duration": 1.0, "confidence": 0.9, "speaker_id": "source_a"},
+            {"id": "b", "path": "b.wav", "movie_timestamp": 1.0, "duration": 1.0, "confidence": 0.9, "speaker_id": "source_b"},
+        ],
+        windows=[{
+            "id": "destination", "performance_id": "destination", "start": 10.0, "duration": 2.0,
+            "performance_type_v2": "dialogue_exchange", "speaker_sequence": ["dest_a", "dest_b"],
+            "signature": {**signature, "speaker_sequence": ["dest_a", "dest_b"]},
+            "speech_windows": [
+                {"id": "dest_a_turn", "start": 10.0, "end": 11.0, "duration": 1.0, "speaker_id": "dest_a"},
+                {"id": "dest_b_turn", "start": 11.0, "end": 12.0, "duration": 1.0, "speaker_id": "dest_b"},
+            ],
+        }],
+        source_hash="source", destination_hash="destination", max_time_stretch=0.1,
+        output_path=tmp_path / "schedule.json", scheduling_mode="performance_fill",
+        source_performances={"performances": [{
+            "id": "donor", "start": 0.0, "end": 2.0, "duration": 2.0,
+            "conversation_type": "exchange", "performance_type": "dialogue_exchange",
+            "speaker_ids": ["source_a", "source_b"], "speaker_sequence": ["source_a", "source_b"],
+            "signature": {**signature, "speaker_sequence": ["source_a", "source_b"]},
+        }]},
+        speaker_mapping={"mappings": [
+            {"source_speaker_id": "source_a", "destination_speaker_id": "dest_a"},
+            {"source_speaker_id": "source_b", "destination_speaker_id": "dest_b"},
+        ]},
+    )
+
+    assert {row["scheduler_tier"] for row in schedule["mappings"]} == {1}
+    assert all(row["suppression_mode"] == "hard_mute" for row in schedule["mappings"])
+    assert [row["destination_speaker_id"] for row in schedule["mappings"]] == ["dest_a", "dest_b"]
+    assert [row["destination_timestamp"] for row in schedule["mappings"]] == [10.0, 11.0]
+    assert schedule["performance_summary"]["performance_couplings"] == 1
+    assert schedule["performance_summary"]["voice_residue"] == "NOT_MEASURED"
+    assert schedule["performance_summary"]["suppression_contract"] == "HARD_SUPPRESSION_PLANNED"
+    assert schedule["destination_speech_regions"] == [
+        {"id": "dest_a_turn", "start": 10.0, "end": 11.0, "duration": 1.0, "transcript": "", "confidence": 0.7, "source_kind": "detected_speech_window", "recovered": False},
+        {"id": "dest_b_turn", "start": 11.0, "end": 12.0, "duration": 1.0, "transcript": "", "confidence": 0.7, "source_kind": "detected_speech_window", "recovered": False},
+    ]
+    decision = schedule["performance_decisions"][0]
+    assert decision["selected_donor_performance_id"] == "donor"
+    assert decision["speaker_mapping"] == {"source_a": "dest_a", "source_b": "dest_b"}
+
+
+def test_performance_first_suppresses_original_when_no_replacement_is_valid(tmp_path: Path) -> None:
+    schedule = build_schedule(
+        clips=[],
+        windows=[{"id": "silent", "start": 5.0, "duration": 2.0, "performance_id": "silent"}],
+        source_hash="source", destination_hash="destination", max_time_stretch=0.1,
+        output_path=tmp_path / "schedule.json", scheduling_mode="performance_fill",
+        source_performances={"performances": []},
+    )
+
+    assert schedule["mappings"] == []
+    assert schedule["performance_decisions"][0]["scheduler_tier"] == 5
+    assert schedule["performance_decisions"][0]["suppression_mode"] == "hard_mute"
+    assert schedule["performance_decisions"][0]["scheduler_tier_name"] == "suppress_unreplaced_dialogue"
+    assert schedule["performance_summary"]["preserved_original_regions"] == 0
+    assert schedule["performance_summary"]["suppressed_unreplaced_regions"] == 1
+    assert schedule["performance_summary"]["suppression_contract"] == "HARD_SUPPRESSION_PLANNED"
+    assert schedule["unmatched_policy"] == "suppress_original_dialogue"
+
+
+def test_performance_first_uses_global_speaker_mapping_as_candidate_preference(tmp_path: Path) -> None:
+    def performance(performance_id: str, start: float, speaker: str) -> dict:
+        return {
+            "id": performance_id, "start": start, "end": start + 1.0, "duration": 1.0,
+            "conversation_type": "monologue", "performance_type": "monologue",
+            "speaker_ids": [speaker], "speaker_sequence": [speaker],
+            "signature": {"duration": 1.0, "speaker_count": 1, "turn_count": 1, "speaker_sequence": [speaker], "performance_type": "monologue"},
+        }
+    schedule = build_schedule(
+        clips=[
+            {"id": "wrong", "path": "wrong.wav", "movie_timestamp": 0.0, "duration": 1.0, "speaker_id": "source_wrong"},
+            {"id": "right", "path": "right.wav", "movie_timestamp": 10.0, "duration": 1.0, "speaker_id": "source_right"},
+        ],
+        windows=[{
+            "id": "dest", "start": 20.0, "duration": 1.0, "performance_id": "dest",
+            "performance_type_v2": "monologue", "speaker_sequence": ["dest_actor"],
+            "signature": {"duration": 1.0, "speaker_count": 1, "turn_count": 1, "speaker_sequence": ["dest_actor"], "performance_type": "monologue"},
+        }],
+        source_hash="source", destination_hash="destination", max_time_stretch=0.1,
+        output_path=tmp_path / "schedule.json", scheduling_mode="performance_fill",
+        source_performances={"performances": [performance("a_wrong", 0.0, "source_wrong"), performance("z_right", 10.0, "source_right")]},
+        speaker_mapping={"mappings": [
+            {"source_speaker_id": "source_wrong", "destination_speaker_id": "other_actor"},
+            {"source_speaker_id": "source_right", "destination_speaker_id": "dest_actor"},
+        ]},
+    )
+
+    assert schedule["mappings"][0]["source_performance_id"] == "z_right"
+    assert schedule["mappings"][0]["local_speaker_mapping"] == {"source_right": "dest_actor"}
+
+
+def test_performance_first_applies_guarded_pareto_admission_without_cascade(tmp_path: Path) -> None:
+    def performance(performance_id: str, start: float) -> dict:
+        return {
+            "id": performance_id, "start": start, "end": start + 1.0, "duration": 1.0,
+            "conversation_type": "monologue", "performance_type": "monologue",
+            "signature": {"duration": 1.0, "speaker_count": 1, "turn_count": 1, "performance_type": "monologue"},
+        }
+
+    admission = {
+        "destination_performance_id": "dest", "displaced_source_performance_id": "a_baseline",
+        "source_performance_id": "z_guarded", "semantic_delta": 0.2,
+        "global_admission_mode": "DIRECT", "evidence_scope": "direct_passage",
+        "compatibility_deltas": {"performance": 0.0},
+    }
+    schedule = build_schedule(
+        clips=[
+            {"id": "baseline", "path": "baseline.wav", "movie_timestamp": 0.0, "duration": 1.0},
+            {"id": "guarded", "path": "guarded.wav", "movie_timestamp": 10.0, "duration": 1.0},
+        ],
+        windows=[{
+            "id": "dest", "performance_id": "dest", "start": 20.0, "duration": 1.0,
+            "performance_type_v2": "monologue",
+            "signature": {"duration": 1.0, "speaker_count": 1, "turn_count": 1, "performance_type": "monologue"},
+        }],
+        source_hash="source", destination_hash="destination", max_time_stretch=0.1,
+        output_path=tmp_path / "pareto.json", scheduling_mode="performance_fill",
+        source_performances={"performances": [performance("a_baseline", 0.0), performance("z_guarded", 10.0)]},
+        performance_admissions={"dest": admission},
+    )
+
+    assert [row["source_performance_id"] for row in schedule["mappings"]] == ["z_guarded"]
+    assert schedule["semantic_pareto_admission"]["admission_count"] == 1
+    assert schedule["performance_decisions"][0]["semantic_pareto_admission"] == admission
+
+
+def test_performance_first_fallback_hierarchy_reaches_adapted_turn_and_line_tiers(tmp_path: Path) -> None:
+    def run(case: str, clips: list[dict], performances: dict | None, duration: float) -> dict:
+        return build_schedule(
+            clips=clips,
+            windows=[{
+                "id": "dest", "start": 20.0, "duration": duration, "performance_id": "dest",
+                "performance_type_v2": "monologue",
+                "signature": {"duration": duration, "speaker_count": 1, "turn_count": 1, "speaker_sequence": ["A"], "performance_type": "monologue"},
+            }],
+            source_hash="source", destination_hash="destination", max_time_stretch=0.1,
+            output_path=tmp_path / f"{case}.json", scheduling_mode="performance_fill",
+            source_performances=performances,
+        )
+
+    adapted = run(
+        "adapted",
+        [{"id": "short", "path": "short.wav", "movie_timestamp": 0.0, "duration": 1.0}],
+        {"performances": [{
+            "id": "short_perf", "start": 0.0, "end": 1.0, "duration": 1.0,
+            "conversation_type": "monologue", "performance_type": "monologue",
+            "signature": {"duration": 1.0, "speaker_count": 1, "turn_count": 1, "speaker_sequence": ["A"], "performance_type": "monologue"},
+        }]},
+        3.0,
+    )
+    assert adapted["performance_decisions"][0]["scheduler_tier"] == 2
+
+    turn_sequence = run(
+        "turns",
+        [
+            {"id": "long_a", "path": "a.wav", "movie_timestamp": 0.0, "duration": 5.0},
+            {"id": "middle", "path": "m.wav", "movie_timestamp": 5.0, "duration": 1.0},
+            {"id": "long_b", "path": "b.wav", "movie_timestamp": 6.0, "duration": 5.0},
+        ],
+        {"performances": [{
+            "id": "three_turns", "start": 0.0, "end": 11.0, "duration": 11.0,
+            "conversation_type": "monologue", "performance_type": "monologue",
+            "signature": {"duration": 11.0, "speaker_count": 1, "turn_count": 3, "speaker_sequence": ["A"], "performance_type": "monologue"},
+        }]},
+        1.0,
+    )
+    assert turn_sequence["performance_decisions"][0]["scheduler_tier"] == 3
+    assert [row["clip_id"] for row in turn_sequence["mappings"]] == ["middle"]
+
+    linewise = run(
+        "linewise",
+        [{"id": "line", "path": "line.wav", "duration": 1.0}],
+        None,
+        1.0,
+    )
+    assert linewise["performance_decisions"][0]["scheduler_tier"] == 4
+    assert linewise["mappings"][0]["scheduler_tier_name"] == "whole_line_fallback"
+
+
 def test_cinematic_filters_change_performance_choice(tmp_path: Path) -> None:
     clips = [
         {"id": "dense", "path": "dense.wav", "movie_timestamp": 0.0, "duration": 2.0, "confidence": 0.9},
@@ -813,6 +1120,41 @@ def test_cinematic_filters_change_performance_choice(tmp_path: Path) -> None:
     assert dense["mappings"][0]["active_filter"] == "dense_comedy"
     assert deadpan["mappings"][0]["active_filter"] == "deadpan"
     assert dense["mappings"][0]["baseline_similarity_score"] != dense["mappings"][0]["performance_similarity_score"]
+
+
+def test_volatile_and_structural_profiles_materially_change_selected_performance(tmp_path: Path) -> None:
+    clips = [
+        {"id": "volatile", "path": "volatile.wav", "movie_timestamp": 0.0, "duration": 2.0},
+        {"id": "structural", "path": "structural.wav", "movie_timestamp": 10.0, "duration": 2.0},
+    ]
+    common = {"duration": 2.0, "speaker_count": 2, "average_turn_duration": 1.0, "average_pause_duration": 0.25, "shot_change_rate": 0.0, "performance_type": "dialogue_exchange"}
+    performances = {"performances": [
+        {
+            "id": "volatile_perf", "start": 0.0, "end": 2.0, "duration": 2.0,
+            "conversation_type": "exchange", "performance_type": "dialogue_exchange",
+            "signature": {**common, "turn_count": 7, "speaker_sequence": ["A", "B", "A", "B", "A", "B", "A"], "dialogue_density": 1.0, "estimated_energy": 1.0, "words_per_second": 3.5, "interruptions_detected": True},
+        },
+        {
+            "id": "structural_perf", "start": 10.0, "end": 12.0, "duration": 2.0,
+            "conversation_type": "exchange", "performance_type": "dialogue_exchange",
+            "signature": {**common, "turn_count": 2, "speaker_sequence": ["A", "B"], "dialogue_density": 0.55, "estimated_energy": 0.4, "words_per_second": 1.5, "interruptions_detected": False},
+        },
+    ]}
+    destination = [{
+        "id": "dest", "start": 20.0, "duration": 2.0, "performance_id": "dest",
+        "performance_type_v2": "dialogue_exchange", "speaker_sequence": ["A", "B"],
+        "signature": {**common, "turn_count": 2, "speaker_sequence": ["A", "B"], "dialogue_density": 0.6, "estimated_energy": 0.45, "words_per_second": 1.6, "interruptions_detected": False},
+    }]
+    chosen = {}
+    for profile in ("volatile", "structural"):
+        schedule = build_schedule(
+            clips=clips, windows=destination, source_hash="source", destination_hash="destination",
+            max_time_stretch=0.1, output_path=tmp_path / f"{profile}.json",
+            scheduling_mode="performance_fill", source_performances=performances, cinematic_filter=profile,
+        )
+        chosen[profile] = schedule["performance_decisions"][0]["selected_donor_performance_id"]
+
+    assert chosen == {"volatile": "volatile_perf", "structural": "structural_perf"}
 
 
 def test_best_fit_selects_duration_match_within_lookahead(tmp_path: Path) -> None:
@@ -962,6 +1304,98 @@ def test_undercovered_speech_slot_fill_targets_empty_slot() -> None:
     assert fill["destination_timestamp"] == 1.0
     assert fill["alignment_source_window_ids"] == ["s2"]
     assert fill["reuse_allowed_reason"] == "undercovered_speech_slot"
+
+
+def test_undercovered_speech_slot_fill_combines_short_adjacent_turns_without_trimming() -> None:
+    mappings = []
+    clips = [{"id": "whole_line", "path": "whole_line.wav", "duration": 0.8, "confidence": 0.9}]
+    windows = [{
+        "id": "p1",
+        "performance_id": "p1",
+        "start": 0.0,
+        "duration": 1.0,
+        "speech_windows": [
+            {"id": "s1", "start": 0.0, "end": 0.4, "duration": 0.4},
+            {"id": "s2", "start": 0.6, "end": 1.0, "duration": 0.4},
+        ],
+    }]
+
+    _append_undercovered_speech_slot_fill(
+        mappings=mappings,
+        usable_clips=clips,
+        windows=windows,
+        max_time_stretch=0.1,
+        shot_boundary_mode="off",
+        cinematic_filter="balanced",
+        allow_source_reuse=False,
+    )
+
+    assert len(mappings) == 1
+    assert mappings[0]["alignment_source_window_ids"] == ["s1", "s2"]
+    assert mappings[0]["alignment_spans_speech_windows"] is True
+    assert mappings[0]["timing_strategy"] != "trim_to_window"
+    assert mappings[0]["scheduler_tier"] == 4
+
+
+def test_undercovered_speech_slot_fill_respects_reuse_policy() -> None:
+    mappings = [{
+        "enabled": True,
+        "window_id": "p1",
+        "destination_performance_id": "p1",
+        "clip_id": "used",
+        "destination_timestamp": 0.0,
+        "planned_render_duration": 1.0,
+        "alignment_source_window_ids": ["s1"],
+    }]
+    clips = [{"id": "used", "path": "used.wav", "duration": 1.0, "confidence": 0.9}]
+    windows = [{
+        "id": "p1",
+        "performance_id": "p1",
+        "start": 0.0,
+        "duration": 2.0,
+        "speech_windows": [
+            {"id": "s1", "start": 0.0, "end": 1.0, "duration": 1.0},
+            {"id": "s2", "start": 1.0, "end": 2.0, "duration": 1.0},
+        ],
+    }]
+
+    _append_undercovered_speech_slot_fill(
+        mappings=mappings,
+        usable_clips=clips,
+        windows=windows,
+        max_time_stretch=0.1,
+        shot_boundary_mode="off",
+        cinematic_filter="balanced",
+        allow_source_reuse=False,
+    )
+
+    assert len(mappings) == 1
+
+
+def test_undercovered_speech_slot_fill_stops_at_fragmentation_density_cap() -> None:
+    mappings = []
+    clips = [
+        {"id": f"line_{index}", "path": f"line_{index}.wav", "duration": 0.5, "confidence": 0.9}
+        for index in range(6)
+    ]
+    windows = [{
+        "id": "p1", "performance_id": "p1", "start": 0.0, "duration": 3.0,
+        "speech_windows": [{"id": "s1", "start": 0.0, "end": 3.0, "duration": 3.0}],
+    }]
+
+    _append_undercovered_speech_slot_fill(
+        mappings=mappings,
+        usable_clips=clips,
+        windows=windows,
+        max_time_stretch=0.1,
+        shot_boundary_mode="off",
+        cinematic_filter="balanced",
+        allow_source_reuse=False,
+    )
+
+    assert len(mappings) == 2
+    assert mappings[-1]["recovery_density_cap_reached"] is True
+    assert mappings[-1]["recovery_density_cap"] == 2
 
 
 

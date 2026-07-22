@@ -6,6 +6,7 @@ from typing import Any
 
 from . import __version__
 from .util import utc_now, write_json
+from .filters import usable_rows
 
 
 DEFAULT_MAX_PAUSE = 2.0
@@ -19,12 +20,14 @@ def build_performances(
     speaking_windows: list[dict[str, Any]],
     shots: list[dict[str, Any]] | None = None,
     dialogue_events: list[dict[str, Any]] | None = None,
+    visual_observations: list[dict[str, Any]] | None = None,
     max_pause: float = DEFAULT_MAX_PAUSE,
     config_signature: str | None = None,
 ) -> dict[str, Any]:
     windows = sorted([dict(window) for window in speaking_windows if _duration(window) > 0], key=lambda item: float(item.get("start", 0.0)))
     shots = sorted([dict(shot) for shot in (shots or [])], key=lambda item: float(item.get("start", 0.0)))
     events = sorted([dict(event) for event in (dialogue_events or [])], key=lambda item: float(item.get("start", 0.0)))
+    visual_observations = sorted([dict(row) for row in (visual_observations or [])], key=lambda item: float(item.get("start", 0.0)))
     groups = _group_windows(windows, max_pause=max_pause)
     performances = [
         _build_performance(
@@ -32,6 +35,7 @@ def build_performances(
             group=group,
             shots=shots,
             dialogue_events=events,
+            visual_observations=visual_observations,
             role=role,
         )
         for index, group in enumerate(groups, start=1)
@@ -76,9 +80,70 @@ def performance_windows(performance_artifact: dict[str, Any]) -> list[dict[str, 
                 "signature": performance.get("signature", {}),
                 "speaker_sequence": performance.get("speaker_sequence", []),
                 "turn_pattern": performance.get("turn_pattern", ""),
+                "speaker_ids": list(performance.get("speaker_ids", [])),
+                "dominant_speaker_id": performance.get("dominant_speaker_id"),
+                "speaker_pattern": performance.get("speaker_pattern", performance.get("turn_pattern", "")),
+                "ordered_turns": list(performance.get("ordered_turns", [])),
+                "speech_intervals": list(performance.get("speech_intervals", [])),
+                "silence_intervals": list(performance.get("silence_intervals", [])),
+                "cadence": dict(performance.get("cadence", {})),
+                "interruption_frequency": performance.get("interruption_frequency", 0.0),
+                "scene_category": performance.get("scene_category", performance.get("conversation_type", "unknown")),
+                "source_shot_boundaries": list(performance.get("source_shot_boundaries", [])),
+                "adaptability": dict(performance.get("adaptability", {})),
+                "audio": dict(performance.get("audio", {})),
+                "visual": dict(performance.get("visual", {})),
+                "conversation": dict(performance.get("conversation", {})),
+                "editing": dict(performance.get("editing", {})),
+                "movement": dict(performance.get("movement", {})),
+                "emotion": dict(performance.get("emotion", {})),
+                "metadata": dict(performance.get("metadata", {})),
+                "cinematic_intent": dict(performance.get("visual", {}).get("cinematic_intent", {})),
+                "performance_model_version": performance.get("performance_model_version", "legacy"),
             }
         )
     return windows
+
+
+def attach_performance_speech_windows(
+    performance_rows: list[dict[str, Any]], timeline_windows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Attach canonical speech-window evidence to scheduler performance windows."""
+    all_timeline_by_id = {str(window.get("id")): window for window in timeline_windows}
+    usable_timeline_by_id = {str(window.get("id")): window for window in usable_rows(timeline_windows)}
+    enriched = []
+    for row in performance_rows:
+        item = dict(row)
+        speech_windows = []
+        for window_id in item.get("speaking_window_ids", []):
+            key = str(window_id)
+            source = usable_timeline_by_id.get(key)
+            source_kind = "detected_speech_window"
+            if source is None:
+                source = all_timeline_by_id.get(key)
+                source_kind = "recovered_filtered_speech_window"
+            if not source:
+                continue
+            start = float(source.get("start", 0.0) or 0.0)
+            duration = float(source.get("duration", 0.0) or 0.0)
+            end = float(source.get("end", start + duration) or start + duration)
+            duration = max(0.0, end - start)
+            if duration <= 0.0:
+                continue
+            speech_windows.append({
+                "id": str(source.get("id")), "start": round(start, 3), "end": round(end, 3),
+                "duration": round(duration, 3),
+                "transcript": str(source.get("transcript") or source.get("text") or ""),
+                "confidence": source.get("confidence", item.get("confidence", 0.7)),
+                "speaker_id": source.get("speaker_id") or source.get("speaker"),
+                "speaker": source.get("speaker") or source.get("speaker_id"),
+                "speaker_confidence": source.get("speaker_confidence"), "source_kind": source_kind,
+                "recovered": source_kind != "detected_speech_window", "reject_reason": source.get("reject_reason"),
+            })
+        if speech_windows:
+            item["speech_windows"] = speech_windows
+        enriched.append(item)
+    return enriched
 
 
 def _group_windows(windows: list[dict[str, Any]], *, max_pause: float) -> list[list[dict[str, Any]]]:
@@ -107,13 +172,15 @@ def _build_performance(
     group: list[dict[str, Any]],
     shots: list[dict[str, Any]],
     dialogue_events: list[dict[str, Any]],
+    visual_observations: list[dict[str, Any]],
     role: str,
 ) -> dict[str, Any]:
     start = min(float(item.get("start", 0.0)) for item in group)
     end = max(_end(item) for item in group)
     duration = max(0.001, end - start)
     pauses = _pauses(group)
-    contained_shots = _contained_ids(shots, start, end)
+    contained_shot_rows = _contained_items(shots, start, end)
+    contained_shots = [str(item.get("id")) for item in contained_shot_rows]
     contained_event_rows = _contained_items(dialogue_events, start, end)
     contained_events = [str(item.get("id")) for item in contained_event_rows]
     speech_duration = sum(_duration(item) for item in group)
@@ -175,6 +242,37 @@ def _build_performance(
         conversation_type=conversation_type,
         performance_type=performance_type,
     )
+    ordered_turns = [_performance_turn(item, index) for index, item in enumerate(group, start=1)]
+    speech_intervals = [
+        {"start": turn["start"], "end": turn["end"], "duration": turn["duration"], "turn_id": turn["id"]}
+        for turn in ordered_turns
+    ]
+    silence_intervals = _silence_intervals(group)
+    interruption_frequency = sum(
+        1 for left, right in zip(group, group[1:]) if float(right.get("start", 0.0)) < _end(left) - 0.05
+    ) / max(1, len(group) - 1)
+    adaptability = {
+        "stretchable": confidence >= 0.5 and duration >= 0.5,
+        "compressible": confidence >= 0.5 and duration >= 1.0,
+        "splittable": len(ordered_turns) > 1,
+        "mergeable": any(
+            left.get("speaker_id") == right.get("speaker_id") and left.get("speaker_id") is not None
+            for left, right in zip(ordered_turns, ordered_turns[1:])
+        ),
+    }
+    unified = _unified_sections(
+        group=group,
+        visual_rows=_contained_items(visual_observations, start, end),
+        shot_rows=contained_shot_rows,
+        duration=duration,
+        speech_duration=speech_duration,
+        words_per_second=words_per_second,
+        pauses=pauses,
+        ordered_turns=ordered_turns,
+        confidence=confidence,
+        energy=energy,
+        interruption_frequency=interruption_frequency,
+    )
     return {
         "id": f"p{index:06d}",
         "role": role,
@@ -184,6 +282,17 @@ def _build_performance(
         "speaking_window_ids": [str(item.get("id")) for item in group],
         "dialogue_event_ids": contained_events,
         "shot_ids": contained_shots,
+        "source_shot_boundaries": [
+            {
+                "shot_id": str(item.get("id")),
+                "start": round(float(item.get("start", 0.0)), 3),
+                "end": round(_end(item), 3),
+            }
+            for item in contained_shot_rows
+        ],
+        "ordered_turns": ordered_turns,
+        "speech_intervals": speech_intervals,
+        "silence_intervals": silence_intervals,
         "estimated_speaker_count": speaker_count,
         "estimated_turn_count": turn_count,
         "speaker_sequence": speaker_sequence,
@@ -197,15 +306,149 @@ def _build_performance(
         "speech_continuity": round(speech_continuity, 4),
         "response_delay": round(response_delay, 3),
         "interruptions_detected": interruptions_detected,
+        "interruption_frequency": round(interruption_frequency, 4),
+        "cadence": {
+            "turns_per_second": round(turn_count / duration, 4),
+            "words_per_second": round(words_per_second, 4),
+            "average_pause": pause_stats["average"],
+            "response_delay": round(response_delay, 3),
+        },
         "conversation_type": conversation_type,
         "performance_type": performance_type,
+        "scene_category": conversation_type,
+        "adaptability": adaptability,
         "average_shot_length": round(average_shot_length, 3),
         "shot_change_rate": round(shot_change_rate, 4),
         "render_history": [],
         "review_history": [],
         "signature": signature,
         "confidence": round(confidence, 4),
+        **unified,
     }
+
+
+def _unified_sections(
+    *,
+    group: list[dict[str, Any]],
+    visual_rows: list[dict[str, Any]],
+    shot_rows: list[dict[str, Any]],
+    duration: float,
+    speech_duration: float,
+    words_per_second: float,
+    pauses: list[float],
+    ordered_turns: list[dict[str, Any]],
+    confidence: float,
+    energy: float,
+    interruption_frequency: float,
+) -> dict[str, Any]:
+    participants = sorted({str(row.get("speaker_id")) for row in ordered_turns if row.get("speaker_id")})
+    participation_seconds: dict[str, float] = {}
+    for row in ordered_turns:
+        speaker = row.get("speaker_id")
+        if speaker:
+            participation_seconds[str(speaker)] = participation_seconds.get(str(speaker), 0.0) + float(row.get("duration", 0.0) or 0.0)
+    dominant_ratio = max(participation_seconds.values(), default=speech_duration) / max(speech_duration, 0.001)
+    overlaps = [
+        max(0.0, _end(left) - float(right.get("start", 0.0) or 0.0))
+        for left, right in zip(group, group[1:])
+        if float(right.get("start", 0.0) or 0.0) < _end(left)
+    ]
+    visual_confidence = _mean_field(visual_rows, "overall_confidence", 0.0)
+    intent_keys = sorted({key for row in visual_rows for key in row.get("cinematic_intent", {})})
+    intentions = {key: round(mean(float(row.get("cinematic_intent", {}).get(key, 0.0) or 0.0) for row in visual_rows), 4) for key in intent_keys} if visual_rows else {}
+    return {
+        "performance_model_version": "unified_performance_v1",
+        "audio": {
+            "speech_timing": [{"start": row["start"], "end": row["end"], "duration": row["duration"]} for row in ordered_turns],
+            "transcript": " ".join(str(row.get("transcript", "") or "") for row in ordered_turns).strip(),
+            "speaking_rate": round(words_per_second, 4),
+            "pauses": [round(value, 3) for value in pauses],
+            "rhythm": {"turns_per_second": round(len(ordered_turns) / max(duration, 0.001), 4), "average_pause": round(mean(pauses), 3) if pauses else 0.0},
+            "silence_ratio": round(max(0.0, 1.0 - speech_duration / max(duration, 0.001)), 4),
+            "confidence": round(confidence, 4),
+        },
+        "visual": {
+            "shot_observation_ids": [row.get("shot_id") for row in visual_rows],
+            "faces": round(_mean_nested(visual_rows, "visible_face_count", "estimate"), 4),
+            "mouth_activity": round(_mean_field(visual_rows, "mouth_activity_probability", 0.0), 4),
+            "body_motion": round(_mean_field(visual_rows, "subject_motion_probability", 0.0), 4),
+            "gaze": "probabilistic_unknown" if not visual_rows else "per_shot_observations",
+            "framing": {"close_up": round(_mean_field(visual_rows, "close_up_probability", 0.0), 4), "wide": round(_mean_field(visual_rows, "wide_shot_probability", 0.0), 4)},
+            "camera_motion": round(_mean_field(visual_rows, "camera_motion_probability", 0.0), 4),
+            "cinematic_intent": intentions,
+            "confidence": round(visual_confidence, 4),
+        },
+        "conversation": {
+            "participants": participants,
+            "participant_count": len(participants) if participants else 1,
+            "interaction_pattern": "probabilistic_turn_profile",
+            "interruptions": len(overlaps),
+            "speaker_overlap": round(sum(overlaps) / max(duration, 0.001), 4),
+            "response_latency": round(mean(pauses), 3) if pauses else 0.0,
+            "turn_density": round(len(ordered_turns) / max(duration, 0.001), 4),
+            "average_utterance_length": round(mean(float(row.get("duration", 0.0) or 0.0) for row in ordered_turns), 3) if ordered_turns else 0.0,
+            "dominant_speaker_ratio": round(min(1.0, dominant_ratio), 4),
+            "conversation_tempo": round((len(ordered_turns) + len(pauses)) / max(duration, 0.001), 4),
+            "interruption_frequency": round(interruption_frequency, 4),
+        },
+        "editing": {
+            "shot_boundaries": [{"shot_id": row.get("id"), "start": row.get("start"), "end": row.get("end")} for row in shot_rows],
+            "cut_timing": round(len(shot_rows) / max(duration, 0.001), 4),
+            "transitions": [],
+            "reaction_alignment": round(intentions.get("reaction", 0.0), 4),
+            "continuity": round(max(0.0, 1.0 - max(0, len(shot_rows) - 1) / max(duration, 1.0)), 4),
+        },
+        "movement": {
+            "action_intensity": round(_mean_field(visual_rows, "action_level", 0.0), 4),
+            "stillness": round(_mean_field(visual_rows, "stillness_probability", 0.0), 4),
+            "motion_vectors": {"magnitude": round(_mean_field(visual_rows, "optical_motion_magnitude", 0.0), 4), "kind": "aggregate"},
+        },
+        "emotion": {
+            "energy": round(energy, 4),
+            "intensity": round(min(1.0, energy * 0.65 + interruption_frequency * 0.35), 4),
+            "conversational_tension": round(min(1.0, interruption_frequency * 0.55 + (1.0 - (mean(pauses) if pauses else 0.0) / 2.0) * 0.45), 4),
+            "method": "heuristic",
+        },
+        "metadata": {
+            "confidence": round(mean([confidence, visual_confidence]) if visual_rows else confidence * 0.65, 4),
+            "source_references": {"speaking_window_ids": [str(row.get("id")) for row in group], "shot_ids": [str(row.get("id")) for row in shot_rows]},
+        },
+    }
+
+
+def _mean_field(rows: list[dict[str, Any]], field: str, default: float) -> float:
+    values = [float(row.get(field, default) or 0.0) for row in rows]
+    return mean(values) if values else default
+
+
+def _mean_nested(rows: list[dict[str, Any]], field: str, child: str) -> float:
+    values = [float(row.get(field, {}).get(child, 0.0) or 0.0) for row in rows]
+    return mean(values) if values else 0.0
+
+
+def _performance_turn(item: dict[str, Any], index: int) -> dict[str, Any]:
+    start = float(item.get("start", 0.0))
+    end = _end(item)
+    speaker_id = item.get("speaker_id") or item.get("speaker")
+    return {
+        "id": str(item.get("id") or f"turn_{index:04d}"),
+        "start": round(start, 3),
+        "end": round(end, 3),
+        "duration": round(max(0.0, end - start), 3),
+        "speaker_id": str(speaker_id) if speaker_id is not None else None,
+        "transcript": str(item.get("transcript", "") or ""),
+        "confidence": round(_float(item.get("confidence"), 0.7), 4),
+    }
+
+
+def _silence_intervals(group: list[dict[str, Any]]) -> list[dict[str, float]]:
+    intervals = []
+    for left, right in zip(group, group[1:]):
+        start = _end(left)
+        end = float(right.get("start", start))
+        if end > start:
+            intervals.append({"start": round(start, 3), "end": round(end, 3), "duration": round(end - start, 3)})
+    return intervals
 
 
 def _speaker_sequence(group: list[dict[str, Any]], *, speaker_count: int) -> list[str]:

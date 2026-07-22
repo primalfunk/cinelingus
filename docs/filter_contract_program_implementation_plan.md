@@ -1,5 +1,7 @@
 # Cinelingus Filter Contract Program: Work Order and Implementation Plan
 
+> **Superseded for public presentation and current inventory counts.** This historical plan predates the 40-entry engineering registry and the separate public apparatus catalog. Use [Public apparatus catalog](architecture/public_apparatus_catalog.md) for names, disciplines, operating modes, status, capability tiers, and Procedure eligibility. Retain this document only for historical contract-program rationale.
+
 Status: proposed next implementation phase  
 Source work order: `CINELINGUS FILTER CONTRACT PROGRAM IMPLEMENTATION WORK ORDER`  
 Prepared against the executable repository state on 2026-07-13.

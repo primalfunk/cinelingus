@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cinelingus FilmModel",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "builder_version", "film_id", "media", "timeline",
+    "capabilities", "shots", "transitions", "speech_passages",
+    "speaker_clusters", "dialogue_turns", "performances",
+    "cinematic_moments", "editorial_observations", "provenance",
+    "confidence_summary", "source_artifacts", "validation_state",
+    "created_from_signature"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "builder_version": {"type": "string", "minLength": 1},
+    "film_id": {"type": "string", "pattern": "film_[a-f0-9]{20}"},
+    "media": {
+      "type": "object",
+      "required": ["film_id", "media_hash", "source_path_reference", "source_path_kind", "filename", "duration", "source_artifact_signature"],
+      "properties": {
+        "film_id": {"type": "string"},
+        "media_hash": {"type": "string", "minLength": 1},
+        "source_path_reference": {"type": ["string", "null"]},
+        "source_path_kind": {"enum": ["local_reference", "portable_reference", "unavailable"]},
+        "normalized_source_path": {"type": ["string", "null"]},
+        "filename": {"type": "string"},
+        "duration": {"type": "number", "minimum": 0},
+        "container": {"type": ["string", "null"]},
+        "video_stream_summary": {"type": ["object", "null"]},
+        "audio_stream_summary": {"type": ["object", "null"]},
+        "frame_rate": {"type": ["number", "null"]},
+        "resolution": {"type": ["string", "null"]},
+        "channel_layout": {"type": ["string", "null"]},
+        "media_inspection_version": {"type": ["string", "null"]},
+        "corpus_media_id": {"type": ["string", "null"]},
+        "source_artifact_signature": {"type": "string", "minLength": 1}
+      }
+    },
+    "timeline": {
+      "type": "object",
+      "required": ["start", "end", "duration", "canonical_time_base", "frame_rate", "audio_sample_rate", "timing_tolerance_seconds", "ordered_temporal_indexes", "known_discontinuities"],
+      "properties": {
+        "start": {"type": "number", "minimum": 0},
+        "end": {"type": "number", "minimum": 0},
+        "duration": {"type": "number", "minimum": 0},
+        "canonical_time_base": {"type": "object"},
+        "frame_rate": {"type": ["number", "null"]},
+        "audio_sample_rate": {"type": ["integer", "null"]},
+        "timing_tolerance_seconds": {"type": "number", "minimum": 0},
+        "ordered_temporal_indexes": {"type": "object"},
+        "known_discontinuities": {"type": "array"}
+      }
+    },
+    "capabilities": {"type": "object"},
+    "shots": {"type": "array", "items": {"type": "object", "required": ["shot_id", "provenance_id"]}},
+    "transitions": {"type": "array", "items": {"type": "object", "required": ["transition_id", "provenance_id"]}},
+    "speech_passages": {"type": "array", "items": {"type": "object", "required": ["speech_passage_id", "provenance_id"]}},
+    "speaker_clusters": {"type": "array", "items": {"type": "object", "required": ["speaker_cluster_id", "provenance_id"]}},
+    "dialogue_turns": {"type": "array", "items": {"type": "object", "required": ["dialogue_turn_id", "provenance_id"]}},
+    "performances": {"type": "array", "items": {"type": "object", "required": ["performance_id", "provenance_id"]}},
+    "cinematic_moments": {"type": "array", "items": {"type": "object", "required": ["cinematic_moment_id", "provenance_id"]}},
+    "editorial_observations": {"type": "array", "items": {"type": "object", "required": ["editorial_observation_id", "provenance_id", "observation_scope"]}},
+    "provenance": {"type": "array", "items": {"type": "object", "required": ["provenance_id", "source_media_id", "source_artifact_type", "source_artifact_id", "producing_module", "film_model_builder_version"]}},
+    "confidence_summary": {"type": "object", "required": ["state"]},
+    "source_artifacts": {"type": "array", "items": {"type": "object", "required": ["source_artifact_id", "logical_artifact_type", "provenance_id"]}},
+    "validation_state": {"type": "object", "required": ["status", "errors", "warnings", "validator_version"]},
+    "created_from_signature": {"type": "string", "minLength": 1}
+  }
+}

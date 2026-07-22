@@ -30,7 +30,7 @@ def test_first_wave_multiworld_catalog_stabilizes_ids_and_cardinality() -> None:
     }
     assert {row.id for row in definitions if row.implemented} == {
         "multiworld.translation", "multiworld.possession", "multiworld.contagion",
-        "multiworld.echo_chamber", "multiworld.prophecy",
+        "multiworld.echo_chamber", "multiworld.prophecy", "multiworld.triangle",
     }
     assert registry.get("multiworld.chimera").minimum_films == 3
     assert registry.get("multiworld.chimera").maximum_films == 3
@@ -178,6 +178,7 @@ def _synthetic_world(count: int) -> tuple[tuple[FilmInput, ...], dict[str, dict]
         ("multiworld.contagion", 3),
         ("multiworld.echo_chamber", 3),
         ("multiworld.prophecy", 2),
+        ("multiworld.triangle", 3),
     ],
 )
 def test_multiworld_dialogue_laws_are_deterministic_and_validate_contract_invariants(filter_id: str, film_count: int) -> None:
@@ -198,10 +199,87 @@ def test_multiworld_dialogue_laws_are_deterministic_and_validate_contract_invari
         assert first["filter_validation"][key] is True
 
 
-def test_general_multiworld_runtime_writes_world_artifacts_and_completes_all_stages(monkeypatch, tmp_path: Path) -> None:
+def test_triangle_closes_visual_and_dialogue_cycles_without_reuse() -> None:
+    films, artifacts = _synthetic_world(3)
+
+    schedule = build_multiworld_schedule(
+        "multiworld.triangle", films=films, film_artifacts=artifacts,
+        parameters={"intensity": "Total"}, seed=19,
+    )
+
+    assert [row["source_film_id"] for row in schedule["visual_segments"]] == ["film_1", "film_2", "film_3"]
+    assert schedule["filter_metrics"]["phase_pairs"] == [
+        {"phase": 1, "visual_film_id": "film_1", "dialogue_film_id": "film_2"},
+        {"phase": 2, "visual_film_id": "film_2", "dialogue_film_id": "film_3"},
+        {"phase": 3, "visual_film_id": "film_3", "dialogue_film_id": "film_1"},
+    ]
+    assert {row["source_film_id"] for row in schedule["mappings"]} == {"film_1", "film_2", "film_3"}
+    assert all(row["visual_film_id"] != row["dialogue_film_id"] for row in schedule["mappings"])
+    assert len({row["clip_id"] for row in schedule["mappings"]}) == len(schedule["mappings"])
+    assert all(row["carrier_speech_regions"] for row in schedule["visual_segments"])
+    assert schedule["filter_validation"]["carrier_speech_regions_declared"] is True
+    assert schedule["filter_metrics"]["carrier_speech_region_count"] == sum(
+        len(row["carrier_speech_regions"]) for row in schedule["visual_segments"]
+    )
+
+
+def test_triangle_declares_unmatched_carrier_speech_for_suppression() -> None:
+    films, artifacts = _synthetic_world(3)
+    for film in films:
+        artifacts[film.id]["clips"] = artifacts[film.id]["clips"][:1]
+
+    schedule = build_multiworld_schedule(
+        "multiworld.triangle", films=films, film_artifacts=artifacts,
+        parameters={"intensity": "Total"}, seed=19,
+    )
+
+    declared = sum(len(row["carrier_speech_regions"]) for row in schedule["visual_segments"])
+    assert declared > len(schedule["mappings"])
+    assert len(schedule["mappings"]) == 3
+
+
+def test_triangle_clips_phase_boundary_speech_into_suppression_region() -> None:
+    films, artifacts = _synthetic_world(3)
+    artifacts["film_1"]["windows"].append({
+        "id": "crosses_phase_boundary", "start": 32.5, "duration": 2.0, "speaker_id": "speaker_0",
+    })
+
+    schedule = build_multiworld_schedule(
+        "multiworld.triangle", films=films, film_artifacts=artifacts,
+        parameters={"intensity": "Total"}, seed=19,
+    )
+    region = next(
+        row for row in schedule["visual_segments"][0]["carrier_speech_regions"]
+        if row["id"] == "crosses_phase_boundary"
+    )
+    assert region["source_start"] == 32.5
+    assert region["source_end"] == 33.333
+
+
+def test_triangle_rejects_a_phase_without_dialogue_evidence() -> None:
+    films, artifacts = _synthetic_world(3)
+    artifacts["film_2"]["windows"] = []
+
+    with pytest.raises(ValueError, match="every_film_contributes_visuals_and_dialogue"):
+        build_multiworld_schedule(
+            "multiworld.triangle", films=films, film_artifacts=artifacts,
+            parameters={"intensity": "Total"}, seed=19,
+        )
+
+
+@pytest.mark.parametrize(
+    ("filter_id", "film_count", "planner_version"),
+    [
+        ("multiworld.possession", 2, "full_source_timeline_v1"),
+        ("multiworld.triangle", 3, "shared_world_timeline_v1"),
+    ],
+)
+def test_general_multiworld_runtime_writes_world_artifacts_and_completes_all_stages(
+    monkeypatch, tmp_path: Path, filter_id: str, film_count: int, planner_version: str
+) -> None:
     import cinelingus.pipeline as pipeline_module
 
-    media = [tmp_path / "anchor.mp4", tmp_path / "donor.mp4"]
+    media = [tmp_path / f"film_{index}.mp4" for index in range(film_count)]
     for index, path in enumerate(media):
         path.write_bytes(f"film-{index}".encode())
     base = load_config(Path.cwd())
@@ -215,7 +293,7 @@ def test_general_multiworld_runtime_writes_world_artifacts_and_completes_all_sta
 
     def fake_analysis(self, media_path: Path, *, force: bool):
         film_index = media.index(media_path)
-        media_hash = self.destination.media_hash if film_index == 0 else pipeline.source.media_hash
+        media_hash = f"hash_{film_index}"
         clips = [
             {
                 "id": f"clip_{film_index}_{index}",
@@ -273,13 +351,18 @@ def test_general_multiworld_runtime_writes_world_artifacts_and_completes_all_sta
     monkeypatch.setattr(Pipeline, "_analyze_multiworld_film", fake_analysis)
     monkeypatch.setattr(pipeline_module, "extract_analysis_audio", fake_extract_analysis_audio)
     monkeypatch.setattr(pipeline_module, "render_mutation_media", fake_render)
+    monkeypatch.setattr(
+        pipeline_module,
+        "render_multi_source_montage",
+        lambda **kwargs: kwargs["output_path"].write_bytes(b"multi-source"),
+    )
     monkeypatch.setattr(pipeline_module, "ffprobe_json", lambda _path: {"streams": [{"codec_type": "video"}, {"codec_type": "audio"}], "format": {"duration": "70.0"}})
     monkeypatch.setattr(pipeline_module, "validate_filter_output", fake_acceptance)
     monkeypatch.setattr(Pipeline, "_write_and_validate", lambda _self, _kind, path, data: write_json(path, data))
     monkeypatch.setattr(pipeline_module, "publish_single_video", lambda **kwargs: kwargs["video"])
     monkeypatch.setattr(pipeline_module, "_rewrite_published_video_references", lambda **_kwargs: None)
 
-    result = pipeline.run_multiworld_filter("multiworld.possession", parameters={"intensity": "Total"})
+    result = pipeline.run_multiworld_filter(filter_id, parameters={"intensity": "Total"})
 
     schedule = read_json(result["schedule"])
     report = read_json(result["multiworld_report"])
@@ -295,6 +378,13 @@ def test_general_multiworld_runtime_writes_world_artifacts_and_completes_all_sta
     assert schedule["montage_native"] is True
     assert schedule["full_timeline_native"] is True
     assert schedule["render_duration"] == 70.0
+    assert read_json(result["montage_plan"])["planner_version"] == planner_version
+    if filter_id == "multiworld.triangle":
+        assert schedule["audio_continuity_policy"] == "MULTI_SOURCE_NON_SPEECH_BED_WITH_CARRIER_SPEECH_SUPPRESSION"
+        assert schedule["carrier_speech_policy"] == "HARD_SUPPRESS_ALL_DETECTED_CARRIER_SPEECH"
+        assert schedule["carrier_speech_regions"]
+        assert all(row["duration"] > 0 for row in schedule["carrier_speech_regions"])
+        assert {row["source_film_id"] for row in schedule["visual_segments"]} == {"film_1", "film_2", "film_3"}
 
 
 def _speaker_map(item_count: int, speaker_count: int, *, partial: bool = False) -> dict:

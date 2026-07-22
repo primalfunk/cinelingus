@@ -1,0 +1,230 @@
+{
+  "schema_version": "1.0",
+  "proof_version": "function_render_proof_v1",
+  "creation_timestamp": "2026-07-22T19:11:51+00:00",
+  "screen_signature": "dff07a2f21e6f4b390aebeeaa9944ee025971ec1e43d2a38ef38a4d322dd84e8",
+  "calibration_state": "PENDING_HUMAN_ANNOTATION",
+  "closeout_state": "ENGINEERING_COMPLETE_HUMAN_CALIBRATION_DEFERRED",
+  "claim_state": "PROVISIONAL_TECHNICAL_EVIDENCE",
+  "invariant_configuration": {
+    "destination_media_hash": "3e396cdd138eb12c11ee8614e463d2abe8dc4bfd134f9fa5deddae74791a6718",
+    "render_sample_rate": 48000,
+    "render_channels": 2,
+    "target_lufs": -18.0,
+    "audio_fade_duration": 0.015,
+    "dialogue_suppression": "hard_mute",
+    "suppression_padding": 0.04,
+    "background_reconstruction": "neighboring_non_speech_with_adaptive_crossfades",
+    "whisper_model": "medium",
+    "whisper_language": "en",
+    "transcription_mode": "quality",
+    "residue_correction_passes": 1
+  },
+  "variants": [
+    {
+      "variant_id": "legacy_control",
+      "semantic_mode": "SEMANTIC_DISABLED",
+      "semantic_weight": 0.0,
+      "semantic_selection_policy": null,
+      "destination_media_hash": "3e396cdd138eb12c11ee8614e463d2abe8dc4bfd134f9fa5deddae74791a6718",
+      "mapping_count": 4,
+      "audio": "legacy_control/replacement_dialogue.wav",
+      "video": "legacy_control/translation_output.mp4",
+      "final_schedule": "legacy_control/final_schedule.json",
+      "audio_ready": true,
+      "video_ready": true,
+      "audio_bytes": 2884588,
+      "video_bytes": 1677581,
+      "audio_sha256": "6582076c2d727ffefb79899e9e0cdda8eaa7a831879cf3cf897c647032b76795",
+      "video_sha256": "97b9e5b73bb285988adac59324aefa544243202c374f9fac9e93e6326a9b0651",
+      "voice_residue_status": "NONE_DETECTED",
+      "rendered_dialogue_status": "FAIL",
+      "rendered_dialogue_average_word_coverage_percentage": 69.95,
+      "rendered_dialogue_failed_mapping_count": 1,
+      "rendered_dialogue_warning_mapping_count": 3,
+      "rendered_dialogue_measurable_mapping_count": 4,
+      "residue_correction_report": {
+        "strategy": "bounded_post_render_suppression_rerender_v1",
+        "maximum_passes": 1,
+        "completed_passes": 0,
+        "padding": 0.12,
+        "final_status": "NONE_DETECTED",
+        "passes": []
+      },
+      "editorial_refinement": null,
+      "function_mode": "FUNCTION_DISABLED",
+      "function_verification_status": "WARN",
+      "function_verified_count": 0,
+      "function_mismatch_count": 0,
+      "function_unverifiable_count": 4,
+      "function_verification": "legacy_control/function_render_verification.json"
+    },
+    {
+      "variant_id": "semantic_only",
+      "semantic_mode": "SEMANTIC_ASSISTED",
+      "semantic_weight": 0.05,
+      "semantic_selection_policy": null,
+      "destination_media_hash": "3e396cdd138eb12c11ee8614e463d2abe8dc4bfd134f9fa5deddae74791a6718",
+      "mapping_count": 4,
+      "audio": "semantic_only/replacement_dialogue.wav",
+      "video": "semantic_only/translation_output.mp4",
+      "final_schedule": "semantic_only/final_schedule.json",
+      "audio_ready": true,
+      "video_ready": true,
+      "audio_bytes": 2884588,
+      "video_bytes": 1665593,
+      "audio_sha256": "b8b16d84b8a8ccbf7e8214192a90e8099c007e7625bfeaa2a5530ea7d11fe1e5",
+      "video_sha256": "096e91e6de180ab3546b95f4a2e082dd45beaf12bb18f16c08b20f425789a698",
+      "voice_residue_status": "NONE_DETECTED",
+      "rendered_dialogue_status": "FAIL",
+      "rendered_dialogue_average_word_coverage_percentage": 68.65,
+      "rendered_dialogue_failed_mapping_count": 1,
+      "rendered_dialogue_warning_mapping_count": 2,
+      "rendered_dialogue_measurable_mapping_count": 4,
+      "residue_correction_report": {
+        "strategy": "bounded_post_render_suppression_rerender_v1",
+        "maximum_passes": 1,
+        "completed_passes": 0,
+        "padding": 0.12,
+        "final_status": "NONE_DETECTED",
+        "passes": []
+      },
+      "editorial_refinement": null,
+      "function_mode": "FUNCTION_DISABLED",
+      "function_verification_status": "WARN",
+      "function_verified_count": 0,
+      "function_mismatch_count": 0,
+      "function_unverifiable_count": 4,
+      "function_verification": "semantic_only/function_render_verification.json"
+    },
+    {
+      "variant_id": "function_report_only",
+      "semantic_mode": "SEMANTIC_ASSISTED",
+      "semantic_weight": 0.05,
+      "semantic_selection_policy": null,
+      "destination_media_hash": "3e396cdd138eb12c11ee8614e463d2abe8dc4bfd134f9fa5deddae74791a6718",
+      "mapping_count": 4,
+      "audio": "function_report_only/replacement_dialogue.wav",
+      "video": "function_report_only/translation_output.mp4",
+      "final_schedule": "function_report_only/final_schedule.json",
+      "audio_ready": true,
+      "video_ready": true,
+      "audio_bytes": 2884588,
+      "video_bytes": 1665593,
+      "audio_sha256": "b8b16d84b8a8ccbf7e8214192a90e8099c007e7625bfeaa2a5530ea7d11fe1e5",
+      "video_sha256": "096e91e6de180ab3546b95f4a2e082dd45beaf12bb18f16c08b20f425789a698",
+      "voice_residue_status": "NONE_DETECTED",
+      "rendered_dialogue_status": "FAIL",
+      "rendered_dialogue_average_word_coverage_percentage": 68.65,
+      "rendered_dialogue_failed_mapping_count": 1,
+      "rendered_dialogue_warning_mapping_count": 2,
+      "rendered_dialogue_measurable_mapping_count": 4,
+      "residue_correction_report": {
+        "strategy": "bounded_post_render_suppression_rerender_v1",
+        "maximum_passes": 1,
+        "completed_passes": 0,
+        "padding": 0.12,
+        "final_status": "NONE_DETECTED",
+        "passes": []
+      },
+      "editorial_refinement": null,
+      "function_mode": "FUNCTION_REPORT_ONLY",
+      "function_verification_status": "FAIL",
+      "function_verified_count": 1,
+      "function_mismatch_count": 2,
+      "function_unverifiable_count": 0,
+      "function_verification": "function_report_only/function_render_verification.json"
+    },
+    {
+      "variant_id": "function_preserving_repaired",
+      "semantic_mode": "SEMANTIC_ASSISTED",
+      "semantic_weight": 0.05,
+      "semantic_selection_policy": null,
+      "destination_media_hash": "3e396cdd138eb12c11ee8614e463d2abe8dc4bfd134f9fa5deddae74791a6718",
+      "mapping_count": 4,
+      "audio": "function_preserving_repaired/replacement_dialogue.wav",
+      "video": "function_preserving_repaired/translation_output.mp4",
+      "final_schedule": "function_preserving_repaired/final_schedule.json",
+      "audio_ready": true,
+      "video_ready": true,
+      "audio_bytes": 2884588,
+      "video_bytes": 1665437,
+      "audio_sha256": "3429b31fd64b6219c736d0e201d9a295df6f2f5c68364f01efe3d9a32b7ed42b",
+      "video_sha256": "0c6f2ee59f5426be377476c2976c58edf32fe6e70e11733d7b958123929b166c",
+      "voice_residue_status": "NONE_DETECTED",
+      "rendered_dialogue_status": "WARN",
+      "rendered_dialogue_average_word_coverage_percentage": 87.3,
+      "rendered_dialogue_failed_mapping_count": 0,
+      "rendered_dialogue_warning_mapping_count": 3,
+      "rendered_dialogue_measurable_mapping_count": 4,
+      "residue_correction_report": {
+        "strategy": "bounded_post_render_suppression_rerender_v1",
+        "maximum_passes": 1,
+        "completed_passes": 0,
+        "padding": 0.12,
+        "final_status": "NONE_DETECTED",
+        "passes": []
+      },
+      "editorial_refinement": null,
+      "function_mode": "FUNCTION_PRESERVING",
+      "function_verification_status": "PASS",
+      "function_verified_count": 1,
+      "function_mismatch_count": 0,
+      "function_unverifiable_count": 0,
+      "function_verification": "function_preserving_repaired/function_render_verification.json"
+    }
+  ],
+  "report_only_invariant": {
+    "schedule_equivalent_to_semantic_only": true,
+    "audio_sha256_equivalent_to_semantic_only": true,
+    "video_sha256_equivalent_to_semantic_only": true
+  },
+  "technical_acceptance": {
+    "state": "ACCEPTED",
+    "reasons": []
+  },
+  "function_repair": {
+    "state": "ACCEPTED_AFTER_RENDER_VERIFICATION",
+    "initial_rejected_clip_id": "c000073",
+    "replacement_clip_id": "c000120",
+    "initial_acoustic_preflight_state": "REJECTED_ACOUSTIC_INTEGRITY",
+    "replacement_acoustic_preflight_state": "ACCEPTED_FOR_RENDER",
+    "donor_audit_state": "CONFIRMED_DONOR_AVAILABLE",
+    "rendered_changed_placement_states": [
+      "VERIFIED"
+    ],
+    "rollback_count": 0
+  },
+  "runtime_and_memory": {
+    "total_elapsed_seconds": 157.772,
+    "variant_runtime": [
+      {
+        "variant_id": "legacy_control",
+        "elapsed_seconds": 44.193
+      },
+      {
+        "variant_id": "semantic_only",
+        "elapsed_seconds": 34.505
+      },
+      {
+        "variant_id": "function_report_only",
+        "elapsed_seconds": 42.046
+      },
+      {
+        "variant_id": "function_preserving_repaired",
+        "elapsed_seconds": 36.418
+      }
+    ],
+    "peak_python_traced_memory_mb": 1569.498,
+    "limitation": "Python allocation tracing excludes peak memory inside FFmpeg and Whisper native kernels."
+  },
+  "acoustic_preflight": "evaluation\\phase3_function_acoustic_preflight_repaired_mega_man_to_excerpt_20260722\\function_acoustic_preflight.json",
+  "acoustic_preflight_signature": "4bec47da86ba58b3b194bf9b76842962c2d6d086554afa87c6dc1e838ab74844",
+  "deferred_review_package": {
+    "state": "PREPARED_BUT_DEFERRED",
+    "manifest": "deferred_blinded_review/review_manifest.json",
+    "answer_key": "deferred_blinded_review/answer_key.json"
+  },
+  "claim_scope": "Automated technical and rendered-transcript function evidence only. Human calibration and subjective preference are explicitly deferred.",
+  "proof_signature": "d52a32c72314b433ca9ed414fa031b35522aa9acdb677cfad19fc2f90390e64d"
+}

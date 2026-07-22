@@ -1,0 +1,3703 @@
+{
+  "schema_version": "1.0",
+  "experiment_version": "semantic_schedule_screen_v1",
+  "creation_timestamp": "2026-07-22T01:29:30+00:00",
+  "experiment_signature": "f445b8612f8e458f20da35d8d3d51feb3aa18d509723f29bca7fefbdfd61a737",
+  "source_hash": "62311279e6dad49448aca3c376f5bdb00a9305e32a90ea910df3d3709b6d0017",
+  "destination_hash": "1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b",
+  "scheduling_mode": "performance_fill",
+  "weight_grid": [
+    0.0,
+    0.05,
+    0.1,
+    0.15,
+    0.2
+  ],
+  "semantic_model_identity": {
+    "provider": "local_e5_transformers",
+    "model_id": "intfloat/multilingual-e5-small",
+    "model_revision": "d829207ab28e6a5fb3aafb5d4c44111b8146db32",
+    "tokenizer_id": "intfloat/multilingual-e5-small",
+    "dimensions": 384,
+    "token_limit": 256,
+    "pooling_policy": "attention_mask_mean",
+    "normalization": "l2",
+    "precision": "float32",
+    "asset_digest": "327ab8a846605d1bdac7f2cf14cfc259e53c28fa4303766665ac4c991c6e7cfd",
+    "source_bundle_signature": "bff16e4143fa29d7d1c098bed31aa7e879341a1b0337fdc0a2ec3c297198da8e",
+    "destination_bundle_signature": "845744b12b7ed584164d8f508478c0744f97ee075713026f57b7cc73ede79873"
+  },
+  "invariants": {
+    "report_only_selection_equivalent": true,
+    "report_only_scores_equivalent": true,
+    "zero_weight_selection_equivalent": true,
+    "zero_weight_scores_equivalent": true,
+    "candidate_generation_policy": "EXISTING_LEGAL_CANDIDATES_ONLY",
+    "hard_constraints_remain_authoritative": true
+  },
+  "variants": [
+    {
+      "variant_id": "control",
+      "mode": "SEMANTIC_DISABLED",
+      "weight": 0.0,
+      "mapping_count": 282,
+      "placements_changed": 0,
+      "placements_unchanged": 282,
+      "semantic_placement_count": 0,
+      "semantic_placement_coverage": 0.0,
+      "performance_aggregate_fallback_count": 0,
+      "boundary_bridge_semantic_placement_count": 0,
+      "text_bridge_semantic_placement_count": 0,
+      "exact_direct_semantic_placement_count": 0,
+      "mean_selected_semantic_similarity": null,
+      "mean_legacy_candidate_score": 0.800578,
+      "mean_compatibility": {
+        "performance": 0.647479,
+        "duration": 0.857048,
+        "speaker": 0.473682,
+        "visual": 1.0,
+        "completeness": 0.971451
+      },
+      "unique_donor_count": 282,
+      "maximum_donor_reuse": 1,
+      "conflict_count": 0,
+      "conflicts": [],
+      "legacy_score_tradeoff_count": 0,
+      "legacy_score_tradeoffs": [],
+      "schedule_file": "control_schedule.json"
+    },
+    {
+      "variant_id": "report_only",
+      "mode": "SEMANTIC_REPORT_ONLY",
+      "weight": 0.0,
+      "mapping_count": 282,
+      "placements_changed": 0,
+      "placements_unchanged": 282,
+      "semantic_placement_count": 238,
+      "semantic_placement_coverage": 0.843972,
+      "performance_aggregate_fallback_count": 55,
+      "boundary_bridge_semantic_placement_count": 112,
+      "text_bridge_semantic_placement_count": 65,
+      "exact_direct_semantic_placement_count": 6,
+      "mean_selected_semantic_similarity": 0.864726,
+      "mean_legacy_candidate_score": 0.800578,
+      "mean_compatibility": {
+        "performance": 0.647479,
+        "duration": 0.857048,
+        "speaker": 0.473682,
+        "visual": 1.0,
+        "completeness": 0.971451
+      },
+      "unique_donor_count": 282,
+      "maximum_donor_reuse": 1,
+      "conflict_count": 0,
+      "conflicts": [],
+      "legacy_score_tradeoff_count": 0,
+      "legacy_score_tradeoffs": [],
+      "schedule_file": "report_only_schedule.json"
+    },
+    {
+      "variant_id": "assisted_000",
+      "mode": "SEMANTIC_ASSISTED",
+      "weight": 0.0,
+      "mapping_count": 282,
+      "placements_changed": 0,
+      "placements_unchanged": 282,
+      "semantic_placement_count": 0,
+      "semantic_placement_coverage": 0.0,
+      "performance_aggregate_fallback_count": 0,
+      "boundary_bridge_semantic_placement_count": 0,
+      "text_bridge_semantic_placement_count": 0,
+      "exact_direct_semantic_placement_count": 0,
+      "mean_selected_semantic_similarity": null,
+      "mean_legacy_candidate_score": 0.800578,
+      "mean_compatibility": {
+        "performance": 0.647479,
+        "duration": 0.857048,
+        "speaker": 0.473682,
+        "visual": 1.0,
+        "completeness": 0.971451
+      },
+      "unique_donor_count": 282,
+      "maximum_donor_reuse": 1,
+      "conflict_count": 0,
+      "conflicts": [],
+      "legacy_score_tradeoff_count": 0,
+      "legacy_score_tradeoffs": [],
+      "schedule_file": "assisted_000_schedule.json"
+    },
+    {
+      "variant_id": "assisted_005",
+      "mode": "SEMANTIC_ASSISTED",
+      "weight": 0.05,
+      "mapping_count": 282,
+      "placements_changed": 68,
+      "placements_unchanged": 214,
+      "semantic_placement_count": 236,
+      "semantic_placement_coverage": 0.836879,
+      "performance_aggregate_fallback_count": 54,
+      "boundary_bridge_semantic_placement_count": 112,
+      "text_bridge_semantic_placement_count": 65,
+      "exact_direct_semantic_placement_count": 5,
+      "mean_selected_semantic_similarity": 0.865006,
+      "mean_legacy_candidate_score": 0.800476,
+      "mean_compatibility": {
+        "performance": 0.64594,
+        "duration": 0.857048,
+        "speaker": 0.469883,
+        "visual": 1.0,
+        "completeness": 0.971451
+      },
+      "unique_donor_count": 282,
+      "maximum_donor_reuse": 1,
+      "conflict_count": 14,
+      "conflicts": [
+        {
+          "placement_index": 40,
+          "window_id": "p000010",
+          "control_clip_id": "c000224",
+          "assisted_clip_id": "c000315",
+          "semantic_delta": 0.008833,
+          "compatibility_regressions": {
+            "performance": -0.0002
+          }
+        },
+        {
+          "placement_index": 95,
+          "window_id": "p000035",
+          "control_clip_id": "c000081",
+          "assisted_clip_id": "c000309",
+          "semantic_delta": 0.011992,
+          "compatibility_regressions": {
+            "performance": -0.0009
+          }
+        },
+        {
+          "placement_index": 96,
+          "window_id": "p000035",
+          "control_clip_id": "c000082",
+          "assisted_clip_id": "c000310",
+          "semantic_delta": 0.00216,
+          "compatibility_regressions": {
+            "performance": -0.0009
+          }
+        },
+        {
+          "placement_index": 212,
+          "window_id": "w000193",
+          "control_clip_id": "c000130",
+          "assisted_clip_id": "c000124",
+          "semantic_delta": 0.007527,
+          "compatibility_regressions": {
+            "performance": -0.0331
+          }
+        },
+        {
+          "placement_index": 234,
+          "window_id": "w000230",
+          "control_clip_id": "c000230",
+          "assisted_clip_id": "c000220",
+          "semantic_delta": 0.003171,
+          "compatibility_regressions": {
+            "performance": -0.1927
+          }
+        },
+        {
+          "placement_index": 246,
+          "window_id": "w000241",
+          "control_clip_id": "c000236",
+          "assisted_clip_id": "c000246",
+          "semantic_delta": 0.000432,
+          "compatibility_regressions": {
+            "performance": -0.0559
+          }
+        },
+        {
+          "placement_index": 251,
+          "window_id": "w000249",
+          "control_clip_id": "c000254",
+          "assisted_clip_id": "c000237",
+          "semantic_delta": 0.000451,
+          "compatibility_regressions": {
+            "speaker": -0.5714
+          }
+        },
+        {
+          "placement_index": 252,
+          "window_id": "w000249",
+          "control_clip_id": "c000239",
+          "assisted_clip_id": "c000254",
+          "semantic_delta": 0.939636,
+          "compatibility_regressions": {
+            "performance": -0.0247
+          }
+        },
+        {
+          "placement_index": 256,
+          "window_id": "w000251",
+          "control_clip_id": "c000265",
+          "assisted_clip_id": "c000264",
+          "semantic_delta": 0.91656,
+          "compatibility_regressions": {
+            "performance": -0.0043
+          }
+        },
+        {
+          "placement_index": 259,
+          "window_id": "w000254",
+          "control_clip_id": "c000274",
+          "assisted_clip_id": "c000266",
+          "semantic_delta": 0.004088,
+          "compatibility_regressions": {
+            "performance": -0.0743,
+            "speaker": -0.4
+          }
+        },
+        {
+          "placement_index": 264,
+          "window_id": "w000267",
+          "control_clip_id": "c000140",
+          "assisted_clip_id": "c000137",
+          "semantic_delta": 0.004325,
+          "compatibility_regressions": {
+            "performance": -0.0018
+          }
+        },
+        {
+          "placement_index": 267,
+          "window_id": "w000279",
+          "control_clip_id": "c000141",
+          "assisted_clip_id": "c000138",
+          "semantic_delta": 0.002377,
+          "compatibility_regressions": {
+            "performance": -0.0045
+          }
+        },
+        {
+          "placement_index": 274,
+          "window_id": "w000285",
+          "control_clip_id": "c000280",
+          "assisted_clip_id": "c000304",
+          "semantic_delta": 0.939439,
+          "compatibility_regressions": {
+            "performance": -0.1121,
+            "speaker": -0.44
+          }
+        },
+        {
+          "placement_index": 276,
+          "window_id": "w000288",
+          "control_clip_id": "c000311",
+          "assisted_clip_id": "c000306",
+          "semantic_delta": 0.947919,
+          "compatibility_regressions": {
+            "performance": -0.0334
+          }
+        }
+      ],
+      "legacy_score_tradeoff_count": 35,
+      "legacy_score_tradeoffs": [
+        {
+          "placement_index": 41,
+          "window_id": "p000011",
+          "control_clip_id": "c000315",
+          "assisted_clip_id": "c000224",
+          "legacy_score_delta": -0.0002,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 58,
+          "window_id": "p000017",
+          "control_clip_id": "c000117",
+          "assisted_clip_id": "c000134",
+          "legacy_score_delta": -0.0335,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 77,
+          "window_id": "p000027",
+          "control_clip_id": "c000126",
+          "assisted_clip_id": "c000143",
+          "legacy_score_delta": -0.0173,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 86,
+          "window_id": "p000031",
+          "control_clip_id": "c000147",
+          "assisted_clip_id": "c000110",
+          "legacy_score_delta": -0.0158,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 101,
+          "window_id": "p000040",
+          "control_clip_id": "c000095",
+          "assisted_clip_id": "c000314",
+          "legacy_score_delta": -0.0396,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 107,
+          "window_id": "p000044",
+          "control_clip_id": "c000309",
+          "assisted_clip_id": "c000081",
+          "legacy_score_delta": -0.004,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 108,
+          "window_id": "p000044",
+          "control_clip_id": "c000310",
+          "assisted_clip_id": "c000082",
+          "legacy_score_delta": -0.004,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 189,
+          "window_id": "w000155",
+          "control_clip_id": "c000124",
+          "assisted_clip_id": "c000117",
+          "legacy_score_delta": -0.0071,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 206,
+          "window_id": "w000172",
+          "control_clip_id": "c000103",
+          "assisted_clip_id": "c000094",
+          "legacy_score_delta": -0.0191,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 212,
+          "window_id": "w000193",
+          "control_clip_id": "c000130",
+          "assisted_clip_id": "c000124",
+          "legacy_score_delta": -0.003,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 231,
+          "window_id": "w000225",
+          "control_clip_id": "c000219",
+          "assisted_clip_id": "c000172",
+          "legacy_score_delta": -0.0006,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 233,
+          "window_id": "w000229",
+          "control_clip_id": "c000220",
+          "assisted_clip_id": "c000219",
+          "legacy_score_delta": -0.0071,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 234,
+          "window_id": "w000230",
+          "control_clip_id": "c000230",
+          "assisted_clip_id": "c000220",
+          "legacy_score_delta": -0.0013,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 237,
+          "window_id": "w000233",
+          "control_clip_id": "c000231",
+          "assisted_clip_id": "c000240",
+          "legacy_score_delta": -0.0256,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 240,
+          "window_id": "w000236",
+          "control_clip_id": "c000233",
+          "assisted_clip_id": "c000242",
+          "legacy_score_delta": -0.0177,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 243,
+          "window_id": "w000239",
+          "control_clip_id": "c000235",
+          "assisted_clip_id": "c000244",
+          "legacy_score_delta": -0.0071,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 245,
+          "window_id": "w000240",
+          "control_clip_id": "c000246",
+          "assisted_clip_id": "c000235",
+          "legacy_score_delta": -0.0074,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 248,
+          "window_id": "w000246",
+          "control_clip_id": "c000247",
+          "assisted_clip_id": "c000236",
+          "legacy_score_delta": -0.0147,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 251,
+          "window_id": "w000249",
+          "control_clip_id": "c000254",
+          "assisted_clip_id": "c000237",
+          "legacy_score_delta": -0.0087,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 253,
+          "window_id": "w000249",
+          "control_clip_id": "c000137",
+          "assisted_clip_id": "c000135",
+          "legacy_score_delta": -0.0004,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 254,
+          "window_id": "w000250",
+          "control_clip_id": "c000255",
+          "assisted_clip_id": "c000239",
+          "legacy_score_delta": -0.0444,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 257,
+          "window_id": "w000252",
+          "control_clip_id": "c000256",
+          "assisted_clip_id": "c000265",
+          "legacy_score_delta": -0.0716,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 259,
+          "window_id": "w000254",
+          "control_clip_id": "c000274",
+          "assisted_clip_id": "c000266",
+          "legacy_score_delta": -0.0169,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 262,
+          "window_id": "w000259",
+          "control_clip_id": "c000267",
+          "assisted_clip_id": "c000258",
+          "legacy_score_delta": -0.0108,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 266,
+          "window_id": "w000276",
+          "control_clip_id": "c000260",
+          "assisted_clip_id": "c000271",
+          "legacy_score_delta": -0.0099,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 267,
+          "window_id": "w000279",
+          "control_clip_id": "c000141",
+          "assisted_clip_id": "c000138",
+          "legacy_score_delta": -0.0018,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 268,
+          "window_id": "w000280",
+          "control_clip_id": "c000276",
+          "assisted_clip_id": "c000260",
+          "legacy_score_delta": -0.0112,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 270,
+          "window_id": "w000282",
+          "control_clip_id": "c000292",
+          "assisted_clip_id": "c000290",
+          "legacy_score_delta": -0.0039,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 271,
+          "window_id": "w000283",
+          "control_clip_id": "c000278",
+          "assisted_clip_id": "c000292",
+          "legacy_score_delta": -0.0152,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 273,
+          "window_id": "w000284",
+          "control_clip_id": "c000304",
+          "assisted_clip_id": "c000291",
+          "legacy_score_delta": -0.0024,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 274,
+          "window_id": "w000285",
+          "control_clip_id": "c000280",
+          "assisted_clip_id": "c000304",
+          "legacy_score_delta": -0.0129,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 276,
+          "window_id": "w000288",
+          "control_clip_id": "c000311",
+          "assisted_clip_id": "c000306",
+          "legacy_score_delta": -0.0023,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 277,
+          "window_id": "w000289",
+          "control_clip_id": "c000283",
+          "assisted_clip_id": "c000311",
+          "legacy_score_delta": -0.0129,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 280,
+          "window_id": "w000292",
+          "control_clip_id": "c000286",
+          "assisted_clip_id": "c000326",
+          "legacy_score_delta": -0.0087,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 281,
+          "window_id": "w000298",
+          "control_clip_id": "c000326",
+          "assisted_clip_id": "c000286",
+          "legacy_score_delta": -0.028,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        }
+      ],
+      "schedule_file": "assisted_005_schedule.json"
+    },
+    {
+      "variant_id": "assisted_010",
+      "mode": "SEMANTIC_ASSISTED",
+      "weight": 0.1,
+      "mapping_count": 282,
+      "placements_changed": 67,
+      "placements_unchanged": 215,
+      "semantic_placement_count": 236,
+      "semantic_placement_coverage": 0.836879,
+      "performance_aggregate_fallback_count": 53,
+      "boundary_bridge_semantic_placement_count": 112,
+      "text_bridge_semantic_placement_count": 65,
+      "exact_direct_semantic_placement_count": 6,
+      "mean_selected_semantic_similarity": 0.865214,
+      "mean_legacy_candidate_score": 0.800503,
+      "mean_compatibility": {
+        "performance": 0.645934,
+        "duration": 0.857048,
+        "speaker": 0.469883,
+        "visual": 1.0,
+        "completeness": 0.971451
+      },
+      "unique_donor_count": 282,
+      "maximum_donor_reuse": 1,
+      "conflict_count": 15,
+      "conflicts": [
+        {
+          "placement_index": 40,
+          "window_id": "p000010",
+          "control_clip_id": "c000224",
+          "assisted_clip_id": "c000315",
+          "semantic_delta": 0.008833,
+          "compatibility_regressions": {
+            "performance": -0.0002
+          }
+        },
+        {
+          "placement_index": 58,
+          "window_id": "p000017",
+          "control_clip_id": "c000117",
+          "assisted_clip_id": "c000141",
+          "semantic_delta": 0.024474,
+          "compatibility_regressions": {
+            "performance": -0.0018
+          }
+        },
+        {
+          "placement_index": 95,
+          "window_id": "p000035",
+          "control_clip_id": "c000081",
+          "assisted_clip_id": "c000309",
+          "semantic_delta": 0.011992,
+          "compatibility_regressions": {
+            "performance": -0.0009
+          }
+        },
+        {
+          "placement_index": 96,
+          "window_id": "p000035",
+          "control_clip_id": "c000082",
+          "assisted_clip_id": "c000310",
+          "semantic_delta": 0.00216,
+          "compatibility_regressions": {
+            "performance": -0.0009
+          }
+        },
+        {
+          "placement_index": 212,
+          "window_id": "w000193",
+          "control_clip_id": "c000130",
+          "assisted_clip_id": "c000124",
+          "semantic_delta": 0.007527,
+          "compatibility_regressions": {
+            "performance": -0.0331
+          }
+        },
+        {
+          "placement_index": 234,
+          "window_id": "w000230",
+          "control_clip_id": "c000230",
+          "assisted_clip_id": "c000220",
+          "semantic_delta": 0.003171,
+          "compatibility_regressions": {
+            "performance": -0.1927
+          }
+        },
+        {
+          "placement_index": 246,
+          "window_id": "w000241",
+          "control_clip_id": "c000236",
+          "assisted_clip_id": "c000246",
+          "semantic_delta": 0.000432,
+          "compatibility_regressions": {
+            "performance": -0.0559
+          }
+        },
+        {
+          "placement_index": 251,
+          "window_id": "w000249",
+          "control_clip_id": "c000254",
+          "assisted_clip_id": "c000237",
+          "semantic_delta": 0.000451,
+          "compatibility_regressions": {
+            "speaker": -0.5714
+          }
+        },
+        {
+          "placement_index": 252,
+          "window_id": "w000249",
+          "control_clip_id": "c000239",
+          "assisted_clip_id": "c000254",
+          "semantic_delta": 0.939636,
+          "compatibility_regressions": {
+            "performance": -0.0247
+          }
+        },
+        {
+          "placement_index": 256,
+          "window_id": "w000251",
+          "control_clip_id": "c000265",
+          "assisted_clip_id": "c000264",
+          "semantic_delta": 0.91656,
+          "compatibility_regressions": {
+            "performance": -0.0043
+          }
+        },
+        {
+          "placement_index": 259,
+          "window_id": "w000254",
+          "control_clip_id": "c000274",
+          "assisted_clip_id": "c000266",
+          "semantic_delta": 0.004088,
+          "compatibility_regressions": {
+            "performance": -0.0743,
+            "speaker": -0.4
+          }
+        },
+        {
+          "placement_index": 264,
+          "window_id": "w000267",
+          "control_clip_id": "c000140",
+          "assisted_clip_id": "c000137",
+          "semantic_delta": 0.004325,
+          "compatibility_regressions": {
+            "performance": -0.0018
+          }
+        },
+        {
+          "placement_index": 267,
+          "window_id": "w000279",
+          "control_clip_id": "c000141",
+          "assisted_clip_id": "c000138",
+          "semantic_delta": 0.002377,
+          "compatibility_regressions": {
+            "performance": -0.0045
+          }
+        },
+        {
+          "placement_index": 274,
+          "window_id": "w000285",
+          "control_clip_id": "c000280",
+          "assisted_clip_id": "c000304",
+          "semantic_delta": 0.939439,
+          "compatibility_regressions": {
+            "performance": -0.1121,
+            "speaker": -0.44
+          }
+        },
+        {
+          "placement_index": 276,
+          "window_id": "w000288",
+          "control_clip_id": "c000311",
+          "assisted_clip_id": "c000306",
+          "semantic_delta": 0.947919,
+          "compatibility_regressions": {
+            "performance": -0.0334
+          }
+        }
+      ],
+      "legacy_score_tradeoff_count": 34,
+      "legacy_score_tradeoffs": [
+        {
+          "placement_index": 41,
+          "window_id": "p000011",
+          "control_clip_id": "c000315",
+          "assisted_clip_id": "c000224",
+          "legacy_score_delta": -0.0002,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 77,
+          "window_id": "p000027",
+          "control_clip_id": "c000126",
+          "assisted_clip_id": "c000143",
+          "legacy_score_delta": -0.0173,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 86,
+          "window_id": "p000031",
+          "control_clip_id": "c000147",
+          "assisted_clip_id": "c000110",
+          "legacy_score_delta": -0.0158,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 101,
+          "window_id": "p000040",
+          "control_clip_id": "c000095",
+          "assisted_clip_id": "c000314",
+          "legacy_score_delta": -0.0396,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 107,
+          "window_id": "p000044",
+          "control_clip_id": "c000309",
+          "assisted_clip_id": "c000081",
+          "legacy_score_delta": -0.004,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 108,
+          "window_id": "p000044",
+          "control_clip_id": "c000310",
+          "assisted_clip_id": "c000082",
+          "legacy_score_delta": -0.004,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 189,
+          "window_id": "w000155",
+          "control_clip_id": "c000124",
+          "assisted_clip_id": "c000117",
+          "legacy_score_delta": -0.0071,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 206,
+          "window_id": "w000172",
+          "control_clip_id": "c000103",
+          "assisted_clip_id": "c000094",
+          "legacy_score_delta": -0.0191,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 212,
+          "window_id": "w000193",
+          "control_clip_id": "c000130",
+          "assisted_clip_id": "c000124",
+          "legacy_score_delta": -0.003,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 231,
+          "window_id": "w000225",
+          "control_clip_id": "c000219",
+          "assisted_clip_id": "c000172",
+          "legacy_score_delta": -0.0006,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 233,
+          "window_id": "w000229",
+          "control_clip_id": "c000220",
+          "assisted_clip_id": "c000219",
+          "legacy_score_delta": -0.0071,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 234,
+          "window_id": "w000230",
+          "control_clip_id": "c000230",
+          "assisted_clip_id": "c000220",
+          "legacy_score_delta": -0.0013,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 237,
+          "window_id": "w000233",
+          "control_clip_id": "c000231",
+          "assisted_clip_id": "c000240",
+          "legacy_score_delta": -0.0256,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 240,
+          "window_id": "w000236",
+          "control_clip_id": "c000233",
+          "assisted_clip_id": "c000242",
+          "legacy_score_delta": -0.0177,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 243,
+          "window_id": "w000239",
+          "control_clip_id": "c000235",
+          "assisted_clip_id": "c000244",
+          "legacy_score_delta": -0.0071,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 245,
+          "window_id": "w000240",
+          "control_clip_id": "c000246",
+          "assisted_clip_id": "c000235",
+          "legacy_score_delta": -0.0074,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 248,
+          "window_id": "w000246",
+          "control_clip_id": "c000247",
+          "assisted_clip_id": "c000236",
+          "legacy_score_delta": -0.0147,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 251,
+          "window_id": "w000249",
+          "control_clip_id": "c000254",
+          "assisted_clip_id": "c000237",
+          "legacy_score_delta": -0.0087,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 253,
+          "window_id": "w000249",
+          "control_clip_id": "c000137",
+          "assisted_clip_id": "c000135",
+          "legacy_score_delta": -0.0004,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 254,
+          "window_id": "w000250",
+          "control_clip_id": "c000255",
+          "assisted_clip_id": "c000239",
+          "legacy_score_delta": -0.0444,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 257,
+          "window_id": "w000252",
+          "control_clip_id": "c000256",
+          "assisted_clip_id": "c000265",
+          "legacy_score_delta": -0.0716,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 259,
+          "window_id": "w000254",
+          "control_clip_id": "c000274",
+          "assisted_clip_id": "c000266",
+          "legacy_score_delta": -0.0169,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 262,
+          "window_id": "w000259",
+          "control_clip_id": "c000267",
+          "assisted_clip_id": "c000258",
+          "legacy_score_delta": -0.0108,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 266,
+          "window_id": "w000276",
+          "control_clip_id": "c000260",
+          "assisted_clip_id": "c000271",
+          "legacy_score_delta": -0.0099,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 267,
+          "window_id": "w000279",
+          "control_clip_id": "c000141",
+          "assisted_clip_id": "c000138",
+          "legacy_score_delta": -0.0018,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 268,
+          "window_id": "w000280",
+          "control_clip_id": "c000276",
+          "assisted_clip_id": "c000260",
+          "legacy_score_delta": -0.0112,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 270,
+          "window_id": "w000282",
+          "control_clip_id": "c000292",
+          "assisted_clip_id": "c000290",
+          "legacy_score_delta": -0.0039,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 271,
+          "window_id": "w000283",
+          "control_clip_id": "c000278",
+          "assisted_clip_id": "c000292",
+          "legacy_score_delta": -0.0152,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 273,
+          "window_id": "w000284",
+          "control_clip_id": "c000304",
+          "assisted_clip_id": "c000291",
+          "legacy_score_delta": -0.0024,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 274,
+          "window_id": "w000285",
+          "control_clip_id": "c000280",
+          "assisted_clip_id": "c000304",
+          "legacy_score_delta": -0.0129,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 276,
+          "window_id": "w000288",
+          "control_clip_id": "c000311",
+          "assisted_clip_id": "c000306",
+          "legacy_score_delta": -0.0023,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 277,
+          "window_id": "w000289",
+          "control_clip_id": "c000283",
+          "assisted_clip_id": "c000311",
+          "legacy_score_delta": -0.0129,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 280,
+          "window_id": "w000292",
+          "control_clip_id": "c000286",
+          "assisted_clip_id": "c000326",
+          "legacy_score_delta": -0.0087,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 281,
+          "window_id": "w000298",
+          "control_clip_id": "c000326",
+          "assisted_clip_id": "c000286",
+          "legacy_score_delta": -0.028,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        }
+      ],
+      "schedule_file": "assisted_010_schedule.json"
+    },
+    {
+      "variant_id": "assisted_015",
+      "mode": "SEMANTIC_ASSISTED",
+      "weight": 0.15,
+      "mapping_count": 282,
+      "placements_changed": 191,
+      "placements_unchanged": 91,
+      "semantic_placement_count": 237,
+      "semantic_placement_coverage": 0.840426,
+      "performance_aggregate_fallback_count": 55,
+      "boundary_bridge_semantic_placement_count": 111,
+      "text_bridge_semantic_placement_count": 65,
+      "exact_direct_semantic_placement_count": 6,
+      "mean_selected_semantic_similarity": 0.865429,
+      "mean_legacy_candidate_score": 0.801964,
+      "mean_compatibility": {
+        "performance": 0.646287,
+        "duration": 0.859076,
+        "speaker": 0.47264,
+        "visual": 1.0,
+        "completeness": 0.971451
+      },
+      "unique_donor_count": 282,
+      "maximum_donor_reuse": 1,
+      "conflict_count": 50,
+      "conflicts": [
+        {
+          "placement_index": 40,
+          "window_id": "p000010",
+          "control_clip_id": "c000224",
+          "assisted_clip_id": "c000315",
+          "semantic_delta": 0.008833,
+          "compatibility_regressions": {
+            "performance": -0.0002
+          }
+        },
+        {
+          "placement_index": 58,
+          "window_id": "p000017",
+          "control_clip_id": "c000117",
+          "assisted_clip_id": "c000141",
+          "semantic_delta": 0.024474,
+          "compatibility_regressions": {
+            "performance": -0.0018
+          }
+        },
+        {
+          "placement_index": 86,
+          "window_id": "p000031",
+          "control_clip_id": "c000147",
+          "assisted_clip_id": "c000302",
+          "semantic_delta": 0.030535,
+          "compatibility_regressions": {
+            "performance": -0.0059
+          }
+        },
+        {
+          "placement_index": 94,
+          "window_id": "p000033",
+          "control_clip_id": "c000123",
+          "assisted_clip_id": "c000253",
+          "semantic_delta": 0.035408,
+          "compatibility_regressions": {
+            "performance": -0.2225,
+            "speaker": -0.9125
+          }
+        },
+        {
+          "placement_index": 96,
+          "window_id": "p000035",
+          "control_clip_id": "c000082",
+          "assisted_clip_id": "c000309",
+          "semantic_delta": 0.011992,
+          "compatibility_regressions": {
+            "performance": -0.0009
+          }
+        },
+        {
+          "placement_index": 100,
+          "window_id": "p000038",
+          "control_clip_id": "c000303",
+          "assisted_clip_id": "c000311",
+          "semantic_delta": 0.030375,
+          "compatibility_regressions": {
+            "performance": -0.0001
+          }
+        },
+        {
+          "placement_index": 101,
+          "window_id": "p000038",
+          "control_clip_id": "c000095",
+          "assisted_clip_id": "c000312",
+          "semantic_delta": 0.014675,
+          "compatibility_regressions": {
+            "performance": -0.0486
+          }
+        },
+        {
+          "placement_index": 103,
+          "window_id": "p000041",
+          "control_clip_id": "c000288",
+          "assisted_clip_id": "c000305",
+          "semantic_delta": 0.011444,
+          "compatibility_regressions": {
+            "performance": -0.1128
+          }
+        },
+        {
+          "placement_index": 121,
+          "window_id": "p000049",
+          "control_clip_id": "c000030",
+          "assisted_clip_id": "c000188",
+          "semantic_delta": 0.034712,
+          "compatibility_regressions": {
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 122,
+          "window_id": "w000008",
+          "control_clip_id": "c000175",
+          "assisted_clip_id": "c000030",
+          "semantic_delta": 0.91832,
+          "compatibility_regressions": {
+            "performance": -0.0314
+          }
+        },
+        {
+          "placement_index": 124,
+          "window_id": "w000011",
+          "control_clip_id": "c000028",
+          "assisted_clip_id": "c000142",
+          "semantic_delta": 0.009675,
+          "compatibility_regressions": {
+            "performance": -0.1281,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 125,
+          "window_id": "w000013",
+          "control_clip_id": "c000241",
+          "assisted_clip_id": "c000028",
+          "semantic_delta": 0.014808,
+          "compatibility_regressions": {
+            "duration": -0.0244
+          }
+        },
+        {
+          "placement_index": 127,
+          "window_id": "w000020",
+          "control_clip_id": "c000046",
+          "assisted_clip_id": "c000116",
+          "semantic_delta": 0.010954,
+          "compatibility_regressions": {
+            "performance": -0.0907,
+            "duration": -0.015,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 129,
+          "window_id": "w000028",
+          "control_clip_id": "c000006",
+          "assisted_clip_id": "c000211",
+          "semantic_delta": 0.002037,
+          "compatibility_regressions": {
+            "performance": -0.2589,
+            "speaker": -0.5166,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 132,
+          "window_id": "w000037",
+          "control_clip_id": "c000001",
+          "assisted_clip_id": "c000128",
+          "semantic_delta": 0.914637,
+          "compatibility_regressions": {
+            "performance": -0.3033,
+            "speaker": -0.5166,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 135,
+          "window_id": "w000048",
+          "control_clip_id": "c000008",
+          "assisted_clip_id": "c000190",
+          "semantic_delta": 0.009083,
+          "compatibility_regressions": {
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 136,
+          "window_id": "w000049",
+          "control_clip_id": "c000018",
+          "assisted_clip_id": "c000008",
+          "semantic_delta": 0.921006,
+          "compatibility_regressions": {
+            "performance": -0.1326,
+            "duration": -0.3333
+          }
+        },
+        {
+          "placement_index": 138,
+          "window_id": "w000057",
+          "control_clip_id": "c000234",
+          "assisted_clip_id": "c000198",
+          "semantic_delta": 0.938397,
+          "compatibility_regressions": {
+            "performance": -0.0966,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 141,
+          "window_id": "w000068",
+          "control_clip_id": "c000068",
+          "assisted_clip_id": "c000208",
+          "semantic_delta": 0.944245,
+          "compatibility_regressions": {
+            "performance": -0.0767,
+            "duration": -0.0629,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 149,
+          "window_id": "w000083",
+          "control_clip_id": "c000111",
+          "assisted_clip_id": "c000055",
+          "semantic_delta": 0.004925,
+          "compatibility_regressions": {
+            "performance": -0.0103,
+            "duration": -0.0783
+          }
+        },
+        {
+          "placement_index": 150,
+          "window_id": "w000085",
+          "control_clip_id": "c000243",
+          "assisted_clip_id": "c000111",
+          "semantic_delta": 0.936494,
+          "compatibility_regressions": {
+            "performance": -0.0739,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 153,
+          "window_id": "w000088",
+          "control_clip_id": "c000118",
+          "assisted_clip_id": "c000145",
+          "semantic_delta": 0.005941,
+          "compatibility_regressions": {
+            "duration": -0.0822
+          }
+        },
+        {
+          "placement_index": 155,
+          "window_id": "w000091",
+          "control_clip_id": "c000245",
+          "assisted_clip_id": "c000063",
+          "semantic_delta": 0.947792,
+          "compatibility_regressions": {
+            "performance": -0.0563
+          }
+        },
+        {
+          "placement_index": 157,
+          "window_id": "w000094",
+          "control_clip_id": "c000058",
+          "assisted_clip_id": "c000085",
+          "semantic_delta": 0.010559,
+          "compatibility_regressions": {
+            "speaker": -0.035
+          }
+        },
+        {
+          "placement_index": 158,
+          "window_id": "w000099",
+          "control_clip_id": "c000277",
+          "assisted_clip_id": "c000058",
+          "semantic_delta": 0.009484,
+          "compatibility_regressions": {
+            "performance": -0.0949,
+            "speaker": -0.475
+          }
+        },
+        {
+          "placement_index": 159,
+          "window_id": "w000100",
+          "control_clip_id": "c000113",
+          "assisted_clip_id": "c000277",
+          "semantic_delta": 0.003003,
+          "compatibility_regressions": {
+            "performance": -0.0172
+          }
+        },
+        {
+          "placement_index": 163,
+          "window_id": "w000107",
+          "control_clip_id": "c000037",
+          "assisted_clip_id": "c000200",
+          "semantic_delta": 0.015524,
+          "compatibility_regressions": {
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 164,
+          "window_id": "w000108",
+          "control_clip_id": "c000069",
+          "assisted_clip_id": "c000037",
+          "semantic_delta": 0.003438,
+          "compatibility_regressions": {
+            "duration": -0.0571
+          }
+        },
+        {
+          "placement_index": 167,
+          "window_id": "w000111",
+          "control_clip_id": "c000072",
+          "assisted_clip_id": "c000021",
+          "semantic_delta": 0.951561,
+          "compatibility_regressions": {
+            "performance": -0.2445,
+            "speaker": -0.7667
+          }
+        },
+        {
+          "placement_index": 172,
+          "window_id": "w000132",
+          "control_clip_id": "c000043",
+          "assisted_clip_id": "c000115",
+          "semantic_delta": 0.923425,
+          "compatibility_regressions": {
+            "performance": -0.1276,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 176,
+          "window_id": "w000136",
+          "control_clip_id": "c000177",
+          "assisted_clip_id": "c000031",
+          "semantic_delta": 0.009108,
+          "compatibility_regressions": {
+            "performance": -0.0796,
+            "speaker": -0.37
+          }
+        },
+        {
+          "placement_index": 178,
+          "window_id": "w000138",
+          "control_clip_id": "c000015",
+          "assisted_clip_id": "c000203",
+          "semantic_delta": 0.004166,
+          "compatibility_regressions": {
+            "performance": -0.0603,
+            "duration": -0.0933
+          }
+        },
+        {
+          "placement_index": 180,
+          "window_id": "w000142",
+          "control_clip_id": "c000307",
+          "assisted_clip_id": "c000270",
+          "semantic_delta": 0.942064,
+          "compatibility_regressions": {
+            "duration": -0.1054
+          }
+        },
+        {
+          "placement_index": 184,
+          "window_id": "w000148",
+          "control_clip_id": "c000016",
+          "assisted_clip_id": "c000332",
+          "semantic_delta": 0.010899,
+          "compatibility_regressions": {
+            "performance": -0.0896,
+            "duration": -0.2543
+          }
+        },
+        {
+          "placement_index": 186,
+          "window_id": "w000150",
+          "control_clip_id": "c000009",
+          "assisted_clip_id": "c000033",
+          "semantic_delta": 0.019038,
+          "compatibility_regressions": {
+            "performance": -0.1106,
+            "speaker": -0.5182
+          }
+        },
+        {
+          "placement_index": 189,
+          "window_id": "w000153",
+          "control_clip_id": "c000124",
+          "assisted_clip_id": "c000029",
+          "semantic_delta": 0.002441,
+          "compatibility_regressions": {
+            "duration": -0.1829
+          }
+        },
+        {
+          "placement_index": 190,
+          "window_id": "w000155",
+          "control_clip_id": "c000007",
+          "assisted_clip_id": "c000117",
+          "semantic_delta": 0.00911,
+          "compatibility_regressions": {
+            "performance": -0.2695,
+            "speaker": -0.547,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 191,
+          "window_id": "w000156",
+          "control_clip_id": "c000057",
+          "assisted_clip_id": "c000123",
+          "semantic_delta": 0.939521,
+          "compatibility_regressions": {
+            "performance": -0.1049,
+            "duration": -0.381
+          }
+        },
+        {
+          "placement_index": 200,
+          "window_id": "w000166",
+          "control_clip_id": "c000044",
+          "assisted_clip_id": "c000129",
+          "semantic_delta": 0.934377,
+          "compatibility_regressions": {
+            "performance": -0.1042,
+            "duration": -0.2948,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 206,
+          "window_id": "w000171",
+          "control_clip_id": "c000103",
+          "assisted_clip_id": "c000074",
+          "semantic_delta": 0.940784,
+          "compatibility_regressions": {
+            "performance": -0.1413
+          }
+        },
+        {
+          "placement_index": 213,
+          "window_id": "w000193",
+          "control_clip_id": "c000025",
+          "assisted_clip_id": "c000124",
+          "semantic_delta": 0.947908,
+          "compatibility_regressions": {
+            "performance": -0.1181,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 216,
+          "window_id": "w000199",
+          "control_clip_id": "c000049",
+          "assisted_clip_id": "c000153",
+          "semantic_delta": 0.937952,
+          "compatibility_regressions": {
+            "performance": -0.0208
+          }
+        },
+        {
+          "placement_index": 223,
+          "window_id": "w000210",
+          "control_clip_id": "c000169",
+          "assisted_clip_id": "c000035",
+          "semantic_delta": 0.001547,
+          "compatibility_regressions": {
+            "duration": -0.0952
+          }
+        },
+        {
+          "placement_index": 236,
+          "window_id": "w000232",
+          "control_clip_id": "c000240",
+          "assisted_clip_id": "c000220",
+          "semantic_delta": 0.9392,
+          "compatibility_regressions": {
+            "performance": -0.1681
+          }
+        },
+        {
+          "placement_index": 256,
+          "window_id": "w000251",
+          "control_clip_id": "c000265",
+          "assisted_clip_id": "c000264",
+          "semantic_delta": 0.91656,
+          "compatibility_regressions": {
+            "performance": -0.0043
+          }
+        },
+        {
+          "placement_index": 259,
+          "window_id": "w000254",
+          "control_clip_id": "c000274",
+          "assisted_clip_id": "c000266",
+          "semantic_delta": 0.004088,
+          "compatibility_regressions": {
+            "performance": -0.0743,
+            "speaker": -0.4
+          }
+        },
+        {
+          "placement_index": 264,
+          "window_id": "w000267",
+          "control_clip_id": "c000140",
+          "assisted_clip_id": "c000137",
+          "semantic_delta": 0.004325,
+          "compatibility_regressions": {
+            "performance": -0.0018
+          }
+        },
+        {
+          "placement_index": 267,
+          "window_id": "w000279",
+          "control_clip_id": "c000141",
+          "assisted_clip_id": "c000138",
+          "semantic_delta": 0.002377,
+          "compatibility_regressions": {
+            "performance": -0.0045
+          }
+        },
+        {
+          "placement_index": 276,
+          "window_id": "w000288",
+          "control_clip_id": "c000311",
+          "assisted_clip_id": "c000306",
+          "semantic_delta": 0.947919,
+          "compatibility_regressions": {
+            "performance": -0.0334
+          }
+        },
+        {
+          "placement_index": 281,
+          "window_id": "w000298",
+          "control_clip_id": "c000326",
+          "assisted_clip_id": "c000345",
+          "semantic_delta": 0.010364,
+          "compatibility_regressions": {
+            "performance": -0.0748
+          }
+        }
+      ],
+      "legacy_score_tradeoff_count": 86,
+      "legacy_score_tradeoffs": [
+        {
+          "placement_index": 41,
+          "window_id": "p000011",
+          "control_clip_id": "c000315",
+          "assisted_clip_id": "c000154",
+          "legacy_score_delta": -0.0119,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 77,
+          "window_id": "p000027",
+          "control_clip_id": "c000126",
+          "assisted_clip_id": "c000143",
+          "legacy_score_delta": -0.0173,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 91,
+          "window_id": "p000033",
+          "control_clip_id": "c000251",
+          "assisted_clip_id": "c000250",
+          "legacy_score_delta": -0.0002,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 94,
+          "window_id": "p000033",
+          "control_clip_id": "c000123",
+          "assisted_clip_id": "c000253",
+          "legacy_score_delta": -0.0243,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 95,
+          "window_id": "p000034",
+          "control_clip_id": "c000081",
+          "assisted_clip_id": "c000110",
+          "legacy_score_delta": -0.0185,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 97,
+          "window_id": "p000035",
+          "control_clip_id": "c000261",
+          "assisted_clip_id": "c000310",
+          "legacy_score_delta": -0.0093,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 99,
+          "window_id": "p000037",
+          "control_clip_id": "c000302",
+          "assisted_clip_id": "c000262",
+          "legacy_score_delta": -0.0022,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 102,
+          "window_id": "p000040",
+          "control_clip_id": "c000305",
+          "assisted_clip_id": "c000314",
+          "legacy_score_delta": -0.0545,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 103,
+          "window_id": "p000041",
+          "control_clip_id": "c000288",
+          "assisted_clip_id": "c000305",
+          "legacy_score_delta": -0.0005,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 107,
+          "window_id": "p000043",
+          "control_clip_id": "c000309",
+          "assisted_clip_id": "c000067",
+          "legacy_score_delta": -0.0165,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 108,
+          "window_id": "p000044",
+          "control_clip_id": "c000310",
+          "assisted_clip_id": "c000081",
+          "legacy_score_delta": -0.004,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 115,
+          "window_id": "p000046",
+          "control_clip_id": "c000122",
+          "assisted_clip_id": "c000121",
+          "legacy_score_delta": -0.0005,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 116,
+          "window_id": "p000046",
+          "control_clip_id": "c000214",
+          "assisted_clip_id": "c000122",
+          "legacy_score_delta": -0.0077,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 120,
+          "window_id": "p000049",
+          "control_clip_id": "c000188",
+          "assisted_clip_id": "c000187",
+          "legacy_score_delta": -0.0305,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 122,
+          "window_id": "w000008",
+          "control_clip_id": "c000175",
+          "assisted_clip_id": "c000030",
+          "legacy_score_delta": -0.0002,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 124,
+          "window_id": "w000011",
+          "control_clip_id": "c000028",
+          "assisted_clip_id": "c000142",
+          "legacy_score_delta": -0.0075,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 125,
+          "window_id": "w000013",
+          "control_clip_id": "c000241",
+          "assisted_clip_id": "c000028",
+          "legacy_score_delta": -0.0137,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 127,
+          "window_id": "w000020",
+          "control_clip_id": "c000046",
+          "assisted_clip_id": "c000116",
+          "legacy_score_delta": -0.0111,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 130,
+          "window_id": "w000032",
+          "control_clip_id": "c000052",
+          "assisted_clip_id": "c000006",
+          "legacy_score_delta": -0.0114,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 133,
+          "window_id": "w000041",
+          "control_clip_id": "c000026",
+          "assisted_clip_id": "c000001",
+          "legacy_score_delta": -0.0298,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 134,
+          "window_id": "w000045",
+          "control_clip_id": "c000190",
+          "assisted_clip_id": "c000026",
+          "legacy_score_delta": -0.0059,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 136,
+          "window_id": "w000049",
+          "control_clip_id": "c000018",
+          "assisted_clip_id": "c000008",
+          "legacy_score_delta": -0.2194,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 139,
+          "window_id": "w000058",
+          "control_clip_id": "c000054",
+          "assisted_clip_id": "c000234",
+          "legacy_score_delta": -0.1151,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 141,
+          "window_id": "w000068",
+          "control_clip_id": "c000068",
+          "assisted_clip_id": "c000208",
+          "legacy_score_delta": -0.0259,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 143,
+          "window_id": "w000074",
+          "control_clip_id": "c000215",
+          "assisted_clip_id": "c000039",
+          "legacy_score_delta": -0.0381,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 144,
+          "window_id": "w000075",
+          "control_clip_id": "c000348",
+          "assisted_clip_id": "c000215",
+          "legacy_score_delta": -0.0042,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 146,
+          "window_id": "w000077",
+          "control_clip_id": "c000005",
+          "assisted_clip_id": "c000045",
+          "legacy_score_delta": -0.0366,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 147,
+          "window_id": "w000079",
+          "control_clip_id": "c000131",
+          "assisted_clip_id": "c000005",
+          "legacy_score_delta": -0.017,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 149,
+          "window_id": "w000083",
+          "control_clip_id": "c000111",
+          "assisted_clip_id": "c000055",
+          "legacy_score_delta": -0.0956,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 150,
+          "window_id": "w000085",
+          "control_clip_id": "c000243",
+          "assisted_clip_id": "c000111",
+          "legacy_score_delta": -0.0072,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 153,
+          "window_id": "w000088",
+          "control_clip_id": "c000118",
+          "assisted_clip_id": "c000145",
+          "legacy_score_delta": -0.0211,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 154,
+          "window_id": "w000089",
+          "control_clip_id": "c000063",
+          "assisted_clip_id": "c000118",
+          "legacy_score_delta": -0.0009,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 156,
+          "window_id": "w000092",
+          "control_clip_id": "c000085",
+          "assisted_clip_id": "c000245",
+          "legacy_score_delta": -0.0486,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 158,
+          "window_id": "w000099",
+          "control_clip_id": "c000277",
+          "assisted_clip_id": "c000058",
+          "legacy_score_delta": -0.0793,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 161,
+          "window_id": "w000102",
+          "control_clip_id": "c000132",
+          "assisted_clip_id": "c000014",
+          "legacy_score_delta": -0.008,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 162,
+          "window_id": "w000105",
+          "control_clip_id": "c000200",
+          "assisted_clip_id": "c000132",
+          "legacy_score_delta": -0.0421,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 164,
+          "window_id": "w000108",
+          "control_clip_id": "c000069",
+          "assisted_clip_id": "c000037",
+          "legacy_score_delta": -0.0522,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 167,
+          "window_id": "w000111",
+          "control_clip_id": "c000072",
+          "assisted_clip_id": "c000021",
+          "legacy_score_delta": -0.0699,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 170,
+          "window_id": "w000126",
+          "control_clip_id": "c000004",
+          "assisted_clip_id": "c000011",
+          "legacy_score_delta": -0.0157,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 171,
+          "window_id": "w000130",
+          "control_clip_id": "c000115",
+          "assisted_clip_id": "c000004",
+          "legacy_score_delta": -0.0316,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 173,
+          "window_id": "w000133",
+          "control_clip_id": "c000174",
+          "assisted_clip_id": "c000043",
+          "legacy_score_delta": -0.0813,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 175,
+          "window_id": "w000136",
+          "control_clip_id": "c000031",
+          "assisted_clip_id": "c000003",
+          "legacy_score_delta": -0.1825,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 177,
+          "window_id": "w000137",
+          "control_clip_id": "c000203",
+          "assisted_clip_id": "c000177",
+          "legacy_score_delta": -0.1281,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 178,
+          "window_id": "w000138",
+          "control_clip_id": "c000015",
+          "assisted_clip_id": "c000203",
+          "legacy_score_delta": -0.048,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 180,
+          "window_id": "w000142",
+          "control_clip_id": "c000307",
+          "assisted_clip_id": "c000270",
+          "legacy_score_delta": -0.0749,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 181,
+          "window_id": "w000144",
+          "control_clip_id": "c000034",
+          "assisted_clip_id": "c000307",
+          "legacy_score_delta": -0.143,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 183,
+          "window_id": "w000147",
+          "control_clip_id": "c000332",
+          "assisted_clip_id": "c000272",
+          "legacy_score_delta": -0.006,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 184,
+          "window_id": "w000148",
+          "control_clip_id": "c000016",
+          "assisted_clip_id": "c000332",
+          "legacy_score_delta": -0.1893,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 185,
+          "window_id": "w000149",
+          "control_clip_id": "c000033",
+          "assisted_clip_id": "c000016",
+          "legacy_score_delta": -0.104,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 187,
+          "window_id": "w000151",
+          "control_clip_id": "c000108",
+          "assisted_clip_id": "c000009",
+          "legacy_score_delta": -0.2634,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 189,
+          "window_id": "w000153",
+          "control_clip_id": "c000124",
+          "assisted_clip_id": "c000029",
+          "legacy_score_delta": -0.0848,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 191,
+          "window_id": "w000156",
+          "control_clip_id": "c000057",
+          "assisted_clip_id": "c000123",
+          "legacy_score_delta": -0.1987,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 194,
+          "window_id": "w000161",
+          "control_clip_id": "c000041",
+          "assisted_clip_id": "c000139",
+          "legacy_score_delta": -0.0912,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 197,
+          "window_id": "w000164",
+          "control_clip_id": "c000050",
+          "assisted_clip_id": "c000127",
+          "legacy_score_delta": -0.2544,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 199,
+          "window_id": "w000166",
+          "control_clip_id": "c000073",
+          "assisted_clip_id": "c000204",
+          "legacy_score_delta": -0.1097,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 200,
+          "window_id": "w000166",
+          "control_clip_id": "c000044",
+          "assisted_clip_id": "c000129",
+          "legacy_score_delta": -0.1326,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 202,
+          "window_id": "w000169",
+          "control_clip_id": "c000074",
+          "assisted_clip_id": "c000073",
+          "legacy_score_delta": -0.3121,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 204,
+          "window_id": "w000170",
+          "control_clip_id": "c000042",
+          "assisted_clip_id": "c000051",
+          "legacy_score_delta": -0.0265,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 205,
+          "window_id": "w000170",
+          "control_clip_id": "c000084",
+          "assisted_clip_id": "c000042",
+          "legacy_score_delta": -0.0152,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 207,
+          "window_id": "w000172",
+          "control_clip_id": "c000012",
+          "assisted_clip_id": "c000084",
+          "legacy_score_delta": -0.2423,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 209,
+          "window_id": "w000173",
+          "control_clip_id": "c000104",
+          "assisted_clip_id": "c000094",
+          "legacy_score_delta": -0.0577,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 210,
+          "window_id": "w000174",
+          "control_clip_id": "c000013",
+          "assisted_clip_id": "c000086",
+          "legacy_score_delta": -0.239,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 212,
+          "window_id": "w000176",
+          "control_clip_id": "c000130",
+          "assisted_clip_id": "c000103",
+          "legacy_score_delta": -0.1037,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 215,
+          "window_id": "w000198",
+          "control_clip_id": "c000155",
+          "assisted_clip_id": "c000104",
+          "legacy_score_delta": -0.129,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 217,
+          "window_id": "w000201",
+          "control_clip_id": "c000106",
+          "assisted_clip_id": "c000044",
+          "legacy_score_delta": -0.0433,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 219,
+          "window_id": "w000204",
+          "control_clip_id": "c000020",
+          "assisted_clip_id": "c000155",
+          "legacy_score_delta": -0.016,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 220,
+          "window_id": "w000206",
+          "control_clip_id": "c000107",
+          "assisted_clip_id": "c000020",
+          "legacy_score_delta": -0.0159,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 223,
+          "window_id": "w000210",
+          "control_clip_id": "c000169",
+          "assisted_clip_id": "c000035",
+          "legacy_score_delta": -0.0649,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 224,
+          "window_id": "w000211",
+          "control_clip_id": "c000172",
+          "assisted_clip_id": "c000107",
+          "legacy_score_delta": -0.0485,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 225,
+          "window_id": "w000212",
+          "control_clip_id": "c000010",
+          "assisted_clip_id": "c000157",
+          "legacy_score_delta": -0.1028,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 233,
+          "window_id": "w000229",
+          "control_clip_id": "c000220",
+          "assisted_clip_id": "c000172",
+          "legacy_score_delta": -0.0077,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 234,
+          "window_id": "w000230",
+          "control_clip_id": "c000230",
+          "assisted_clip_id": "c000219",
+          "legacy_score_delta": -0.0099,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 239,
+          "window_id": "w000235",
+          "control_clip_id": "c000242",
+          "assisted_clip_id": "c000240",
+          "legacy_score_delta": -0.0267,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 242,
+          "window_id": "w000238",
+          "control_clip_id": "c000244",
+          "assisted_clip_id": "c000242",
+          "legacy_score_delta": -0.0037,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 245,
+          "window_id": "w000240",
+          "control_clip_id": "c000246",
+          "assisted_clip_id": "c000244",
+          "legacy_score_delta": -0.0119,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 253,
+          "window_id": "w000249",
+          "control_clip_id": "c000137",
+          "assisted_clip_id": "c000135",
+          "legacy_score_delta": -0.0004,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 255,
+          "window_id": "w000251",
+          "control_clip_id": "c000264",
+          "assisted_clip_id": "c000239",
+          "legacy_score_delta": -0.0474,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 257,
+          "window_id": "w000252",
+          "control_clip_id": "c000256",
+          "assisted_clip_id": "c000255",
+          "legacy_score_delta": -0.0021,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 258,
+          "window_id": "w000253",
+          "control_clip_id": "c000266",
+          "assisted_clip_id": "c000265",
+          "legacy_score_delta": -0.0678,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 259,
+          "window_id": "w000254",
+          "control_clip_id": "c000274",
+          "assisted_clip_id": "c000266",
+          "legacy_score_delta": -0.0169,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 267,
+          "window_id": "w000279",
+          "control_clip_id": "c000141",
+          "assisted_clip_id": "c000138",
+          "legacy_score_delta": -0.0018,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 270,
+          "window_id": "w000282",
+          "control_clip_id": "c000292",
+          "assisted_clip_id": "c000290",
+          "legacy_score_delta": -0.0039,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 273,
+          "window_id": "w000284",
+          "control_clip_id": "c000304",
+          "assisted_clip_id": "c000291",
+          "legacy_score_delta": -0.0024,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 276,
+          "window_id": "w000288",
+          "control_clip_id": "c000311",
+          "assisted_clip_id": "c000306",
+          "legacy_score_delta": -0.0023,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 277,
+          "window_id": "w000289",
+          "control_clip_id": "c000283",
+          "assisted_clip_id": "c000280",
+          "legacy_score_delta": -0.0005,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 281,
+          "window_id": "w000298",
+          "control_clip_id": "c000326",
+          "assisted_clip_id": "c000345",
+          "legacy_score_delta": -0.0007,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        }
+      ],
+      "schedule_file": "assisted_015_schedule.json"
+    },
+    {
+      "variant_id": "assisted_020",
+      "mode": "SEMANTIC_ASSISTED",
+      "weight": 0.2,
+      "mapping_count": 282,
+      "placements_changed": 191,
+      "placements_unchanged": 91,
+      "semantic_placement_count": 235,
+      "semantic_placement_coverage": 0.833333,
+      "performance_aggregate_fallback_count": 53,
+      "boundary_bridge_semantic_placement_count": 111,
+      "text_bridge_semantic_placement_count": 65,
+      "exact_direct_semantic_placement_count": 6,
+      "mean_selected_semantic_similarity": 0.865236,
+      "mean_legacy_candidate_score": 0.802062,
+      "mean_compatibility": {
+        "performance": 0.64623,
+        "duration": 0.859076,
+        "speaker": 0.47264,
+        "visual": 1.0,
+        "completeness": 0.971451
+      },
+      "unique_donor_count": 282,
+      "maximum_donor_reuse": 1,
+      "conflict_count": 51,
+      "conflicts": [
+        {
+          "placement_index": 40,
+          "window_id": "p000010",
+          "control_clip_id": "c000224",
+          "assisted_clip_id": "c000315",
+          "semantic_delta": 0.008833,
+          "compatibility_regressions": {
+            "performance": -0.0002
+          }
+        },
+        {
+          "placement_index": 58,
+          "window_id": "p000017",
+          "control_clip_id": "c000117",
+          "assisted_clip_id": "c000141",
+          "semantic_delta": 0.024474,
+          "compatibility_regressions": {
+            "performance": -0.0018
+          }
+        },
+        {
+          "placement_index": 86,
+          "window_id": "p000031",
+          "control_clip_id": "c000147",
+          "assisted_clip_id": "c000302",
+          "semantic_delta": 0.030535,
+          "compatibility_regressions": {
+            "performance": -0.0059
+          }
+        },
+        {
+          "placement_index": 94,
+          "window_id": "p000033",
+          "control_clip_id": "c000123",
+          "assisted_clip_id": "c000253",
+          "semantic_delta": 0.035408,
+          "compatibility_regressions": {
+            "performance": -0.2225,
+            "speaker": -0.9125
+          }
+        },
+        {
+          "placement_index": 96,
+          "window_id": "p000035",
+          "control_clip_id": "c000082",
+          "assisted_clip_id": "c000309",
+          "semantic_delta": 0.011992,
+          "compatibility_regressions": {
+            "performance": -0.0009
+          }
+        },
+        {
+          "placement_index": 100,
+          "window_id": "p000038",
+          "control_clip_id": "c000303",
+          "assisted_clip_id": "c000311",
+          "semantic_delta": 0.030375,
+          "compatibility_regressions": {
+            "performance": -0.0001
+          }
+        },
+        {
+          "placement_index": 101,
+          "window_id": "p000038",
+          "control_clip_id": "c000095",
+          "assisted_clip_id": "c000312",
+          "semantic_delta": 0.014675,
+          "compatibility_regressions": {
+            "performance": -0.0486
+          }
+        },
+        {
+          "placement_index": 103,
+          "window_id": "p000041",
+          "control_clip_id": "c000288",
+          "assisted_clip_id": "c000305",
+          "semantic_delta": 0.011444,
+          "compatibility_regressions": {
+            "performance": -0.1128
+          }
+        },
+        {
+          "placement_index": 121,
+          "window_id": "p000049",
+          "control_clip_id": "c000030",
+          "assisted_clip_id": "c000188",
+          "semantic_delta": 0.034712,
+          "compatibility_regressions": {
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 122,
+          "window_id": "w000008",
+          "control_clip_id": "c000175",
+          "assisted_clip_id": "c000030",
+          "semantic_delta": 0.91832,
+          "compatibility_regressions": {
+            "performance": -0.0314
+          }
+        },
+        {
+          "placement_index": 124,
+          "window_id": "w000011",
+          "control_clip_id": "c000028",
+          "assisted_clip_id": "c000142",
+          "semantic_delta": 0.009675,
+          "compatibility_regressions": {
+            "performance": -0.1281,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 125,
+          "window_id": "w000013",
+          "control_clip_id": "c000241",
+          "assisted_clip_id": "c000028",
+          "semantic_delta": 0.014808,
+          "compatibility_regressions": {
+            "duration": -0.0244
+          }
+        },
+        {
+          "placement_index": 127,
+          "window_id": "w000020",
+          "control_clip_id": "c000046",
+          "assisted_clip_id": "c000116",
+          "semantic_delta": 0.010954,
+          "compatibility_regressions": {
+            "performance": -0.0907,
+            "duration": -0.015,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 129,
+          "window_id": "w000028",
+          "control_clip_id": "c000006",
+          "assisted_clip_id": "c000211",
+          "semantic_delta": 0.002037,
+          "compatibility_regressions": {
+            "performance": -0.2589,
+            "speaker": -0.5166,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 132,
+          "window_id": "w000037",
+          "control_clip_id": "c000001",
+          "assisted_clip_id": "c000128",
+          "semantic_delta": 0.914637,
+          "compatibility_regressions": {
+            "performance": -0.3033,
+            "speaker": -0.5166,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 135,
+          "window_id": "w000048",
+          "control_clip_id": "c000008",
+          "assisted_clip_id": "c000190",
+          "semantic_delta": 0.009083,
+          "compatibility_regressions": {
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 136,
+          "window_id": "w000049",
+          "control_clip_id": "c000018",
+          "assisted_clip_id": "c000008",
+          "semantic_delta": 0.921006,
+          "compatibility_regressions": {
+            "performance": -0.1326,
+            "duration": -0.3333
+          }
+        },
+        {
+          "placement_index": 138,
+          "window_id": "w000057",
+          "control_clip_id": "c000234",
+          "assisted_clip_id": "c000198",
+          "semantic_delta": 0.938397,
+          "compatibility_regressions": {
+            "performance": -0.0966,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 141,
+          "window_id": "w000068",
+          "control_clip_id": "c000068",
+          "assisted_clip_id": "c000208",
+          "semantic_delta": 0.944245,
+          "compatibility_regressions": {
+            "performance": -0.0767,
+            "duration": -0.0629,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 149,
+          "window_id": "w000083",
+          "control_clip_id": "c000111",
+          "assisted_clip_id": "c000055",
+          "semantic_delta": 0.004925,
+          "compatibility_regressions": {
+            "performance": -0.0103,
+            "duration": -0.0783
+          }
+        },
+        {
+          "placement_index": 150,
+          "window_id": "w000085",
+          "control_clip_id": "c000243",
+          "assisted_clip_id": "c000111",
+          "semantic_delta": 0.936494,
+          "compatibility_regressions": {
+            "performance": -0.0739,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 153,
+          "window_id": "w000088",
+          "control_clip_id": "c000118",
+          "assisted_clip_id": "c000145",
+          "semantic_delta": 0.005941,
+          "compatibility_regressions": {
+            "duration": -0.0822
+          }
+        },
+        {
+          "placement_index": 155,
+          "window_id": "w000091",
+          "control_clip_id": "c000245",
+          "assisted_clip_id": "c000063",
+          "semantic_delta": 0.947792,
+          "compatibility_regressions": {
+            "performance": -0.0563
+          }
+        },
+        {
+          "placement_index": 157,
+          "window_id": "w000094",
+          "control_clip_id": "c000058",
+          "assisted_clip_id": "c000085",
+          "semantic_delta": 0.010559,
+          "compatibility_regressions": {
+            "speaker": -0.035
+          }
+        },
+        {
+          "placement_index": 158,
+          "window_id": "w000099",
+          "control_clip_id": "c000277",
+          "assisted_clip_id": "c000058",
+          "semantic_delta": 0.009484,
+          "compatibility_regressions": {
+            "performance": -0.0949,
+            "speaker": -0.475
+          }
+        },
+        {
+          "placement_index": 159,
+          "window_id": "w000100",
+          "control_clip_id": "c000113",
+          "assisted_clip_id": "c000277",
+          "semantic_delta": 0.003003,
+          "compatibility_regressions": {
+            "performance": -0.0172
+          }
+        },
+        {
+          "placement_index": 163,
+          "window_id": "w000107",
+          "control_clip_id": "c000037",
+          "assisted_clip_id": "c000200",
+          "semantic_delta": 0.015524,
+          "compatibility_regressions": {
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 164,
+          "window_id": "w000108",
+          "control_clip_id": "c000069",
+          "assisted_clip_id": "c000037",
+          "semantic_delta": 0.003438,
+          "compatibility_regressions": {
+            "duration": -0.0571
+          }
+        },
+        {
+          "placement_index": 167,
+          "window_id": "w000111",
+          "control_clip_id": "c000072",
+          "assisted_clip_id": "c000021",
+          "semantic_delta": 0.951561,
+          "compatibility_regressions": {
+            "performance": -0.2445,
+            "speaker": -0.7667
+          }
+        },
+        {
+          "placement_index": 172,
+          "window_id": "w000132",
+          "control_clip_id": "c000043",
+          "assisted_clip_id": "c000115",
+          "semantic_delta": 0.923425,
+          "compatibility_regressions": {
+            "performance": -0.1276,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 176,
+          "window_id": "w000136",
+          "control_clip_id": "c000177",
+          "assisted_clip_id": "c000031",
+          "semantic_delta": 0.009108,
+          "compatibility_regressions": {
+            "performance": -0.0796,
+            "speaker": -0.37
+          }
+        },
+        {
+          "placement_index": 178,
+          "window_id": "w000138",
+          "control_clip_id": "c000015",
+          "assisted_clip_id": "c000203",
+          "semantic_delta": 0.004166,
+          "compatibility_regressions": {
+            "performance": -0.0603,
+            "duration": -0.0933
+          }
+        },
+        {
+          "placement_index": 180,
+          "window_id": "w000142",
+          "control_clip_id": "c000307",
+          "assisted_clip_id": "c000270",
+          "semantic_delta": 0.942064,
+          "compatibility_regressions": {
+            "duration": -0.1054
+          }
+        },
+        {
+          "placement_index": 184,
+          "window_id": "w000148",
+          "control_clip_id": "c000016",
+          "assisted_clip_id": "c000332",
+          "semantic_delta": 0.010899,
+          "compatibility_regressions": {
+            "performance": -0.0896,
+            "duration": -0.2543
+          }
+        },
+        {
+          "placement_index": 186,
+          "window_id": "w000150",
+          "control_clip_id": "c000009",
+          "assisted_clip_id": "c000033",
+          "semantic_delta": 0.019038,
+          "compatibility_regressions": {
+            "performance": -0.1106,
+            "speaker": -0.5182
+          }
+        },
+        {
+          "placement_index": 189,
+          "window_id": "w000153",
+          "control_clip_id": "c000124",
+          "assisted_clip_id": "c000029",
+          "semantic_delta": 0.002441,
+          "compatibility_regressions": {
+            "duration": -0.1829
+          }
+        },
+        {
+          "placement_index": 190,
+          "window_id": "w000155",
+          "control_clip_id": "c000007",
+          "assisted_clip_id": "c000117",
+          "semantic_delta": 0.00911,
+          "compatibility_regressions": {
+            "performance": -0.2695,
+            "speaker": -0.547,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 191,
+          "window_id": "w000156",
+          "control_clip_id": "c000057",
+          "assisted_clip_id": "c000123",
+          "semantic_delta": 0.939521,
+          "compatibility_regressions": {
+            "performance": -0.1049,
+            "duration": -0.381
+          }
+        },
+        {
+          "placement_index": 200,
+          "window_id": "w000166",
+          "control_clip_id": "c000044",
+          "assisted_clip_id": "c000129",
+          "semantic_delta": 0.934377,
+          "compatibility_regressions": {
+            "performance": -0.1042,
+            "duration": -0.2948,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 206,
+          "window_id": "w000171",
+          "control_clip_id": "c000103",
+          "assisted_clip_id": "c000074",
+          "semantic_delta": 0.940784,
+          "compatibility_regressions": {
+            "performance": -0.1413
+          }
+        },
+        {
+          "placement_index": 210,
+          "window_id": "w000174",
+          "control_clip_id": "c000013",
+          "assisted_clip_id": "c000084",
+          "semantic_delta": 0.941704,
+          "compatibility_regressions": {
+            "performance": -0.0784,
+            "duration": -0.5
+          }
+        },
+        {
+          "placement_index": 213,
+          "window_id": "w000193",
+          "control_clip_id": "c000025",
+          "assisted_clip_id": "c000124",
+          "semantic_delta": 0.947908,
+          "compatibility_regressions": {
+            "performance": -0.1181,
+            "completeness": -0.1575
+          }
+        },
+        {
+          "placement_index": 223,
+          "window_id": "w000210",
+          "control_clip_id": "c000169",
+          "assisted_clip_id": "c000035",
+          "semantic_delta": 0.001547,
+          "compatibility_regressions": {
+            "duration": -0.0952
+          }
+        },
+        {
+          "placement_index": 225,
+          "window_id": "w000212",
+          "control_clip_id": "c000010",
+          "assisted_clip_id": "c000106",
+          "semantic_delta": 0.012802,
+          "compatibility_regressions": {
+            "performance": -0.1091,
+            "duration": -0.2355,
+            "speaker": -0.825
+          }
+        },
+        {
+          "placement_index": 236,
+          "window_id": "w000232",
+          "control_clip_id": "c000240",
+          "assisted_clip_id": "c000220",
+          "semantic_delta": 0.9392,
+          "compatibility_regressions": {
+            "performance": -0.1681
+          }
+        },
+        {
+          "placement_index": 256,
+          "window_id": "w000251",
+          "control_clip_id": "c000265",
+          "assisted_clip_id": "c000264",
+          "semantic_delta": 0.91656,
+          "compatibility_regressions": {
+            "performance": -0.0043
+          }
+        },
+        {
+          "placement_index": 259,
+          "window_id": "w000254",
+          "control_clip_id": "c000274",
+          "assisted_clip_id": "c000266",
+          "semantic_delta": 0.004088,
+          "compatibility_regressions": {
+            "performance": -0.0743,
+            "speaker": -0.4
+          }
+        },
+        {
+          "placement_index": 264,
+          "window_id": "w000267",
+          "control_clip_id": "c000140",
+          "assisted_clip_id": "c000137",
+          "semantic_delta": 0.004325,
+          "compatibility_regressions": {
+            "performance": -0.0018
+          }
+        },
+        {
+          "placement_index": 267,
+          "window_id": "w000279",
+          "control_clip_id": "c000141",
+          "assisted_clip_id": "c000138",
+          "semantic_delta": 0.002377,
+          "compatibility_regressions": {
+            "performance": -0.0045
+          }
+        },
+        {
+          "placement_index": 276,
+          "window_id": "w000288",
+          "control_clip_id": "c000311",
+          "assisted_clip_id": "c000306",
+          "semantic_delta": 0.947919,
+          "compatibility_regressions": {
+            "performance": -0.0334
+          }
+        },
+        {
+          "placement_index": 281,
+          "window_id": "w000298",
+          "control_clip_id": "c000326",
+          "assisted_clip_id": "c000345",
+          "semantic_delta": 0.010364,
+          "compatibility_regressions": {
+            "performance": -0.0748
+          }
+        }
+      ],
+      "legacy_score_tradeoff_count": 86,
+      "legacy_score_tradeoffs": [
+        {
+          "placement_index": 41,
+          "window_id": "p000011",
+          "control_clip_id": "c000315",
+          "assisted_clip_id": "c000154",
+          "legacy_score_delta": -0.0119,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 77,
+          "window_id": "p000027",
+          "control_clip_id": "c000126",
+          "assisted_clip_id": "c000143",
+          "legacy_score_delta": -0.0173,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 91,
+          "window_id": "p000033",
+          "control_clip_id": "c000251",
+          "assisted_clip_id": "c000250",
+          "legacy_score_delta": -0.0002,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 94,
+          "window_id": "p000033",
+          "control_clip_id": "c000123",
+          "assisted_clip_id": "c000253",
+          "legacy_score_delta": -0.0243,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 95,
+          "window_id": "p000034",
+          "control_clip_id": "c000081",
+          "assisted_clip_id": "c000110",
+          "legacy_score_delta": -0.0185,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 97,
+          "window_id": "p000035",
+          "control_clip_id": "c000261",
+          "assisted_clip_id": "c000310",
+          "legacy_score_delta": -0.0093,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 99,
+          "window_id": "p000037",
+          "control_clip_id": "c000302",
+          "assisted_clip_id": "c000262",
+          "legacy_score_delta": -0.0022,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 102,
+          "window_id": "p000040",
+          "control_clip_id": "c000305",
+          "assisted_clip_id": "c000314",
+          "legacy_score_delta": -0.0545,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 103,
+          "window_id": "p000041",
+          "control_clip_id": "c000288",
+          "assisted_clip_id": "c000305",
+          "legacy_score_delta": -0.0005,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 107,
+          "window_id": "p000043",
+          "control_clip_id": "c000309",
+          "assisted_clip_id": "c000067",
+          "legacy_score_delta": -0.0165,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 108,
+          "window_id": "p000044",
+          "control_clip_id": "c000310",
+          "assisted_clip_id": "c000169",
+          "legacy_score_delta": -0.0012,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 115,
+          "window_id": "p000046",
+          "control_clip_id": "c000122",
+          "assisted_clip_id": "c000121",
+          "legacy_score_delta": -0.0005,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 116,
+          "window_id": "p000046",
+          "control_clip_id": "c000214",
+          "assisted_clip_id": "c000122",
+          "legacy_score_delta": -0.0077,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 120,
+          "window_id": "p000049",
+          "control_clip_id": "c000188",
+          "assisted_clip_id": "c000187",
+          "legacy_score_delta": -0.0305,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 122,
+          "window_id": "w000008",
+          "control_clip_id": "c000175",
+          "assisted_clip_id": "c000030",
+          "legacy_score_delta": -0.0002,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 124,
+          "window_id": "w000011",
+          "control_clip_id": "c000028",
+          "assisted_clip_id": "c000142",
+          "legacy_score_delta": -0.0075,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 125,
+          "window_id": "w000013",
+          "control_clip_id": "c000241",
+          "assisted_clip_id": "c000028",
+          "legacy_score_delta": -0.0137,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 127,
+          "window_id": "w000020",
+          "control_clip_id": "c000046",
+          "assisted_clip_id": "c000116",
+          "legacy_score_delta": -0.0111,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 130,
+          "window_id": "w000032",
+          "control_clip_id": "c000052",
+          "assisted_clip_id": "c000006",
+          "legacy_score_delta": -0.0114,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 133,
+          "window_id": "w000041",
+          "control_clip_id": "c000026",
+          "assisted_clip_id": "c000001",
+          "legacy_score_delta": -0.0298,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 134,
+          "window_id": "w000045",
+          "control_clip_id": "c000190",
+          "assisted_clip_id": "c000026",
+          "legacy_score_delta": -0.0059,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 136,
+          "window_id": "w000049",
+          "control_clip_id": "c000018",
+          "assisted_clip_id": "c000008",
+          "legacy_score_delta": -0.2194,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 139,
+          "window_id": "w000058",
+          "control_clip_id": "c000054",
+          "assisted_clip_id": "c000234",
+          "legacy_score_delta": -0.1151,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 141,
+          "window_id": "w000068",
+          "control_clip_id": "c000068",
+          "assisted_clip_id": "c000208",
+          "legacy_score_delta": -0.0259,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 143,
+          "window_id": "w000074",
+          "control_clip_id": "c000215",
+          "assisted_clip_id": "c000039",
+          "legacy_score_delta": -0.0381,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 144,
+          "window_id": "w000075",
+          "control_clip_id": "c000348",
+          "assisted_clip_id": "c000215",
+          "legacy_score_delta": -0.0042,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 146,
+          "window_id": "w000077",
+          "control_clip_id": "c000005",
+          "assisted_clip_id": "c000045",
+          "legacy_score_delta": -0.0366,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 147,
+          "window_id": "w000079",
+          "control_clip_id": "c000131",
+          "assisted_clip_id": "c000005",
+          "legacy_score_delta": -0.017,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 149,
+          "window_id": "w000083",
+          "control_clip_id": "c000111",
+          "assisted_clip_id": "c000055",
+          "legacy_score_delta": -0.0956,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 150,
+          "window_id": "w000085",
+          "control_clip_id": "c000243",
+          "assisted_clip_id": "c000111",
+          "legacy_score_delta": -0.0072,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 153,
+          "window_id": "w000088",
+          "control_clip_id": "c000118",
+          "assisted_clip_id": "c000145",
+          "legacy_score_delta": -0.0211,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 154,
+          "window_id": "w000089",
+          "control_clip_id": "c000063",
+          "assisted_clip_id": "c000118",
+          "legacy_score_delta": -0.0009,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 156,
+          "window_id": "w000092",
+          "control_clip_id": "c000085",
+          "assisted_clip_id": "c000245",
+          "legacy_score_delta": -0.0486,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 158,
+          "window_id": "w000099",
+          "control_clip_id": "c000277",
+          "assisted_clip_id": "c000058",
+          "legacy_score_delta": -0.0793,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 161,
+          "window_id": "w000102",
+          "control_clip_id": "c000132",
+          "assisted_clip_id": "c000014",
+          "legacy_score_delta": -0.008,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 162,
+          "window_id": "w000105",
+          "control_clip_id": "c000200",
+          "assisted_clip_id": "c000132",
+          "legacy_score_delta": -0.0421,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 164,
+          "window_id": "w000108",
+          "control_clip_id": "c000069",
+          "assisted_clip_id": "c000037",
+          "legacy_score_delta": -0.0522,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 167,
+          "window_id": "w000111",
+          "control_clip_id": "c000072",
+          "assisted_clip_id": "c000021",
+          "legacy_score_delta": -0.0699,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 170,
+          "window_id": "w000126",
+          "control_clip_id": "c000004",
+          "assisted_clip_id": "c000011",
+          "legacy_score_delta": -0.0157,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 171,
+          "window_id": "w000130",
+          "control_clip_id": "c000115",
+          "assisted_clip_id": "c000004",
+          "legacy_score_delta": -0.0316,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 173,
+          "window_id": "w000133",
+          "control_clip_id": "c000174",
+          "assisted_clip_id": "c000043",
+          "legacy_score_delta": -0.0813,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 175,
+          "window_id": "w000136",
+          "control_clip_id": "c000031",
+          "assisted_clip_id": "c000003",
+          "legacy_score_delta": -0.1825,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 177,
+          "window_id": "w000137",
+          "control_clip_id": "c000203",
+          "assisted_clip_id": "c000177",
+          "legacy_score_delta": -0.1281,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 178,
+          "window_id": "w000138",
+          "control_clip_id": "c000015",
+          "assisted_clip_id": "c000203",
+          "legacy_score_delta": -0.048,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 180,
+          "window_id": "w000142",
+          "control_clip_id": "c000307",
+          "assisted_clip_id": "c000270",
+          "legacy_score_delta": -0.0749,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 181,
+          "window_id": "w000144",
+          "control_clip_id": "c000034",
+          "assisted_clip_id": "c000307",
+          "legacy_score_delta": -0.143,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 183,
+          "window_id": "w000147",
+          "control_clip_id": "c000332",
+          "assisted_clip_id": "c000272",
+          "legacy_score_delta": -0.006,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 184,
+          "window_id": "w000148",
+          "control_clip_id": "c000016",
+          "assisted_clip_id": "c000332",
+          "legacy_score_delta": -0.1893,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 185,
+          "window_id": "w000149",
+          "control_clip_id": "c000033",
+          "assisted_clip_id": "c000016",
+          "legacy_score_delta": -0.104,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 187,
+          "window_id": "w000151",
+          "control_clip_id": "c000108",
+          "assisted_clip_id": "c000009",
+          "legacy_score_delta": -0.2634,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 189,
+          "window_id": "w000153",
+          "control_clip_id": "c000124",
+          "assisted_clip_id": "c000029",
+          "legacy_score_delta": -0.0848,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 191,
+          "window_id": "w000156",
+          "control_clip_id": "c000057",
+          "assisted_clip_id": "c000123",
+          "legacy_score_delta": -0.1987,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 194,
+          "window_id": "w000161",
+          "control_clip_id": "c000041",
+          "assisted_clip_id": "c000139",
+          "legacy_score_delta": -0.0912,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 197,
+          "window_id": "w000164",
+          "control_clip_id": "c000050",
+          "assisted_clip_id": "c000127",
+          "legacy_score_delta": -0.2544,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 199,
+          "window_id": "w000166",
+          "control_clip_id": "c000073",
+          "assisted_clip_id": "c000204",
+          "legacy_score_delta": -0.1097,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 200,
+          "window_id": "w000166",
+          "control_clip_id": "c000044",
+          "assisted_clip_id": "c000129",
+          "legacy_score_delta": -0.1326,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 202,
+          "window_id": "w000169",
+          "control_clip_id": "c000074",
+          "assisted_clip_id": "c000073",
+          "legacy_score_delta": -0.3121,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 204,
+          "window_id": "w000170",
+          "control_clip_id": "c000042",
+          "assisted_clip_id": "c000051",
+          "legacy_score_delta": -0.0265,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 205,
+          "window_id": "w000170",
+          "control_clip_id": "c000084",
+          "assisted_clip_id": "c000042",
+          "legacy_score_delta": -0.0152,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 207,
+          "window_id": "w000172",
+          "control_clip_id": "c000012",
+          "assisted_clip_id": "c000082",
+          "legacy_score_delta": -0.2624,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 209,
+          "window_id": "w000173",
+          "control_clip_id": "c000104",
+          "assisted_clip_id": "c000083",
+          "legacy_score_delta": -0.0463,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 210,
+          "window_id": "w000174",
+          "control_clip_id": "c000013",
+          "assisted_clip_id": "c000084",
+          "legacy_score_delta": -0.2309,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 212,
+          "window_id": "w000176",
+          "control_clip_id": "c000130",
+          "assisted_clip_id": "c000094",
+          "legacy_score_delta": -0.1357,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 215,
+          "window_id": "w000198",
+          "control_clip_id": "c000155",
+          "assisted_clip_id": "c000086",
+          "legacy_score_delta": -0.129,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 217,
+          "window_id": "w000201",
+          "control_clip_id": "c000106",
+          "assisted_clip_id": "c000044",
+          "legacy_score_delta": -0.0433,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 220,
+          "window_id": "w000206",
+          "control_clip_id": "c000107",
+          "assisted_clip_id": "c000020",
+          "legacy_score_delta": -0.0159,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 223,
+          "window_id": "w000210",
+          "control_clip_id": "c000169",
+          "assisted_clip_id": "c000035",
+          "legacy_score_delta": -0.0649,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 224,
+          "window_id": "w000211",
+          "control_clip_id": "c000172",
+          "assisted_clip_id": "c000156",
+          "legacy_score_delta": -0.0653,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 225,
+          "window_id": "w000212",
+          "control_clip_id": "c000010",
+          "assisted_clip_id": "c000106",
+          "legacy_score_delta": -0.0694,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 231,
+          "window_id": "w000225",
+          "control_clip_id": "c000219",
+          "assisted_clip_id": "c000157",
+          "legacy_score_delta": -0.0044,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 233,
+          "window_id": "w000229",
+          "control_clip_id": "c000220",
+          "assisted_clip_id": "c000172",
+          "legacy_score_delta": -0.0077,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 234,
+          "window_id": "w000230",
+          "control_clip_id": "c000230",
+          "assisted_clip_id": "c000219",
+          "legacy_score_delta": -0.0099,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 239,
+          "window_id": "w000235",
+          "control_clip_id": "c000242",
+          "assisted_clip_id": "c000240",
+          "legacy_score_delta": -0.0267,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 242,
+          "window_id": "w000238",
+          "control_clip_id": "c000244",
+          "assisted_clip_id": "c000242",
+          "legacy_score_delta": -0.0037,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 245,
+          "window_id": "w000240",
+          "control_clip_id": "c000246",
+          "assisted_clip_id": "c000244",
+          "legacy_score_delta": -0.0119,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 253,
+          "window_id": "w000249",
+          "control_clip_id": "c000137",
+          "assisted_clip_id": "c000135",
+          "legacy_score_delta": -0.0004,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 255,
+          "window_id": "w000251",
+          "control_clip_id": "c000264",
+          "assisted_clip_id": "c000239",
+          "legacy_score_delta": -0.0474,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 257,
+          "window_id": "w000252",
+          "control_clip_id": "c000256",
+          "assisted_clip_id": "c000255",
+          "legacy_score_delta": -0.0021,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 258,
+          "window_id": "w000253",
+          "control_clip_id": "c000266",
+          "assisted_clip_id": "c000265",
+          "legacy_score_delta": -0.0678,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 259,
+          "window_id": "w000254",
+          "control_clip_id": "c000274",
+          "assisted_clip_id": "c000266",
+          "legacy_score_delta": -0.0169,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 267,
+          "window_id": "w000279",
+          "control_clip_id": "c000141",
+          "assisted_clip_id": "c000138",
+          "legacy_score_delta": -0.0018,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 270,
+          "window_id": "w000282",
+          "control_clip_id": "c000292",
+          "assisted_clip_id": "c000290",
+          "legacy_score_delta": -0.0039,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 273,
+          "window_id": "w000284",
+          "control_clip_id": "c000304",
+          "assisted_clip_id": "c000291",
+          "legacy_score_delta": -0.0024,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 276,
+          "window_id": "w000288",
+          "control_clip_id": "c000311",
+          "assisted_clip_id": "c000306",
+          "legacy_score_delta": -0.0023,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 277,
+          "window_id": "w000289",
+          "control_clip_id": "c000283",
+          "assisted_clip_id": "c000280",
+          "legacy_score_delta": -0.0005,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 281,
+          "window_id": "w000298",
+          "control_clip_id": "c000326",
+          "assisted_clip_id": "c000345",
+          "legacy_score_delta": -0.0007,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        }
+      ],
+      "schedule_file": "assisted_020_schedule.json"
+    }
+  ],
+  "render_selection": [
+    "control",
+    "report_only"
+  ],
+  "render_selection_state": "NO_CONFLICT_FREE_CHANGED_ASSISTED_CANDIDATE",
+  "render_selection_diagnostics": {
+    "changed_assisted_variant_count": 4,
+    "conflict_free_changed_variant_count": 0,
+    "fully_covered_conflict_free_changed_variant_count": 0,
+    "pareto_guarded_variant_present": false,
+    "pareto_guarded_admission_count": 0,
+    "render_nomination_requires_full_selected_placement_semantic_coverage": true
+  },
+  "semantic_opportunity_audit": {
+    "audit_version": "semantic_pareto_opportunity_v1",
+    "audited_destination_performance_count": 41,
+    "legal_candidate_count": 3140,
+    "higher_semantic_candidate_count": 1003,
+    "placement_valid_candidate_count": 818,
+    "fully_covered_candidate_count": 818,
+    "local_pareto_safe_opportunity_count": 2,
+    "globally_admissible_opportunity_count": 1,
+    "pareto_safe_opportunity_count": 1,
+    "opportunities": [
+      {
+        "destination_performance_id": "p000026",
+        "displaced_source_performance_id": "p000032",
+        "source_performance_id": "p000091",
+        "clip_ids": [
+          "c000147"
+        ],
+        "selected_source_evidence_scope": "direct_passage",
+        "candidate_source_evidence_scope": "direct_passage",
+        "destination_evidence_scope": "direct_passage",
+        "selected_mapping_count": 1,
+        "selected_direct_semantic_mapping_count": 1,
+        "candidate_mapping_count": 1,
+        "candidate_direct_semantic_mapping_count": 1,
+        "semantic_delta": 0.037747,
+        "legacy_performance_score_delta": 0.0,
+        "scheduler_tier_delta": 0,
+        "soft_constraint_count_delta": 0,
+        "compatibility_deltas": {
+          "legacy_mapping": 0.0158,
+          "performance": 0.0,
+          "duration": 0.0,
+          "speaker": 0.0,
+          "visual": 0.0,
+          "completeness": 0.0
+        },
+        "two_cycle_swap": {
+          "audit_version": "semantic_two_cycle_swap_v1",
+          "state": "REJECTED",
+          "reasons": [
+            "protected_axis_regression"
+          ],
+          "target_destination_performance_id": "p000031",
+          "replacement_source_performance_id": "p000032",
+          "replacement_clip_ids": [
+            "c000110"
+          ],
+          "selected_mapping_count": 1,
+          "selected_direct_semantic_mapping_count": 1,
+          "candidate_mapping_count": 1,
+          "candidate_direct_semantic_mapping_count": 1,
+          "net_semantic_delta": 0.015289,
+          "legacy_performance_score_delta": 0.0,
+          "scheduler_tier_delta": 0,
+          "soft_constraint_count_delta": 0,
+          "compatibility_deltas": {
+            "legacy_mapping": -0.0158,
+            "performance": 0.0,
+            "duration": 0.0,
+            "speaker": 0.0,
+            "visual": 0.0,
+            "completeness": 0.0
+          }
+        },
+        "global_source_reuse_conflict": true,
+        "conflicting_destination_performance_ids": [
+          "p000031"
+        ],
+        "global_admission_mode": "NONE",
+        "globally_admissible": false
+      },
+      {
+        "destination_performance_id": "p000012",
+        "displaced_source_performance_id": "p000015",
+        "source_performance_id": "p000016",
+        "clip_ids": [
+          "c000095"
+        ],
+        "selected_source_evidence_scope": "direct_passage",
+        "candidate_source_evidence_scope": "direct_passage",
+        "destination_evidence_scope": "direct_passage",
+        "selected_mapping_count": 1,
+        "selected_direct_semantic_mapping_count": 0,
+        "candidate_mapping_count": 1,
+        "candidate_direct_semantic_mapping_count": 1,
+        "semantic_delta": 0.007956,
+        "legacy_performance_score_delta": 0.0,
+        "scheduler_tier_delta": 0,
+        "soft_constraint_count_delta": 0,
+        "compatibility_deltas": {
+          "legacy_mapping": 0.0,
+          "performance": 0.0,
+          "duration": 0.0,
+          "speaker": 0.0,
+          "visual": 0.0,
+          "completeness": 0.0
+        },
+        "two_cycle_swap": {
+          "audit_version": "semantic_two_cycle_swap_v1",
+          "state": "ADMISSIBLE_TWO_CYCLE",
+          "reasons": [],
+          "target_destination_performance_id": "p000040",
+          "replacement_source_performance_id": "p000015",
+          "replacement_clip_ids": [
+            "c000094"
+          ],
+          "selected_mapping_count": 1,
+          "selected_direct_semantic_mapping_count": 1,
+          "candidate_mapping_count": 1,
+          "candidate_direct_semantic_mapping_count": 0,
+          "net_semantic_delta": 0.011819,
+          "legacy_performance_score_delta": 0.0,
+          "scheduler_tier_delta": 0,
+          "soft_constraint_count_delta": 0,
+          "compatibility_deltas": {
+            "legacy_mapping": 0.0,
+            "performance": 0.0,
+            "duration": 0.0,
+            "speaker": 0.0,
+            "visual": 0.0,
+            "completeness": 0.0
+          }
+        },
+        "global_source_reuse_conflict": true,
+        "conflicting_destination_performance_ids": [
+          "p000040"
+        ],
+        "global_admission_mode": "TWO_CYCLE",
+        "globally_admissible": true
+      }
+    ],
+    "claim_scope": "Report-only counterfactual evidence with full-schedule source-reuse admission; the selected schedule is unchanged."
+  },
+  "pareto_guarded_admission": {
+    "policy": "DIRECT_EVIDENCE_GLOBAL_PARETO_V1",
+    "admission_count": 0,
+    "admissions": [],
+    "schedule_variant": null
+  },
+  "claim_scope": "Schedule-only transcript-vector screening. Render quality and human preference are not established."
+}

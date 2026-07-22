@@ -61,7 +61,10 @@ def validate_filter_output(
         row
         for row in classified_silent_intervals
         if row["exceeds_dead_air_limit"]
-        and row["classification"] != "SOURCE_AUTHORED_AUDIO_BEHAVIOR"
+        and row["classification"] not in {
+            "SOURCE_AUTHORED_AUDIO_BEHAVIOR",
+            "FILTER_AUTHORED_CARRIER_SPEECH_SUPPRESSION",
+        }
     ]
     render_duration = float(schedule.get("render_duration") or audio.get("duration") or 0.0)
     mapped_duration = covered_speech_duration(enabled, [])
@@ -79,9 +82,15 @@ def validate_filter_output(
         "replacement_audio_has_no_sustained_dead_air": (
             not dead_air_intervals
             or (
-                schedule.get("audio_continuity_policy") == "FULL_SOURCE_SOUNDTRACK_BED"
+                schedule.get("audio_continuity_policy") in {
+                    "FULL_SOURCE_SOUNDTRACK_BED",
+                    "MULTI_SOURCE_NON_SPEECH_BED_WITH_CARRIER_SPEECH_SUPPRESSION",
+                }
                 and not unexplained_dead_air
             )
+        ),
+        "triangle_carrier_speech_suppression_verified": _triangle_carrier_speech_suppression_verified(
+            filter_id, schedule
         ),
         "audio_stream_verified": bool(audio_stream),
         "contract_invariants_pass": bool(invariants) and all(row["passed"] for row in invariants),
@@ -129,6 +138,7 @@ def validate_filter_output(
             "audio_activity_basis": str(schedule.get("audio_activity_basis") or "rendered_mix"),
             "audio_stream": audio_stream,
             "provenance": provenance,
+            "carrier_speech_suppression": dict(schedule.get("audio_suppression") or schedule.get("audio_ducking") or {}),
         },
         "invariants": invariants,
     }
@@ -146,6 +156,7 @@ def _classify_silent_intervals(
 ) -> list[dict[str, Any]]:
     """Distinguish source-authored quiet from seams and unmapped output gaps by provenance."""
     segments = list(schedule.get("montage_audio_segments", []))
+    carrier_regions = list(schedule.get("carrier_speech_regions", []))
     classified = []
     for interval in silent_intervals:
         start = float(interval.get("start", 0.0) or 0.0)
@@ -162,7 +173,17 @@ def _classify_silent_intervals(
             if float(segment.get("output_start", 0.0)) < end
             and float(segment.get("output_end", 0.0)) > start
         ]
-        if containing:
+        suppressed_carrier = [
+            region
+            for region in carrier_regions
+            if float(region.get("start", 0.0)) <= start
+            and end <= float(region.get("start", 0.0)) + float(region.get("duration", 0.0))
+        ]
+        if suppressed_carrier:
+            classification = "FILTER_AUTHORED_CARRIER_SPEECH_SUPPRESSION"
+            basis = "INTERVAL_CONTAINED_IN_DECLARED_CARRIER_SPEECH_REGION"
+            moment_ids = [str(suppressed_carrier[0].get("id"))]
+        elif containing:
             classification = "SOURCE_AUTHORED_AUDIO_BEHAVIOR"
             basis = "INTERVAL_CONTAINED_IN_CONTINUOUS_SELECTED_SOURCE_SOUNDTRACK"
             moment_ids = [str(containing[0].get("moment_id"))]
@@ -182,6 +203,27 @@ def _classify_silent_intervals(
             "exceeds_dead_air_limit": float(interval.get("duration", 0.0) or 0.0) > MAXIMUM_DEAD_AIR_SECONDS,
         })
     return classified
+
+
+def _triangle_carrier_speech_suppression_verified(filter_id: str, schedule: dict[str, Any]) -> bool:
+    if filter_id != "multiworld.triangle":
+        return True
+    regions = list(schedule.get("carrier_speech_regions", []))
+    rendered = dict(schedule.get("audio_suppression") or schedule.get("audio_ducking") or {})
+    return (
+        schedule.get("carrier_speech_policy") == "HARD_SUPPRESS_ALL_DETECTED_CARRIER_SPEECH"
+        and bool(regions)
+        and all(
+            float(row.get("duration", 0.0) or 0.0) > 0
+            and float(row.get("start", -1.0) or 0.0) >= 0
+            for row in regions
+        )
+        and rendered.get("strategy") == "hard_carrier_speech_suppression_v1"
+        and rendered.get("suppression_mode") == "hard_mute"
+        and rendered.get("suppression_floor") == "DIGITAL_SILENCE"
+        and int(rendered.get("requested_region_count", -1)) == len(regions)
+        and int(rendered.get("rendered_region_count", 0)) > 0
+    )
 
 
 def _schedule_quality(schedule: dict[str, Any]) -> dict[str, Any]:

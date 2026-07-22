@@ -177,7 +177,7 @@ def test_write_report_files_creates_json_txt_and_csv(tmp_path: Path) -> None:
     assert "source speaker status: fallback via heuristic_timing_v1" in report_text
     assert "destination speaker status: strong via pyannote.audio" in report_text
     assert "speaker-map placements: 1 / 1" in report_text
-    assert "duck dB: -28.0" in report_text
+    assert "duck dB: None" in report_text
     assert "total problems: 2" in report_text
     assert "Editorial Highlights" in report_text
     assert "evaluated performances: 3" in report_text
@@ -192,8 +192,9 @@ def test_write_report_files_creates_json_txt_and_csv(tmp_path: Path) -> None:
     assert report["schedule"]["alignment"]["speech_snapped_mappings"] == 1
     assert report["schedule"]["alignment"]["unique_speech_slots"] == 1
     assert report["schedule"]["alignment"]["merged_duck_region_count"] == 1
-    assert report["soundtrack_bed"]["continuous_original_bed"] is True
-    assert report["soundtrack_bed"]["duck_db"] == -28.0
+    assert report["soundtrack_bed"]["continuous_original_bed"] is False
+    assert report["soundtrack_bed"]["suppression_mode"] == "hard_mute"
+    assert report["soundtrack_bed"]["duck_db"] is None
     assert report["speakers"]["source_dialogue"]["speaker_count"] == 2
     assert report["speakers"]["source_diagnostics"]["fallback_used"] is True
     assert "source speaker diarization used fallback" in report["warnings"][-1]

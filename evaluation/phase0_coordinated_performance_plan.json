@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "plan_version": "bounded_corpus_calibration_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T18:30:10+00:00",
+  "execution_revision": "phase0_coordinated_performance_v1",
+  "tier": "extended",
+  "excerpt_plan": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\standard_excerpt_plan.json",
+  "maximum_cases": 1,
+  "case_count": 1,
+  "planned_input_duration_seconds": 59.0,
+  "source_files_read_only": true,
+  "resume_required": true,
+  "strategy_isolation_of": {
+    "plan": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\standard_calibration_plan.json",
+    "report": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\output\\corpus_calibration\\standard\\calibration_report.json",
+    "coverage": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\phase0_rendered_strategy_coverage_20260721.json"
+  },
+  "unfilled_target_strategies": [],
+  "cases": [
+    {
+      "case_id": "phase0_coordinated_performance_expanded_source",
+      "purpose": "coordinated_performance_group_survival",
+      "destination": {
+        "excerpt_id": "excerpt_0017_14ca8b86",
+        "media_id": "media_ec484f1580b5975e",
+        "filename": "Robocop Cartoon - Ep 02.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Robocop Cartoon - Ep 02.mp4",
+        "content_type": "animation",
+        "category": "animation_dialogue",
+        "start": 30.0,
+        "end": 45.0,
+        "duration": 15.0,
+        "analysis_signature": "d9904593bce39418b785edcd79ff5790ce72a2d79a41be5837b83018c2cfd96b",
+        "evidence": {
+          "performance_id": "p000002",
+          "dialogue_density": 1.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "phase0_expanded_performance_source",
+        "media_id": "media_1879b4266b454698",
+        "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "content_type": "animation",
+        "category": "expanded_rapid_speaker_exchange",
+        "start": 548.0,
+        "end": 592.0,
+        "duration": 44.0,
+        "analysis_signature": "23d12da2e189ef42cd7a2b5d6e8edd74b44b55dc088bf4d372eddc1b3d429c7b",
+        "evidence": {
+          "performance_id": "p000015",
+          "dialogue_density": 1.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "performance_mismatch",
+        "coordinated_neighborhood"
+      ],
+      "status": "planned",
+      "case_signature": "e0634f0956731fcfab34f66b0e22c9c8660d9596a5a4a64c7aa1bea9af75bf9a",
+      "target_failure_category": "performance_mismatch",
+      "target_repair_strategy": "repair_performance_structure",
+      "strategy_isolation_source_case_id": "case_003_animation_visual_role"
+    }
+  ]
+}

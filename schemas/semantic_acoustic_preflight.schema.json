@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "semantic_acoustic_preflight",
+  "type": "object",
+  "required": [
+    "schema_version", "preflight_version", "creation_timestamp", "screen_signature",
+    "semantic_variant", "preflight_signature", "whisper_configuration",
+    "minimum_word_coverage", "changed_mapping_count", "transcription_cache_state",
+    "verification", "mapping_decisions", "preflight_state", "rejection_count", "claim_scope"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "preflight_version": {"const": "semantic_acoustic_preflight_v1"},
+    "minimum_word_coverage": {"type": "number", "minimum": 0, "maximum": 1},
+    "changed_mapping_count": {"type": "integer", "minimum": 0},
+    "preflight_state": {"enum": ["ACCEPTED_FOR_RENDER", "REJECTED_ACOUSTIC_INTEGRITY", "NO_CHANGED_MAPPINGS"]},
+    "rejection_count": {"type": "integer", "minimum": 0},
+    "mapping_decisions": {"type": "array", "items": {"type": "object", "required": ["clip_id", "state", "reasons"]}}
+  }
+}

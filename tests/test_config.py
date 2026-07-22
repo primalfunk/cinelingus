@@ -22,12 +22,18 @@ def test_config_overrides_paths_and_mode_without_partial_input_controls(tmp_path
     assert config.visual_min_shot_duration == 0.5
     assert config.shot_boundary_mode == "soft"
     assert config.cinematic_filter == "balanced"
-    assert config.transcription_mode == "balanced"
-    assert config.whisper_model == "small"
+    assert config.transcription_mode == "quality"
+    assert config.whisper_model == "medium"
     assert config.whisper_language == "en"
     assert config.speaker_diarization_backend == "pyannote"
     assert config.speaker_diarization_model == "pyannote/speaker-diarization-community-1"
     assert config.speaker_diarization_device == "auto"
+    assert config.scheduling_mode == "performance_fill"
+    assert config.dialogue_suppression == "hard_mute"
+    assert config.semantic_mode == "SEMANTIC_DISABLED"
+    assert config.semantic_weight == 0.0
+    assert config.suppression_padding == 0.04
+    assert config.verify_voice_residue is True
     assert not hasattr(config, "quick_test_seconds")
     assert not hasattr(config, "target_duration_seconds")
 
@@ -45,9 +51,12 @@ def test_config_advanced_overrides() -> None:
         target_lufs=-20.0,
         audio_fade_duration=0.03,
         original_duck_db=-24.0,
+        dialogue_suppression="duck",
         cinematic_filter="rhythm",
         speaker_diarization_backend="pyannote",
         speaker_diarization_device="cpu",
+        semantic_mode="SEMANTIC_ASSISTED",
+        semantic_weight=0.15,
     )
 
     assert updated.shot_boundary_mode == "strict"
@@ -59,15 +68,35 @@ def test_config_advanced_overrides() -> None:
     assert updated.target_lufs == -20.0
     assert updated.audio_fade_duration == 0.03
     assert updated.original_duck_db == -24.0
+    assert updated.dialogue_suppression == "duck"
     assert updated.cinematic_filter == "rhythm"
     assert updated.speaker_diarization_backend == "pyannote"
     assert updated.speaker_diarization_device == "cpu"
+    assert updated.semantic_mode == "SEMANTIC_ASSISTED"
+    assert updated.semantic_weight == 0.15
+
+
+def test_config_rejects_semantic_weight_outside_assisted_mode() -> None:
+    import pytest
+
+    config = load_config(Path.cwd())
+    with pytest.raises(ValueError, match="Only SEMANTIC_ASSISTED"):
+        config.with_overrides(semantic_mode="SEMANTIC_REPORT_ONLY", semantic_weight=0.1)
 
 
 def test_cli_accepts_output_dir_override(tmp_path: Path) -> None:
     args = build_parser().parse_args(["--output-dir", str(tmp_path / "chosen"), "inspect"])
 
     assert args.output_dir == tmp_path / "chosen"
+
+
+def test_cli_accepts_semantic_experiment_overrides() -> None:
+    args = build_parser().parse_args([
+        "--semantic-mode", "SEMANTIC_ASSISTED", "--semantic-weight", "0.15", "schedule"
+    ])
+
+    assert args.semantic_mode == "SEMANTIC_ASSISTED"
+    assert args.semantic_weight == 0.15
 
 
 def test_cli_rejects_removed_quick_prefix_option() -> None:

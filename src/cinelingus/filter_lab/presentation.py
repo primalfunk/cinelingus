@@ -4,6 +4,7 @@ from typing import Any
 
 from .models import FilterDefinition, RelationshipDimension
 from .multiworld import film_label
+from .public_catalog import PublicApparatusEntry, default_public_apparatus_catalog
 from .registry import FilterRegistry, default_filter_registry
 
 
@@ -72,7 +73,7 @@ def film_selector_spec(definition: FilterDefinition, selected_count: int | None 
 def detail_text(definition: FilterDefinition, *, registry: FilterRegistry | None = None) -> str:
     registry = registry or default_filter_registry()
     family = registry.family(definition.family_id)
-    status = "Available" if definition.implemented else "This filter is not yet implemented"
+    status = "Available" if definition.implemented else "Dormant apparatus"
     maximum = "unlimited" if definition.maximum_films is None else str(definition.maximum_films)
     requirements = f"{definition.minimum_films}-{maximum} films; Film A is the anchor"
     limitations = " ".join(definition.known_limitations)

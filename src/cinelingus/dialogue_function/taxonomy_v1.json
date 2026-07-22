@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "taxonomy_version": "dialogue_function_taxonomy_v1",
+  "scope": "Observable conversational function of a SpeechPassage; excludes emotion, character identity, relationship, scene meaning, genre, irony, comedy, and narrative purpose.",
+  "language_scope": "English calibration only until reviewed multilingual evidence exists.",
+  "axes": {
+    "surface_form": {
+      "multi_label": false,
+      "labels": [
+        {"label_id":"surface_form.declarative","name":"declarative","definition":"A proposition or statement presented as information.","inclusion_rules":["Grammatically or pragmatically statement-like."],"exclusion_rules":["Do not infer truth or narrative importance."],"positive_examples":["The door is open."],"counterexamples":["Is the door open?"]},
+        {"label_id":"surface_form.interrogative","name":"interrogative","definition":"An utterance formed as a question.","inclusion_rules":["Question punctuation or clear interrogative construction."],"exclusion_rules":["Rhetorical intent is not inferred."],"positive_examples":["Where are you going?"],"counterexamples":["Tell me where you are going."]},
+        {"label_id":"surface_form.imperative","name":"imperative","definition":"An utterance grammatically directing an action.","inclusion_rules":["Bare-verb directive or explicit instruction."],"exclusion_rules":["Politeness does not remove imperative form."],"positive_examples":["Close the door."],"counterexamples":["The door is closed."]},
+        {"label_id":"surface_form.exclamatory","name":"exclamatory","definition":"A lexical utterance marked as an exclamation or emphatic reaction.","inclusion_rules":["Lexical content with explicit exclamatory form."],"exclusion_rules":["Do not label non-lexical vocalizations here."],"positive_examples":["What a disaster!"],"counterexamples":["Ah!"]},
+        {"label_id":"surface_form.fragment","name":"fragment","definition":"A lexical but syntactically incomplete passage.","inclusion_rules":["Incomplete phrase still carrying lexical content."],"exclusion_rules":["Do not treat ASR truncation as deliberate without evidence."],"positive_examples":["If only we could..."],"counterexamples":["We could leave now."]},
+        {"label_id":"surface_form.non_lexical","name":"non_lexical","definition":"A vocalization without stable lexical propositional content.","inclusion_rules":["Laughter, sighs, grunts, or isolated vocal particles."],"exclusion_rules":["Short lexical acknowledgments remain lexical."],"positive_examples":["Uh..."],"counterexamples":["Okay."]},
+        {"label_id":"surface_form.unknown","name":"unknown","definition":"Surface form cannot be determined from available evidence.","inclusion_rules":["Empty, corrupt, or irreducibly noisy transcript."],"exclusion_rules":["Do not use merely because an utterance is short."],"positive_examples":["[inaudible]"],"counterexamples":["No."]}
+      ]
+    },
+    "interaction_function": {
+      "multi_label": true,
+      "labels": [
+        {"label_id":"interaction_function.provide_information","name":"provide_information","definition":"Supplies factual or asserted information.","inclusion_rules":["Observable informational statement."],"exclusion_rules":["No truth or relevance judgment."],"positive_examples":["The train leaves at six."],"counterexamples":["When does the train leave?"]},
+        {"label_id":"interaction_function.request_information","name":"request_information","definition":"Seeks information from another participant.","inclusion_rules":["Direct or conventional information question."],"exclusion_rules":["Exclude action requests phrased as questions."],"positive_examples":["What time is it?"],"counterexamples":["Could you open the door?"]},
+        {"label_id":"interaction_function.request_action","name":"request_action","definition":"Asks another participant to perform an action.","inclusion_rules":["Polite or indirect action request."],"exclusion_rules":["Separate forceful commands when clear."],"positive_examples":["Please sit down."],"counterexamples":["Where did you sit?"]},
+        {"label_id":"interaction_function.acknowledgment","name":"acknowledgment","definition":"Signals receipt or recognition without necessarily agreeing.","inclusion_rules":["Okay, understood, I see."],"exclusion_rules":["Do not equate receipt with agreement."],"positive_examples":["I understand."],"counterexamples":["You're right."]},
+        {"label_id":"interaction_function.agreement","name":"agreement","definition":"Expresses alignment with a proposition or proposal.","inclusion_rules":["Explicit assent or concurrence."],"exclusion_rules":["Exclude neutral acknowledgment."],"positive_examples":["Yes, you're right."],"counterexamples":["I heard you."]},
+        {"label_id":"interaction_function.disagreement","name":"disagreement","definition":"Rejects or contests a proposition.","inclusion_rules":["Explicit contradiction or dissent."],"exclusion_rules":["Action refusal may co-occur but is distinct."],"positive_examples":["No, that isn't true."],"counterexamples":["I won't do it."]},
+        {"label_id":"interaction_function.refusal","name":"refusal","definition":"Declines a request, offer, or proposed action.","inclusion_rules":["Explicit unwillingness or rejection of action."],"exclusion_rules":["Do not infer an unstated prior request."],"positive_examples":["I won't help you."],"counterexamples":["That claim is false."]},
+        {"label_id":"interaction_function.command","name":"command","definition":"Directs another participant to act with directive force.","inclusion_rules":["Unmitigated directive."],"exclusion_rules":["Polite requests default to request_action."],"positive_examples":["Get out now."],"counterexamples":["Would you leave, please?"]},
+        {"label_id":"interaction_function.warning","name":"warning","definition":"Alerts another participant to danger or harmful consequence.","inclusion_rules":["Explicit danger, caution, or impending harm."],"exclusion_rules":["Do not infer danger from dramatic context alone."],"positive_examples":["Watch out!"],"counterexamples":["Look over there."]},
+        {"label_id":"interaction_function.accusation","name":"accusation","definition":"Attributes wrongdoing or blame to another participant.","inclusion_rules":["Explicit attribution of fault."],"exclusion_rules":["Negative evaluation without blamed agency is insufficient."],"positive_examples":["You stole it."],"counterexamples":["It is missing."]},
+        {"label_id":"interaction_function.defense","name":"defense","definition":"Denies blame or justifies oneself or another against an accusation.","inclusion_rules":["Explicit denial or defensive justification."],"exclusion_rules":["General explanation without defensive context."],"positive_examples":["I didn't take it."],"counterexamples":["It was taken yesterday."]},
+        {"label_id":"interaction_function.explanation","name":"explanation","definition":"Provides a reason, cause, or clarifying account.","inclusion_rules":["Causal or justificatory construction."],"exclusion_rules":["Mere information without explanatory relation."],"positive_examples":["I left because it was late."],"counterexamples":["I left at six."]},
+        {"label_id":"interaction_function.reassurance","name":"reassurance","definition":"Attempts to reduce concern by asserting safety or adequacy.","inclusion_rules":["Explicit don't worry or it will be okay form."],"exclusion_rules":["Emotion itself is not classified."],"positive_examples":["Don't worry, you're safe."],"counterexamples":["You seem worried."]},
+        {"label_id":"interaction_function.confession","name":"confession","definition":"Admits one's own concealed or blameworthy act or fact.","inclusion_rules":["Explicit self-attributed admission."],"exclusion_rules":["Ordinary self-report is not confession."],"positive_examples":["I admit I broke it."],"counterexamples":["I opened the window."]},
+        {"label_id":"interaction_function.threat","name":"threat","definition":"Communicates intended harm or adverse consequence contingent on another.","inclusion_rules":["Explicit prospective harm or coercive consequence."],"exclusion_rules":["Warnings about independent danger are not threats."],"positive_examples":["Do that and I'll hurt you."],"counterexamples":["That road will hurt you."]},
+        {"label_id":"interaction_function.revelation","name":"revelation","definition":"Presents information explicitly framed as newly disclosed or previously hidden.","inclusion_rules":["The truth is, it was me; it turns out."],"exclusion_rules":["Novelty must be linguistically or contextually supported."],"positive_examples":["The truth is, I knew all along."],"counterexamples":["I know the answer."]},
+        {"label_id":"interaction_function.interruption","name":"interruption","definition":"Attempts to halt, seize, or redirect the current conversational floor.","inclusion_rules":["Wait, hold on, let me finish."],"exclusion_rules":["Requires bounded conversational context unless lexically explicit."],"positive_examples":["Wait—listen to me."],"counterexamples":["I waited outside."]},
+        {"label_id":"interaction_function.deflection","name":"deflection","definition":"Avoids the current issue by dismissing or redirecting it.","inclusion_rules":["Never mind, anyway, let's not discuss that."],"exclusion_rules":["Ordinary topic transition is insufficient."],"positive_examples":["Never mind—what about tomorrow?"],"counterexamples":["Tomorrow is Tuesday."]},
+        {"label_id":"interaction_function.narration","name":"narration","definition":"Recounts events as a temporally organized account.","inclusion_rules":["Then, afterward, once upon a time, or sustained event recounting."],"exclusion_rules":["Single factual statement is not necessarily narration."],"positive_examples":["Then we crossed the river and returned home."],"counterexamples":["The river is wide."]},
+        {"label_id":"interaction_function.greeting_or_address","name":"greeting_or_address","definition":"Opens contact, says farewell, or explicitly calls for attention by address.","inclusion_rules":["Hello, goodbye, hey plus addressee."],"exclusion_rules":["A name inside a proposition is insufficient."],"positive_examples":["Hello, Doctor."],"counterexamples":["The doctor arrived."]},
+        {"label_id":"interaction_function.clarification_or_repair","name":"clarification_or_repair","definition":"Corrects, repeats, or requests clarification of prior discourse.","inclusion_rules":["I mean, rather, what do you mean, pardon?"],"exclusion_rules":["General explanation without repair relation."],"positive_examples":["I mean Tuesday, not Monday."],"counterexamples":["Tuesday comes next."]},
+        {"label_id":"interaction_function.discourse_management","name":"discourse_management","definition":"Manages speaking order, topic, or conversational procedure.","inclusion_rules":["Let me finish, moving on, first of all."],"exclusion_rules":["Do not infer from editing or shot order."],"positive_examples":["Let's return to the first point."],"counterexamples":["The first point is correct."]},
+        {"label_id":"interaction_function.evaluation_or_reaction","name":"evaluation_or_reaction","definition":"Expresses an observable assessment or lexical reaction.","inclusion_rules":["That's good, terrible, amazing; lexical reaction."],"exclusion_rules":["Do not infer internal emotion."],"positive_examples":["That's wonderful!"],"counterexamples":["The event happened."]},
+        {"label_id":"interaction_function.unknown","name":"unknown","definition":"Function cannot be determined from available evidence.","inclusion_rules":["Insufficient, corrupt, or context-dependent evidence."],"exclusion_rules":["Use a supported label when evidence is adequate."],"positive_examples":["[inaudible]"],"counterexamples":["Where are you?"]},
+        {"label_id":"interaction_function.ambiguous","name":"ambiguous","definition":"Two or more materially different functions remain comparably supported.","inclusion_rules":["Record competing labels and preserve ambiguity."],"exclusion_rules":["Ordinary multi-function utterances are not automatically ambiguous."],"positive_examples":["Can you leave?"],"counterexamples":["Please leave."]},
+        {"label_id":"interaction_function.not_applicable","name":"not_applicable","definition":"Interaction function does not apply to the available non-lexical evidence.","inclusion_rules":["Pure non-lexical vocalization without supported interaction role."],"exclusion_rules":["Do not use for lexical interjections or unavailable transcripts."],"positive_examples":["[sigh]"],"counterexamples":["Okay."]}
+      ]
+    },
+    "sequence_position": {
+      "multi_label": false,
+      "requires_ordered_context": true,
+      "labels": [
+        {"label_id":"sequence_position.initiating","name":"initiating","definition":"Begins a supported conversational sequence.","inclusion_rules":["Valid ordered structure places it at sequence start."],"exclusion_rules":["Do not infer from semantics alone."],"positive_examples":["First ordered turn asking a question."],"counterexamples":["A question with unknown order."]},
+        {"label_id":"sequence_position.responding","name":"responding","definition":"Directly responds to a preceding supported passage or turn.","inclusion_rules":["Valid order plus response evidence."],"exclusion_rules":["Adjacency alone is insufficient when relation is unclear."],"positive_examples":["Yes, after an ordered question."],"counterexamples":["Isolated yes."]},
+        {"label_id":"sequence_position.continuing","name":"continuing","definition":"Continues an already established contribution or sequence.","inclusion_rules":["Ordered evidence supports continuation rather than response."],"exclusion_rules":["Do not infer from conjunction alone."],"positive_examples":["Second ordered passage of one account."],"counterexamples":["Isolated sentence beginning and."]},
+        {"label_id":"sequence_position.closing","name":"closing","definition":"Closes a supported exchange or sequence.","inclusion_rules":["Ordered structure and closing form agree."],"exclusion_rules":["Do not infer from final timeline position alone."],"positive_examples":["Goodbye at the end of an ordered exchange."],"counterexamples":["Goodbye with no structural order."]},
+        {"label_id":"sequence_position.standalone","name":"standalone","definition":"A structurally supported passage outside an exchange sequence.","inclusion_rules":["Structure explicitly establishes isolation."],"exclusion_rules":["Missing structure means unavailable, not standalone."],"positive_examples":["Narration explicitly outside dialogue turns."],"counterexamples":["An unlinked passage in an incomplete artifact."]},
+        {"label_id":"sequence_position.unavailable","name":"unavailable","definition":"Ordered evidence is absent or insufficient.","inclusion_rules":["No valid DialogueTurn or ordered passage context."],"exclusion_rules":["Never fabricate position from vector similarity."],"positive_examples":["Passage from a FilmModel with no ordered turns."],"counterexamples":["Passage in a validated ordered exchange."]}
+      ]
+    }
+  },
+  "allowed_multi_label_combinations": {
+    "interaction_function": [
+      ["acknowledgment", "agreement"],
+      ["disagreement", "refusal"],
+      ["command", "warning"],
+      ["accusation", "request_information"],
+      ["defense", "explanation"],
+      ["greeting_or_address", "discourse_management"],
+      ["clarification_or_repair", "request_information"],
+      ["evaluation_or_reaction", "provide_information"]
+    ],
+    "policy": "Unlisted combinations require explicit reviewed evidence; unknown, ambiguous, and not_applicable are state labels and cannot co-occur with asserted functional labels."
+  },
+  "ambiguity_rules": [
+    "Use ambiguous only when distinct functions remain comparably supported after permitted context is considered.",
+    "Preserve candidate label confidences alongside ambiguous.",
+    "Do not collapse an allowed multi-function utterance into ambiguous."
+  ],
+  "abstention_rules": [
+    "Abstain when no non-state interaction label reaches the calibrated threshold.",
+    "Abstain on empty, inaudible, or irreducibly noisy lexical evidence.",
+    "Use sequence_position.unavailable whenever valid ordered structure is absent.",
+    "Low confidence must yield neutral scheduling influence."
+  ],
+  "annotation_guidance": [
+    "Annotate only functions observable from the supplied transcript and declared bounded context.",
+    "Record all genuinely co-present allowed functions.",
+    "Distinguish acknowledgment from agreement and warning from threat.",
+    "Mark transcript/audio disagreement in provenance rather than correcting ground truth silently.",
+    "Never infer emotion, character, relationship, scene meaning, irony, comedy, or narrative purpose."
+  ],
+  "migration_policy": {
+    "rule": "Any label addition, removal, merge, definition change, or combination-policy change requires a new taxonomy version and invalidates dependent classifications.",
+    "mapping_requirement": "A migration artifact must map every retired label to replacement, split, or explicit no-equivalent state.",
+    "backward_compatibility": "Older artifacts remain readable but cannot be mixed in one compatibility calculation."
+  }
+}

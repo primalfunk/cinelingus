@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from cinelingus.pipeline import Pipeline, _attach_performance_speech_windows, _speech_mute_regions
+from cinelingus.pipeline import Pipeline, _apply_hybrid_speech_mask, _attach_performance_speech_windows, _speech_mute_regions
 
 
 def test_render_preview_uses_selected_mapping_indices(monkeypatch, tmp_path: Path) -> None:
@@ -109,6 +109,170 @@ def test_translation_audio_render_is_dialogue_only(monkeypatch, tmp_path: Path) 
     assert calls["dialogue_only"] is True
 
 
+def test_translation_audio_render_runs_post_render_residue_verification(monkeypatch, tmp_path: Path) -> None:
+    config = type("Config", (), {
+        "output_dir": tmp_path / "output",
+        "render_sample_rate": 48000, "render_channels": 2, "target_lufs": -18.0,
+        "audio_fade_duration": 0.015, "original_duck_db": -28.0,
+        "dialogue_suppression": "hard_mute", "suppression_padding": 0.04,
+        "background_reconstruction": "neighboring_non_speech_with_adaptive_crossfades",
+        "verify_voice_residue": True, "speech_backend": "whisper",
+        "whisper_model": "medium", "whisper_language": "en", "transcription_mode": "quality",
+    })()
+    pipeline = object.__new__(Pipeline)
+    pipeline.config = config
+    pipeline.destination = type("Dest", (), {
+        "cache_dir": tmp_path / "cache", "media_path": tmp_path / "dest.mp4", "media_hash": "destination-hash",
+    })()
+    pipeline.logger = type("Logger", (), {"info": lambda self, message: None})()
+    pipeline.destination.cache_dir.mkdir(parents=True)
+    observed = {}
+
+    def fake_render(**kwargs):
+        kwargs["schedule"]["background_reconstruction_report"] = {"reconstructed_region_count": 1}
+        kwargs["output_path"].parent.mkdir(parents=True, exist_ok=True)
+        kwargs["output_path"].write_bytes(b"0" * 100)
+
+    def fake_transcribe(**kwargs):
+        observed["media_hash"] = kwargs["media_hash"]
+        return {"windows": []}
+
+    monkeypatch.setattr("cinelingus.pipeline.render_schedule_over_original_audio", fake_render)
+    monkeypatch.setattr("cinelingus.pipeline.transcribe_with_whisper", fake_transcribe)
+    schedule = {
+        "destination_speech_regions": [],
+        "mappings": [{"enabled": True, "destination_timestamp": 1.0, "planned_render_duration": 2.0}],
+    }
+
+    pipeline.render_audio_from_schedule(
+        schedule=schedule, dest_movie={"duration": 10.0}, force=True, persist_schedule=False,
+    )
+
+    assert observed["media_hash"]
+    assert schedule["voice_residue_verification"]["status"] == "INCONCLUSIVE"
+
+
+def test_translation_audio_render_corrects_and_reverifies_residue_once(monkeypatch, tmp_path: Path) -> None:
+    config = type("Config", (), {
+        "output_dir": tmp_path / "output",
+        "render_sample_rate": 48000, "render_channels": 2, "target_lufs": -18.0,
+        "audio_fade_duration": 0.015, "original_duck_db": -28.0,
+        "dialogue_suppression": "hard_mute", "suppression_padding": 0.04,
+        "background_reconstruction": "neighboring_non_speech_with_adaptive_crossfades",
+        "verify_voice_residue": True, "residue_correction_passes": 1, "residue_correction_padding": 0.12,
+        "speech_backend": "whisper", "whisper_model": "medium", "whisper_language": "en",
+        "transcription_mode": "quality",
+    })()
+    pipeline = object.__new__(Pipeline)
+    pipeline.config = config
+    pipeline.destination = type("Dest", (), {
+        "cache_dir": tmp_path / "cache", "media_path": tmp_path / "dest.mp4", "media_hash": "destination-hash",
+    })()
+    pipeline.logger = type("Logger", (), {"info": lambda self, message: None})()
+    pipeline.destination.cache_dir.mkdir(parents=True)
+    calls = {"renders": 0, "transcriptions": 0}
+
+    def fake_render(**kwargs):
+        calls["renders"] += 1
+        kwargs["schedule"]["background_reconstruction_report"] = {"reconstructed_region_count": 1}
+        kwargs["output_path"].parent.mkdir(parents=True, exist_ok=True)
+        kwargs["output_path"].write_bytes(bytes([calls["renders"]]) * 100)
+
+    def fake_transcribe(**_kwargs):
+        calls["transcriptions"] += 1
+        if calls["transcriptions"] == 1:
+            return {"windows": [{
+                "start": 1.0, "end": 2.0, "transcript": "bring the blue lantern downstairs", "confidence": 0.9,
+            }]}
+        return {"windows": []}
+
+    monkeypatch.setattr("cinelingus.pipeline.render_schedule_over_original_audio", fake_render)
+    monkeypatch.setattr("cinelingus.pipeline.transcribe_with_whisper", fake_transcribe)
+    schedule = {
+        "unmatched_policy": "suppress_original_dialogue",
+        "destination_speech_regions": [{
+            "id": "line", "start": 1.0, "end": 2.0, "duration": 1.0,
+            "transcript": "bring the blue lantern downstairs",
+        }],
+        "mappings": [],
+    }
+
+    pipeline.render_audio_from_schedule(
+        schedule=schedule, dest_movie={"duration": 3.0}, force=True, persist_schedule=False,
+    )
+
+    assert calls == {"renders": 2, "transcriptions": 2}
+    assert schedule["voice_residue_verification"]["status"] == "NONE_DETECTED"
+    assert schedule["residue_correction_report"]["completed_passes"] == 1
+    assert schedule["residue_correction_regions"][0]["source_kind"] == "post_render_residue_correction"
+
+
+def test_translation_audio_render_resumes_after_corrective_render_checkpoint(monkeypatch, tmp_path: Path) -> None:
+    config = type("Config", (), {
+        "output_dir": tmp_path / "output",
+        "render_sample_rate": 48000, "render_channels": 2, "target_lufs": -18.0,
+        "audio_fade_duration": 0.015, "original_duck_db": -28.0,
+        "dialogue_suppression": "hard_mute", "suppression_padding": 0.04,
+        "background_reconstruction": "neighboring_non_speech_with_adaptive_crossfades",
+        "verify_voice_residue": True, "residue_correction_passes": 1, "residue_correction_padding": 0.12,
+        "speech_backend": "whisper", "whisper_model": "medium", "whisper_language": "en",
+        "transcription_mode": "quality",
+    })()
+    pipeline = object.__new__(Pipeline)
+    pipeline.config = config
+    pipeline.destination = type("Dest", (), {
+        "cache_dir": tmp_path / "cache", "media_path": tmp_path / "dest.mp4", "media_hash": "destination-hash",
+    })()
+    pipeline.logger = type("Logger", (), {"info": lambda self, message: None})()
+    pipeline.destination.cache_dir.mkdir(parents=True)
+    calls = {"renders": 0, "transcriptions": 0}
+
+    def fake_render(**kwargs):
+        calls["renders"] += 1
+        kwargs["schedule"]["background_reconstruction_report"] = {"reconstructed_region_count": 1}
+        kwargs["output_path"].parent.mkdir(parents=True, exist_ok=True)
+        kwargs["output_path"].write_bytes(bytes([calls["renders"]]) * 100)
+
+    def interrupted_transcribe(**_kwargs):
+        calls["transcriptions"] += 1
+        if calls["transcriptions"] == 1:
+            return {"windows": [{
+                "start": 1.0, "end": 2.0, "transcript": "bring the blue lantern downstairs", "confidence": 0.9,
+            }]}
+        raise KeyboardInterrupt("simulated interruption after corrective render")
+
+    monkeypatch.setattr("cinelingus.pipeline.render_schedule_over_original_audio", fake_render)
+    monkeypatch.setattr("cinelingus.pipeline.transcribe_with_whisper", interrupted_transcribe)
+    schedule = {
+        "unmatched_policy": "suppress_original_dialogue",
+        "destination_speech_regions": [{
+            "id": "line", "start": 1.0, "end": 2.0, "duration": 1.0,
+            "transcript": "bring the blue lantern downstairs",
+        }],
+        "mappings": [],
+    }
+
+    try:
+        pipeline.render_audio_from_schedule(
+            schedule=schedule, dest_movie={"duration": 3.0}, force=True, persist_schedule=False,
+        )
+    except KeyboardInterrupt:
+        pass
+
+    checkpoint = config.output_dir / "residue_correction_checkpoint.json"
+    assert checkpoint.exists()
+    assert calls["renders"] == 2
+
+    monkeypatch.setattr("cinelingus.pipeline.transcribe_with_whisper", lambda **_kwargs: {"windows": []})
+    pipeline.render_audio_from_schedule(
+        schedule=schedule, dest_movie={"duration": 3.0}, force=True, persist_schedule=False,
+    )
+
+    assert calls["renders"] == 2
+    assert schedule["residue_correction_report"]["completed_passes"] == 1
+    assert schedule["residue_correction_report"]["passes"][0]["resumed_from_checkpoint"] is True
+
+
 def test_render_problem_region_previews_cuts_final_output(monkeypatch, tmp_path: Path) -> None:
     config = type(
         "Config",
@@ -170,6 +334,7 @@ def test_attach_performance_speech_windows_recovers_referenced_filtered_window()
             "usable": False,
             "reject_reason": "repeated_text",
             "confidence": 0.2,
+            "transcript": "Destination words retained for residue contrast.",
         }
     ]
 
@@ -178,6 +343,7 @@ def test_attach_performance_speech_windows_recovers_referenced_filtered_window()
     assert enriched[0]["speech_windows"][0]["id"] == "w_filtered"
     assert enriched[0]["speech_windows"][0]["source_kind"] == "recovered_filtered_speech_window"
     assert enriched[0]["speech_windows"][0]["recovered"] is True
+    assert enriched[0]["speech_windows"][0]["transcript"] == "Destination words retained for residue contrast."
 
 
 
@@ -213,6 +379,90 @@ def test_speech_mute_regions_prefer_snapped_speech_slots() -> None:
     assert regions == [
         {"start": 0.75, "duration": 1.5},
         {"start": 3.75, "duration": 1.5},
+    ]
+
+
+def test_hybrid_speech_mask_expands_boundaries_and_adds_trusted_diarization() -> None:
+    schedule = {
+        "unmatched_policy": "suppress_original_dialogue",
+        "destination_speech_regions": [{
+            "id": "whisper", "start": 1.0, "end": 2.0, "duration": 1.0, "confidence": 0.8,
+        }]
+    }
+
+    enriched = _apply_hybrid_speech_mask(
+        schedule,
+        acoustic_windows=[{"start": 0.9, "end": 2.5, "duration": 1.6}],
+        diarization_segments=[{"start": 4.0, "end": 5.0, "duration": 1.0, "speaker_id": "speaker_1", "confidence": 0.9}],
+    )
+
+    assert enriched["destination_speech_regions"][0]["start"] == 0.9
+    assert enriched["destination_speech_regions"][0]["end"] == 2.18
+    assert enriched["destination_speech_regions"][1]["source_kind"] == "trusted_diarization_speech_window"
+    assert enriched["speech_mask_report"]["acoustic_boundary_expansion_count"] == 1
+    assert enriched["speech_mask_report"]["trusted_diarization_region_count"] == 1
+
+
+def test_speech_mute_regions_expand_low_confidence_recovered_tails_more_aggressively() -> None:
+    schedule = {
+        "destination_speech_regions": [{
+            "id": "speech", "start": 2.0, "end": 2.4, "duration": 0.4,
+            "confidence": 0.5, "source_kind": "recovered_filtered_speech_window", "recovered": True,
+        }],
+        "mappings": [{
+            "enabled": True, "alignment_mode": "speech_window_snap",
+            "alignment_slot_start": 2.0, "alignment_slot_end": 2.4,
+            "alignment_source_window_ids": ["speech"],
+        }],
+    }
+
+    regions = _speech_mute_regions(schedule, padding=0.04, duration=5.0, adaptive=True)
+
+    assert regions == [{"start": 1.86, "duration": 0.77}]
+    report = schedule["suppression_padding_report"]
+    assert report["strategy"] == "confidence_aware_asymmetric_padding_v1"
+    assert report["regions"][0]["leading_padding"] == 0.14
+    assert report["regions"][0]["trailing_padding"] == 0.23
+
+
+def test_speech_mute_regions_honor_local_residue_repair_padding() -> None:
+    schedule = {
+        "unmatched_policy": "suppress_original_dialogue",
+        "destination_speech_regions": [{
+            "id": "speech", "start": 2.0, "end": 3.0, "duration": 1.0,
+            "confidence": 1.0, "source_kind": "detected_speech_window",
+        }],
+        "mappings": [{
+            "enabled": True, "destination_timestamp": 2.0, "planned_render_duration": 1.0,
+            "suppression_leading_padding": 0.12, "suppression_trailing_padding": 0.22,
+        }],
+    }
+
+    regions = _speech_mute_regions(schedule, padding=0.04, duration=5.0, adaptive=True)
+
+    assert regions == [{"start": 1.88, "duration": 1.34}]
+    report = schedule["suppression_padding_report"]
+    assert report["regions"][0]["leading_padding"] == 0.12
+    assert report["regions"][0]["trailing_padding"] == 0.22
+
+
+def test_speech_mute_regions_include_unmatched_destination_speech_under_hard_policy() -> None:
+    schedule = {
+        "unmatched_policy": "suppress_original_dialogue",
+        "destination_speech_regions": [
+            {"id": "matched", "start": 1.0, "end": 2.0, "duration": 1.0},
+            {"id": "unmatched", "start": 4.0, "end": 5.0, "duration": 1.0},
+        ],
+        "mappings": [{
+            "enabled": True,
+            "alignment_mode": "speech_window_snap",
+            "alignment_source_window_ids": ["matched"],
+        }],
+    }
+
+    assert _speech_mute_regions(schedule) == [
+        {"start": 1.0, "duration": 1.0},
+        {"start": 4.0, "duration": 1.0},
     ]
 
 

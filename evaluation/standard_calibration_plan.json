@@ -1,0 +1,259 @@
+{
+  "schema_version": "1.0",
+  "plan_version": "bounded_corpus_calibration_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T09:26:52+00:00",
+  "execution_revision": "rendered_failure_exploration_v1",
+  "tier": "standard",
+  "excerpt_plan": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\standard_excerpt_plan.json",
+  "maximum_cases": 5,
+  "case_count": 5,
+  "planned_input_duration_seconds": 219.28,
+  "source_files_read_only": true,
+  "resume_required": true,
+  "cases": [
+    {
+      "case_id": "case_001_exchange_continuity",
+      "purpose": "exchange_continuity",
+      "destination": {
+        "excerpt_id": "excerpt_0002_00f561dd",
+        "media_id": "media_1879b4266b454698",
+        "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "content_type": "animation",
+        "category": "rapid_speaker_exchange",
+        "start": 561.0,
+        "end": 579.0,
+        "duration": 18.0,
+        "analysis_signature": "6600be2a189605bfec1c6b5c5add25a757d437dbf78b6670aafdb703a5a5c1f4",
+        "evidence": {
+          "performance_id": "p000015",
+          "dialogue_density": 1.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0003_894f9564",
+        "media_id": "media_18f6b6ed542cca53",
+        "filename": "Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+        "content_type": "mixed_or_uncertain",
+        "category": "dense_dialogue",
+        "start": 1599.16,
+        "end": 1629.16,
+        "duration": 30.0,
+        "analysis_signature": "663a190e0f28ee5c10b3df6ac5e99212fbd06d6b723a88c0a495c126e7c9107e",
+        "evidence": {
+          "performance_id": "p000022",
+          "dialogue_density": 1.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "speaker_mismatch",
+        "performance_mismatch",
+        "masking"
+      ],
+      "status": "planned",
+      "case_signature": "6f9dc9e904ca452364672c54f6e64dc29b4b8b6035806dde31e9746c2ae49b47"
+    },
+    {
+      "case_id": "case_002_transition_sentence_integrity",
+      "purpose": "transition_sentence_integrity",
+      "destination": {
+        "excerpt_id": "excerpt_0007_04791efe",
+        "media_id": "media_9b626c297fcc6fb8",
+        "filename": "Christian TV stuff - American Saints.ia.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Christian TV stuff - American Saints.ia.mp4",
+        "content_type": "live_action",
+        "category": "transition_near_dialogue",
+        "start": 108.5,
+        "end": 123.5,
+        "duration": 15.0,
+        "analysis_signature": "f827f8ac3e659fb36fe69e3a078aae9d75eb58094856506cb4b6dae3d2a34d12",
+        "evidence": {
+          "transition_id": "gradual_transition_000016",
+          "transition_kind": "GRADUAL_TRANSITION_CANDIDATE",
+          "speech_distance_seconds": 0.0
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0012_eda3070c",
+        "media_id": "media_cfdb81cf9f0df5d7",
+        "filename": "Fries With That S01E01 - The Expendables.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Fries With That S01E01 - The Expendables.mp4",
+        "content_type": "live_action",
+        "category": "long_monologue",
+        "start": 824.0,
+        "end": 854.0,
+        "duration": 30.0,
+        "analysis_signature": "26b458cb6889e12f0ee1ebe3bdfa46ed64d489e518b40e1a043fef6d73afbd2a",
+        "evidence": {
+          "performance_id": "p000026",
+          "dialogue_density": 0.875,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "transition_artifact",
+        "incomplete_sentence",
+        "duration_failure"
+      ],
+      "status": "planned",
+      "case_signature": "4e61ea5dde2c34b57f1af6197160577bf9948d11847888dc73167917ca4e69fb"
+    },
+    {
+      "case_id": "case_003_animation_visual_role",
+      "purpose": "animation_visual_role",
+      "destination": {
+        "excerpt_id": "excerpt_0017_14ca8b86",
+        "media_id": "media_ec484f1580b5975e",
+        "filename": "Robocop Cartoon - Ep 02.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Robocop Cartoon - Ep 02.mp4",
+        "content_type": "animation",
+        "category": "animation_dialogue",
+        "start": 30.0,
+        "end": 45.0,
+        "duration": 15.0,
+        "analysis_signature": "d9904593bce39418b785edcd79ff5790ce72a2d79a41be5837b83018c2cfd96b",
+        "evidence": {
+          "performance_id": "p000002",
+          "dialogue_density": 1.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0002_00f561dd",
+        "media_id": "media_1879b4266b454698",
+        "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "content_type": "animation",
+        "category": "rapid_speaker_exchange",
+        "start": 561.0,
+        "end": 579.0,
+        "duration": 18.0,
+        "analysis_signature": "6600be2a189605bfec1c6b5c5add25a757d437dbf78b6670aafdb703a5a5c1f4",
+        "evidence": {
+          "performance_id": "p000015",
+          "dialogue_density": 1.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "visual_mismatch",
+        "speaker_mismatch",
+        "performance_mismatch"
+      ],
+      "status": "planned",
+      "case_signature": "6919bbe7f0154dac2cf61249ff048cd538edb795feca7b8cc03389dbf913c4f9"
+    },
+    {
+      "case_id": "case_004_quiet_residue_masking",
+      "purpose": "quiet_residue_masking",
+      "destination": {
+        "excerpt_id": "excerpt_0001_2b543b17",
+        "media_id": "media_1879b4266b454698",
+        "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "content_type": "animation",
+        "category": "quiet_room_tone",
+        "start": 26.0,
+        "end": 46.0,
+        "duration": 20.0,
+        "analysis_signature": "6600be2a189605bfec1c6b5c5add25a757d437dbf78b6670aafdb703a5a5c1f4",
+        "evidence": {
+          "gap_seconds": 30.0
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0003_894f9564",
+        "media_id": "media_18f6b6ed542cca53",
+        "filename": "Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+        "content_type": "mixed_or_uncertain",
+        "category": "dense_dialogue",
+        "start": 1599.16,
+        "end": 1629.16,
+        "duration": 30.0,
+        "analysis_signature": "663a190e0f28ee5c10b3df6ac5e99212fbd06d6b723a88c0a495c126e7c9107e",
+        "evidence": {
+          "performance_id": "p000022",
+          "dialogue_density": 1.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "residual_dialogue",
+        "masking"
+      ],
+      "status": "planned",
+      "case_signature": "2f3758067049f42fb9a92cc673faf3a1f682fbb9914ac8323ce28724ec34c429"
+    },
+    {
+      "case_id": "case_005_fragment_duration_edges",
+      "purpose": "fragment_duration_edges",
+      "destination": {
+        "excerpt_id": "excerpt_0006_5af48276",
+        "media_id": "media_62311279e6dad494",
+        "filename": "Wallace and Gromit.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Wallace and Gromit.mp4",
+        "content_type": "animation",
+        "category": "short_fragmented_lines",
+        "start": 4150.12,
+        "end": 4163.4,
+        "duration": 13.28,
+        "analysis_signature": "7363d62b1f7f27d199feb3732002604ff6a3c025d30a82bbaf614c72ded53c06",
+        "evidence": {
+          "window_id": "w000291",
+          "duration": 1.28,
+          "confidence": 0.9987
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0012_eda3070c",
+        "media_id": "media_cfdb81cf9f0df5d7",
+        "filename": "Fries With That S01E01 - The Expendables.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Fries With That S01E01 - The Expendables.mp4",
+        "content_type": "live_action",
+        "category": "long_monologue",
+        "start": 824.0,
+        "end": 854.0,
+        "duration": 30.0,
+        "analysis_signature": "26b458cb6889e12f0ee1ebe3bdfa46ed64d489e518b40e1a043fef6d73afbd2a",
+        "evidence": {
+          "performance_id": "p000026",
+          "dialogue_density": 0.875,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "mid_word_cut",
+        "duration_failure",
+        "transition_artifact"
+      ],
+      "status": "planned",
+      "case_signature": "bbcf4a5921d4e3a1369ea84e90dbef8c4b4b76b10895529b1b9b9720a05ce8b8"
+    }
+  ]
+}

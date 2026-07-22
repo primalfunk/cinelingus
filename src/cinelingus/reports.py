@@ -45,7 +45,14 @@ def build_run_report(
     skipped_windows = max(0, usable_windows - len(enabled_mappings))
     rendered_dialogue_duration = round(sum(float(m.get("planned_render_duration", 0.0)) for m in enabled_mappings), 3)
     alignment_summary = _alignment_summary(schedule)
-    bed_summary = _soundtrack_bed_summary(destination_movie, alignment_summary, config.original_duck_db)
+    bed_summary = _soundtrack_bed_summary(
+        destination_movie,
+        alignment_summary,
+        config.original_duck_db,
+        suppression_mode=config.dialogue_suppression,
+        reconstruction_strategy=config.background_reconstruction,
+        render_evidence=schedule.get("background_reconstruction_report"),
+    )
     speaker_summary = _speaker_summary(
         source_events=source_events,
         destination_timeline=destination_timeline,
@@ -115,6 +122,9 @@ def build_run_report(
             "target_lufs": config.target_lufs,
             "audio_fade_duration": config.audio_fade_duration,
             "original_duck_db": config.original_duck_db,
+            "dialogue_suppression": config.dialogue_suppression,
+            "suppression_padding": config.suppression_padding,
+            "background_reconstruction": config.background_reconstruction,
             "cinematic_filter": config.cinematic_filter,
         },
         "counts": {
@@ -150,6 +160,13 @@ def build_run_report(
             "average_performance_similarity": _average([m.get("performance_similarity_score") for m in enabled_mappings]),
             "average_baseline_similarity": _average([m.get("baseline_similarity_score") for m in enabled_mappings]),
             "alignment": alignment_summary,
+            "performance_summary": schedule.get("performance_summary", {}),
+            "performance_decisions": schedule.get("performance_decisions", []),
+            "voice_residue_verification": schedule.get("voice_residue_verification", {}),
+            "residue_correction": schedule.get("residue_correction_report", {}),
+            "speech_mask": schedule.get("speech_mask_report", {}),
+            "suppression_padding": schedule.get("suppression_padding_report", {}),
+            "editorial_refinement": schedule.get("editorial_refinement", {}),
         },
         "performances": {
             "source": source_performances or {},
@@ -177,6 +194,8 @@ def build_run_report(
             "problem_regions_txt": str(config.output_dir / "problem_regions.txt"),
             "problem_regions_csv": str(config.output_dir / "problem_regions.csv"),
             "editorial_highlights": str(config.output_dir / "editorial_highlights.json"),
+            "editorial_decisions": str(config.output_dir / "editorial_decisions.json"),
+            "editorial_report": str(config.output_dir / "editorial_report.json"),
             "taste_profile": str(config.output_dir / "taste_profile.json"),
         },
         "warnings": warnings,
@@ -289,18 +308,36 @@ def _merge_report_intervals(
     return merged
 
 
-def _soundtrack_bed_summary(destination_movie: dict[str, Any], alignment_summary: dict[str, Any], duck_db: float) -> dict[str, Any]:
+def _soundtrack_bed_summary(
+    destination_movie: dict[str, Any],
+    alignment_summary: dict[str, Any],
+    duck_db: float,
+    *,
+    suppression_mode: str = "duck",
+    reconstruction_strategy: str = "legacy",
+    render_evidence: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     destination_duration = _coerce_float(destination_movie.get("duration"), 0.0)
     ducked_duration = min(destination_duration, _coerce_float(alignment_summary.get("merged_ducked_duration"), 0.0))
     preserved_full_volume = max(0.0, destination_duration - ducked_duration)
+    evidence = render_evidence or {}
+    reconstruction_sources = list(evidence.get("sources") or [])
     return {
-        "strategy": "duck_original_under_replacement_dialogue",
-        "duck_db": round(float(duck_db), 3),
+        "strategy": "hard_suppress_original_dialogue" if suppression_mode == "hard_mute" else "duck_original_under_replacement_dialogue",
+        "suppression_mode": suppression_mode,
+        "reconstruction_strategy": evidence.get("strategy", reconstruction_strategy),
+        "reconstructed_region_count": int(evidence.get("reconstructed_region_count") or 0),
+        "silence_fallback_region_count": int(evidence.get("silence_fallback_region_count") or 0),
+        "reconstruction_verified_at_render": bool(render_evidence),
+        "average_reconstruction_score": _average([row.get("selection_score") for row in reconstruction_sources]),
+        "looped_reconstruction_count": sum(1 for row in reconstruction_sources if row.get("loop_required")),
+        "duck_db": None if suppression_mode == "hard_mute" else round(float(duck_db), 3),
         "destination_duration": round(destination_duration, 3),
         "duck_region_count": int(alignment_summary.get("merged_duck_region_count") or 0),
         "ducked_duration": round(ducked_duration, 3),
         "preserved_full_volume_duration": round(preserved_full_volume, 3),
-        "continuous_original_bed": True,
+        "continuous_original_bed": suppression_mode != "hard_mute",
+        "residual_speech_test": evidence.get("residual_speech_test", "NOT_ACOUSTICALLY_MEASURED"),
     }
 
 
@@ -350,6 +387,7 @@ def _format_text_report(report: dict[str, Any]) -> str:
         f"  shot boundary mode: {config.get('shot_boundary_mode')}",
         f"  target LUFS: {config['target_lufs']}",
         f"  original duck dB: {config.get('original_duck_db')}",
+        f"  dialogue suppression: {config.get('dialogue_suppression')}",
         "",
         "Counts",
         f"  raw source events: {counts['raw_source_events']}",
@@ -390,6 +428,19 @@ def _format_text_report(report: dict[str, Any]) -> str:
             f"  performance fills using speech basis: {alignment.get('speech_basis_performances')}",
             f"  performance fills using broad basis: {alignment.get('performance_basis_performances')}",
         ])
+    performance_summary = schedule.get("performance_summary") or {}
+    if performance_summary:
+        lines.extend([
+            "",
+            "Performance Scheduling",
+            f"  performance couplings: {performance_summary.get('performance_couplings')} / {performance_summary.get('destination_performance_count')}",
+            f"  adapted performances: {performance_summary.get('adapted_performances')}",
+            f"  turn sequence matches: {performance_summary.get('turn_sequence_matches')}",
+            f"  linewise fallbacks: {performance_summary.get('linewise_fallbacks')}",
+            f"  preserved original regions: {performance_summary.get('preserved_original_regions')}",
+            f"  suppressed unreplaced regions: {performance_summary.get('suppressed_unreplaced_regions', 0)}",
+            f"  voice residue: {performance_summary.get('voice_residue')}",
+        ])
     speakers = report.get("speakers") or {}
     if speakers:
         source = speakers.get("source_dialogue") or {}
@@ -422,6 +473,13 @@ def _format_text_report(report: dict[str, Any]) -> str:
             "",
             "Soundtrack Bed",
             f"  strategy: {bed.get('strategy')}",
+            f"  reconstruction: {bed.get('reconstruction_strategy')}",
+            f"  reconstructed regions: {bed.get('reconstructed_region_count')}",
+            f"  silence fallbacks: {bed.get('silence_fallback_region_count')}",
+            f"  average reconstruction score: {bed.get('average_reconstruction_score')}",
+            f"  looped reconstructions: {bed.get('looped_reconstruction_count')}",
+            f"  render evidence present: {bed.get('reconstruction_verified_at_render')}",
+            f"  residual speech test: {bed.get('residual_speech_test')}",
             f"  duck dB: {bed.get('duck_db')}",
             f"  duck regions: {bed.get('duck_region_count')}",
             f"  ducked duration: {bed.get('ducked_duration')}s",
@@ -529,6 +587,12 @@ def _write_schedule_csv(schedule: dict[str, Any], output_path: Path) -> None:
         "source_performance_type",
         "destination_performance_id",
         "source_transcript",
+        "matching_profile",
+        "scheduler_tier",
+        "scheduler_tier_name",
+        "performance_similarity_score",
+        "suppression_mode",
+        "fallback_reason",
     ]
     with output_path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields)

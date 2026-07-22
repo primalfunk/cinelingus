@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from pathlib import Path
 import time
+import wave
 from typing import Any
 
 from .audio_provenance import compare_wav_audio, extract_audio_for_provenance, verify_audio_provenance
@@ -11,6 +12,8 @@ from .cir import build_cinematic_index
 from .clips import slice_clips
 from .config import AppConfig
 from .detect import detect_voice_windows, extract_analysis_audio, write_dialogue_events, write_timeline
+from .editorial import EditorialPassManager, build_repair_batch
+from .editorial.editorial_reports import build_editorial_report
 from .filters import FilterConfig, filter_dialogue_events, filter_timeline, usable_rows
 from .filter_lab.registry import default_filter_registry
 from .filter_lab.integration import build_strategy_schedule, write_filter_artifacts
@@ -30,19 +33,24 @@ from .mutations import (
     get_mutation,
     render_mutation_media,
 )
-from .montage import annotate_moment_audio_activity, annotate_windows_with_montage_eligibility, build_core_moments, build_full_timeline_plan, build_montage_render_acceptance, build_placement_qualification, rebase_schedule_to_montage
-from .performance import build_performances, performance_windows
+from .montage import annotate_moment_audio_activity, annotate_windows_with_montage_eligibility, build_core_moments, build_full_timeline_plan, build_montage_render_acceptance, build_placement_qualification, build_shared_timeline_plan, rebase_schedule_to_montage
+from .performance import attach_performance_speech_windows, build_performances, performance_windows
 from .performance_library import build_performance_library
 from .performance_diagnostics import build_performance_diagnostics
+from .performance_curation import build_performance_curation_manifest
 from .performance_report import build_performance_placement_report
 from .problem_report import build_problem_region_report
 from .presets import Preset, load_preset
 from .progress import ProgressState, format_progress_status
 from .publish import publish_single_video
-from .render import build_preview_schedule, extract_video_segment, mux_video, mux_video_segment, preview_bounds, render_dialogue_wav, render_schedule_over_original_audio
+from .render import build_preview_schedule, extract_video_segment, mux_video, mux_video_segment, preview_bounds, render_dialogue_wav, render_multi_source_montage, render_schedule_over_original_audio, render_schedule_regions_over_original_audio
 from .reports import build_run_report, write_report_files
+from .residue import build_residue_correction_regions, evaluate_voice_residue, unavailable_voice_residue
+from .residue_reel import build_residue_verification_reel, rebase_reel_timeline, schedule_for_verification_regions
+from .render_verification import evaluate_rendered_dialogue, merge_rendered_dialogue_verification, unavailable_rendered_dialogue_verification
 from .review_analysis import build_review_analysis
-from .schedule import build_schedule
+from .schedule import build_editorial_repair_mapping, build_schedule, prepare_editorial_repair_candidates, score_editorial_repair_candidate
+from .semantic import SemanticMode, SemanticScheduleContext
 from .shot_context import annotate_windows_with_shots, build_visual_schedule_report
 from .speakers import annotate_artifact_speakers, apply_speaker_mapping_to_schedule, build_speaker_map, build_speaker_mapping, enrich_performances_with_speakers, speaker_map_content_signature, speaker_map_has_real_diarization, speaker_map_identity_ready
 from .taste import build_editorial_highlights, default_taste_profile
@@ -50,8 +58,55 @@ from .transformations import TransformationContext, TransformationResult, defaul
 from .util import read_json, stable_hash, write_json
 from .validation import validate_artifact
 from .visual import CORE_VISUAL_EVIDENCE_VERSION, build_visual_report, detect_shots
+from .visual_performance import VISUAL_PERFORMANCE_VERSION, analyze_visual_performance
 from .whisper_backend import transcribe_with_whisper
 from .tools import ffprobe_json
+
+
+def _curated_problem_preview_rows(problems: list[dict[str, Any]], *, max_regions: int) -> list[dict[str, Any]]:
+    """Select concise, temporally distributed evidence instead of redundant parent/child ranges."""
+    if max_regions <= 0 or not problems:
+        return []
+    precise = [row for row in problems if row.get("problem_type") != "underfilled_performance"]
+    candidates = precise or list(problems)
+    maximum_end = max(float(row.get("end", row.get("start", 0.0)) or 0.0) for row in candidates)
+    severity = {"critical": 4, "high": 3, "medium": 2, "low": 1}
+    type_priority = {
+        "possible_destination_speech_residue": 0,
+        "ambience_silence_fallback": 1,
+        "undercovered_speech_window": 2,
+        "uncertain_speech_boundary": 3,
+        "fallback_mapping": 4,
+        "low_fit_mapping": 5,
+    }
+
+    def rank(row: dict[str, Any]) -> tuple[int, int, float]:
+        start = float(row.get("start", 0.0) or 0.0)
+        end = float(row.get("end", start) or start)
+        return (
+            -severity.get(str(row.get("severity")), 0),
+            type_priority.get(str(row.get("problem_type")), 99),
+            max(0.0, end - start),
+        )
+
+    buckets: list[list[dict[str, Any]]] = [[] for _ in range(max_regions)]
+    for row in candidates:
+        start = float(row.get("start", 0.0) or 0.0)
+        end = float(row.get("end", start) or start)
+        midpoint = (start + end) / 2.0
+        bucket = min(max_regions - 1, int((midpoint / max(maximum_end, 0.001)) * max_regions))
+        buckets[bucket].append(row)
+    selected = [min(bucket, key=rank) for bucket in buckets if bucket]
+    if len(selected) < max_regions:
+        selected_ids = {id(row) for row in selected}
+        for row in sorted(candidates, key=rank):
+            if id(row) in selected_ids:
+                continue
+            selected.append(row)
+            selected_ids.add(id(row))
+            if len(selected) >= max_regions:
+                break
+    return sorted(selected[:max_regions], key=lambda row: float(row.get("start", 0.0) or 0.0))
 
 
 class Pipeline:
@@ -71,6 +126,46 @@ class Pipeline:
         self.films = tuple(films)
         self.anchor = self.films[0]
         self.schemas_dir = config.root / "schemas"
+
+    def _semantic_schedule_context(self) -> SemanticScheduleContext | None:
+        """Load READY semantic evidence without constructing models during a render."""
+        mode = SemanticMode(getattr(self.config, "semantic_mode", SemanticMode.DISABLED.value))
+        weight = float(getattr(self.config, "semantic_weight", 0.0) or 0.0)
+        if mode is SemanticMode.DISABLED or (mode is SemanticMode.ASSISTED and weight == 0.0):
+            return None
+        source_model_path = self.source.cache_dir / "cinematic_model" / "film_model.json"
+        destination_model_path = self.destination.cache_dir / "cinematic_model" / "film_model.json"
+        source_bundle_dir = source_model_path.parent / "semantic"
+        destination_bundle_dir = destination_model_path.parent / "semantic"
+        try:
+            context = SemanticScheduleContext.from_bundles(
+                mode=mode,
+                weight=weight,
+                source_model=read_json(source_model_path),
+                source_bundle=read_json(source_bundle_dir / "semantic_bundle.json"),
+                source_dir=source_bundle_dir,
+                destination_model=read_json(destination_model_path),
+                destination_bundle=read_json(destination_bundle_dir / "semantic_bundle.json"),
+                destination_dir=destination_bundle_dir,
+            )
+            self.logger.info(
+                f"semantic scheduling evidence ready: mode={mode.value} "
+                f"source={len(context.source_by_reference)} destination={len(context.destination_by_reference)}"
+            )
+            return context
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            self.logger.info(f"semantic scheduling evidence unavailable; preserving legacy scores: {exc}")
+            return SemanticScheduleContext(
+                mode=mode,
+                weight=weight,
+                source_by_reference={},
+                destination_by_reference={},
+                model_identity={
+                    "availability": "UNAVAILABLE",
+                    "fallback": "NEUTRAL_LEGACY_SCORE",
+                    "reason": f"{type(exc).__name__}: {exc}",
+                },
+            )
 
     def _publish_diarization_stage(self, stage: str) -> None:
         self.logger.info(f"Diarization stage: {stage}")
@@ -306,7 +401,7 @@ class Pipeline:
             dest_movie, _ = self.inspect()
         audio_path = self.destination.cache_dir / "analysis_audio.wav"
         output_path = self.destination.cache_dir / "timeline.json"
-        signature = self._signature("timeline", self.destination.media_hash)
+        signature = self._signature("timeline", "hybrid_speech_mask_v1", self.destination.media_hash)
         cached = self._load_current("timeline", output_path, self.destination.media_hash, signature, force)
         if cached:
             self.logger.info(f"reused destination timeline: {output_path}")
@@ -326,6 +421,15 @@ class Pipeline:
                 language=self.config.whisper_language,
                 artifact_type="timeline",
                 transcription_mode=self.config.transcription_mode,
+            )
+            self.logger.info("detecting acoustic activity for conservative speech-boundary recovery")
+            timeline["acoustic_activity_windows"] = detect_voice_windows(
+                audio_path,
+                float(dest_movie["duration"]),
+                noise_db=self.config.silence_noise_db,
+                min_silence=self.config.silence_min_duration,
+                min_speech=self.config.min_speech_duration,
+                merge_gap=self.config.merge_gap,
             )
         else:
             self.logger.info("detecting destination timeline with FFmpeg silence fallback")
@@ -431,12 +535,13 @@ class Pipeline:
         self.logger.info(f"filtered destination timeline: {stats['usable_count']} usable / {stats['raw_count']} raw")
         return filtered
 
-    def analyze_visual(self, *, force: bool = False, dest_movie: dict | None = None) -> dict[str, dict]:
+    def analyze_visual(self, *, force: bool = False, dest_movie: dict | None = None, timeline: dict | None = None) -> dict[str, dict]:
         self._check_cancel()
         if dest_movie is None:
             dest_movie, _ = self.inspect(force=False)
         shots_path = self.destination.cache_dir / "shots.json"
         visual_report_path = self.destination.cache_dir / "visual_report.json"
+        visual_performance_path = self.destination.cache_dir / "visual_performance.json"
         signature = self._signature("shots", self.destination.media_hash, CORE_VISUAL_EVIDENCE_VERSION)
         shots = self._load_current("shots", shots_path, self.destination.media_hash, signature, force)
         if shots:
@@ -467,13 +572,38 @@ class Pipeline:
             report = build_visual_report(shots_artifact=shots, movie=dest_movie, output_path=visual_report_path)
             self._write_and_validate("visual_report", visual_report_path, report)
 
+        visual_performance_signature = self._signature(
+            "visual_performance",
+            self.destination.media_hash,
+            shots.get("config_signature"),
+            timeline.get("config_signature") if timeline else "no_speech_context",
+            VISUAL_PERFORMANCE_VERSION,
+        )
+        visual_performance = self._load_current(
+            "visual_performance", visual_performance_path, self.destination.media_hash,
+            visual_performance_signature, force,
+        )
+        if visual_performance:
+            self.logger.info(f"reused visual performance analysis: {visual_performance_path}")
+        else:
+            self.logger.info("analyzing probabilistic visual performance for destination shots")
+            visual_performance = analyze_visual_performance(
+                media_path=self.destination.media_path,
+                media_hash=self.destination.media_hash,
+                shots=list(shots.get("shots", [])),
+                speech_windows=list((timeline or {}).get("windows", [])),
+                output_path=visual_performance_path,
+                config_signature=visual_performance_signature,
+            )
+            self._write_and_validate("visual_performance", visual_performance_path, visual_performance)
+
         update_manifest(
             self.destination,
             "visual_analyzed",
-            {"shots": str(shots_path), "visual_report": str(visual_report_path)},
+            {"shots": str(shots_path), "visual_report": str(visual_report_path), "visual_performance": str(visual_performance_path)},
         )
         self.logger.info(f"visual shots: {len(shots['shots'])}")
-        return {"shots": shots, "visual_report": report}
+        return {"shots": shots, "visual_report": report, "visual_performance": visual_performance}
 
     def build_cinematic_moments(
         self,
@@ -597,6 +727,7 @@ class Pipeline:
             self.destination.media_hash,
             timeline.get("config_signature"),
             visual.get("shots", {}).get("config_signature"),
+            visual.get("visual_performance", {}).get("config_signature"),
             "destination_video",
         )
         cached = self._load_current("performance", output_path, self.destination.media_hash, signature, force)
@@ -609,6 +740,7 @@ class Pipeline:
             output_path=output_path,
             speaking_windows=timeline.get("windows", []),
             shots=visual.get("shots", {}).get("shots", []),
+            visual_observations=visual.get("visual_performance", {}).get("shots", []),
             max_pause=2.0,
             config_signature=signature,
         )
@@ -668,7 +800,7 @@ class Pipeline:
         source_events = self.filter_source_dialogue(force=False)
         library = self.build_clip_library_from_events(source_events, force=False)
         timeline = self.filter_destination_timeline(force=False)
-        visual = self.analyze_visual(force=False)
+        visual = self.analyze_visual(force=False, timeline=timeline)
         source_performances = self.build_source_performances(source_events=source_events, force=force)
         self.build_source_performance_library(source_performances=source_performances, clip_library=library, force=force)
         destination_performances = self.build_destination_performances(timeline=timeline, visual=visual, force=force)
@@ -696,8 +828,9 @@ class Pipeline:
             self.build_source_performance_library(source_performances=source_performances, clip_library=library, force=force)
         output_path = self.destination.cache_dir / "replacement_schedule.json"
         visual_report_path = self.destination.cache_dir / "visual_schedule_report.json"
-        signature = self._signature(
-            "replacement_schedule",
+        semantic_context = self._semantic_schedule_context()
+        signature_parts: list[Any] = [
+            "performance_scheduling_phase_4_cinematic_compatibility_v5",
             self.source.media_hash,
             self.destination.media_hash,
             library.get("config_signature"),
@@ -705,8 +838,18 @@ class Pipeline:
             shots.get("config_signature"),
             destination_performances.get("config_signature") if destination_performances else "",
             source_performances.get("config_signature") if source_performances else "",
-        )
+        ]
+        if semantic_context is not None:
+            signature_parts.append({
+                "mode": semantic_context.mode.value,
+                "weight": semantic_context.weight,
+                "model_identity": semantic_context.model_identity,
+            })
+        signature = self._signature("replacement_schedule", *signature_parts)
         cached = self._load_current("replacement_schedule", output_path, self.destination.media_hash, signature, force)
+        if cached and cached.get("montage_native"):
+            self.logger.info(f"cached replacement schedule contains render-time rebasing; regenerating: {output_path}")
+            cached = None
         if cached:
             self.logger.info(f"reused replacement schedule: {output_path}")
             if not visual_report_path.exists() or force:
@@ -727,6 +870,7 @@ class Pipeline:
         else:
             windows = annotate_windows_with_shots(usable_rows(timeline["windows"]), shots.get("shots", []))
         self.logger.info(f"building replacement schedule for {len(windows)} usable windows")
+        speaker_mapping = self.build_speaker_mapping(force=force)
         schedule = build_schedule(
             clips=library["clips"],
             windows=windows,
@@ -739,8 +883,25 @@ class Pipeline:
             shot_boundary_mode=self.config.shot_boundary_mode,
             source_performances=source_performances,
             cinematic_filter=self.config.cinematic_filter,
+            speaker_mapping=speaker_mapping,
+            semantic_context=semantic_context,
         )
-        speaker_mapping = self.build_speaker_mapping(force=force)
+        destination_speaker_map = {}
+        destination_speaker_map_path = self.destination.cache_dir / "speaker_map.json"
+        if destination_speaker_map_path.exists():
+            try:
+                destination_speaker_map = read_json(destination_speaker_map_path)
+            except Exception:
+                destination_speaker_map = {}
+        schedule = _apply_hybrid_speech_mask(
+            schedule,
+            acoustic_windows=timeline.get("acoustic_activity_windows", []),
+            diarization_segments=(
+                destination_speaker_map.get("speaker_segments", [])
+                if speaker_map_has_real_diarization(destination_speaker_map)
+                else []
+            ),
+        )
         if speaker_mapping is not None:
             schedule = apply_speaker_mapping_to_schedule(schedule, speaker_mapping)
         schedule["config_signature"] = signature
@@ -767,11 +928,32 @@ class Pipeline:
         dest_movie = self._inspect_one(self.destination, force=False)
         return self.render_audio_from_schedule(schedule=schedule, dest_movie=dest_movie, force=force)
 
-    def render_audio_from_schedule(self, *, schedule: dict, dest_movie: dict, force: bool = False) -> Path:
+    def render_audio_from_schedule(
+        self,
+        *,
+        schedule: dict,
+        dest_movie: dict,
+        force: bool = False,
+        output_path: Path | None = None,
+        persist_schedule: bool = True,
+    ) -> Path:
         self._check_cancel()
-        output = self.config.output_dir / "replacement_dialogue.wav"
+        output = output_path or self.config.output_dir / "replacement_dialogue.wav"
         schedule_path = self.destination.cache_dir / "replacement_schedule.json"
-        if output.exists() and not force and not _is_stale(output, schedule_path):
+        for index, mapping in enumerate(schedule.get("mappings", []), start=1):
+            mapping.setdefault("editorial_placement_id", f"editorial_placement_{index:06d}")
+        render_evidence_current = (
+            bool(schedule.get("background_reconstruction_report"))
+            and bool(schedule.get("suppression_padding_report"))
+            and bool(schedule.get("voice_residue_verification"))
+            and bool(schedule.get("rendered_dialogue_verification"))
+            and (
+                not getattr(self.config, "editorial_refinement_enabled", True)
+                or schedule.get("scheduling_mode") != "performance_fill"
+                or bool(schedule.get("editorial_refinement"))
+            )
+        )
+        if output.exists() and not force and render_evidence_current and not _is_stale(output, schedule_path):
             self.logger.info(f"reused rendered audio: {output}")
             return output
         render_duration = float(dest_movie["duration"])
@@ -782,18 +964,563 @@ class Pipeline:
         render_with_bed = hasattr(self.config, "original_duck_db")
         renderer = render_schedule_over_original_audio if render_with_bed else render_dialogue_wav
         render_kwargs = {"original_media": self.destination.media_path} if render_with_bed else {}
-        renderer(
-            **render_kwargs,
-            schedule=schedule,
-            duration=render_duration,
-            output_path=output,
-            sample_rate=self.config.render_sample_rate,
-            channels=self.config.render_channels,
-            target_lufs=self.config.target_lufs,
-            fade_duration=self.config.audio_fade_duration,
-            **({"mute_regions": _speech_mute_regions(schedule, padding=0.04, merge_gap=0.08, duration=render_duration),
-                "duck_db": self.config.original_duck_db} if render_with_bed else {}),
-        )
+
+        def render_current_mask(active_schedule: dict[str, Any] | None = None) -> None:
+            render_schedule = active_schedule or schedule
+            renderer(
+                **render_kwargs,
+                schedule=render_schedule,
+                duration=render_duration,
+                output_path=output,
+                sample_rate=self.config.render_sample_rate,
+                channels=self.config.render_channels,
+                target_lufs=self.config.target_lufs,
+                fade_duration=self.config.audio_fade_duration,
+                **({"mute_regions": _speech_mute_regions(render_schedule, padding=self.config.suppression_padding, merge_gap=0.08, duration=render_duration, adaptive=True),
+                    "duck_db": self.config.original_duck_db,
+                    "suppression_mode": self.config.dialogue_suppression,
+                    "suppression_fade_duration": max(self.config.audio_fade_duration, 0.04),
+                    "background_reconstruction": self.config.background_reconstruction} if render_with_bed else {}),
+            )
+
+        if render_with_bed:
+            verification_path = self.config.output_dir / "voice_residue_verification.json"
+            rendered_timeline_path = self.config.output_dir / "rendered_dialogue_timeline.json"
+            checkpoint_path = (
+                self.config.output_dir / "residue_correction_checkpoint.json"
+                if output_path is None
+                else output.with_suffix(".residue_correction_checkpoint.json")
+            )
+            checkpoint_fingerprint = stable_hash({
+                "version": "targeted_residue_checkpoint_v3_nonrepeating_ambience",
+                "destination_media_hash": self.destination.media_hash,
+                "output": str(output.resolve()),
+                "duration": round(render_duration, 6),
+                "mappings": schedule.get("mappings", []),
+                "destination_speech_regions": schedule.get("destination_speech_regions", []),
+                "render": {
+                    "sample_rate": self.config.render_sample_rate,
+                    "channels": self.config.render_channels,
+                    "target_lufs": self.config.target_lufs,
+                    "fade_duration": self.config.audio_fade_duration,
+                    "duck_db": self.config.original_duck_db,
+                    "suppression_mode": self.config.dialogue_suppression,
+                    "suppression_padding": self.config.suppression_padding,
+                    "background_reconstruction": self.config.background_reconstruction,
+                },
+            })
+
+            def save_checkpoint(stage: str, **fields: Any) -> None:
+                write_json(checkpoint_path, {
+                    "version": 1,
+                    "fingerprint": checkpoint_fingerprint,
+                    "stage": stage,
+                    "output": str(output),
+                    "output_size": output.stat().st_size if output.exists() else 0,
+                    **fields,
+                })
+
+            checkpoint = None
+            if checkpoint_path.exists() and output.exists():
+                candidate = read_json(checkpoint_path)
+                editorial_active = (
+                    getattr(self.config, "editorial_refinement_enabled", True)
+                    and schedule.get("scheduling_mode") == "performance_fill"
+                )
+                prior_editorial_report = {}
+                prior_editorial_path = self.config.output_dir / "editorial_report.json"
+                if prior_editorial_path.exists():
+                    prior_editorial_report = read_json(prior_editorial_path)
+                reusable_unmodified_baseline = (
+                    candidate.get("stage") == "complete"
+                    and int(prior_editorial_report.get("placements_repaired", -1)) == 0
+                    and all(
+                        int(row.get("pass", 0) or 0) == 0 or row.get("accepted") is False
+                        for row in prior_editorial_report.get("passes", [])
+                    )
+                )
+                resumable_editorial_stage = candidate.get("stage") in {
+                    "initial_verification_complete", "corrective_render_complete",
+                    "editorial_candidate_prepared",
+                } or reusable_unmodified_baseline
+                if (
+                    candidate.get("fingerprint") == checkpoint_fingerprint
+                    and int(candidate.get("output_size", -1)) == output.stat().st_size
+                    and (not editorial_active or resumable_editorial_stage)
+                ):
+                    checkpoint = candidate
+                    schedule["residue_correction_regions"] = list(candidate.get("correction_regions", []))
+                    if candidate.get("background_reconstruction_report"):
+                        schedule["background_reconstruction_report"] = candidate["background_reconstruction_report"]
+                    if candidate.get("suppression_padding_report"):
+                        schedule["suppression_padding_report"] = candidate["suppression_padding_report"]
+                    self.logger.info(f"resuming residue correction from checkpoint stage={candidate.get('stage')}")
+
+            def verify_current_render(
+                *, target_regions: list[dict[str, Any]], label: str,
+                verification_schedule: dict[str, Any] | None = None,
+            ) -> dict[str, Any]:
+                if not getattr(self.config, "verify_voice_residue", True):
+                    return unavailable_voice_residue("Post-render residue verification is disabled by configuration.")
+                if self.config.speech_backend != "whisper":
+                    return unavailable_voice_residue("Post-render transcript contrast requires the Whisper speech backend.")
+                if not output.exists() or output.stat().st_size <= 44:
+                    return unavailable_voice_residue("Rendered WAV is missing or invalid.")
+                try:
+                    verification_dir = self.config.output_dir / "residue_verification"
+                    reel_audio_path = verification_dir / f"{label}_verification_reel.wav"
+                    reel_map_path = verification_dir / f"{label}_verification_reel.json"
+                    raw_timeline_path = verification_dir / f"{label}_verification_reel_timeline.json"
+                    rebased_timeline_path = (
+                        rendered_timeline_path
+                        if label == "initial"
+                        else verification_dir / f"{label}_rendered_dialogue_timeline.json"
+                    )
+                    reel_map = None
+                    verification_audio = output
+                    try:
+                        if target_regions:
+                            reel_map = build_residue_verification_reel(
+                                input_wav=output,
+                                regions=target_regions,
+                                output_wav=reel_audio_path,
+                                output_map=reel_map_path,
+                                duration=render_duration,
+                            )
+                            if reel_map.get("segments"):
+                                verification_audio = reel_audio_path
+                    except (EOFError, OSError, wave.Error):
+                        # Retain compatibility with legacy or synthetic renderers that
+                        # produce an audio artifact Whisper can read but wave cannot.
+                        reel_map = None
+                    if reel_map and reel_map.get("segments"):
+                        self.logger.info(
+                            f"verifying rendered dialogue for destination-voice residue scope={label} "
+                            f"reel={reel_map.get('reel_duration', 0.0):.3f}s source={render_duration:.3f}s"
+                        )
+                    else:
+                        self.logger.info(
+                            f"verifying rendered dialogue for destination-voice residue scope={label} "
+                            "using full-audio compatibility fallback"
+                        )
+                    verification_hash = stable_hash({
+                        "version": "rendered_dialogue_verification_v2_schedule_identity",
+                        "destination_media_hash": self.destination.media_hash,
+                        "audio_size": verification_audio.stat().st_size,
+                        "scope": label,
+                        "target_regions": target_regions,
+                        "mappings": (verification_schedule or schedule).get("mappings", []),
+                        "whisper_model": self.config.whisper_model,
+                        "language": self.config.whisper_language,
+                        "transcription_mode": self.config.transcription_mode,
+                    })
+                    cached_timeline = read_json(raw_timeline_path) if raw_timeline_path.exists() else {}
+                    if cached_timeline.get("media_hash") == verification_hash:
+                        self.logger.info(f"reused rendered-dialogue transcription scope={label}")
+                        rendered_timeline = cached_timeline
+                    else:
+                        rendered_timeline = transcribe_with_whisper(
+                            audio_path=verification_audio,
+                            media_hash=verification_hash,
+                            output_path=raw_timeline_path,
+                            model_name=self.config.whisper_model,
+                            language=self.config.whisper_language,
+                            artifact_type="timeline",
+                            transcription_mode=self.config.transcription_mode,
+                        )
+                    if reel_map and reel_map.get("segments"):
+                        rendered_timeline = rebase_reel_timeline(
+                            reel_timeline=rendered_timeline,
+                            reel_map=reel_map,
+                            output_path=rebased_timeline_path,
+                        )
+                    scoped_schedule = schedule_for_verification_regions(
+                        verification_schedule or schedule,
+                        target_regions,
+                    )
+                    result = evaluate_voice_residue(schedule=scoped_schedule, rendered_timeline=rendered_timeline)
+                    result["verification_scope"] = label
+                    if reel_map and reel_map.get("segments"):
+                        result["verification_reel"] = {
+                            "strategy": "targeted_timestamp_preserving_reel",
+                            "audio": str(reel_audio_path),
+                            "map": str(reel_map_path),
+                            "timeline": str(rebased_timeline_path),
+                            "source_duration": round(render_duration, 3),
+                            "reel_duration": reel_map.get("reel_duration", 0.0),
+                            "compression_ratio": round(float(reel_map.get("reel_duration", 0.0) or 0.0) / max(render_duration, 0.001), 4),
+                        }
+                    else:
+                        result["verification_reel"] = {
+                            "strategy": "full_audio_compatibility_fallback",
+                            "audio": str(output),
+                            "timeline": str(raw_timeline_path),
+                            "source_duration": round(render_duration, 3),
+                            "reel_duration": round(render_duration, 3),
+                            "compression_ratio": 1.0,
+                        }
+                    return result
+                except Exception as exc:
+                    return unavailable_voice_residue(f"{type(exc).__name__}: {str(exc)[:240]}")
+
+            if checkpoint and checkpoint.get("stage") == "complete" and not force:
+                residue = dict(checkpoint.get("residue", {}))
+                correction_history = list(checkpoint.get("correction_history", []))
+            elif checkpoint and checkpoint.get("stage") == "initial_verification_complete":
+                residue = dict(checkpoint.get("residue", {}))
+                correction_history = list(checkpoint.get("correction_history", []))
+            elif checkpoint and checkpoint.get("stage") == "corrective_render_complete":
+                residue = verify_current_render(
+                    target_regions=list(schedule.get("residue_correction_regions", [])),
+                    label=f"correction_{int(checkpoint.get('pending_pass', 1)):02d}",
+                )
+                correction_history = list(checkpoint.get("correction_history", []))
+                correction_history.append({
+                    "pass": int(checkpoint.get("pending_pass", 1)),
+                    "input_status": checkpoint.get("input_status"),
+                    "output_status": residue.get("status"),
+                    "corrected_region_count": int(checkpoint.get("corrected_region_count", 0)),
+                    "cumulative_region_count": len(schedule.get("residue_correction_regions", [])),
+                    "regions": list(checkpoint.get("new_regions", [])),
+                    "resumed_from_checkpoint": True,
+                })
+            elif checkpoint and checkpoint.get("stage") == "editorial_candidate_prepared":
+                residue = dict(checkpoint.get("residue", {}))
+                correction_history = list(checkpoint.get("correction_history", []))
+            else:
+                render_current_mask()
+                residue = verify_current_render(
+                    target_regions=list(schedule.get("destination_speech_regions", [])),
+                    label="initial",
+                )
+                correction_history = []
+                save_checkpoint(
+                    "initial_verification_complete",
+                    residue=residue,
+                    correction_regions=list(schedule.get("residue_correction_regions", [])),
+                    correction_history=correction_history,
+                    background_reconstruction_report=schedule.get("background_reconstruction_report", {}),
+                    suppression_padding_report=schedule.get("suppression_padding_report", {}),
+                )
+            maximum_passes = max(0, int(getattr(self.config, "residue_correction_passes", 1) or 0))
+            correction_padding = max(0.0, float(getattr(self.config, "residue_correction_padding", 0.12) or 0.0))
+            first_pass = len(correction_history) + 1
+            for pass_index in range(first_pass, maximum_passes + 1):
+                if residue.get("status") != "POSSIBLE_DESTINATION_SPEECH_DETECTED":
+                    break
+                correction_regions = build_residue_correction_regions(
+                    residue,
+                    padding=correction_padding,
+                    duration=render_duration,
+                )
+                if not correction_regions:
+                    break
+                prior_status = str(residue.get("status"))
+                combined_regions = list(schedule.get("residue_correction_regions", [])) + correction_regions
+                unique_regions = {}
+                for region in combined_regions:
+                    key = (round(float(region.get("start", 0.0) or 0.0), 3), round(float(region.get("end", 0.0) or 0.0), 3))
+                    unique_regions[key] = dict(region)
+                schedule["residue_correction_regions"] = [
+                    dict(region, id=f"residue_correction_{index:06d}")
+                    for index, region in enumerate(
+                        (unique_regions[key] for key in sorted(unique_regions)),
+                        start=1,
+                    )
+                ]
+                self.logger.info(
+                    f"correcting {len(correction_regions)} residue region(s); bounded pass {pass_index}/{maximum_passes}"
+                )
+                render_current_mask()
+                save_checkpoint(
+                    "corrective_render_complete",
+                    pending_pass=pass_index,
+                    input_status=prior_status,
+                    corrected_region_count=len(correction_regions),
+                    new_regions=correction_regions,
+                    residue=residue,
+                    correction_regions=list(schedule.get("residue_correction_regions", [])),
+                    correction_history=correction_history,
+                    background_reconstruction_report=schedule.get("background_reconstruction_report", {}),
+                    suppression_padding_report=schedule.get("suppression_padding_report", {}),
+                )
+                residue = verify_current_render(
+                    target_regions=list(schedule.get("residue_correction_regions", [])),
+                    label=f"correction_{pass_index:02d}",
+                )
+                correction_history.append({
+                    "pass": pass_index,
+                    "input_status": prior_status,
+                    "output_status": residue.get("status"),
+                    "corrected_region_count": len(correction_regions),
+                    "cumulative_region_count": len(schedule["residue_correction_regions"]),
+                    "regions": correction_regions,
+                })
+            schedule["residue_correction_report"] = {
+                "strategy": "bounded_post_render_suppression_rerender_v1",
+                "maximum_passes": maximum_passes,
+                "completed_passes": len(correction_history),
+                "padding": round(correction_padding, 3),
+                "final_status": residue.get("status"),
+                "passes": correction_history,
+            }
+            schedule["voice_residue_verification"] = residue
+            rendered_verification_path = self.config.output_dir / "rendered_dialogue_verification.json"
+            final_timeline_value = (residue.get("verification_reel") or {}).get("timeline")
+            if final_timeline_value and Path(final_timeline_value).exists():
+                rendered_dialogue_verification = evaluate_rendered_dialogue(
+                    schedule=schedule,
+                    rendered_timeline=read_json(Path(final_timeline_value)),
+                )
+            else:
+                rendered_dialogue_verification = unavailable_rendered_dialogue_verification(
+                    "The final rendered-dialogue transcript timeline is unavailable."
+                )
+
+            editorial_result = None
+            editorial_enabled = (
+                bool(getattr(self.config, "editorial_refinement_enabled", True))
+                and schedule.get("scheduling_mode") == "performance_fill"
+                and rendered_dialogue_verification.get("status") != "UNAVAILABLE"
+                and bool(rendered_dialogue_verification.get("mappings"))
+            )
+            if editorial_enabled:
+                self.logger.info("beginning bounded reflective editorial refinement")
+                schedule["voice_residue_verification"] = residue
+                schedule["rendered_dialogue_verification"] = rendered_dialogue_verification
+                editorial_evidence_dir = self.config.output_dir / "editorial"
+                initial_problem_report = build_problem_region_report(
+                    schedule=schedule,
+                    output_json=editorial_evidence_dir / "initial_problem_regions.json",
+                    output_csv=editorial_evidence_dir / "initial_problem_regions.csv",
+                    output_txt=editorial_evidence_dir / "initial_problem_regions.txt",
+                )
+                clip_library = self.build_clip_library(force=False)
+                source_performances = self.build_source_performances(force=False)
+                donor_candidates = prepare_editorial_repair_candidates(
+                    clip_library.get("clips", []),
+                    source_performances,
+                )
+                repair_semantic_context = self._semantic_schedule_context()
+                if repair_semantic_context is not None:
+                    donor_candidates = repair_semantic_context.annotate_clips(donor_candidates)
+                manager = EditorialPassManager(
+                    maximum_passes=getattr(self.config, "editorial_max_passes", 2),
+                    acceptance_threshold=getattr(self.config, "editorial_acceptance_threshold", 0.72),
+                    minimum_word_coverage=getattr(self.config, "editorial_min_word_coverage", 0.72),
+                    max_time_stretch=self.config.max_time_stretch,
+                    suppress_unresolved=getattr(self.config, "editorial_suppress_unresolved", False),
+                    benchmark_target_failure_category=getattr(
+                        self.config, "editorial_benchmark_failure_category", None
+                    ),
+                )
+
+                def repair_editorial_pass(
+                    active_schedule: dict[str, Any], decisions: dict[str, Any],
+                    memory: Any, pass_index: int,
+                ) -> dict[str, Any]:
+                    self.logger.info(
+                        f"editorial repair pass {pass_index}/{manager.maximum_passes}: "
+                        f"{decisions.get('repair_count', 0)} placement(s) require attention"
+                    )
+                    def score_repair_candidate(window: dict[str, Any], clip: dict[str, Any]) -> dict[str, Any]:
+                        semantic_window = window
+                        if repair_semantic_context is not None:
+                            semantic_window = repair_semantic_context.annotate_windows([window])[0]
+                        return score_editorial_repair_candidate(
+                            semantic_window,
+                            clip,
+                            max_time_stretch=self.config.max_time_stretch,
+                            shot_boundary_mode=str(active_schedule.get("shot_boundary_mode", "off")),
+                        )
+
+                    return build_repair_batch(
+                        schedule=active_schedule,
+                        decisions=decisions,
+                        donor_candidates=donor_candidates,
+                        memory=memory,
+                        score_candidate=score_repair_candidate,
+                        build_mapping=lambda window, clip, score: build_editorial_repair_mapping(
+                            window,
+                            clip,
+                            score,
+                            max_time_stretch=self.config.max_time_stretch,
+                            shot_boundary_mode=str(active_schedule.get("shot_boundary_mode", "off")),
+                            cinematic_filter=str(active_schedule.get("active_filter", "balanced")),
+                        ),
+                        maximum_repairs=getattr(self.config, "editorial_max_repairs_per_pass", 24),
+                    )
+
+                def render_verify_editorial_pass(
+                    candidate_schedule: dict[str, Any], regions: list[dict[str, Any]],
+                    repairs: list[dict[str, Any]], pass_index: int, prior_verification: dict[str, Any],
+                    prior_residue: dict[str, Any] | None,
+                ) -> tuple[dict[str, Any], dict[str, Any] | None]:
+                    if getattr(self.config, "editorial_incremental_render", True):
+                        render_schedule_regions_over_original_audio(
+                            original_media=self.destination.media_path,
+                            schedule=candidate_schedule,
+                            regions=regions,
+                            duration=render_duration,
+                            output_path=output,
+                            sample_rate=self.config.render_sample_rate,
+                            channels=self.config.render_channels,
+                            target_lufs=self.config.target_lufs,
+                            fade_duration=self.config.audio_fade_duration,
+                            duck_db=self.config.original_duck_db,
+                            suppression_mode=self.config.dialogue_suppression,
+                            suppression_fade_duration=max(self.config.audio_fade_duration, 0.04),
+                            background_reconstruction=self.config.background_reconstruction,
+                        )
+                    else:
+                        render_current_mask(candidate_schedule)
+                    targeted_residue = verify_current_render(
+                        target_regions=regions,
+                        label=f"editorial_{pass_index:02d}",
+                        verification_schedule=candidate_schedule,
+                    )
+                    timeline_value = (targeted_residue.get("verification_reel") or {}).get("timeline")
+                    if not timeline_value or not Path(timeline_value).exists():
+                        return prior_verification, targeted_residue
+                    scoped_schedule = schedule_for_verification_regions(candidate_schedule, regions)
+                    repaired_placements = {str(row.get("placement_key")) for row in repairs}
+                    scoped_schedule["mappings"] = [
+                        row for row in scoped_schedule.get("mappings", [])
+                        if str(row.get("editorial_placement_id")) in repaired_placements
+                    ]
+                    targeted_dialogue = evaluate_rendered_dialogue(
+                        schedule=scoped_schedule,
+                        rendered_timeline=read_json(Path(timeline_value)),
+                    )
+                    return (
+                        merge_rendered_dialogue_verification(prior_verification, targeted_dialogue),
+                        _merge_targeted_residue(prior_residue or {}, targeted_residue, regions),
+                    )
+
+                def rollback_editorial_pass(
+                    previous_schedule: dict[str, Any], regions: list[dict[str, Any]], pass_index: int,
+                ) -> None:
+                    self.logger.info(f"rolling back non-improving editorial pass {pass_index}")
+                    if getattr(self.config, "editorial_incremental_render", True):
+                        render_schedule_regions_over_original_audio(
+                            original_media=self.destination.media_path,
+                            schedule=previous_schedule,
+                            regions=regions,
+                            duration=render_duration,
+                            output_path=output,
+                            sample_rate=self.config.render_sample_rate,
+                            channels=self.config.render_channels,
+                            target_lufs=self.config.target_lufs,
+                            fade_duration=self.config.audio_fade_duration,
+                            duck_db=self.config.original_duck_db,
+                            suppression_mode=self.config.dialogue_suppression,
+                            suppression_fade_duration=max(self.config.audio_fade_duration, 0.04),
+                            background_reconstruction=self.config.background_reconstruction,
+                        )
+                    else:
+                        render_current_mask(previous_schedule)
+
+                def render_editorial_rejections(
+                    rejected_schedule: dict[str, Any], regions: list[dict[str, Any]],
+                ) -> None:
+                    self.logger.info(f"removing {len(regions)} unresolved editorial region(s) from the render")
+                    if getattr(self.config, "editorial_incremental_render", True):
+                        render_schedule_regions_over_original_audio(
+                            original_media=self.destination.media_path,
+                            schedule=rejected_schedule,
+                            regions=regions,
+                            duration=render_duration,
+                            output_path=output,
+                            sample_rate=self.config.render_sample_rate,
+                            channels=self.config.render_channels,
+                            target_lufs=self.config.target_lufs,
+                            fade_duration=self.config.audio_fade_duration,
+                            duck_db=self.config.original_duck_db,
+                            suppression_mode=self.config.dialogue_suppression,
+                            suppression_fade_duration=max(self.config.audio_fade_duration, 0.04),
+                            background_reconstruction=self.config.background_reconstruction,
+                        )
+                    else:
+                        render_current_mask(rejected_schedule)
+
+                editorial_result = manager.run(
+                    schedule=schedule,
+                    verification=rendered_dialogue_verification,
+                    residue=residue,
+                    problem_report=initial_problem_report,
+                    repair_callback=repair_editorial_pass,
+                    render_verify_callback=render_verify_editorial_pass,
+                    rollback_callback=rollback_editorial_pass,
+                    reject_callback=render_editorial_rejections,
+                    resume_state=(
+                        checkpoint.get("editorial_resume_state")
+                        if checkpoint and checkpoint.get("stage") == "editorial_candidate_prepared"
+                        else None
+                    ),
+                    progress_callback=lambda stage, state: save_checkpoint(
+                        f"editorial_{stage}",
+                        residue=residue,
+                        correction_regions=list(schedule.get("residue_correction_regions", [])),
+                        correction_history=correction_history,
+                        editorial_resume_state=state,
+                        background_reconstruction_report=schedule.get("background_reconstruction_report", {}),
+                        suppression_padding_report=schedule.get("suppression_padding_report", {}),
+                    ),
+                )
+                schedule.clear()
+                schedule.update(editorial_result["schedule"])
+                rendered_dialogue_verification = editorial_result["verification"]
+                residue = editorial_result["residue"]
+                editorial_report = build_editorial_report(editorial_result)
+                schedule["editorial_refinement"] = {
+                    key: editorial_report[key]
+                    for key in (
+                        "status", "termination_reason", "placements_accepted_immediately",
+                        "placements_repaired", "placements_rejected", "repair_passes",
+                        "initial_quality", "final_quality", "quality_improvement",
+                    )
+                }
+                self._write_and_validate(
+                    "editorial_decisions",
+                    self.config.output_dir / "editorial_decisions.json",
+                    editorial_result["final_decisions"],
+                )
+                self._write_and_validate(
+                    "editorial_report",
+                    self.config.output_dir / "editorial_report.json",
+                    editorial_report,
+                )
+                self._write_and_validate(
+                    "repair_effectiveness",
+                    self.config.output_dir / "repair_effectiveness.json",
+                    editorial_report["repair_effectiveness"],
+                )
+                self.logger.info(
+                    f"editorial refinement {editorial_report['status']}: "
+                    f"quality {editorial_report['initial_quality']:.3f} -> {editorial_report['final_quality']:.3f}; "
+                    f"repaired={editorial_report['placements_repaired']} rejected={editorial_report['placements_rejected']}"
+                )
+            schedule["rendered_dialogue_verification"] = rendered_dialogue_verification
+            schedule.setdefault("performance_summary", {})["voice_residue"] = residue["status"]
+            schedule.setdefault("performance_summary", {})["rendered_dialogue_verification"] = rendered_dialogue_verification["status"]
+            write_json(verification_path, residue)
+            write_json(rendered_verification_path, rendered_dialogue_verification)
+            if persist_schedule:
+                self._write_and_validate("replacement_schedule", schedule_path, schedule)
+            if output.exists():
+                output.touch()
+            save_checkpoint(
+                "complete",
+                residue=residue,
+                correction_regions=list(schedule.get("residue_correction_regions", [])),
+                correction_history=correction_history,
+                residue_correction_report=schedule["residue_correction_report"],
+                rendered_dialogue_verification=rendered_dialogue_verification,
+                background_reconstruction_report=schedule.get("background_reconstruction_report", {}),
+                suppression_padding_report=schedule.get("suppression_padding_report", {}),
+            )
+        else:
+            render_current_mask()
         self.logger.info(f"rendered audio: {output}")
         return output
 
@@ -801,14 +1528,21 @@ class Pipeline:
         audio = self.render_audio(force=force)
         return self.render_video_from_audio(audio=audio, force=force)
 
-    def render_video_from_audio(self, *, audio: Path, force: bool = False) -> Path:
+    def render_video_from_audio(
+        self,
+        *,
+        audio: Path,
+        force: bool = False,
+        output_path: Path | None = None,
+        duration: float | None = None,
+    ) -> Path:
         self._check_cancel()
-        output = self.config.output_dir / "translation_output.mp4"
+        output = output_path or self.config.output_dir / "translation_output.mp4"
         if output.exists() and not force and not _is_stale(output, audio):
             self.logger.info(f"reused rendered video: {output}")
             return output
         self.logger.info("muxing final video")
-        mux_video(destination_video=self.destination.media_path, dialogue_wav=audio, output_path=output)
+        mux_video(destination_video=self.destination.media_path, dialogue_wav=audio, output_path=output, duration=duration)
         self.logger.info(f"rendered video: {output}")
         return output
 
@@ -859,9 +1593,16 @@ class Pipeline:
         if not problem_path.exists():
             self.generate_reports()
         problem_report = read_json(problem_path)
-        final_video = self.config.output_dir / "translation_output.mp4"
+        video_candidates = [
+            self.config.output_dir / "translation" / "translation_output.mp4",
+            self.config.output_dir / "translation_output.mp4",
+        ]
+        final_video = next((path for path in video_candidates if path.exists()), video_candidates[0])
         if not final_video.exists():
-            raise FileNotFoundError(f"Final output video is missing: {final_video}")
+            raise FileNotFoundError(
+                "Final output video is missing; checked: "
+                + ", ".join(str(path) for path in video_candidates)
+            )
         dest_movie = self._inspect_one(self.destination, force=False)
         destination_duration = float(dest_movie.get("duration", 0.0) or 0.0)
         preview_dir = self.config.output_dir / "previews" / "problem_regions"
@@ -871,10 +1612,14 @@ class Pipeline:
         previews = []
         problems = problem_report.get("problems", [])
         if max_regions is not None:
-            problems = problems[:max(0, max_regions)]
+            problems = _curated_problem_preview_rows(problems, max_regions=max(0, max_regions))
         for index, problem in enumerate(problems, start=1):
             start = max(0.0, float(problem.get("start", 0.0) or 0.0) - max(0.0, padding))
             end = float(problem.get("end", start + float(problem.get("duration", 0.0) or 0.0)) or start) + max(0.0, padding)
+            if end - start > 14.0:
+                center = (start + end) / 2.0
+                start = max(0.0, center - 7.0)
+                end = center + 7.0
             if destination_duration > 0:
                 end = min(destination_duration, end)
             if end <= start:
@@ -915,6 +1660,96 @@ class Pipeline:
         text_path = preview_dir / "problem_region_previews.txt"
         text_path.write_text(_format_problem_preview_manifest(manifest), encoding="utf-8")
         return {"manifest": manifest_path, "text": text_path, "directory": preview_dir, "previews": previews}
+
+    def render_performance_curation_previews(self, *, padding: float = 1.0, max_per_stratum: int = 2) -> dict[str, Any]:
+        schedule_path = self.destination.cache_dir / "replacement_schedule.json"
+        if not schedule_path.exists():
+            self.schedule(force=False)
+        schedule = read_json(schedule_path)
+        montage_plan_path = self.config.output_dir / "translation" / "montage_plan.json"
+        if montage_plan_path.exists() and not schedule.get("montage_native"):
+            schedule = rebase_schedule_to_montage(schedule, read_json(montage_plan_path))
+            schedule["montage_native"] = True
+        rendered_timeline_path = self.config.output_dir / "rendered_dialogue_timeline.json"
+        corrected_audio_path = self.config.output_dir / "translation" / "replacement_dialogue.wav"
+        if (
+            not schedule.get("residue_correction_regions")
+            and rendered_timeline_path.exists()
+            and corrected_audio_path.exists()
+            and corrected_audio_path.stat().st_mtime_ns > rendered_timeline_path.stat().st_mtime_ns
+        ):
+            checkpoint = evaluate_voice_residue(schedule=schedule, rendered_timeline=read_json(rendered_timeline_path))
+            recovered_regions = build_residue_correction_regions(
+                checkpoint,
+                padding=max(0.0, float(getattr(self.config, "residue_correction_padding", 0.12) or 0.0)),
+                duration=float(schedule.get("duration_policy", {}).get("actual_duration", 0.0) or 0.0) or None,
+            )
+            if recovered_regions:
+                schedule["residue_correction_regions"] = recovered_regions
+                schedule["residue_curation_checkpoint"] = {
+                    "status": "CORRECTIVE_AUDIO_RENDERED_REVERIFICATION_INCOMPLETE",
+                    "source_timeline": str(rendered_timeline_path),
+                    "region_count": len(recovered_regions),
+                }
+        video_candidates = [
+            self.config.output_dir / "translation" / "translation_output.mp4",
+            self.config.output_dir / "translation_output.mp4",
+        ]
+        final_video = next((path for path in video_candidates if path.exists()), video_candidates[0])
+        if not final_video.exists():
+            raise FileNotFoundError("Final Translation video is required before performance curation previews can be rendered.")
+        destination_duration = float(self._inspect_one(self.destination, force=False).get("duration", 0.0) or 0.0)
+        preview_dir = self.config.output_dir / "previews" / "performance_curation"
+        preview_dir.mkdir(parents=True, exist_ok=True)
+        for stale in preview_dir.glob("curation_*.mp4"):
+            stale.unlink()
+        manifest_path = preview_dir / "performance_curation_manifest.json"
+        manifest = build_performance_curation_manifest(
+            schedule=schedule,
+            source_video=final_video,
+            output_path=manifest_path,
+            max_per_stratum=max_per_stratum,
+        )
+        rendered = []
+        for index, selection in enumerate(manifest.get("selected", []), start=1):
+            start = max(0.0, float(selection.get("start", 0.0) or 0.0) - max(0.0, padding))
+            end = float(selection.get("end", start) or start) + max(0.0, padding)
+            if end - start > 14.0:
+                center = (start + end) / 2.0
+                start, end = max(0.0, center - 7.0), center + 7.0
+            if destination_duration > 0:
+                end = min(destination_duration, end)
+            if end <= start:
+                continue
+            duration = round(end - start, 3)
+            stem = f"curation_{index:03d}_{selection.get('stratum', 'performance')}_{int(start * 1000):09d}"
+            output_path = preview_dir / f"{_safe_filename(stem)}.mp4"
+            self.logger.info(
+                f"rendering performance curation preview {index}/{len(manifest.get('selected', []))} "
+                f"stratum={selection.get('stratum')} start={start:.3f}s duration={duration:.3f}s"
+            )
+            extract_video_segment(
+                input_video=final_video,
+                output_path=output_path,
+                start_time=start,
+                duration=duration,
+            )
+            rendered.append(dict(
+                selection,
+                index=index,
+                preview_start=round(start, 3),
+                preview_end=round(end, 3),
+                preview_duration=duration,
+                path=str(output_path),
+                ratings={rubric: None for rubric in manifest.get("review_rubric", [])},
+                curator_notes="",
+            ))
+        manifest["selected"] = rendered
+        manifest["rendered_preview_count"] = len(rendered)
+        write_json(manifest_path, manifest)
+        text_path = preview_dir / "performance_curation_manifest.txt"
+        text_path.write_text(_format_performance_curation_manifest(manifest), encoding="utf-8")
+        return {"manifest": manifest_path, "text": text_path, "directory": preview_dir, "previews": rendered}
 
     def run_all(self, *, force: bool = False) -> Path:
         result = self.execute_transformation("translation", force=force)
@@ -1035,8 +1870,15 @@ class Pipeline:
             lambda state: {
                 "anchor_film_id": state.anchor.id,
                 "behavior": state.definition.anchor_behavior,
-                "duration": anchor_artifacts["movie"]["duration"],
+                "duration": (
+                    min(float(film_artifacts[film.id]["movie"]["duration"]) for film in state.films)
+                    if state.definition.anchor_behavior == "law_defined_timeline"
+                    else anchor_artifacts["movie"]["duration"]
+                ),
                 "speaking_windows": anchor_artifacts["windows"],
+                "film_speaking_windows": {
+                    film.id: film_artifacts[film.id]["windows"] for film in state.films
+                },
                 "film_ids": [film.id for film in state.films],
             }
         )
@@ -1087,40 +1929,53 @@ class Pipeline:
         report_path = output_dir / "multiworld_report.json"
         montage_plan_path = output_dir / "montage_plan.json"
         montage_acceptance_path = output_dir / "montage_render_acceptance.json"
+        multi_source_base = output_dir / "multi_source_visual_base.mp4"
         anchor_duration = float(anchor_artifacts["movie"]["duration"])
         supporting_durations = [
             float(film_artifacts[film.id]["movie"]["duration"])
             for film in world.state.films
             if film.id != anchor.id
         ]
-        montage_plan = build_full_timeline_plan(
-            filter_id=definition.id,
-            filter_contract_version=definition.version,
-            anchor_source_id=anchor.id,
-            anchor_media_hash=str(anchor_artifacts["media_hash"]),
-            anchor_duration=anchor_duration,
-            supporting_audio_durations=supporting_durations,
-            shot_ids=[
-                str(row["id"])
-                for row in anchor_artifacts["visual"].get("shots", {}).get("shots", [])
-            ],
-            random_seed=seed,
-            governing_relationship=definition.cinematic_law,
-            laws={
-                "visual": "COMPLETE_ANCHOR_TIMELINE_FROM_ZERO",
-                "temporal": definition.preserves.get("time", "ANCHOR_CHRONOLOGY_PRESERVED"),
+        plan_kwargs = {
+            "filter_id": definition.id,
+            "filter_contract_version": definition.version,
+            "anchor_source_id": anchor.id,
+            "anchor_media_hash": str(anchor_artifacts["media_hash"]),
+            "anchor_duration": anchor_duration,
+            "supporting_audio_durations": supporting_durations,
+            "random_seed": seed,
+            "governing_relationship": definition.cinematic_law,
+            "laws": {
+                "visual": "DECLARED_MULTI_SOURCE_PHASES" if schedule.get("visual_segments") else "COMPLETE_ANCHOR_TIMELINE_FROM_ZERO",
+                "temporal": definition.preserves.get("time", "LAW_DEFINED_SHARED_TIMELINE" if schedule.get("visual_segments") else "ANCHOR_CHRONOLOGY_PRESERVED"),
                 "dialogue": definition.operational_description,
                 "requested_audio": "MULTIWORLD_FILTER_CONTRACT_AUDIO_LAW",
-                "actual_audio_method": "CONTINUOUS_SOURCE_SOUNDTRACK_BED",
+                "actual_audio_method": (
+                    "MULTI_SOURCE_NON_SPEECH_BED_WITH_HARD_CARRIER_SPEECH_SUPPRESSION"
+                    if definition.id == "multiworld.triangle"
+                    else "CONTINUOUS_MULTI_SOURCE_SOUNDTRACK_BED"
+                    if schedule.get("visual_segments")
+                    else "CONTINUOUS_SOURCE_SOUNDTRACK_BED"
+                ),
             },
-            schedule=schedule,
-            repetition_authorized=bool(params.get("allow_line_reuse", False)),
-            repetition_authorization_basis=(
-                "FILTER_PARAMETER:allow_line_reuse"
-                if bool(params.get("allow_line_reuse", False))
-                else None
-            ),
-        )
+            "schedule": schedule,
+        }
+        if schedule.get("visual_segments"):
+            montage_plan = build_shared_timeline_plan(**plan_kwargs)
+        else:
+            montage_plan = build_full_timeline_plan(
+                **plan_kwargs,
+                shot_ids=[
+                    str(row["id"])
+                    for row in anchor_artifacts["visual"].get("shots", {}).get("shots", [])
+                ],
+                repetition_authorized=bool(params.get("allow_line_reuse", False)),
+                repetition_authorization_basis=(
+                    "FILTER_PARAMETER:allow_line_reuse"
+                    if bool(params.get("allow_line_reuse", False))
+                    else None
+                ),
+            )
         schedule = rebase_schedule_to_montage(schedule, montage_plan)
         schedule["montage_native"] = True
         schedule["full_timeline_native"] = True
@@ -1151,8 +2006,15 @@ class Pipeline:
 
         def render_world(_state):
             duration = float(montage_plan["actual_duration"])
+            original_media = anchor.media_path
+            if schedule.get("visual_segments"):
+                render_multi_source_montage(
+                    selected_moments=montage_plan["selected_moments"],
+                    output_path=multi_source_base,
+                )
+                original_media = multi_source_base
             render_mutation_media(
-                original_media=anchor.media_path,
+                original_media=original_media,
                 schedule=schedule,
                 duration=duration,
                 audio_output=audio_output,
@@ -1418,6 +2280,12 @@ class Pipeline:
         paths["problem_regions"] = problem_report_json
         paths["problem_regions_csv"] = problem_report_csv
         paths["problem_regions_txt"] = problem_report_txt
+        editorial_decisions_path = self.config.output_dir / "editorial_decisions.json"
+        editorial_report_path = self.config.output_dir / "editorial_report.json"
+        if editorial_decisions_path.exists():
+            paths["editorial_decisions"] = editorial_decisions_path
+        if editorial_report_path.exists():
+            paths["editorial_report"] = editorial_report_path
         index_path = self.config.output_dir / "cinematic_index.json"
         build_cinematic_index(
             root=self.config.root,
@@ -1786,6 +2654,8 @@ class Pipeline:
             "performance_placement_report": self.config.output_dir / "performance_placement_report.json",
             "latest_transformation_plan": self.config.output_dir / "transformation_plan.json",
             "translation_transformation_plan": self.config.output_dir / "translation" / "transformation_plan.json",
+            "editorial_decisions": self.config.output_dir / "editorial_decisions.json",
+            "editorial_report": self.config.output_dir / "editorial_report.json",
         }
         artifact_types = {
             "destination_movie": "movie",
@@ -1812,6 +2682,8 @@ class Pipeline:
             "performance_placement_report": "performance_placement_report",
             "latest_transformation_plan": "transformation_plan",
             "translation_transformation_plan": "transformation_plan",
+            "editorial_decisions": "editorial_decisions",
+            "editorial_report": "editorial_report",
         }
         result = {}
         for name, path in checks.items():
@@ -1901,7 +2773,7 @@ class Pipeline:
                     "shot_boundary_mode": self.config.shot_boundary_mode,
                     "cinematic_filter": self.config.cinematic_filter,
                     "source_reuse_policy": "forbidden_by_default",
-                    "schedule_schema": "source_timestamp_v19_no_implicit_reuse",
+                    "schedule_schema": "source_timestamp_v21_cross_film_speaker_roles",
                 }
             )
 
@@ -1969,6 +2841,37 @@ class Pipeline:
 
         write_json(path, data)
         validate_artifact(artifact_type, path, self.schemas_dir)
+
+
+def _merge_targeted_residue(
+    baseline: dict[str, Any], targeted: dict[str, Any], regions: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Replace residue evidence only inside the regions that were re-rendered."""
+    if targeted.get("status") == "UNAVAILABLE":
+        return dict(baseline)
+
+    def overlaps_target(row: dict[str, Any]) -> bool:
+        start = float(row.get("start", 0.0) or 0.0)
+        end = float(row.get("end", start) or start)
+        return any(
+            min(end, float(region.get("end", 0.0) or 0.0))
+            > max(start, float(region.get("start", 0.0) or 0.0))
+            for region in regions
+        )
+
+    rows = [dict(row) for row in baseline.get("regions", []) if not overlaps_target(row)]
+    rows.extend(dict(row) for row in targeted.get("regions", []))
+    flagged = [row for row in rows if row.get("possible_residue")]
+    unattributed = [row for row in rows if row.get("unattributed_speech_detected")]
+    return {
+        **{key: value for key, value in baseline.items() if key not in {"regions", "verification_reel"}},
+        "status": "POSSIBLE_DESTINATION_SPEECH_DETECTED" if flagged else "NONE_DETECTED" if rows else "INCONCLUSIVE",
+        "evaluated_region_count": len(rows),
+        "flagged_region_count": len(flagged),
+        "unattributed_speech_region_count": len(unattributed),
+        "regions": rows,
+        "editorial_targeted_verification": targeted,
+    }
 
 
 def _require_montage_native_self_shuffle_result(result: TransformationResult) -> None:
@@ -2259,6 +3162,30 @@ def _format_problem_preview_manifest(manifest: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _format_performance_curation_manifest(manifest: dict[str, Any]) -> str:
+    density = manifest.get("dialogue_density_diagnostics", {})
+    lines = [
+        "Cinelingus Performance Curation Set",
+        "====================================",
+        f"Previews: {manifest.get('rendered_preview_count', manifest.get('selected_count', 0))}",
+        f"Density warnings: {density.get('warning_performance_count', 0)}",
+        f"Overdense performances: {density.get('overdense_performance_count', 0)}",
+        f"Overlapping dialogue performances: {density.get('overlapping_dialogue_performance_count', 0)}",
+        f"Fragmented micro-line performances: {density.get('fragmented_micro_line_performance_count', 0)}",
+        f"Repeated source clips: {density.get('repeated_source_clip_count', 0)}",
+        "",
+    ]
+    for preview in manifest.get("selected", []):
+        lines.extend([
+            f"{preview.get('index', '-')}. {preview.get('stratum')} {preview.get('preview_start', preview.get('start'))}s-{preview.get('preview_end', preview.get('end'))}s",
+            f"   {preview.get('reason')}",
+            f"   {preview.get('path', '')}",
+            "   Ratings: cadence / intelligibility / emotional fit / repetition / ambience / intentionality",
+            "   Notes:",
+        ])
+    return "\n".join(lines) + "\n"
+
+
 
 def _speech_mute_regions(
     schedule: dict,
@@ -2266,9 +3193,12 @@ def _speech_mute_regions(
     padding: float = 0.0,
     merge_gap: float = 0.0,
     duration: float | None = None,
+    adaptive: bool = False,
 ) -> list[dict[str, float]]:
+    evidence = _speech_slot_evidence(schedule)
     regions = []
-    for start, end in _speech_slot_regions(schedule):
+    for row in evidence:
+        start, end = float(row["start"]), float(row["end"])
         if end > start:
             regions.append((start, end))
     if not regions:
@@ -2285,10 +3215,179 @@ def _speech_mute_regions(
             region_duration = float(mapping.get("planned_render_duration", mapping.get("clip_trim_duration", 0.0)) or 0.0)
             if region_duration > 0:
                 regions.append((start, start + region_duration))
-    return _merge_mute_regions(regions, padding=padding, merge_gap=merge_gap, duration=duration)
+    if not adaptive or not evidence:
+        return _merge_mute_regions(regions, padding=padding, merge_gap=merge_gap, duration=duration)
+
+    expanded = []
+    padding_rows = []
+    for row in evidence:
+        start, end = float(row["start"]), float(row["end"])
+        confidence = max(0.0, min(1.0, float(row.get("confidence", 0.7) or 0.7)))
+        uncertainty = 1.0 - confidence
+        recovered = bool(row.get("recovered")) or row.get("source_kind") == "recovered_filtered_speech_window"
+        short = end - start <= 0.5
+        touching = [
+            mapping for mapping in schedule.get("mappings", [])
+            if mapping.get("enabled", True)
+            and min(
+                end,
+                float(mapping.get("destination_timestamp", 0.0) or 0.0)
+                + float(mapping.get("planned_render_duration", 0.0) or 0.0),
+            ) > max(start, float(mapping.get("destination_timestamp", 0.0) or 0.0))
+        ]
+        local_leading = max((
+            float(mapping.get("suppression_leading_padding", mapping.get("suppression_padding", padding)) or 0.0)
+            for mapping in touching
+        ), default=max(0.0, padding))
+        local_trailing = max((
+            float(mapping.get("suppression_trailing_padding", mapping.get("suppression_padding", padding)) or 0.0)
+            for mapping in touching
+        ), default=max(0.0, padding))
+        leading = max(0.0, local_leading) + uncertainty * 0.08 + (0.04 if recovered else 0.0) + (0.02 if short else 0.0)
+        trailing = max(0.0, local_trailing) + uncertainty * 0.14 + (0.08 if recovered else 0.0) + (0.04 if short else 0.0)
+        padded_start = max(0.0, start - leading)
+        padded_end = end + trailing
+        if duration is not None:
+            padded_end = min(float(duration), padded_end)
+        if padded_end > padded_start:
+            expanded.append((padded_start, padded_end))
+            padding_rows.append({
+                "speech_region_id": row.get("id"),
+                "confidence": round(confidence, 4),
+                "source_kind": row.get("source_kind", "detected_speech_window"),
+                "leading_padding": round(leading, 3),
+                "trailing_padding": round(trailing, 3),
+            })
+    schedule["suppression_padding_report"] = {
+        "strategy": "confidence_aware_asymmetric_padding_v1",
+        "base_padding": round(max(0.0, padding), 3),
+        "region_count": len(padding_rows),
+        "minimum_leading_padding": min((row["leading_padding"] for row in padding_rows), default=0.0),
+        "maximum_trailing_padding": max((row["trailing_padding"] for row in padding_rows), default=0.0),
+        "regions": padding_rows,
+    }
+    return _merge_expanded_mute_regions(expanded, merge_gap=merge_gap)
 
 
 def _speech_slot_regions(schedule: dict) -> list[tuple[float, float]]:
+    return [(float(row["start"]), float(row["end"])) for row in _speech_slot_evidence(schedule)]
+
+
+def _apply_hybrid_speech_mask(
+    schedule: dict,
+    *,
+    acoustic_windows: list[dict],
+    diarization_segments: list[dict],
+    maximum_acoustic_extension: float = 0.18,
+) -> dict:
+    """Combine transcript, acoustic, and trusted diarization evidence conservatively."""
+    enriched = dict(schedule)
+    base_regions = [dict(row) for row in schedule.get("destination_speech_regions", [])]
+    expanded_count = 0
+    for region in base_regions:
+        start = float(region.get("start", 0.0) or 0.0)
+        end = float(region.get("end", start + float(region.get("duration", 0.0) or 0.0)) or start)
+        overlapping = [window for window in acoustic_windows if _bounds_overlap(start, end, window)]
+        if overlapping:
+            acoustic_start = min(float(row.get("start", start) or start) for row in overlapping)
+            acoustic_end = max(float(row.get("end", end) or end) for row in overlapping)
+            recovered_start = max(0.0, max(acoustic_start, start - maximum_acoustic_extension))
+            recovered_end = min(acoustic_end, end + maximum_acoustic_extension)
+            if recovered_start < start - 0.001 or recovered_end > end + 0.001:
+                expanded_count += 1
+                region.update({
+                    "start": round(recovered_start, 3),
+                    "end": round(recovered_end, 3),
+                    "duration": round(recovered_end - recovered_start, 3),
+                    "acoustic_boundary_recovered": True,
+                })
+
+    diarization_rows = []
+    for index, segment in enumerate(diarization_segments, start=1):
+        start = float(segment.get("start", 0.0) or 0.0)
+        end = float(segment.get("end", start + float(segment.get("duration", 0.0) or 0.0)) or start)
+        if end <= start:
+            continue
+        diarization_rows.append({
+            "id": f"diarization_speech_{index:06d}",
+            "start": round(start, 3),
+            "end": round(end, 3),
+            "duration": round(end - start, 3),
+            "transcript": "",
+            "confidence": round(float(segment.get("confidence", 0.8) or 0.8), 4),
+            "source_kind": "trusted_diarization_speech_window",
+            "recovered": True,
+            "speaker_id": segment.get("speaker_id"),
+        })
+
+    enriched["destination_speech_regions"] = sorted(
+        base_regions + diarization_rows,
+        key=lambda row: (float(row.get("start", 0.0) or 0.0), float(row.get("end", 0.0) or 0.0)),
+    )
+    enriched["speech_mask_report"] = {
+        "strategy": "whisper_diarization_acoustic_boundary_union_v1",
+        "transcript_region_count": len(base_regions),
+        "acoustic_boundary_expansion_count": expanded_count,
+        "trusted_diarization_region_count": len(diarization_rows),
+        "final_region_count": len(enriched["destination_speech_regions"]),
+        "maximum_acoustic_extension": round(maximum_acoustic_extension, 3),
+    }
+    return enriched
+
+
+def _bounds_overlap(start: float, end: float, row: dict) -> bool:
+    row_start = float(row.get("start", 0.0) or 0.0)
+    row_end = float(row.get("end", row_start + float(row.get("duration", 0.0) or 0.0)) or row_start)
+    return min(end, row_end) > max(start, row_start)
+
+
+def _speech_slot_evidence(schedule: dict) -> list[dict[str, Any]]:
+    destination_by_id = {
+        str(row.get("id")): row
+        for row in list(schedule.get("destination_speech_regions", [])) + list(schedule.get("residue_correction_regions", []))
+        if row.get("id") is not None
+    }
+    if schedule.get("unmatched_policy") == "suppress_original_dialogue":
+        return [
+            dict(row)
+            for row in sorted(
+                destination_by_id.values(),
+                key=lambda item: (float(item.get("start", 0.0) or 0.0), float(item.get("end", 0.0) or 0.0)),
+            )
+        ]
+    regions_by_key: dict[tuple[float, float], dict[str, Any]] = {}
+    for mapping in schedule.get("mappings", []):
+        if not mapping.get("enabled", True) or mapping.get("alignment_mode") != "speech_window_snap":
+            continue
+        matched = [
+            destination_by_id[window_id]
+            for window_id in map(str, mapping.get("alignment_source_window_ids", []))
+            if window_id in destination_by_id
+        ]
+        if not matched:
+            slot_start = mapping.get("alignment_slot_start")
+            slot_end = mapping.get("alignment_slot_end")
+            if slot_start is None or slot_end is None:
+                continue
+            matched = [{
+                "id": mapping.get("window_id"),
+                "start": slot_start,
+                "end": slot_end,
+                "confidence": mapping.get("confidence", 0.7),
+                "source_kind": mapping.get("alignment_source_kind", "detected_speech_window"),
+                "recovered": mapping.get("alignment_source_kind") == "recovered_filtered_speech_window",
+            }]
+        for row in matched:
+            start = float(row.get("start", 0.0) or 0.0)
+            end = float(row.get("end", start + float(row.get("duration", 0.0) or 0.0)) or start)
+            if end <= start:
+                continue
+            key = (round(start, 3), round(end, 3))
+            regions_by_key[key] = dict(row, start=start, end=end)
+    return [regions_by_key[key] for key in sorted(regions_by_key)]
+
+
+def _legacy_speech_slot_regions(schedule: dict) -> list[tuple[float, float]]:
     regions_by_key: dict[tuple[float, float], tuple[float, float]] = {}
     for mapping in schedule.get("mappings", []):
         if not mapping.get("enabled", True):
@@ -2308,47 +3407,33 @@ def _speech_slot_regions(schedule: dict) -> list[tuple[float, float]]:
     return sorted(regions_by_key.values(), key=lambda item: item[0])
 
 
+def _merge_expanded_mute_regions(
+    regions: list[tuple[float, float]],
+    *,
+    merge_gap: float,
+) -> list[dict[str, float]]:
+    if not regions:
+        return []
+    merged = sorted(regions)
+    compact = [merged[0]]
+    for start, end in merged[1:]:
+        prior_start, prior_end = compact[-1]
+        if start <= prior_end + max(0.0, merge_gap):
+            compact[-1] = (prior_start, max(prior_end, end))
+        else:
+            compact.append((start, end))
+    return [
+        {"start": round(start, 3), "duration": round(end - start, 3)}
+        for start, end in compact
+        if end > start
+    ]
+
+
 def _attach_performance_speech_windows(
     performance_rows: list[dict],
     timeline_windows: list[dict],
 ) -> list[dict]:
-    all_timeline_by_id = {str(window.get("id")): window for window in timeline_windows}
-    usable_timeline_by_id = {str(window.get("id")): window for window in usable_rows(timeline_windows)}
-    enriched = []
-    for row in performance_rows:
-        item = dict(row)
-        speech_windows = []
-        for window_id in item.get("speaking_window_ids", []):
-            key = str(window_id)
-            source = usable_timeline_by_id.get(key)
-            source_kind = "detected_speech_window"
-            if source is None:
-                source = all_timeline_by_id.get(key)
-                source_kind = "recovered_filtered_speech_window"
-            if not source:
-                continue
-            start = float(source.get("start", 0.0) or 0.0)
-            duration = float(source.get("duration", 0.0) or 0.0)
-            end = float(source.get("end", start + duration) or start + duration)
-            duration = max(0.0, end - start)
-            if duration <= 0.0:
-                continue
-            speech_windows.append(
-                {
-                    "id": str(source.get("id")),
-                    "start": round(start, 3),
-                    "end": round(end, 3),
-                    "duration": round(duration, 3),
-                    "confidence": source.get("confidence", item.get("confidence", 0.7)),
-                    "source_kind": source_kind,
-                    "recovered": source_kind != "detected_speech_window",
-                    "reject_reason": source.get("reject_reason"),
-                }
-            )
-        if speech_windows:
-            item["speech_windows"] = speech_windows
-        enriched.append(item)
-    return enriched
+    return attach_performance_speech_windows(performance_rows, timeline_windows)
 
 
 def _merge_mute_regions(
@@ -2410,4 +3495,3 @@ from .pipeline_contract_adapter import install_pipeline_contract_adapter
 install_pipeline_contract_adapter(Pipeline)
 from .reliable_experiment import install_reliable_executor
 install_reliable_executor(Pipeline)
-

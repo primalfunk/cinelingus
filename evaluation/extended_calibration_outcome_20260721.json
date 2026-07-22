@@ -1,0 +1,180 @@
+{
+  "schema_version": "1.0",
+  "record_type": "extended_calibration_outcome",
+  "created_on": "2026-07-21",
+  "status": "complete",
+  "objective": "Exercise bounded editorial repair across a balanced, evidence-qualified set of exchange, transition, animation, and fragment cases without accepting regressions.",
+  "execution_summary": {
+    "attempted_cases": 18,
+    "completed_cases": 18,
+    "retained_informative_cases": 10,
+    "safe_fallback_cases": 8,
+    "retained_purpose_distribution": {
+      "exchange_continuity": 3,
+      "transition_sentence_integrity": 3,
+      "animation_visual_role": 2,
+      "fragment_duration_edges": 2
+    }
+  },
+  "retained_metrics": {
+    "average_initial_quality": 0.7701,
+    "average_final_quality": 0.7858,
+    "average_quality_improvement": 0.0157,
+    "placements_repaired": 3,
+    "placements_unresolved": 12,
+    "rendered_candidate_count": 7,
+    "surviving_repair_count": 3,
+    "rendered_candidate_survival_rate": 0.4286,
+    "regressive_repair_count": 0
+  },
+  "run_sequence": [
+    {
+      "report": "output/corpus_calibration/extended/calibration_report_initial.json",
+      "attempted": 10,
+      "informative": 6,
+      "safe_fallback": 4
+    },
+    {
+      "report": "output/corpus_calibration/extended_followup/calibration_report.json",
+      "attempted": 4,
+      "informative": 2,
+      "safe_fallback": 2
+    },
+    {
+      "report": "output/corpus_calibration/extended_supplement/calibration_report.json",
+      "attempted": 2,
+      "informative": 1,
+      "safe_fallback": 1
+    },
+    {
+      "report": "output/corpus_calibration/extended_supplement2/calibration_report.json",
+      "attempted": 1,
+      "informative": 0,
+      "safe_fallback": 1
+    },
+    {
+      "report": "output/corpus_calibration/extended_supplement3/calibration_report.json",
+      "attempted": 1,
+      "informative": 1,
+      "safe_fallback": 0
+    }
+  ],
+  "retained_cases": [
+    {
+      "report": "output/corpus_calibration/extended/calibration_report_initial.json",
+      "case_id": "case_001_exchange_continuity",
+      "purpose": "exchange_continuity",
+      "initial_quality": 0.8141,
+      "final_quality": 0.8534,
+      "quality_improvement": 0.0393,
+      "rendered_candidates": 1,
+      "surviving_repairs": 1
+    },
+    {
+      "report": "output/corpus_calibration/extended/calibration_report_initial.json",
+      "case_id": "case_005_fragment_duration_edges",
+      "purpose": "fragment_duration_edges",
+      "initial_quality": 0.7997,
+      "final_quality": 0.848,
+      "quality_improvement": 0.0483,
+      "rendered_candidates": 1,
+      "surviving_repairs": 1
+    },
+    {
+      "report": "output/corpus_calibration/extended/calibration_report_initial.json",
+      "case_id": "case_006_exchange_continuity",
+      "purpose": "exchange_continuity",
+      "initial_quality": 0.727,
+      "final_quality": 0.727,
+      "quality_improvement": 0.0,
+      "rendered_candidates": 0,
+      "surviving_repairs": 0
+    },
+    {
+      "report": "output/corpus_calibration/extended/calibration_report_initial.json",
+      "case_id": "case_007_transition_sentence_integrity",
+      "purpose": "transition_sentence_integrity",
+      "initial_quality": 0.8606,
+      "final_quality": 0.8606,
+      "quality_improvement": 0.0,
+      "rendered_candidates": 0,
+      "surviving_repairs": 0
+    },
+    {
+      "report": "output/corpus_calibration/extended/calibration_report_initial.json",
+      "case_id": "case_008_animation_visual_role",
+      "purpose": "animation_visual_role",
+      "initial_quality": 0.6467,
+      "final_quality": 0.6467,
+      "quality_improvement": 0.0,
+      "rendered_candidates": 0,
+      "surviving_repairs": 0
+    },
+    {
+      "report": "output/corpus_calibration/extended/calibration_report_initial.json",
+      "case_id": "case_010_fragment_duration_edges",
+      "purpose": "fragment_duration_edges",
+      "initial_quality": 0.7822,
+      "final_quality": 0.8519,
+      "quality_improvement": 0.0697,
+      "rendered_candidates": 1,
+      "surviving_repairs": 1
+    },
+    {
+      "report": "output/corpus_calibration/extended_followup/calibration_report.json",
+      "case_id": "followup_001_animation_visual_role",
+      "purpose": "animation_visual_role",
+      "initial_quality": 0.8529,
+      "final_quality": 0.8529,
+      "quality_improvement": 0.0,
+      "rendered_candidates": 0,
+      "surviving_repairs": 0
+    },
+    {
+      "report": "output/corpus_calibration/extended_followup/calibration_report.json",
+      "case_id": "followup_003_transition_sentence_integrity",
+      "purpose": "transition_sentence_integrity",
+      "initial_quality": 0.7874,
+      "final_quality": 0.7874,
+      "quality_improvement": 0.0,
+      "rendered_candidates": 4,
+      "surviving_repairs": 0
+    },
+    {
+      "report": "output/corpus_calibration/extended_supplement/calibration_report.json",
+      "case_id": "supplement_002_transition_sentence_integrity",
+      "purpose": "transition_sentence_integrity",
+      "initial_quality": 0.6527,
+      "final_quality": 0.6527,
+      "quality_improvement": 0.0,
+      "rendered_candidates": 0,
+      "surviving_repairs": 0
+    },
+    {
+      "report": "output/corpus_calibration/extended_supplement3/calibration_report.json",
+      "case_id": "supplement_001_exchange_continuity",
+      "purpose": "exchange_continuity",
+      "initial_quality": 0.7777,
+      "final_quality": 0.7777,
+      "quality_improvement": 0.0,
+      "rendered_candidates": 0,
+      "surviving_repairs": 0
+    }
+  ],
+  "findings": [
+    "All three accepted repair candidates improved quality and survived the rollback gate.",
+    "Four rendered alternatives in a difficult transition case were rejected, preserving its baseline quality.",
+    "Several informative cases exposed unresolved failures with no viable bounded alternative; these are restraint evidence, not execution failures.",
+    "Quiet-room boundary pairing was retired from paired calibration after repeated zero-mapping fallbacks; it remains useful as standalone corpus evidence.",
+    "Replacement planning excludes previously attempted input identities and replenishes only missing purpose slots."
+  ],
+  "production_regression_reference": {
+    "quality_before": 0.688,
+    "quality_after": 0.6913,
+    "repairs_before": 5,
+    "repairs_after": 6,
+    "unresolved_before": 185,
+    "unresolved_after": 184,
+    "note": "Established before the final calibration-only planning refinements; production repair behavior was not subsequently changed."
+  }
+}

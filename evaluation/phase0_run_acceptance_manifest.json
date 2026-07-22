@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "thresholds": {
+    "accepted_residue_statuses": ["NONE_DETECTED"],
+    "maximum_silence_fallback_ratio": 1.0,
+    "minimum_performance_first_ratio": 0.0,
+    "maximum_linewise_fallback_ratio": 1.0,
+    "maximum_preserved_original_ratio": 1.0,
+    "maximum_problem_count": 10000,
+    "require_editorial_evidence": true,
+    "accepted_editorial_statuses": ["PASS", "LIMIT_REACHED"],
+    "maximum_hard_gate_failure_count": 0,
+    "maximum_failed_delivery_count": 0
+  },
+  "cases": [
+    {
+      "id": "animation_dense",
+      "run_report": "animation_dense/run_report.json",
+      "tags": ["animation", "dialogue-dense", "feature-length"]
+    },
+    {
+      "id": "live_rapid",
+      "run_report": "live_rapid/run_report.json",
+      "tags": ["live-action", "rapid-turn-taking", "feature-length"]
+    }
+  ]
+}

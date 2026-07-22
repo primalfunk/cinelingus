@@ -67,6 +67,28 @@ clips/
 reports/
 screenshots/
 
+# Evaluation runs are reproducible working artifacts. Keep compact, curated
+# manifests and result summaries as the persistent evidence library; exclude
+# schedules, transcriptions, checkpoints, extracted timelines, and other
+# per-render intermediates by default.
+evaluation/**/*
+!evaluation/**/
+!evaluation/*.json
+evaluation/inventory_cache.json
+!evaluation/**/*_screen.json
+!evaluation/**/*_proof.json
+!evaluation/**/*_audit.json
+!evaluation/**/*_repair.json
+!evaluation/**/*_preflight.json
+!evaluation/**/corpus_manifest.json
+!evaluation/**/review_manifest.json
+!evaluation/**/answer_key.json
+!evaluation/**/calibration_manifest.json
+!evaluation/**/calibration_annotations.json
+!evaluation/**/calibration_review.md
+!evaluation/**/*render_verification*.json
+!evaluation/**/*residue_verification.json
+
 # Local source media and extracted audiovisual material
 source/*
 !source/.gitkeep

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "function_schedule_screen",
+  "type": "object",
+  "required": ["schema_version", "experiment_version", "experiment_signature", "source_hash", "destination_hash", "scheduling_mode", "semantic_weight", "function_weight", "calibration_state", "invariants", "variants", "counterfactuals", "render_selection", "render_selection_state", "claim_scope"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "experiment_version": {"const": "function_preserving_schedule_screen_v1"},
+    "semantic_weight": {"type": "number", "minimum": 0, "maximum": 1},
+    "function_weight": {"type": "number", "minimum": 0, "maximum": 1},
+    "variants": {"type": "array", "minItems": 4, "items": {"type": "object"}},
+    "render_selection": {"type": "array", "items": {"type": "string"}},
+    "render_selection_state": {"enum": ["FOUR_WAY_CANDIDATE_SELECTED", "BLOCKED_PENDING_REVIEWED_CALIBRATION", "NO_CONFLICT_FREE_CHANGED_FUNCTION_CANDIDATE"]}
+  }
+}

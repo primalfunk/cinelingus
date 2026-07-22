@@ -1,1 +1,88 @@
-{"schema_version":"1.0","contract_version":"1.0.0","filter_id":"multiworld.triangle","filter_name":"Triangle","family_id":"multiworld","filter_version":"1.0.0","status":"blocked","implementation_class":"F","creative_proposition":"Three films exchange pressure through a closed narrative relationship.","relationship_domains":{"reads":["dialogue","identity","scene_order"],"changes":["dialogue","identity","scene_order"],"preserves":{}},"specimen_inputs":["films"],"required_analysis":["film_inspections","shared_timeline","world_model"],"capabilities":{"implemented":false,"implementation_key":null,"execution_mode":"unavailable","sparse_schedule":false,"requires_speaker_identity":false,"supports_preview":false,"supports_full_length":false,"requires_output_acceptance":false},"blockers":["This filter is not yet implemented."],"multiworld_contract":{"cinematic_law":"Narrative Infection","minimum_films":3,"maximum_films":3,"anchor_behavior":"anchor_timeline","affected_elements":["dialogue","identity","scene_order"],"quality_requirements":["Cinematic-law invariants pass","Output provenance names every contributing film"],"deterministic_seed_support":true,"interface":{"inputs":["films"],"outputs":["rendered_film"],"affected_artifacts":["shared_timeline","world_model","replacement_decisions"],"intermediate_products":["film_inspections","shared_timeline","world_model","replacement_decisions","filter_plan"]}}}
+{
+  "schema_version": "1.0",
+  "contract_version": "1.1.0",
+  "filter_id": "multiworld.triangle",
+  "filter_name": "Triangle",
+  "family_id": "multiworld",
+  "filter_version": "1.1.0",
+  "status": "accepted",
+  "implementation_class": "B",
+  "creative_proposition": "Three films exchange visual and spoken pressure through one closed cinematic cycle.",
+  "relationship_domains": {
+    "reads": ["dialogue", "identity", "scene_order", "shot_selection"],
+    "changes": ["dialogue", "identity", "scene_order", "shot_selection"],
+    "preserves": {
+      "cycle": "Visual A-B-C and dialogue B-C-A never change",
+      "provenance": "Every phase names both contributing films"
+    }
+  },
+  "specimen_inputs": ["films"],
+  "required_analysis": ["film_inspections", "shared_timeline", "world_model"],
+  "candidate_generation": "Resolve the shortest complete-film duration, divide it into three ordered phases, retain the corresponding phase from Films A, B, and C, and collect contained dialogue windows from each visual phase.",
+  "selection_rules": [
+    "Visual phases always occur in Film A, Film B, Film C order.",
+    "Dialogue for those phases always comes from Film B, Film C, Film A respectively.",
+    "Each selected dialogue clip is used at most once and is duration-ranked against its destination window.",
+    "Every detected carrier-film speech window is suppressed whether or not a unique donor clip is available.",
+    "Selection is deterministic for identical films, parameters, and seed."
+  ],
+  "transformation_behavior": "Assemble one shared visual timeline from the three phase carriers, preserve their non-speech soundtrack, hard-suppress every detected carrier speech window, and place dialogue from the next film in the closed ring without audible carrier-dialogue overlap.",
+  "progression": "The phase value increases from one third to one across the fixed A-B-C visual cycle.",
+  "state_variables": ["parameter:intensity", "triangle_phase", "visual_film_id", "dialogue_film_id", "source_media_hash"],
+  "fields": ["filter_metrics", "filter_validation", "mappings", "visual_segments", "multiworld"],
+  "controlled_uncertainty": "Film order is operator supplied; phase boundaries, candidate ranking, and tie breaks are deterministic, and the recipe records the seed.",
+  "hard_invariants": [
+    {"id": "exactly_three_films", "statement": "Triangle receives exactly three distinct complete films.", "validator": "filter_validation.exactly_three_films"},
+    {"id": "visual_cycle_is_a_b_c", "statement": "The shared picture advances through Films A, B, and C exactly once and in order.", "validator": "filter_validation.visual_cycle_is_a_b_c"},
+    {"id": "dialogue_cycle_is_b_c_a", "statement": "Dialogue donors advance through Films B, C, and A in phase order.", "validator": "filter_validation.dialogue_cycle_is_b_c_a"},
+    {"id": "no_phase_uses_its_own_dialogue", "statement": "No visual phase receives dialogue from its own carrier film.", "validator": "filter_validation.no_phase_uses_its_own_dialogue"},
+    {"id": "every_film_contributes_visuals_and_dialogue", "statement": "Every film contributes both picture and replacement dialogue.", "validator": "filter_validation.every_film_contributes_visuals_and_dialogue"},
+    {"id": "source_dialogue_is_not_reused", "statement": "No source dialogue clip appears more than once.", "validator": "filter_validation.source_dialogue_is_not_reused"},
+    {"id": "carrier_speech_regions_declared", "statement": "Every Triangle phase declares the carrier speech regions that the renderer must suppress.", "validator": "filter_validation.carrier_speech_regions_declared"}
+  ],
+  "validation": {
+    "strategy": "Validate the closed visual/dialogue cycles, unique source use, declared and rendered carrier-speech suppression, three-film visual and audio provenance, encoded duration, stream presence, dialogue coverage, and sustained silence.",
+    "required_metrics": ["replacement_count", "visual_contributing_films", "dialogue_contributing_films", "shared_timeline_duration", "carrier_speech_region_count", "silence_ratio"]
+  },
+  "failure_behavior": "Fail before rendering if film count is not three, any film has no positive duration, a phase lacks contained dialogue windows or donor clips, carrier speech regions cannot be declared, any film fails to contribute, or any cycle invariant fails. If unique donor material is exhausted, the unmatched carrier speech remains suppressed rather than restored.",
+  "preview_strategy": "Preview remains unavailable until a three-phase excerpt can retain all visual and dialogue contributors without misrepresenting the full cyclic law.",
+  "renderer_requirements": [
+    "Render the declared visual segments from all three source films in phase order.",
+    "Preserve each visual segment's non-speech soundtrack as the continuous base layer.",
+    "Render every detected carrier speech region at digital silence with short edge fades before mixing donor dialogue.",
+    "Never mix carrier dialogue audibly beneath donor dialogue; unmatched carrier speech regions remain suppressed.",
+    "Render replacement dialogue only from its declared donor-film cache.",
+    "Produce an MP4 whose provenance identifies all three visual and dialogue sources."
+  ],
+  "procedure_behavior": {
+    "support_status": "single_step_validated",
+    "receives_transformed_specimen": false,
+    "commitment": "A future Procedure runtime must preserve the fixed film ring, phase ownership, and immutable source provenance when Triangle receives prior transformed state."
+  },
+  "capabilities": {
+    "implemented": true,
+    "implementation_key": "multiworld_triangle",
+    "execution_mode": "transformation",
+    "sparse_schedule": true,
+    "requires_speaker_identity": false,
+    "supports_preview": false,
+    "supports_full_length": true,
+    "requires_output_acceptance": true
+  },
+  "blockers": [],
+  "multiworld_contract": {
+    "cinematic_law": "Narrative Infection",
+    "minimum_films": 3,
+    "maximum_films": 3,
+    "anchor_behavior": "law_defined_timeline",
+    "affected_elements": ["dialogue", "identity", "scene_order", "shot_selection"],
+    "quality_requirements": ["Cinematic-law invariants pass", "Output provenance names every contributing film"],
+    "deterministic_seed_support": true,
+    "interface": {
+      "inputs": ["films"],
+      "outputs": ["rendered_film"],
+      "affected_artifacts": ["shared_timeline", "world_model", "replacement_decisions"],
+      "intermediate_products": ["film_inspections", "shared_timeline", "world_model", "replacement_decisions", "filter_plan"]
+    }
+  }
+}

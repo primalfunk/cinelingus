@@ -50,7 +50,31 @@ class AppConfig:
     prefer_high_speaker_confidence: bool
     prefer_clean_dialogue_timing: bool
     prefer_funny_or_surprising_matches: bool
+    semantic_mode: str = "SEMANTIC_DISABLED"
+    semantic_weight: float = 0.0
+    dialogue_suppression: str = "hard_mute"
+    suppression_padding: float = 0.04
+    background_reconstruction: str = "neighboring_non_speech_with_adaptive_crossfades"
+    verify_voice_residue: bool = True
+    residue_correction_passes: int = 1
+    residue_correction_padding: float = 0.12
+    editorial_refinement_enabled: bool = True
+    editorial_max_passes: int = 2
+    editorial_acceptance_threshold: float = 0.72
+    editorial_min_word_coverage: float = 0.72
+    editorial_max_repairs_per_pass: int = 24
+    editorial_incremental_render: bool = True
+    editorial_suppress_unresolved: bool = False
+    editorial_benchmark_failure_category: str | None = None
     film_paths: tuple[Path, ...] = ()
+
+    def __post_init__(self) -> None:
+        if self.semantic_mode not in {"SEMANTIC_DISABLED", "SEMANTIC_REPORT_ONLY", "SEMANTIC_ASSISTED"}:
+            raise ValueError("semantic_mode must be SEMANTIC_DISABLED, SEMANTIC_REPORT_ONLY, or SEMANTIC_ASSISTED")
+        if not 0.0 <= self.semantic_weight <= 1.0:
+            raise ValueError("semantic_weight must be between 0 and 1")
+        if self.semantic_mode != "SEMANTIC_ASSISTED" and self.semantic_weight != 0.0:
+            raise ValueError("Only SEMANTIC_ASSISTED may use a non-zero semantic_weight")
 
     @property
     def films(self) -> tuple[Path, ...]:
@@ -97,11 +121,14 @@ class AppConfig:
         target_lufs: float | None = None,
         audio_fade_duration: float | None = None,
         original_duck_db: float | None = None,
+        dialogue_suppression: str | None = None,
         cinematic_filter: str | None = None,
         enable_speaker_awareness: bool | None = None,
         speaker_diarization_backend: str | None = None,
         speaker_diarization_model: str | None = None,
         speaker_diarization_device: str | None = None,
+        semantic_mode: str | None = None,
+        semantic_weight: float | None = None,
     ) -> "AppConfig":
         config = self
         if mode:
@@ -160,6 +187,10 @@ class AppConfig:
             if original_duck_db > 0:
                 raise ValueError("original_duck_db must be zero or negative")
             advanced_updates["original_duck_db"] = original_duck_db
+        if dialogue_suppression is not None:
+            if dialogue_suppression not in {"hard_mute", "duck"}:
+                raise ValueError("dialogue_suppression must be hard_mute or duck")
+            advanced_updates["dialogue_suppression"] = dialogue_suppression
         if cinematic_filter is not None:
             if cinematic_filter not in FILTER_CHOICES:
                 choices = ", ".join(FILTER_CHOICES)
@@ -177,6 +208,18 @@ class AppConfig:
             if speaker_diarization_device not in {"auto", "cpu", "cuda"}:
                 raise ValueError("speaker_diarization_device must be auto, cpu, or cuda")
             advanced_updates["speaker_diarization_device"] = speaker_diarization_device
+        next_semantic_mode = semantic_mode or config.semantic_mode
+        next_semantic_weight = config.semantic_weight if semantic_weight is None else semantic_weight
+        if semantic_mode is not None:
+            if semantic_mode not in {"SEMANTIC_DISABLED", "SEMANTIC_REPORT_ONLY", "SEMANTIC_ASSISTED"}:
+                raise ValueError("semantic_mode must be SEMANTIC_DISABLED, SEMANTIC_REPORT_ONLY, or SEMANTIC_ASSISTED")
+            advanced_updates["semantic_mode"] = semantic_mode
+        if semantic_weight is not None:
+            if not 0.0 <= semantic_weight <= 1.0:
+                raise ValueError("semantic_weight must be between 0 and 1")
+            advanced_updates["semantic_weight"] = semantic_weight
+        if next_semantic_mode != "SEMANTIC_ASSISTED" and next_semantic_weight != 0.0:
+            raise ValueError("Only SEMANTIC_ASSISTED may use a non-zero semantic_weight")
         if advanced_updates:
             config = replace(config, **advanced_updates)
         return config
@@ -190,9 +233,9 @@ def load_config(root: Path, config_path: Path | None = None) -> AppConfig:
         value = Path(raw[name])
         return value if value.is_absolute() else root / value
 
-    mode = str(raw.get("transcription_mode", "fast_preview"))
+    mode = str(raw.get("transcription_mode", "quality"))
     quality_modes = dict(raw.get("quality_modes", {}))
-    model = str(raw.get("whisper_model", quality_modes.get(mode, {}).get("whisper_model", "tiny")))
+    model = str(raw.get("whisper_model", quality_modes.get(mode, {}).get("whisper_model", "medium")))
     if mode in quality_modes:
         model = str(quality_modes[mode].get("whisper_model", model))
 
@@ -237,4 +280,23 @@ def load_config(root: Path, config_path: Path | None = None) -> AppConfig:
         prefer_high_speaker_confidence=bool(raw.get("prefer_high_speaker_confidence", True)),
         prefer_clean_dialogue_timing=bool(raw.get("prefer_clean_dialogue_timing", True)),
         prefer_funny_or_surprising_matches=bool(raw.get("prefer_funny_or_surprising_matches", True)),
+        semantic_mode=str(raw.get("semantic_mode", "SEMANTIC_DISABLED")),
+        semantic_weight=float(raw.get("semantic_weight", 0.0)),
+        dialogue_suppression=str(raw.get("dialogue_suppression", "hard_mute")),
+        suppression_padding=float(raw.get("suppression_padding", 0.04)),
+        background_reconstruction=str(raw.get("background_reconstruction", "neighboring_non_speech_with_adaptive_crossfades")),
+        verify_voice_residue=bool(raw.get("verify_voice_residue", True)),
+        residue_correction_passes=max(0, int(raw.get("residue_correction_passes", 1))),
+        residue_correction_padding=max(0.0, float(raw.get("residue_correction_padding", 0.12))),
+        editorial_refinement_enabled=bool(raw.get("editorial_refinement_enabled", True)),
+        editorial_max_passes=max(0, int(raw.get("editorial_max_passes", 2))),
+        editorial_acceptance_threshold=max(0.0, min(1.0, float(raw.get("editorial_acceptance_threshold", 0.72)))),
+        editorial_min_word_coverage=max(0.0, min(1.0, float(raw.get("editorial_min_word_coverage", 0.72)))),
+        editorial_max_repairs_per_pass=max(1, int(raw.get("editorial_max_repairs_per_pass", 24))),
+        editorial_incremental_render=bool(raw.get("editorial_incremental_render", True)),
+        editorial_suppress_unresolved=bool(raw.get("editorial_suppress_unresolved", False)),
+        editorial_benchmark_failure_category=(
+            str(raw["editorial_benchmark_failure_category"])
+            if raw.get("editorial_benchmark_failure_category") else None
+        ),
     )

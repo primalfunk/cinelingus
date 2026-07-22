@@ -1,0 +1,165 @@
+{
+  "schema_version": "1.0",
+  "plan_version": "bounded_corpus_calibration_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T09:11:35+00:00",
+  "tier": "smoke",
+  "excerpt_plan": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\smoke_excerpt_plan.json",
+  "maximum_cases": 3,
+  "case_count": 3,
+  "planned_input_duration_seconds": 126.0,
+  "source_files_read_only": true,
+  "resume_required": true,
+  "cases": [
+    {
+      "case_id": "case_001_exchange_continuity",
+      "purpose": "exchange_continuity",
+      "destination": {
+        "excerpt_id": "excerpt_0001_00f561dd",
+        "media_id": "media_1879b4266b454698",
+        "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "content_type": "animation",
+        "category": "rapid_speaker_exchange",
+        "start": 561.0,
+        "end": 579.0,
+        "duration": 18.0,
+        "analysis_signature": "6600be2a189605bfec1c6b5c5add25a757d437dbf78b6670aafdb703a5a5c1f4",
+        "evidence": {
+          "performance_id": "p000015",
+          "dialogue_density": 1.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0002_894f9564",
+        "media_id": "media_18f6b6ed542cca53",
+        "filename": "Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+        "content_type": "mixed_or_uncertain",
+        "category": "dense_dialogue",
+        "start": 1599.16,
+        "end": 1629.16,
+        "duration": 30.0,
+        "analysis_signature": "663a190e0f28ee5c10b3df6ac5e99212fbd06d6b723a88c0a495c126e7c9107e",
+        "evidence": {
+          "performance_id": "p000022",
+          "dialogue_density": 1.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "speaker_mismatch",
+        "performance_mismatch",
+        "masking"
+      ],
+      "status": "planned",
+      "case_signature": "43ce7215e09747e947bdca9a00796aee8242d98d7c3dbd7f409eea1192b918c4"
+    },
+    {
+      "case_id": "case_002_transition_sentence_integrity",
+      "purpose": "transition_sentence_integrity",
+      "destination": {
+        "excerpt_id": "excerpt_0004_04791efe",
+        "media_id": "media_9b626c297fcc6fb8",
+        "filename": "Christian TV stuff - American Saints.ia.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Christian TV stuff - American Saints.ia.mp4",
+        "content_type": "live_action",
+        "category": "transition_near_dialogue",
+        "start": 108.5,
+        "end": 123.5,
+        "duration": 15.0,
+        "analysis_signature": "f827f8ac3e659fb36fe69e3a078aae9d75eb58094856506cb4b6dae3d2a34d12",
+        "evidence": {
+          "transition_id": "gradual_transition_000016",
+          "transition_kind": "GRADUAL_TRANSITION_CANDIDATE",
+          "speech_distance_seconds": 0.0
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0006_eda3070c",
+        "media_id": "media_cfdb81cf9f0df5d7",
+        "filename": "Fries With That S01E01 - The Expendables.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Fries With That S01E01 - The Expendables.mp4",
+        "content_type": "live_action",
+        "category": "long_monologue",
+        "start": 824.0,
+        "end": 854.0,
+        "duration": 30.0,
+        "analysis_signature": "26b458cb6889e12f0ee1ebe3bdfa46ed64d489e518b40e1a043fef6d73afbd2a",
+        "evidence": {
+          "performance_id": "p000026",
+          "dialogue_density": 0.875,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "transition_artifact",
+        "incomplete_sentence",
+        "duration_failure"
+      ],
+      "status": "planned",
+      "case_signature": "6a92c69a01c66492f19ca0b39c3d1975ef9a449fbfd9c9d3050b47471dd124bf"
+    },
+    {
+      "case_id": "case_003_animation_visual_role",
+      "purpose": "animation_visual_role",
+      "destination": {
+        "excerpt_id": "excerpt_0007_14ca8b86",
+        "media_id": "media_ec484f1580b5975e",
+        "filename": "Robocop Cartoon - Ep 02.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Robocop Cartoon - Ep 02.mp4",
+        "content_type": "animation",
+        "category": "animation_dialogue",
+        "start": 30.0,
+        "end": 45.0,
+        "duration": 15.0,
+        "analysis_signature": "d9904593bce39418b785edcd79ff5790ce72a2d79a41be5837b83018c2cfd96b",
+        "evidence": {
+          "performance_id": "p000002",
+          "dialogue_density": 1.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0001_00f561dd",
+        "media_id": "media_1879b4266b454698",
+        "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "content_type": "animation",
+        "category": "rapid_speaker_exchange",
+        "start": 561.0,
+        "end": 579.0,
+        "duration": 18.0,
+        "analysis_signature": "6600be2a189605bfec1c6b5c5add25a757d437dbf78b6670aafdb703a5a5c1f4",
+        "evidence": {
+          "performance_id": "p000015",
+          "dialogue_density": 1.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "visual_mismatch",
+        "speaker_mismatch",
+        "performance_mismatch"
+      ],
+      "status": "planned",
+      "case_signature": "cf8688f2d2fd6a7ccdd395404d3ea66df6020221f9922140b54c53eb795e421d"
+    }
+  ]
+}

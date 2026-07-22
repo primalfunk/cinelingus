@@ -16,6 +16,7 @@ SUPPORTED_MULTIWORLD_DIALOGUE_LAWS = {
     "multiworld.contagion",
     "multiworld.echo_chamber",
     "multiworld.prophecy",
+    "multiworld.triangle",
 }
 
 
@@ -32,18 +33,26 @@ def build_multiworld_schedule(
     anchor = next(film for film in films if film.is_anchor)
     donors = tuple(film for film in films if not film.is_anchor)
     anchor_artifacts = film_artifacts[anchor.id]
-    duration = float(anchor_artifacts["movie"]["duration"])
+    if filter_id == "multiworld.triangle":
+        mappings, rejected, metrics, validation, visual_segments, duration = _triangle(
+            films, film_artifacts, parameters
+        )
+    else:
+        duration = float(anchor_artifacts["movie"]["duration"])
+        mappings, rejected, metrics, validation, visual_segments = [], [], {}, {}, []
     windows = sorted(
         (row for row in anchor_artifacts.get("windows", []) if _duration(row) > 0),
         key=lambda row: (_start(row), _id(row)),
     )
-    if not windows:
+    if filter_id != "multiworld.triangle" and not windows:
         raise ValueError(f"{filter_id} requires positive-duration dialogue windows in the anchor film.")
     for film in films:
         if not film_artifacts.get(film.id, {}).get("clips"):
             raise ValueError(f"{filter_id} requires usable dialogue clips from {film.label}.")
 
-    if filter_id == "multiworld.possession":
+    if filter_id == "multiworld.triangle":
+        pass
+    elif filter_id == "multiworld.possession":
         mappings, rejected, metrics, validation = _possession(
             anchor, donors[0], film_artifacts, windows, duration, parameters
         )
@@ -66,7 +75,7 @@ def build_multiworld_schedule(
         failed = ", ".join(key for key, value in validation.items() if key != "passed" and value is False)
         raise ValueError(f"{filter_id} could not satisfy its defining law: {failed}.")
     source_hashes = sorted({str(row["source_media_hash"]) for row in mappings})
-    return {
+    result = {
         "schema_version": "1.0",
         "tool_version": __version__,
         "creation_timestamp": utc_now(),
@@ -102,6 +111,120 @@ def build_multiworld_schedule(
             for row in mappings[:3]
         ],
     }
+    if visual_segments:
+        result["visual_segments"] = visual_segments
+        result["visual_source_media_hashes"] = sorted({str(row["source_media_hash"]) for row in visual_segments})
+    return result
+
+
+def _triangle(
+    films: tuple[FilmInput, ...],
+    artifacts: dict[str, dict[str, Any]],
+    parameters: dict[str, Any],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any], dict[str, Any], list[dict[str, Any]], float]:
+    """Build a closed A->B->C visual cycle with B->C->A dialogue exchange."""
+    if len(films) != 3:
+        raise ValueError("Multiworld Triangle requires exactly three films.")
+    duration = round(min(float(artifacts[film.id]["movie"]["duration"]) for film in films), 3)
+    if duration <= 0:
+        raise ValueError("Multiworld Triangle requires three positive-duration films.")
+    boundaries = [round(duration * index / 3, 3) for index in range(4)]
+    boundaries[-1] = duration
+    mappings: list[dict[str, Any]] = []
+    rejected: list[dict[str, Any]] = []
+    visual_segments: list[dict[str, Any]] = []
+    phase_pairs: list[dict[str, str | int]] = []
+    for phase, visual_film in enumerate(films):
+        dialogue_film = films[(phase + 1) % len(films)]
+        start, end = boundaries[phase], boundaries[phase + 1]
+        shots = [
+            row for row in artifacts[visual_film.id].get("visual", {}).get("shots", {}).get("shots", [])
+            if _start(row) < end and float(row.get("end", _start(row))) > start
+        ]
+        visual_segments.append({
+            "id": f"triangle_phase_{phase + 1}",
+            "phase": phase + 1,
+            "source_film_id": visual_film.id,
+            "source_media_hash": str(artifacts[visual_film.id]["media_hash"]),
+            "source_path": str(visual_film.media_path),
+            "source_start": start,
+            "source_end": end,
+            "output_start": start,
+            "output_end": end,
+            "shot_ids": [str(row.get("id")) for row in shots] or [f"{visual_film.id}_phase_{phase + 1}"],
+        })
+        phase_pairs.append({
+            "phase": phase + 1,
+            "visual_film_id": visual_film.id,
+            "dialogue_film_id": dialogue_film.id,
+        })
+        carrier_windows = [
+            row for row in artifacts[visual_film.id].get("windows", [])
+            if _start(row) < end and _start(row) + _duration(row) > start
+        ]
+        windows = [
+            row for row in artifacts[visual_film.id].get("windows", [])
+            if start <= _start(row) and _start(row) + _duration(row) <= end
+        ]
+        visual_segments[-1]["carrier_speech_regions"] = [
+            {
+                "id": str(window.get("id") or f"{visual_film.id}_speech_{index + 1}"),
+                "source_film_id": visual_film.id,
+                "triangle_phase": phase + 1,
+                "source_start": round(max(start, _start(window)), 3),
+                "source_end": round(min(end, _start(window) + _duration(window)), 3),
+            }
+            for index, window in enumerate(carrier_windows)
+            if min(end, _start(window) + _duration(window)) > max(start, _start(window))
+        ]
+        clips = list(artifacts[dialogue_film.id].get("clips", []))
+        if not windows or not clips:
+            rejected.append({
+                "phase": phase + 1,
+                "reason": "phase_requires_visual_film_windows_and_dialogue_film_clips",
+                "visual_film_id": visual_film.id,
+                "dialogue_film_id": dialogue_film.id,
+            })
+            continue
+        selected = _select(windows, parameters)[:len(clips)]
+        unused = list(clips)
+        for index, window in enumerate(selected):
+            source = _best_duration(unused, window, index)
+            unused.remove(source)
+            mapping = _mapping(source, window, dialogue_film, visual_film, artifacts, "closed_triangle_dialogue_exchange")
+            mapping.update({
+                "triangle_phase": phase + 1,
+                "visual_film_id": visual_film.id,
+                "dialogue_film_id": dialogue_film.id,
+                "progression_value": round((phase + 1) / 3, 4),
+            })
+            mappings.append(mapping)
+    observed_visual = [str(row["source_film_id"]) for row in visual_segments]
+    observed_dialogue = {str(row["source_film_id"]) for row in mappings}
+    expected = {film.id for film in films}
+    validation = {
+        "passed": True,
+        "exactly_three_films": len(films) == 3,
+        "visual_cycle_is_a_b_c": observed_visual == [film.id for film in films],
+        "dialogue_cycle_is_b_c_a": all(
+            row["dialogue_film_id"] == films[int(row["triangle_phase"]) % 3].id for row in mappings
+        ),
+        "no_phase_uses_its_own_dialogue": all(row["visual_film_id"] != row["dialogue_film_id"] for row in mappings),
+        "every_film_contributes_visuals_and_dialogue": set(observed_visual) == expected and observed_dialogue == expected,
+        "source_dialogue_is_not_reused": len({row["clip_id"] for row in mappings}) == len(mappings),
+        "carrier_speech_regions_declared": all(
+            bool(row.get("carrier_speech_regions")) for row in visual_segments
+        ),
+    }
+    return mappings, rejected, {
+        "phase_pairs": phase_pairs,
+        "visual_contributing_films": observed_visual,
+        "dialogue_contributing_films": sorted(observed_dialogue),
+        "shared_timeline_duration": duration,
+        "carrier_speech_region_count": sum(
+            len(row.get("carrier_speech_regions", [])) for row in visual_segments
+        ),
+    }, validation, visual_segments, duration
 
 
 def _possession(

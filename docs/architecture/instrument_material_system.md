@@ -29,4 +29,4 @@ The central Observation display remains the only primary status surface. Logs, d
 
 ## Replacement and scaling
 
-`InstrumentPlateCanvas` fits the plate proportionally and positions overlays from normalized geometry. A replacement plate may change ornament and surface texture, but it must preserve the named recesses or update only the overlay geometry. Control behavior and evidence semantics must not depend on pixels embedded in the artwork.
+`InstrumentPlateCanvas` fits the plate proportionally and positions overlays from normalized geometry. Each named recess has a separate inset content box so live controls leave its engraved bezel, corners, and separator rules visible at every scale. A replacement plate may change ornament and surface texture, but it must preserve the named recesses or update both the recess and content geometry. Control behavior and evidence semantics must not depend on pixels embedded in the artwork.

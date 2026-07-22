@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "corpus_calibration_plan",
+  "type": "object",
+  "required": ["schema_version", "plan_version", "execution_revision", "tier", "excerpt_plan", "maximum_cases", "case_count", "planned_input_duration_seconds", "source_files_read_only", "resume_required", "cases"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "plan_version": {"const": "bounded_corpus_calibration_v1"},
+    "tier": {"enum": ["smoke", "standard", "extended"]},
+    "maximum_cases": {"type": "integer", "minimum": 0},
+    "case_count": {"type": "integer", "minimum": 0},
+    "planned_input_duration_seconds": {"type": "number", "minimum": 0},
+    "source_files_read_only": {"const": true},
+    "resume_required": {"const": true},
+    "cases": {"type": "array", "items": {"type": "object", "required": ["case_id", "case_signature", "purpose", "destination", "source", "expected_failure_modes", "status"]}}
+  }
+}

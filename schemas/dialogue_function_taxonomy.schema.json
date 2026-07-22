@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "dialogue_function_taxonomy",
+  "type": "object",
+  "required": ["schema_version", "taxonomy_version", "scope", "language_scope", "axes", "allowed_multi_label_combinations", "ambiguity_rules", "abstention_rules", "annotation_guidance", "migration_policy"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "taxonomy_version": {"const": "dialogue_function_taxonomy_v1"},
+    "scope": {"type": "string", "minLength": 1},
+    "language_scope": {"type": "string", "minLength": 1},
+    "axes": {
+      "type": "object",
+      "required": ["surface_form", "interaction_function", "sequence_position"],
+      "properties": {
+        "surface_form": {"$ref": "#/$defs/axis"},
+        "interaction_function": {"$ref": "#/$defs/axis"},
+        "sequence_position": {"$ref": "#/$defs/axis"}
+      }
+    },
+    "ambiguity_rules": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "abstention_rules": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "annotation_guidance": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "migration_policy": {"type": "object"}
+  },
+  "$defs": {
+    "axis": {
+      "type": "object",
+      "required": ["multi_label", "labels"],
+      "properties": {
+        "multi_label": {"type": "boolean"},
+        "labels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["label_id", "name", "definition", "inclusion_rules", "exclusion_rules", "positive_examples", "counterexamples"],
+            "properties": {
+              "label_id": {"type": "string", "minLength": 1},
+              "name": {"type": "string", "minLength": 1},
+              "definition": {"type": "string", "minLength": 1},
+              "inclusion_rules": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+              "exclusion_rules": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+              "positive_examples": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+              "counterexamples": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+            }
+          }
+        }
+      }
+    }
+  }
+}

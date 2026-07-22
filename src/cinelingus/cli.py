@@ -5,6 +5,9 @@ import sys
 from pathlib import Path
 
 from .config import load_config
+from .cinematic_model.developer_cli import MODEL_COMMANDS, add_model_parsers, run_model_command
+from .semantic.developer_cli import SEMANTIC_COMMANDS, add_semantic_parsers, run_semantic_command
+from .dialogue_function.developer_cli import FUNCTION_COMMANDS, add_function_parsers, run_function_command
 from .pipeline import Pipeline
 from .publish import publish_single_video
 from .presets import list_presets, load_preset
@@ -20,6 +23,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--force", action="store_true", help="Regenerate artifacts instead of reusing valid cache entries.")
     parser.add_argument("--mode", choices=["fast_preview", "balanced", "quality"], default=None, help="Override transcription quality mode.")
     parser.add_argument("--output-dir", type=Path, default=None, help="Folder where rendered outputs and reports are written.")
+    parser.add_argument("--semantic-mode", choices=["SEMANTIC_DISABLED", "SEMANTIC_REPORT_ONLY", "SEMANTIC_ASSISTED"], default=None, help="Optional transcript-vector scheduling mode.")
+    parser.add_argument("--semantic-weight", type=float, default=None, help="Bounded assisted semantic contribution (0.0 to 1.0).")
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("inspect")
     sub.add_parser("extract-source")
@@ -41,6 +46,9 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("validate")
     sub.add_parser("whisper-info")
     sub.add_parser("run")
+    add_model_parsers(sub)
+    add_semantic_parsers(sub)
+    add_function_parsers(sub)
     return parser
 
 
@@ -52,7 +60,18 @@ def main(argv: list[str] | None = None) -> int:
     run_guard = None
     run_lease = None
     try:
-        config = load_config(root, args.config).with_overrides(mode=args.mode, output_dir=args.output_dir)
+        if args.command in MODEL_COMMANDS:
+            return run_model_command(args, root)
+        if args.command in SEMANTIC_COMMANDS:
+            return run_semantic_command(args, root)
+        if args.command in FUNCTION_COMMANDS:
+            return run_function_command(args, root)
+        config = load_config(root, args.config).with_overrides(
+            mode=args.mode,
+            output_dir=args.output_dir,
+            semantic_mode=args.semantic_mode,
+            semantic_weight=args.semantic_weight,
+        )
         if args.command not in {"presets", "validate", "whisper-info"}:
             requested_filter = _command_filter_id(args, root)
             candidate_guard = exclusive_output_run(config.output_dir, requested_filter)

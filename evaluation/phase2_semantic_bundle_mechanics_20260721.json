@@ -1,0 +1,437 @@
+{
+  "schema_version": "1.0",
+  "evaluation_type": "phase2_semantic_bundle_mechanics",
+  "provider_scope": "deterministic fake provider; no retrieval-quality claim",
+  "model_count": 8,
+  "all_ready": true,
+  "all_valid": true,
+  "all_deterministic": true,
+  "all_second_build_cache_hits": true,
+  "source_media_unchanged": true,
+  "models": [
+    {
+      "case_id": "animation_mega_man",
+      "film_id": "film_16fa9f4eb0552a562e65",
+      "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+      "passage_count": 299,
+      "construction_state": "READY",
+      "validation_status": "VALID",
+      "coverage": {
+        "source_entity_count": 299,
+        "accounted_entity_count": 299,
+        "status_counts": {
+          "embedded": 233,
+          "failed": 0,
+          "low_information": 66,
+          "skipped": 0,
+          "truncated": 0,
+          "unavailable": 0
+        }
+      },
+      "language_counts": {
+        "en": 299
+      },
+      "first_build_seconds": 4.559080699982587,
+      "cached_build_seconds": 0.16273480001837015,
+      "peak_traced_memory_bytes": 2627130,
+      "bundle_storage_bytes": 851420,
+      "second_build_cache_hits": 299,
+      "deterministic_bundle": true,
+      "exact_top5_search_seconds": 0.017673399997875094,
+      "sample_top5": [
+        {
+          "entity_id": "speech_9a59b23a696f81737704",
+          "raw_cosine": 0.15654025121489198
+        },
+        {
+          "entity_id": "speech_3c7b60d2488dfa03388f",
+          "raw_cosine": 0.15533972622194334
+        },
+        {
+          "entity_id": "speech_d386e67d51224c485e7f",
+          "raw_cosine": 0.14457501429293063
+        },
+        {
+          "entity_id": "speech_b0a0845be934472ab647",
+          "raw_cosine": 0.13946176765637786
+        },
+        {
+          "entity_id": "speech_b4545dd17dcc3e930534",
+          "raw_cosine": 0.13731289935371335
+        }
+      ],
+      "source_media_stat_available": true,
+      "source_media_unchanged": true
+    },
+    {
+      "case_id": "feature_wallace_gromit",
+      "film_id": "film_c354c296f196aedd3b4f",
+      "filename": "Wallace and Gromit.mp4",
+      "passage_count": 370,
+      "construction_state": "READY",
+      "validation_status": "VALID",
+      "coverage": {
+        "source_entity_count": 370,
+        "accounted_entity_count": 370,
+        "status_counts": {
+          "embedded": 177,
+          "failed": 0,
+          "low_information": 193,
+          "skipped": 0,
+          "truncated": 0,
+          "unavailable": 0
+        }
+      },
+      "language_counts": {
+        "en": 370
+      },
+      "first_build_seconds": 4.752261199988425,
+      "cached_build_seconds": 0.25251570000546053,
+      "peak_traced_memory_bytes": 3508233,
+      "bundle_storage_bytes": 1054725,
+      "second_build_cache_hits": 370,
+      "deterministic_bundle": true,
+      "exact_top5_search_seconds": 0.03917040000669658,
+      "sample_top5": [
+        {
+          "entity_id": "speech_2433c556d64ca2c0bf7c",
+          "raw_cosine": 0.14592616989553092
+        },
+        {
+          "entity_id": "speech_d992db914cb0d5b90543",
+          "raw_cosine": 0.13789996456903034
+        },
+        {
+          "entity_id": "speech_28e5ba8ce677348e3ec6",
+          "raw_cosine": 0.13577696009572057
+        },
+        {
+          "entity_id": "speech_e42fd0907dd6825dea20",
+          "raw_cosine": 0.13577696009572057
+        },
+        {
+          "entity_id": "speech_21e50660beefa68c73e8",
+          "raw_cosine": 0.1174622314558467
+        }
+      ],
+      "source_media_stat_available": true,
+      "source_media_unchanged": true
+    },
+    {
+      "case_id": "live_action_wkyk",
+      "film_id": "film_ad00f29166f9dbb6b1a6",
+      "filename": "WKYK - S1E6.mp4",
+      "passage_count": 473,
+      "construction_state": "READY",
+      "validation_status": "VALID",
+      "coverage": {
+        "source_entity_count": 473,
+        "accounted_entity_count": 473,
+        "status_counts": {
+          "embedded": 254,
+          "failed": 0,
+          "low_information": 219,
+          "skipped": 0,
+          "truncated": 0,
+          "unavailable": 0
+        }
+      },
+      "language_counts": {
+        "en": 473
+      },
+      "first_build_seconds": 7.067998000013176,
+      "cached_build_seconds": 0.2395449000177905,
+      "peak_traced_memory_bytes": 3900202,
+      "bundle_storage_bytes": 1346700,
+      "second_build_cache_hits": 473,
+      "deterministic_bundle": true,
+      "exact_top5_search_seconds": 0.024637199996504933,
+      "sample_top5": [
+        {
+          "entity_id": "speech_60bf70849b6d9655ae02",
+          "raw_cosine": 1.0
+        },
+        {
+          "entity_id": "speech_ea5e6db1f07b3f489006",
+          "raw_cosine": 1.0
+        },
+        {
+          "entity_id": "speech_a9e1269e227cf17e7821",
+          "raw_cosine": 0.14558140949050177
+        },
+        {
+          "entity_id": "speech_a5a253cd9b59cdceee79",
+          "raw_cosine": 0.13682019146270097
+        },
+        {
+          "entity_id": "speech_40c157ec1bf35d206b41",
+          "raw_cosine": 0.11793367935336976
+        }
+      ],
+      "source_media_stat_available": true,
+      "source_media_unchanged": true
+    },
+    {
+      "case_id": "short_form_excerpt",
+      "film_id": "film_f696039d2fed48f3573a",
+      "filename": "destination.mp4",
+      "passage_count": 4,
+      "construction_state": "READY",
+      "validation_status": "VALID",
+      "coverage": {
+        "source_entity_count": 4,
+        "accounted_entity_count": 4,
+        "status_counts": {
+          "embedded": 4,
+          "failed": 0,
+          "low_information": 0,
+          "skipped": 0,
+          "truncated": 0,
+          "unavailable": 0
+        }
+      },
+      "language_counts": {
+        "en": 4
+      },
+      "first_build_seconds": 0.06588820001343265,
+      "cached_build_seconds": 0.009490399970673025,
+      "peak_traced_memory_bytes": 111361,
+      "bundle_storage_bytes": 13877,
+      "second_build_cache_hits": 4,
+      "deterministic_bundle": true,
+      "exact_top5_search_seconds": 0.00018500001169741154,
+      "sample_top5": [
+        {
+          "entity_id": "speech_92641be4e903a84559ef",
+          "raw_cosine": 0.0005191422078541058
+        },
+        {
+          "entity_id": "speech_bfe83da5c84517b6920d",
+          "raw_cosine": -0.02783771774909716
+        },
+        {
+          "entity_id": "speech_d8ff04560d804c3d2c68",
+          "raw_cosine": -0.042785670469649935
+        }
+      ],
+      "source_media_stat_available": true,
+      "source_media_unchanged": true
+    },
+    {
+      "case_id": "standard_magic_schoolbus",
+      "film_id": "film_e9514a5b78526719590e",
+      "filename": "The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+      "passage_count": 398,
+      "construction_state": "READY",
+      "validation_status": "VALID",
+      "coverage": {
+        "source_entity_count": 398,
+        "accounted_entity_count": 398,
+        "status_counts": {
+          "embedded": 298,
+          "failed": 0,
+          "low_information": 100,
+          "skipped": 0,
+          "truncated": 0,
+          "unavailable": 0
+        }
+      },
+      "language_counts": {
+        "en": 398
+      },
+      "first_build_seconds": 5.965376400039531,
+      "cached_build_seconds": 0.25473559997044504,
+      "peak_traced_memory_bytes": 3385898,
+      "bundle_storage_bytes": 1132778,
+      "second_build_cache_hits": 398,
+      "deterministic_bundle": true,
+      "exact_top5_search_seconds": 0.018255400005728006,
+      "sample_top5": [
+        {
+          "entity_id": "speech_08a2ee52832ea7beff11",
+          "raw_cosine": 0.14286100960044928
+        },
+        {
+          "entity_id": "speech_98fdffff0abad3fc227a",
+          "raw_cosine": 0.13464598436658118
+        },
+        {
+          "entity_id": "speech_d47abfaf987a1ca7d889",
+          "raw_cosine": 0.12257089371375982
+        },
+        {
+          "entity_id": "speech_9125c03595e67fbec01e",
+          "raw_cosine": 0.11503307574123825
+        },
+        {
+          "entity_id": "speech_2f29124e59f14ed4f166",
+          "raw_cosine": 0.10937616836814738
+        }
+      ],
+      "source_media_stat_available": true,
+      "source_media_unchanged": true
+    },
+    {
+      "case_id": "standard_red_dwarf",
+      "film_id": "film_87a25cfebac025a84d52",
+      "filename": "Red_Dwarf-s01e01.mp4",
+      "passage_count": 605,
+      "construction_state": "READY",
+      "validation_status": "VALID",
+      "coverage": {
+        "source_entity_count": 605,
+        "accounted_entity_count": 605,
+        "status_counts": {
+          "embedded": 453,
+          "failed": 0,
+          "low_information": 152,
+          "skipped": 0,
+          "truncated": 0,
+          "unavailable": 0
+        }
+      },
+      "language_counts": {
+        "en": 605
+      },
+      "first_build_seconds": 10.073557900032029,
+      "cached_build_seconds": 0.33657689997926354,
+      "peak_traced_memory_bytes": 4923641,
+      "bundle_storage_bytes": 1721880,
+      "second_build_cache_hits": 605,
+      "deterministic_bundle": true,
+      "exact_top5_search_seconds": 0.05158929998287931,
+      "sample_top5": [
+        {
+          "entity_id": "speech_2cf14c4dbf5e576d86a9",
+          "raw_cosine": 0.14435300875384205
+        },
+        {
+          "entity_id": "speech_a1ebc73f31f4b3bd7649",
+          "raw_cosine": 0.14393577543793704
+        },
+        {
+          "entity_id": "speech_c631bf3fcacb8e5bd676",
+          "raw_cosine": 0.12713226836933014
+        },
+        {
+          "entity_id": "speech_3f23f2054462cce557aa",
+          "raw_cosine": 0.12581333285827562
+        },
+        {
+          "entity_id": "speech_5bda39cc89138fad044d",
+          "raw_cosine": 0.11931253208586559
+        }
+      ],
+      "source_media_stat_available": true,
+      "source_media_unchanged": true
+    },
+    {
+      "case_id": "standard_sleeping_beauty",
+      "film_id": "film_ef0c425a5b58f8481c69",
+      "filename": "Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+      "passage_count": 975,
+      "construction_state": "READY",
+      "validation_status": "VALID",
+      "coverage": {
+        "source_entity_count": 975,
+        "accounted_entity_count": 975,
+        "status_counts": {
+          "embedded": 620,
+          "failed": 0,
+          "low_information": 355,
+          "skipped": 0,
+          "truncated": 0,
+          "unavailable": 0
+        }
+      },
+      "language_counts": {
+        "en": 975
+      },
+      "first_build_seconds": 17.420429399993736,
+      "cached_build_seconds": 0.6450606000144035,
+      "peak_traced_memory_bytes": 7630896,
+      "bundle_storage_bytes": 2774078,
+      "second_build_cache_hits": 975,
+      "deterministic_bundle": true,
+      "exact_top5_search_seconds": 0.07446400000480935,
+      "sample_top5": [
+        {
+          "entity_id": "speech_9da4e2e0fa3e18aa5b60",
+          "raw_cosine": 1.0
+        },
+        {
+          "entity_id": "speech_a4a84bc6c531b1a2397a",
+          "raw_cosine": 1.0
+        },
+        {
+          "entity_id": "speech_a8f885f67887b31b391e",
+          "raw_cosine": 1.0
+        },
+        {
+          "entity_id": "speech_c59b588a9acd4dc5953b",
+          "raw_cosine": 1.0
+        },
+        {
+          "entity_id": "speech_9196afad39b3014a50a3",
+          "raw_cosine": 0.20030848392823578
+        }
+      ],
+      "source_media_stat_available": true,
+      "source_media_unchanged": true
+    },
+    {
+      "case_id": "standard_star_trek",
+      "film_id": "film_ffebefb9187cc0e1ac21",
+      "filename": "Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+      "passage_count": 822,
+      "construction_state": "READY",
+      "validation_status": "VALID",
+      "coverage": {
+        "source_entity_count": 822,
+        "accounted_entity_count": 822,
+        "status_counts": {
+          "embedded": 591,
+          "failed": 0,
+          "low_information": 231,
+          "skipped": 0,
+          "truncated": 0,
+          "unavailable": 0
+        }
+      },
+      "language_counts": {
+        "en": 822
+      },
+      "first_build_seconds": 23.740548200032208,
+      "cached_build_seconds": 0.5054946999880485,
+      "peak_traced_memory_bytes": 6493750,
+      "bundle_storage_bytes": 2338772,
+      "second_build_cache_hits": 822,
+      "deterministic_bundle": true,
+      "exact_top5_search_seconds": 0.04748870001640171,
+      "sample_top5": [
+        {
+          "entity_id": "speech_68211b403617c881fa28",
+          "raw_cosine": 0.19345951416893853
+        },
+        {
+          "entity_id": "speech_c5db97cace2f5684a929",
+          "raw_cosine": 0.1770778324951886
+        },
+        {
+          "entity_id": "speech_e176497fe0949ab57b10",
+          "raw_cosine": 0.15421884187559642
+        },
+        {
+          "entity_id": "speech_aff63917cd3952ddd43b",
+          "raw_cosine": 0.1472658352762362
+        },
+        {
+          "entity_id": "speech_30703c8abc9d53846cde",
+          "raw_cosine": 0.14584205126149707
+        }
+      ],
+      "source_media_stat_available": true,
+      "source_media_unchanged": true
+    }
+  ]
+}

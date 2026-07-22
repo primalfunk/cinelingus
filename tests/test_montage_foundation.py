@@ -783,6 +783,43 @@ def test_self_shuffle_coverage_and_rebase_preserve_source_timestamps() -> None:
     assert all(row.get("montage_moment_id") for row in rebased["mappings"])
 
 
+def test_rebase_moves_speech_evidence_and_coverage_into_montage_coordinates() -> None:
+    schedule = {
+        "destination_speech_regions": [
+            {"id": "w1", "start": 10.0, "end": 12.0, "duration": 2.0, "transcript": "original destination words"},
+        ],
+        "destination_performance_fills": [{
+            "destination_performance_id": "p1", "start": 10.0, "duration": 2.0,
+            "target_coverage": 0.8, "speech_windows": [
+                {"id": "w1", "start": 10.0, "end": 12.0, "duration": 2.0},
+            ],
+        }],
+        "mappings": [{
+            "clip_id": "c1", "enabled": True, "destination_timestamp": 10.0,
+            "planned_render_duration": 2.0, "alignment_mode": "speech_window_snap",
+            "alignment_source_window_ids": ["w1"], "alignment_slot_start": 10.0,
+            "alignment_slot_end": 12.0, "window_id": "w1",
+        }],
+    }
+    plan = {
+        "selected_moments": [{
+            "id": "m1", "start": 8.0, "end": 14.0, "montage_index": 0,
+            "source_id": "film_a", "source_media_hash": "hash_a",
+        }],
+        "verdict": "EXPERIMENTAL",
+    }
+
+    rebased = rebase_schedule_to_montage(schedule, plan)
+
+    assert rebased["destination_speech_regions"][0]["start"] == 2.0
+    assert rebased["destination_speech_regions"][0]["end"] == 4.0
+    rebased_id = rebased["destination_speech_regions"][0]["id"]
+    assert rebased["mappings"][0]["alignment_source_window_ids"] == [rebased_id]
+    assert rebased["mappings"][0]["alignment_slot_start"] == 2.0
+    assert rebased["destination_performance_fills"][0]["coverage"] == 1.0
+    assert rebased["destination_performance_fills"][0]["uncovered_speech_window_count"] == 0
+
+
 def test_self_shuffle_excludes_dialogue_that_would_cross_a_moment_boundary() -> None:
     artifact = build_core_moments(
         source_id="film_a", source_media_hash="hash_a",

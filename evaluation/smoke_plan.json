@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "plan_version": "movie_corpus_evaluation_plan_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T05:05:47+00:00",
+  "manifest": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\corpus_manifest.json",
+  "manifest_version": "movie_corpus_manifest_v1",
+  "tier": "smoke",
+  "seed": 20260720,
+  "dry_run": true,
+  "limits": {
+    "maximum_files": 4,
+    "maximum_pairings": 3,
+    "maximum_total_source_duration_seconds": 14400.0,
+    "maximum_rendered_duration_seconds": 720.0,
+    "maximum_disk_bytes": null,
+    "maximum_runtime_seconds": null
+  },
+  "selected_file_count": 4,
+  "selected_pairing_count": 3,
+  "selected_source_duration_seconds": 7156.714,
+  "estimated_analysis_cached_count": 1,
+  "expected_output_count": 3,
+  "selected_media": [
+    {
+      "media_id": "media_1879b4266b454698",
+      "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+      "duration_seconds": 1436.224,
+      "content_type": "animation",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "dialogue_heavy",
+        "episode_form"
+      ]
+    },
+    {
+      "media_id": "media_0e67c8df91810b40",
+      "filename": "Dark Side of the Ring S04E04 What Happened to Doink the Clown.mp4",
+      "duration_seconds": 2642.731,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_fc2180bbf179ac04",
+      "filename": "The Sword in the Stone (1996 VHS) - 09of19.mp4",
+      "duration_seconds": 666.517,
+      "content_type": "animation",
+      "duration_class": "short",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "short_form"
+      ]
+    },
+    {
+      "media_id": "media_8203e58fa9811bb3",
+      "filename": "Scared Silly.mp4",
+      "duration_seconds": 2411.242,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    }
+  ],
+  "pairings": [
+    {
+      "pairing_id": "pair_001",
+      "purpose": "animation_to_animation",
+      "source_media_id": "media_1879b4266b454698",
+      "destination_media_id": "media_fc2180bbf179ac04",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "visual_mismatch",
+        "speaker_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_002",
+      "purpose": "live_action_to_live_action",
+      "source_media_id": "media_0e67c8df91810b40",
+      "destination_media_id": "media_8203e58fa9811bb3",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "residual_dialogue",
+        "masking",
+        "speaker_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_003",
+      "purpose": "animation_to_live_action",
+      "source_media_id": "media_0e67c8df91810b40",
+      "destination_media_id": "media_fc2180bbf179ac04",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "visual_mismatch",
+        "performance_mismatch"
+      ]
+    }
+  ],
+  "execution_policy": {
+    "source_files_read_only": true,
+    "write_sidecars_to_source": false,
+    "cache_reuse": true,
+    "resume_required": true,
+    "excerpt_policy": "analysis_selected_bounded_excerpt_when_available_otherwise_plan_only"
+  }
+}

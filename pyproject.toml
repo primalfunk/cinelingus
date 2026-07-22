@@ -5,12 +5,20 @@ description = "Cinelingus local cinematic transformation laboratory."
 requires-python = ">=3.11"
 dependencies = [
     "Pillow>=10.0",
+    "PySide6>=6.8",
     "pyannote.audio>=4.0.6",
+]
+
+[project.optional-dependencies]
+semantic = [
+    "transformers==5.14.1",
 ]
 
 [project.scripts]
 cinelingus = "cinelingus.cli:main"
 cinelingus-gui = "cinelingus.gui:main"
+cinelingus-plate-preview = "cinelingus.qt_faceplate:main"
+cinelingus-gui-legacy = "cinelingus.gui:legacy_main"
 
 [tool.pytest.ini_options]
 pythonpath = ["src", "."]

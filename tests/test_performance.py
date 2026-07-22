@@ -35,7 +35,17 @@ def test_build_performances_groups_windows_by_pause_and_classifies(tmp_path: Pat
     assert first["signature"]["average_turn_duration"] == 1.0
     assert first["signature"]["speech_continuity"] > 0
     assert first["performance_type"] in {"monologue", "dialogue_exchange"}
+    assert [turn["id"] for turn in first["ordered_turns"]] == ["w1", "w2"]
+    assert first["speech_intervals"][0]["duration"] == 1.0
+    assert first["silence_intervals"] == [{"start": 1.0, "end": 1.5, "duration": 0.5}]
+    assert first["cadence"]["turns_per_second"] > 0
+    assert first["scene_category"] == first["conversation_type"]
+    assert set(first["adaptability"]) == {"stretchable", "compressible", "splittable", "mergeable"}
     assert "speaker_participation" in first["signature"]
+    assert first["performance_model_version"] == "unified_performance_v1"
+    assert set(("audio", "visual", "conversation", "editing", "movement", "emotion", "metadata")) <= set(first)
+    assert first["conversation"]["turn_density"] > 0
+    assert first["metadata"]["source_references"]["speaking_window_ids"] == ["w1", "w2"]
     windows = performance_windows(artifact)
     assert windows[0]["performance_id"] == "p000001"
     assert windows[0]["performance_type_v2"] == first["performance_type"]

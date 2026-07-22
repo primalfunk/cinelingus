@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "repair_effectiveness",
+  "type": "object",
+  "required": [
+    "schema_version", "report_version", "attempted_placement_count",
+    "candidates_considered", "rendered_candidate_count", "surviving_repair_count",
+    "candidate_survival_rate", "positive_rendered_delta_count", "original_restored_count",
+    "no_viable_alternative_count", "original_already_predicted_best_count",
+    "donor_pool_exhaustion_count", "candidate_loss_stages", "candidate_rejection_reasons",
+    "by_failure_category", "by_repair_strategy", "by_candidate_family", "attempts"
+  ],
+  "properties": {
+    "report_version": {"const": "repair_effectiveness_baseline_v1"},
+    "attempted_placement_count": {"type": "integer", "minimum": 0},
+    "candidates_considered": {"type": "integer", "minimum": 0},
+    "rendered_candidate_count": {"type": "integer", "minimum": 0},
+    "surviving_repair_count": {"type": "integer", "minimum": 0},
+    "candidate_survival_rate": {"type": "number", "minimum": 0, "maximum": 1},
+    "coordinated_candidate_count": {"type": "integer", "minimum": 0},
+    "coordinated_surviving_count": {"type": "integer", "minimum": 0},
+    "candidate_loss_stages": {"type": "array", "items": {"type": "object"}},
+    "candidate_rejection_reasons": {"type": "array", "items": {"type": "object"}},
+    "by_failure_category": {"type": "array", "items": {"type": "object"}},
+    "by_repair_strategy": {"type": "array", "items": {"type": "object"}},
+    "by_candidate_family": {"type": "array", "items": {"type": "object"}},
+    "attempts": {"type": "array", "items": {"type": "object"}}
+  }
+}

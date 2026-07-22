@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import gc
+import logging
 import math
 import multiprocessing as mp
 import os
@@ -40,6 +41,13 @@ def _run_pipeline_without_empty_cluster_warning_noise(pipeline: Any, audio: Any)
 
 def _worker(result_queue, audio_path: str, model_name: str, device: str, token: str | None) -> None:
     try:
+        logging.getLogger("torch.utils.flop_counter").setLevel(logging.ERROR)
+        warnings.filterwarnings(
+            "ignore",
+            message=r"TensorFloat-32 \(TF32\) has been disabled.*",
+            category=UserWarning,
+            module=r"pyannote\.audio\.utils\.reproducibility",
+        )
         ensure_project_ffmpeg_shared_on_path(search_from=Path(audio_path))
         from pyannote.audio import Pipeline  # type: ignore
         from .speakers import _load_pyannote_audio_input, _resolve_pyannote_device

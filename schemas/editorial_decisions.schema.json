@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "editorial_decisions",
+  "type": "object",
+  "required": [
+    "schema_version", "decision_engine_version", "acceptance_threshold",
+    "placement_count", "average_quality", "accepted_count", "repair_count",
+    "rejected_count", "quality_gate_passed", "failure_counts", "decisions"
+  ],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "decision_engine_version": { "type": "string" },
+    "acceptance_threshold": { "type": "number", "minimum": 0, "maximum": 1 },
+    "minimum_word_coverage": { "type": "number", "minimum": 0, "maximum": 1 },
+    "placement_count": { "type": "integer", "minimum": 0 },
+    "average_quality": { "type": "number", "minimum": 0, "maximum": 1 },
+    "minimum_quality": { "type": "number", "minimum": 0, "maximum": 1 },
+    "accepted_count": { "type": "integer", "minimum": 0 },
+    "repair_count": { "type": "integer", "minimum": 0 },
+    "rejected_count": { "type": "integer", "minimum": 0 },
+    "quality_gate_passed": { "type": "boolean" },
+    "failure_counts": { "type": "object" },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["placement_key", "mapping_index", "overall_quality", "quality", "failures", "recommendation"],
+        "properties": {
+          "placement_key": { "type": "string" },
+          "mapping_index": { "type": "integer", "minimum": 0 },
+          "overall_quality": { "type": "number", "minimum": 0, "maximum": 1 },
+          "quality": { "type": "object" },
+          "failures": { "type": "array", "items": { "type": "object" } },
+          "hard_gate_passed": { "type": "boolean" },
+          "hard_gate_failures": { "type": "array", "items": { "type": "string" } },
+          "repairability": { "type": "object" },
+          "final_state": {
+            "enum": ["ACCEPTED", "IMPROVED_ACCEPTED", "BEST_KNOWN_UNRESOLVED", "SUPPRESSED", "FAILED_DELIVERY", "SKIPPED_UNREPAIRABLE"]
+          },
+          "recommendation": { "enum": ["accept", "repair", "reject"] }
+        }
+      }
+    }
+  }
+}

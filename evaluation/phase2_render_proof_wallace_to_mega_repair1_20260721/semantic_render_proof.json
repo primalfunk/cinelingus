@@ -1,0 +1,178 @@
+{
+  "schema_version": "1.0",
+  "proof_version": "semantic_render_proof_v1",
+  "creation_timestamp": "2026-07-22T02:29:08+00:00",
+  "screen_signature": "69cb114609016ac374067a7790224f217fbc2984c1cfce9cbc3883c1dab907a0",
+  "proof_signature": "a218add3f9ad67295ae5970cd995df3e35868a237e9a0846da51459d029ac261",
+  "control_variant": "control",
+  "semantic_variant": "pareto_guarded",
+  "acoustic_preflight": "evaluation\\phase2_acoustic_preflight_wallace_to_mega_repair1_20260721\\semantic_acoustic_preflight.json",
+  "acoustic_preflight_signature": "7615042e73d33550f1cd53f21e627625cbe19e20196698e14b7989e7fd7260c7",
+  "invariant_configuration": {
+    "destination_media_hash": "1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b",
+    "render_sample_rate": 48000,
+    "render_channels": 2,
+    "target_lufs": -18.0,
+    "audio_fade_duration": 0.015,
+    "dialogue_suppression": "hard_mute",
+    "suppression_padding": 0.04,
+    "background_reconstruction": "neighboring_non_speech_with_adaptive_crossfades",
+    "whisper_model": "medium",
+    "whisper_language": "en",
+    "transcription_mode": "quality",
+    "residue_correction_passes": 1
+  },
+  "variants": [
+    {
+      "variant_id": "control",
+      "semantic_mode": "SEMANTIC_DISABLED",
+      "semantic_weight": 0.0,
+      "semantic_selection_policy": null,
+      "destination_media_hash": "1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b",
+      "mapping_count": 282,
+      "audio": "control/replacement_dialogue.wav",
+      "video": "control/translation_output.mp4",
+      "final_schedule": "control/final_schedule.json",
+      "audio_ready": true,
+      "video_ready": true,
+      "audio_bytes": 275754382,
+      "video_bytes": 149916008,
+      "audio_sha256": "647206091c27a1718517aca5653904136a4e6eefdeab7cad6558c28248efb60c",
+      "video_sha256": "7b6de69567696fca91b0c8fc2c51bbd1f4780d8c79c55d9ebd94c56808cce3f1",
+      "voice_residue_status": "NONE_DETECTED",
+      "rendered_dialogue_status": "FAIL",
+      "rendered_dialogue_average_word_coverage_percentage": 47.55,
+      "rendered_dialogue_failed_mapping_count": 153,
+      "rendered_dialogue_warning_mapping_count": 104,
+      "rendered_dialogue_measurable_mapping_count": 282,
+      "residue_correction_report": {
+        "strategy": "bounded_post_render_suppression_rerender_v1",
+        "maximum_passes": 1,
+        "completed_passes": 0,
+        "padding": 0.12,
+        "final_status": "NONE_DETECTED",
+        "passes": []
+      },
+      "editorial_refinement": {
+        "status": "LIMIT_REACHED",
+        "termination_reason": "maximum_passes_exceeded",
+        "placements_accepted_immediately": 56,
+        "placements_repaired": 14,
+        "placements_rejected": 212,
+        "repair_passes": 2,
+        "initial_quality": 0.5287,
+        "final_quality": 0.5665,
+        "quality_improvement": 0.0378
+      }
+    },
+    {
+      "variant_id": "pareto_guarded",
+      "semantic_mode": "SEMANTIC_ASSISTED",
+      "semantic_weight": 0.0,
+      "semantic_selection_policy": "DIRECT_EVIDENCE_GLOBAL_PARETO_V1",
+      "destination_media_hash": "1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b",
+      "mapping_count": 282,
+      "audio": "pareto_guarded/replacement_dialogue.wav",
+      "video": "pareto_guarded/translation_output.mp4",
+      "final_schedule": "pareto_guarded/final_schedule.json",
+      "audio_ready": true,
+      "video_ready": true,
+      "audio_bytes": 275754286,
+      "video_bytes": 149870600,
+      "audio_sha256": "98428b1c0aa0eb4785b3577fd0894e79de06738e25d155ebf14a703fc7e0b279",
+      "video_sha256": "7213582a46191ebd086509603eba5cbd0e7c0e7a98b65fe3ea208be72d282e79",
+      "voice_residue_status": "NONE_DETECTED",
+      "rendered_dialogue_status": "FAIL",
+      "rendered_dialogue_average_word_coverage_percentage": 53.3,
+      "rendered_dialogue_failed_mapping_count": 138,
+      "rendered_dialogue_warning_mapping_count": 102,
+      "rendered_dialogue_measurable_mapping_count": 282,
+      "residue_correction_report": {
+        "strategy": "bounded_post_render_suppression_rerender_v1",
+        "maximum_passes": 1,
+        "completed_passes": 0,
+        "padding": 0.12,
+        "final_status": "NONE_DETECTED",
+        "passes": []
+      },
+      "editorial_refinement": {
+        "status": "LIMIT_REACHED",
+        "termination_reason": "maximum_passes_exceeded",
+        "placements_accepted_immediately": 72,
+        "placements_repaired": 9,
+        "placements_rejected": 201,
+        "repair_passes": 2,
+        "initial_quality": 0.5671,
+        "final_quality": 0.5944,
+        "quality_improvement": 0.0273
+      }
+    }
+  ],
+  "technical_render_state": "COMPLETE",
+  "verification_state": "AVAILABLE",
+  "render_acceptance": {
+    "state": "REJECTED",
+    "reasons": [
+      "rendered_dialogue_verification_not_passing",
+      "semantic_intervention_mapping_not_passing"
+    ],
+    "control_average_word_coverage_percentage": 47.55,
+    "semantic_average_word_coverage_percentage": 53.3,
+    "control_failed_mapping_count": 153,
+    "semantic_failed_mapping_count": 138
+  },
+  "semantic_intervention_verification": {
+    "policy": "CHANGED_PLACEMENT_RENDER_VERIFICATION_V1",
+    "changed_mapping_count": 2,
+    "semantic_passed_mapping_count": 0,
+    "semantic_failed_mapping_count": 2,
+    "rejected_source_performance_ids": [
+      "p000115",
+      "p000163"
+    ],
+    "mappings": [
+      {
+        "placement_key": "editorial_placement_000059",
+        "destination_performance_id": "p000017",
+        "requested_source_performance_id": "p000115",
+        "requested_clip_id": "c000158",
+        "final_source_performance_id": "p000115",
+        "final_clip_id": "c000158",
+        "semantic_donor_survived_repair": true,
+        "control_status": "FAIL",
+        "control_word_coverage_percentage": 0.0,
+        "semantic_status": "FAIL",
+        "semantic_word_coverage_percentage": 0.0,
+        "semantic_rendered_transcript": "Confirmed."
+      },
+      {
+        "placement_key": "editorial_placement_000079",
+        "destination_performance_id": "p000028",
+        "requested_source_performance_id": "p000163",
+        "requested_clip_id": "c000249",
+        "final_source_performance_id": "p000163",
+        "final_clip_id": "c000249",
+        "semantic_donor_survived_repair": true,
+        "control_status": "FAIL",
+        "control_word_coverage_percentage": 0.0,
+        "semantic_status": "FAIL",
+        "semantic_word_coverage_percentage": 0.0,
+        "semantic_rendered_transcript": ""
+      }
+    ],
+    "state": "FAIL"
+  },
+  "repair_lineage": {
+    "state": "PREFLIGHT_INFORMED_RESCREEN",
+    "predecessor_screen_signature": "de166ba11c402673cc440bc617847321a07cdd5f51f765ca7f9ab3aeef61e0d6",
+    "preflight_signature": "fc07392ba4b4f4428af0ed92cff58942bd206598a784e322a7d78e82ef0c7eaa",
+    "quarantined_source_performance_ids": [
+      "p000015",
+      "p000196"
+    ],
+    "quarantined_source_count": 2
+  },
+  "editorial_repair_state": "NOT_RUN_NON_PERFORMANCE_SCHEDULE",
+  "claim_scope": "Rendered technical and verification evidence only; semantic relatedness and preference require blinded human review.",
+  "human_review_state": "WITHHELD_TECHNICAL_FAILURE"
+}

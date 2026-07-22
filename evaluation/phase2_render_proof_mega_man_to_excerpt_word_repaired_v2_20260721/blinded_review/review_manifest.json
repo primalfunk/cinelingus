@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "review_version": "semantic_blinded_review_v1",
+  "creation_timestamp": "2026-07-22T06:22:31+00:00",
+  "package_signature": "d3c7cba1bbf3b71a054fca615e7c73f21e6a90cd2f7ad64e636b80009c8c58bc",
+  "blinding_state": "BLINDED",
+  "case_count": 1,
+  "cases": [
+    {
+      "case_id": "1879b4266b45_to_3e396cdd138e_assisted_005",
+      "options": {
+        "A": {
+          "media": "media/1879b4266b45_to_3e396cdd138e_assisted_005_A.mp4",
+          "sha256": "97b9e5b73bb285988adac59324aefa544243202c374f9fac9e93e6326a9b0651"
+        },
+        "B": {
+          "media": "media/1879b4266b45_to_3e396cdd138e_assisted_005_B.mp4",
+          "sha256": "3dd310fa910d135c31b069a54a45a814f890acbc661bbefcf927e096076deb60"
+        }
+      },
+      "destination_context": "Full Translation render of destination.mp4; semantic-assisted schedule changes 2 donor placement(s).",
+      "questions": [
+        {
+          "question_id": "semantic_relatedness",
+          "prompt": "Which donor is more meaningfully related to the destination transcript?",
+          "allowed_responses": [
+            "A",
+            "B",
+            "NO_PREFERENCE",
+            "BOTH_POOR",
+            "UNREVIEWABLE"
+          ]
+        },
+        {
+          "question_id": "performance_fit",
+          "prompt": "Which donor better fits the performance?",
+          "allowed_responses": [
+            "A",
+            "B",
+            "NO_PREFERENCE",
+            "BOTH_POOR",
+            "UNREVIEWABLE"
+          ]
+        },
+        {
+          "question_id": "intelligibility_and_completeness",
+          "prompt": "Which version is more intelligible and complete?",
+          "allowed_responses": [
+            "A",
+            "B",
+            "NO_PREFERENCE",
+            "BOTH_POOR",
+            "UNREVIEWABLE"
+          ]
+        },
+        {
+          "question_id": "overall_preference",
+          "prompt": "Which version is preferred overall?",
+          "allowed_responses": [
+            "A",
+            "B",
+            "NO_PREFERENCE",
+            "BOTH_POOR",
+            "UNREVIEWABLE"
+          ]
+        }
+      ]
+    }
+  ],
+  "instructions": "Review A and B without consulting answer_key.json. Semantic relatedness and overall preference are separate judgments.",
+  "claim_scope": "Human judgments are evaluation evidence only and are not used for model training or fine-tuning."
+}

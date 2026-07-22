@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "review_version": "semantic_blinded_review_v1",
+  "package_signature": "a8a188d4329e43e0d19a072f4c74175ab0b24a1161e3e9c4b8ba21b02b0e584b",
+  "seed_signature": "2820478dd1dcf98d189e6d2cf19f02d106112a140b713bce8d4febf762aa8672",
+  "cases": [
+    {
+      "case_id": "mega_man_to_short_excerpt",
+      "conditions": {
+        "A": "CONTROL",
+        "B": "SEMANTIC"
+      }
+    }
+  ]
+}

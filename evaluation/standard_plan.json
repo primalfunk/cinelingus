@@ -1,0 +1,288 @@
+{
+  "schema_version": "1.0",
+  "plan_version": "movie_corpus_evaluation_plan_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T05:05:47+00:00",
+  "manifest": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\corpus_manifest.json",
+  "manifest_version": "movie_corpus_manifest_v1",
+  "tier": "standard",
+  "seed": 20260720,
+  "dry_run": true,
+  "limits": {
+    "maximum_files": 12,
+    "maximum_pairings": 8,
+    "maximum_total_source_duration_seconds": 50400.0,
+    "maximum_rendered_duration_seconds": 2700.0,
+    "maximum_disk_bytes": null,
+    "maximum_runtime_seconds": null
+  },
+  "selected_file_count": 12,
+  "selected_pairing_count": 8,
+  "selected_source_duration_seconds": 26476.925,
+  "estimated_analysis_cached_count": 4,
+  "expected_output_count": 8,
+  "selected_media": [
+    {
+      "media_id": "media_1879b4266b454698",
+      "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+      "duration_seconds": 1436.224,
+      "content_type": "animation",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "dialogue_heavy",
+        "episode_form"
+      ]
+    },
+    {
+      "media_id": "media_0e67c8df91810b40",
+      "filename": "Dark Side of the Ring S04E04 What Happened to Doink the Clown.mp4",
+      "duration_seconds": 2642.731,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_fc2180bbf179ac04",
+      "filename": "The Sword in the Stone (1996 VHS) - 09of19.mp4",
+      "duration_seconds": 666.517,
+      "content_type": "animation",
+      "duration_class": "short",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "short_form"
+      ]
+    },
+    {
+      "media_id": "media_8203e58fa9811bb3",
+      "filename": "Scared Silly.mp4",
+      "duration_seconds": 2411.242,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_2f95a2ac048a4567",
+      "filename": "The Muppets Take Manhattan (1999 VHS).mp4",
+      "duration_seconds": 6242.499,
+      "content_type": "mixed_or_uncertain",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "feature_form",
+        "mixed_or_uncertain"
+      ]
+    },
+    {
+      "media_id": "media_a07d059872fd8f02",
+      "filename": "Christian TV stuff - Parker\u2019s Puzzle (9).ia.mp4",
+      "duration_seconds": 1844.85,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_18f6b6ed542cca53",
+      "filename": "Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+      "duration_seconds": 3473.04,
+      "content_type": "mixed_or_uncertain",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "mixed_or_uncertain"
+      ]
+    },
+    {
+      "media_id": "media_dd11e14de5e805cf",
+      "filename": "Fraggle Rock S01 E15 - I Don't Care.mp4",
+      "duration_seconds": 1484.985,
+      "content_type": "mixed_or_uncertain",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "mixed_or_uncertain"
+      ]
+    },
+    {
+      "media_id": "media_4121ae2102f20e1f",
+      "filename": "Annie Oakley S01_E17 Annie and the Mystery Woman.mp4",
+      "duration_seconds": 1499.13,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_b5c0d64d4c13e986",
+      "filename": "Abbott and Costello in Life Insurance.mp4",
+      "duration_seconds": 1401.927,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_91398926505d6269",
+      "filename": "Quatermass S01 - The Quatermass Experiment - 02 - Persons Reported Missing.mp4",
+      "duration_seconds": 2091.42,
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ]
+    },
+    {
+      "media_id": "media_ec484f1580b5975e",
+      "filename": "Robocop Cartoon - Ep 02.mp4",
+      "duration_seconds": 1282.36,
+      "content_type": "animation",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "dialogue_heavy",
+        "episode_form"
+      ]
+    }
+  ],
+  "pairings": [
+    {
+      "pairing_id": "pair_001",
+      "purpose": "animation_to_animation",
+      "source_media_id": "media_1879b4266b454698",
+      "destination_media_id": "media_ec484f1580b5975e",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "visual_mismatch",
+        "speaker_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_002",
+      "purpose": "live_action_to_live_action",
+      "source_media_id": "media_0e67c8df91810b40",
+      "destination_media_id": "media_4121ae2102f20e1f",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "residual_dialogue",
+        "masking",
+        "speaker_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_003",
+      "purpose": "animation_to_live_action",
+      "source_media_id": "media_fc2180bbf179ac04",
+      "destination_media_id": "media_8203e58fa9811bb3",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "visual_mismatch",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_004",
+      "purpose": "intentional_duration_mismatch",
+      "source_media_id": "media_18f6b6ed542cca53",
+      "destination_media_id": "media_b5c0d64d4c13e986",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "duration_failure",
+        "low_rendered_coverage"
+      ]
+    },
+    {
+      "pairing_id": "pair_005",
+      "purpose": "similar_duration_dialogue_exchange",
+      "source_media_id": "media_a07d059872fd8f02",
+      "destination_media_id": "media_91398926505d6269",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "speaker_mismatch",
+        "performance_mismatch",
+        "transition_artifact"
+      ]
+    },
+    {
+      "pairing_id": "pair_006",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_2f95a2ac048a4567",
+      "destination_media_id": "media_dd11e14de5e805cf",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_007",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_0e67c8df91810b40",
+      "destination_media_id": "media_18f6b6ed542cca53",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    },
+    {
+      "pairing_id": "pair_008",
+      "purpose": "general_cross_stratum_regression",
+      "source_media_id": "media_1879b4266b454698",
+      "destination_media_id": "media_2f95a2ac048a4567",
+      "scope": {
+        "mode": "analysis_selected_excerpt",
+        "status": "pending_analysis_evidence"
+      },
+      "expected_failure_modes": [
+        "incomplete_sentence",
+        "masking",
+        "performance_mismatch"
+      ]
+    }
+  ],
+  "execution_policy": {
+    "source_files_read_only": true,
+    "write_sidecars_to_source": false,
+    "cache_reuse": true,
+    "resume_required": true,
+    "excerpt_policy": "analysis_selected_bounded_excerpt_when_available_otherwise_plan_only"
+  }
+}

@@ -109,3 +109,44 @@ def test_problem_region_report_flags_undercovered_speech_slots(tmp_path):
     assert report["problems"][0]["window_id"] == "w2"
     assert report["problems"][0]["coverage"] == 0.0
     assert "undercovered speech windows: 1" in (tmp_path / "problem_regions.txt").read_text()
+
+
+def test_problem_report_prioritizes_residue_ambience_and_boundary_review(tmp_path):
+    schedule = {
+        "mappings": [],
+        "destination_performance_fills": [],
+        "destination_speech_regions": [{
+            "id": "speech", "start": 4.0, "end": 5.0, "duration": 1.0,
+        }],
+        "voice_residue_verification": {
+            "status": "POSSIBLE_DESTINATION_SPEECH_DETECTED",
+            "regions": [{
+                "destination_region_id": "speech", "start": 4.0, "end": 5.0,
+                "possible_residue": True, "destination_similarity": 0.9,
+                "donor_similarity": 0.2, "rendered_transcript": "original words",
+            }],
+        },
+        "background_reconstruction_report": {
+            "silence_fallback_targets": [{"start": 7.0, "end": 8.0}],
+        },
+        "suppression_padding_report": {
+            "regions": [{
+                "speech_region_id": "speech", "confidence": 0.4,
+                "source_kind": "recovered_filtered_speech_window",
+                "leading_padding": 0.12, "trailing_padding": 0.2,
+            }],
+        },
+    }
+
+    report = build_problem_region_report(
+        schedule=schedule,
+        output_json=tmp_path / "problem_regions.json",
+        output_csv=tmp_path / "problem_regions.csv",
+        output_txt=tmp_path / "problem_regions.txt",
+    )
+
+    assert report["problems"][0]["problem_type"] == "possible_destination_speech_residue"
+    assert report["problems"][0]["severity"] == "critical"
+    assert report["summary"]["possible_residue_count"] == 1
+    assert report["summary"]["ambience_silence_fallback_count"] == 1
+    assert report["summary"]["uncertain_speech_boundary_count"] == 1

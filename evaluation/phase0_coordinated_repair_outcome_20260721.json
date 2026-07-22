@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "record_type": "phase0_coordinated_repair_outcome",
+  "created_on": "2026-07-21",
+  "status": "mechanism_proven_corpus_survival_open",
+  "atomic_acceptance_regression": {
+    "test": "test_pass_manager_commits_entire_improving_neighborhood_atomically",
+    "placement_count": 2,
+    "rendered_verification_survivors": 2,
+    "atomic_commit_observed": true
+  },
+  "original_corpus_case": {
+    "report": "output/corpus_calibration/phase0_performance_strategy/calibration_report.json",
+    "coordinated_candidates": 2,
+    "coordinated_survivors": 0,
+    "outcome": "correct_atomic_rollback_after_both_candidates_regressed"
+  },
+  "expanded_donor_retry": {
+    "plan": "evaluation/phase0_coordinated_performance_plan.json",
+    "report": "output/corpus_calibration/phase0_coordinated_performance/calibration_report.json",
+    "source_excerpt_seconds": 44.0,
+    "initial_quality": 0.886,
+    "repair_candidates": 0,
+    "outcome": "wider_donor_pool_improved_initial_schedule_so_failure_did_not_reproduce"
+  },
+  "interpretation": "Neighborhood generation, atomic verification, all-member commit, and all-member rollback are executable and regression tested. Real corpus candidates have so far either regressed together or removed the need for repair at initial scheduling; a naturally surviving coordinated pair remains an empirical coverage goal rather than an implementation defect."
+}

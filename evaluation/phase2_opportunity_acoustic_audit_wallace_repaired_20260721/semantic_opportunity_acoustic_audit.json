@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "audit_version": "semantic_opportunity_acoustic_audit_v1",
+  "creation_timestamp": "2026-07-22T03:23:53+00:00",
+  "screen_signature": "f445b8612f8e458f20da35d8d3d51feb3aa18d509723f29bca7fefbdfd61a737",
+  "audit_signature": "d2890a7805e515baa7bdc2a7881abe8c997ee138e1c7f0285a8476b64c1372b7",
+  "whisper_configuration": {
+    "requested_model": "medium",
+    "language": "en",
+    "transcription_mode": "quality"
+  },
+  "verifier_version": "rendered_dialogue_verification_v4_expressive_elongation",
+  "minimum_word_coverage": 0.72,
+  "maximum_source_performances": 24,
+  "audited_source_performance_count": 2,
+  "audited_clip_count": 2,
+  "accepted_source_performance_count": 1,
+  "rejected_source_performance_count": 1,
+  "rejected_source_performance_ids": [
+    "p000015"
+  ],
+  "repair_lineage": {},
+  "transcription_cache_state": "PARTIAL_REBUILD",
+  "transcription_batch_count": 1,
+  "confirmation_transcription_count": 0,
+  "context_policy": "ordered_batches_max3_gap1_v1",
+  "confirmation_policy": "isolated_confirmation_for_batch_rejections_v1",
+  "cache_path": "evaluation\\phase2_opportunity_acoustic_audit_wallace_to_mega_20260721\\acoustic_health_cache.json",
+  "source_performances": [
+    {
+      "source_performance_id": "p000016",
+      "clip_ids": [
+        "c000095"
+      ],
+      "semantic_delta": 0.007956,
+      "admission_role": "PRIMARY",
+      "audited_clip_count": 1,
+      "accepted_clip_count": 1,
+      "health_state": "ACCEPTED"
+    },
+    {
+      "source_performance_id": "p000015",
+      "clip_ids": [
+        "c000094"
+      ],
+      "semantic_delta": 0.011819,
+      "admission_role": "TWO_CYCLE_PARTNER",
+      "audited_clip_count": 1,
+      "accepted_clip_count": 0,
+      "health_state": "REJECTED"
+    }
+  ],
+  "clips": [
+    {
+      "cache_key": "809946e8a0c49678f5712fed627e2adab87c77d1512c8f7fdeeb48cee2a2d017",
+      "source_performance_id": "p000016",
+      "clip_id": "c000095",
+      "clip_path": "evaluation\\phase2_clip_boundary_repair_wallace_20260721\\boundary_candidates\\c000095_01_p0_00.wav",
+      "trim_start": 0.0,
+      "trim_duration": 3.0,
+      "intended_transcript": "Sorry.",
+      "identity": {
+        "cache_version": "semantic_opportunity_acoustic_health_cache_v1",
+        "clip_sha256": "5b0a118d24a8be2581f3fb2500f018e011814791f9ec9875187e23f7da157835",
+        "clip_id": "c000095",
+        "trim_start": 0.0,
+        "trim_duration": 3.0,
+        "intended_transcript": "Sorry.",
+        "model_name": "medium",
+        "language": "en",
+        "transcription_mode": "quality",
+        "minimum_word_coverage": 0.72,
+        "verifier_version": "rendered_dialogue_verification_v4_expressive_elongation",
+        "context_policy": "ordered_batches_max3_gap1_v1"
+      },
+      "observed_transcript": "Ooh, sorry!",
+      "word_coverage_percentage": 100.0,
+      "missing_sentence_beginning": false,
+      "missing_sentence_ending": false,
+      "verification_status": "warning",
+      "health_state": "ACCEPTED",
+      "batch_health_state": "ACCEPTED",
+      "checked_timestamp": "2026-07-22T03:23:53+00:00"
+    },
+    {
+      "cache_key": "4208a958bad081d30e1b12e7731aa644828e87bcd380f1fabed5719ac61d03ee",
+      "source_performance_id": "p000015",
+      "clip_id": "c000094",
+      "clip_path": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache\\62311279e6dad49448aca3c376f5bdb00a9305e32a90ea910df3d3709b6d0017\\source_dialogue\\clips\\000094.wav",
+      "trim_start": 0.0,
+      "trim_duration": 3.0,
+      "intended_transcript": "Gromit?",
+      "identity": {
+        "cache_version": "semantic_opportunity_acoustic_health_cache_v1",
+        "clip_sha256": "92cc5e7adebf538755542e6faac2ff10c6f2a3de618b6916851502c2d5425def",
+        "clip_id": "c000094",
+        "trim_start": 0.0,
+        "trim_duration": 3.0,
+        "intended_transcript": "Gromit?",
+        "model_name": "medium",
+        "language": "en",
+        "transcription_mode": "quality",
+        "minimum_word_coverage": 0.72,
+        "verifier_version": "rendered_dialogue_verification_v4_expressive_elongation",
+        "context_policy": "ordered_batches_max3_gap1_v1"
+      },
+      "observed_transcript": "",
+      "word_coverage_percentage": 0.0,
+      "missing_sentence_beginning": true,
+      "missing_sentence_ending": true,
+      "verification_status": "fail",
+      "health_state": "REJECTED",
+      "checked_timestamp": "2026-07-22T02:51:58+00:00",
+      "confirmation_policy": "isolated_confirmation_for_batch_rejections_v1",
+      "confirmation_state": "REJECTED"
+    }
+  ],
+  "audit_state": "REJECTIONS_AVAILABLE",
+  "claim_scope": "Acoustic transcript integrity of bounded Pareto opportunity clips only; not semantic relatedness, performance fit, or in-context render quality."
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "semantic_render_proof",
+  "type": "object",
+  "required": ["schema_version", "proof_version", "creation_timestamp", "screen_signature", "proof_signature", "control_variant", "semantic_variant", "invariant_configuration", "variants", "technical_render_state", "verification_state", "render_acceptance", "editorial_repair_state", "claim_scope"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "proof_version": {"const": "semantic_render_proof_v1"},
+    "variants": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "object", "required": ["variant_id", "mapping_count", "audio", "video", "audio_ready", "video_ready", "voice_residue_status", "rendered_dialogue_status"]}},
+    "technical_render_state": {"enum": ["COMPLETE", "INCOMPLETE"]},
+    "verification_state": {"enum": ["AVAILABLE", "PARTIAL_OR_UNAVAILABLE"]}
+  }
+}

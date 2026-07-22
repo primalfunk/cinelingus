@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "evaluation_type": "phase2_pinned_e5_provider_proof",
+  "provider_metadata": {
+    "provider": "local_e5_transformers",
+    "model_id": "intfloat/multilingual-e5-small",
+    "model_revision": "d829207ab28e6a5fb3aafb5d4c44111b8146db32",
+    "tokenizer_id": "intfloat/multilingual-e5-small",
+    "dimensions": 384,
+    "prefix_policy": {
+      "query": "query: ",
+      "passage": "passage: "
+    },
+    "token_limit": 256,
+    "truncation_policy": "head_tokens",
+    "pooling_policy": "attention_mask_mean",
+    "normalization": "l2",
+    "precision": "float32",
+    "execution_device": "cpu",
+    "python_version": "3.11.0",
+    "runtime": "transformers",
+    "torch_version": "2.11.0+cu128",
+    "transformers_version": "5.14.1",
+    "cuda_available": true,
+    "asset_digest": "327ab8a846605d1bdac7f2cf14cfc259e53c28fa4303766665ac4c991c6e7cfd",
+    "asset_locator": "C:/Users/erinm/Desktop/2026 - Work/06.26 Cinelingus/models/semantic/intfloat-multilingual-e5-small/d829207ab28e6a5fb3aafb5d4c44111b8146db32"
+  },
+  "asset_size_bytes": 492796439,
+  "cpu": {
+    "first_load_and_four_entity_encode_seconds": 7.285060100024566,
+    "repeat_four_entity_encode_seconds": 0.016471899987664074,
+    "repeat_exact": true,
+    "dimensions": 384,
+    "token_counts": [
+      10,
+      10,
+      11,
+      11
+    ],
+    "truncated": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "weather_sunny_cosine": 0.8945060835624902,
+    "weather_stadium_cosine": 0.7500660602644813,
+    "weather_spanish_cosine": 0.9148765820843153
+  },
+  "cuda": {
+    "available": true,
+    "status": "WORKING",
+    "device_name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "first_load_and_encode_seconds": 3.172418900008779,
+    "repeat_exact": true,
+    "peak_memory_bytes": 480530432
+  },
+  "bundle": {
+    "film_id": "film_f696039d2fed48f3573a",
+    "passage_count": 4,
+    "construction_state": "READY",
+    "validation_status": "VALID",
+    "first_build_seconds": 0.0846169000142254,
+    "cached_build_seconds": 0.01819869998143986,
+    "second_build_cache_hits": 4,
+    "deterministic_metadata": true,
+    "coverage": {
+      "source_entity_count": 4,
+      "accounted_entity_count": 4,
+      "status_counts": {
+        "embedded": 4,
+        "failed": 0,
+        "low_information": 0,
+        "skipped": 0,
+        "truncated": 0,
+        "unavailable": 0
+      }
+    }
+  },
+  "claims": [
+    "Scores are raw transcript-vector cosine similarity, not probabilities.",
+    "The weather examples are provider sanity checks, not Translation quality evidence.",
+    "Cross-language quality is not inferred from one Spanish example."
+  ]
+}

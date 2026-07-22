@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "repair_preflight",
+  "type": "object",
+  "required": [
+    "schema_version", "report_version", "dry_run", "rendered",
+    "decision_failure_counts", "repairable_placement_count",
+    "attempted_placement_count", "proposed_candidate_count",
+    "candidate_family_counts", "strategy_counts", "candidate_loss_stage_counts",
+    "repair_neighborhood_count", "coordinated_neighborhood_count", "repair_neighborhoods",
+    "repairs", "attempts"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "report_version": {"const": "repair_preflight_v1"},
+    "dry_run": {"const": true},
+    "rendered": {"const": false},
+    "decision_failure_counts": {"type": "object"},
+    "repairable_placement_count": {"type": "integer", "minimum": 0},
+    "attempted_placement_count": {"type": "integer", "minimum": 0},
+    "proposed_candidate_count": {"type": "integer", "minimum": 0},
+    "candidate_family_counts": {"type": "object"},
+    "strategy_counts": {"type": "object"},
+    "candidate_loss_stage_counts": {"type": "object"},
+    "repair_neighborhood_count": {"type": "integer", "minimum": 0},
+    "coordinated_neighborhood_count": {"type": "integer", "minimum": 0},
+    "repair_neighborhoods": {"type": "array", "items": {"type": "object"}},
+    "repairs": {"type": "array", "items": {"type": "object"}},
+    "attempts": {"type": "array", "items": {"type": "object"}}
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "record_type": "phase0_quality_threshold_calibration",
+  "created_on": "2026-07-21",
+  "status": "calibrated",
+  "selected_threshold": 0.72,
+  "tested_interval": [0.68, 0.75],
+  "counterfactual_thresholds": [0.68, 0.72, 0.75],
+  "cases": [
+    {
+      "id": "beneficial_repair",
+      "source_case": "case_001_exchange_continuity",
+      "outcomes_identical_across_thresholds": true,
+      "initial_quality": 0.8141,
+      "final_quality": 0.8534,
+      "quality_improvement": 0.0393,
+      "rendered_candidates": 1,
+      "surviving_repairs": 1,
+      "final_status": "PASS"
+    },
+    {
+      "id": "boundary_unresolved",
+      "source_case": "case_006_exchange_continuity",
+      "outcomes_identical_across_thresholds": true,
+      "initial_quality": 0.727,
+      "final_quality": 0.727,
+      "quality_improvement": 0.0,
+      "rendered_candidates": 0,
+      "surviving_repairs": 0,
+      "final_status": "LIMIT_REACHED",
+      "interpretation": "Explicit failure evidence, not the numeric threshold, keeps the placement unresolved."
+    }
+  ],
+  "retrospective_normal_route_population": {
+    "placement_count": 83,
+    "accepted_or_improved_count": 64,
+    "minimum_accepted_quality": 0.8069,
+    "unresolved_count": 19,
+    "benchmark_isolation_decisions_excluded": true
+  },
+  "decision": "Retain 0.72. It lies inside the observed stable interval; raising it did not improve the boundary case, while hard placement gates independently prevent critical failures from passing."
+}

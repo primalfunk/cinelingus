@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "cases": [
+    {"case_id":"animation_mega_man","media_class":"animation","model_path":"temp/phase1_corpus_models/animation_mega_man/film_model.json","function_bundle_path":"temp/phase3_function_mega_man/dialogue_function_bundle.json"},
+    {"case_id":"animation_wallace_gromit","media_class":"animation","model_path":"temp/phase1_corpus_models/feature_wallace_gromit/film_model.json","function_bundle_path":"temp/phase3_function_wallace_gromit/dialogue_function_bundle.json"},
+    {"case_id":"live_action_wkyk","media_class":"live_action","model_path":"temp/phase1_corpus_models/live_action_wkyk/film_model.json","function_bundle_path":"temp/phase3_function_wkyk/dialogue_function_bundle.json"},
+    {"case_id":"animation_magic_schoolbus","media_class":"animation","model_path":"temp/phase1_corpus_models/standard_magic_schoolbus/film_model.json","function_bundle_path":"temp/phase3_function_magic_schoolbus/dialogue_function_bundle.json"},
+    {"case_id":"short_form_excerpt","media_class":"short_form","model_path":"temp/phase1_corpus_models/short_form_excerpt/film_model.json","function_bundle_path":"temp/phase3_function_short_excerpt/dialogue_function_bundle.json"},
+    {"case_id":"live_action_red_dwarf","media_class":"live_action","model_path":"temp/phase1_corpus_models/standard_red_dwarf/film_model.json","function_bundle_path":"temp/phase3_function_red_dwarf/dialogue_function_bundle.json"},
+    {"case_id":"live_action_sleeping_beauty","media_class":"live_action","model_path":"temp/phase1_corpus_models/standard_sleeping_beauty/film_model.json","function_bundle_path":"temp/phase3_function_sleeping_beauty/dialogue_function_bundle.json"},
+    {"case_id":"live_action_star_trek","media_class":"live_action","model_path":"temp/phase1_corpus_models/standard_star_trek/film_model.json","function_bundle_path":"temp/phase3_function_star_trek/dialogue_function_bundle.json"}
+  ]
+}

@@ -406,7 +406,27 @@ def render_mutation_media(
     schedule["render_duration"] = round(duration, 3)
     if stage_callback is not None:
         stage_callback("render_audio")
-    if schedule.get("mutation_id") == "self_shuffle" or schedule.get("montage_native") is True:
+    strict_carrier_speech = schedule.get("carrier_speech_policy") == "HARD_SUPPRESS_ALL_DETECTED_CARRIER_SPEECH"
+    if strict_carrier_speech:
+        carrier_regions = list(schedule.get("carrier_speech_regions", []))
+        if not carrier_regions:
+            raise ValueError("Strict carrier-speech suppression requires declared carrier speech regions.")
+        schedule["self_shuffle_render_strategy"] = "carrier_speech_suppressed_soundtrack_bed_v1"
+        schedule["soundtrack_render_strategy"] = "non_speech_bed_with_hard_carrier_speech_suppression_v1"
+        schedule["dead_air_policy"] = "FILTER_AUTHORED_CARRIER_SPEECH_SUPPRESSION"
+        render_schedule_over_original_audio(
+            original_media=original_media,
+            schedule=schedule,
+            duration=duration,
+            output_path=audio_output,
+            sample_rate=sample_rate,
+            channels=channels,
+            target_lufs=target_lufs,
+            fade_duration=fade_duration,
+            mute_regions=carrier_regions,
+            suppression_mode="hard_mute",
+        )
+    elif schedule.get("mutation_id") == "self_shuffle" or schedule.get("montage_native") is True:
         schedule["self_shuffle_render_strategy"] = "continuous_source_soundtrack_bed_v1"
         schedule["dead_air_policy"] = "SOURCE_SOUNDTRACK_BED_WITH_SUSTAINED_SILENCE_REJECTION"
         render_schedule_over_original_audio(

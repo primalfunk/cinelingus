@@ -20,19 +20,33 @@ from .config import load_config
 from .filter_lab.presentation import film_selector_spec, input_field_ids, parameter_help
 from .filter_lab.multiworld import film_label
 from .filter_lab.registry import default_filter_registry
+from .filter_lab.public_catalog import OperatingMode, default_public_apparatus_catalog
 from .filter_lab.gui_controller import (
+    current_apparatus_entry,
     current_filter_definition,
     load_recipe_dialog,
     save_recipe_dialog,
     selected_filter_parameters,
     sync_filter_family,
     sync_filter_mode,
+    sync_operating_mode,
 )
 from .mutations import MUTATION_DISPLAY_NAMES
 from .instrument_ui import (
     ActivityLamp,
+    INSTRUMENT_OVERLAY_BOXES,
     InstrumentMeter,
     InstrumentPlateCanvas,
+    MachineActuator,
+    MachineGuardedControl,
+    MachineInsetTrough,
+    MachineKey,
+    MachinePlaque,
+    MachineProcessStation,
+    MachineSelectorRail,
+    MachineServiceControl,
+    MachineVerdictTag,
+    ObservationTrace,
     OverlayBox,
     RotarySelector,
     ToolTip,
@@ -93,15 +107,16 @@ def open_path_or_reveal(path: Path) -> str:
 
 
 FILTER_REGISTRY = default_filter_registry()
-FILTER_FAMILY_DISPLAY_NAMES = {family.name: family.id for family in FILTER_REGISTRY.families()}
+APPARATUS_CATALOG = default_public_apparatus_catalog()
+FILTER_FAMILY_DISPLAY_NAMES = {discipline.name: discipline.id for discipline in APPARATUS_CATALOG.disciplines()}
 FILTER_DEFINITIONS_BY_NAME = {definition.name: definition for definition in FILTER_REGISTRY.definitions()}
-TRANSFORMATION_CHOICES = [definition.name for definition in FILTER_REGISTRY.definitions()]
+TRANSFORMATION_CHOICES = [entry.public_name for entry in APPARATUS_CATALOG.entries(primary_only=True)]
 TRANSFORMATION_MUTATIONS = {
     display_mode_name(definition.name): definition.implementation_key
     for definition in FILTER_REGISTRY.definitions(implemented_only=True)
     if definition.implementation_key != "translation"
 }
-SINGLE_FILM_TRANSFORMATIONS = set(TRANSFORMATION_CHOICES) - {TRANSPOSITION}
+SINGLE_FILM_TRANSFORMATIONS = {entry.public_name for entry in APPARATUS_CATALOG.entries(operating_mode=OperatingMode.SOLITARY, primary_only=True)}
 REMIX_PREFERENCES = {"Balanced": "balanced", "Best realism": "realism", "Funniest result": "funniest"}
 
 
@@ -114,15 +129,17 @@ def _format_byte_count(value: int) -> str:
     return f"{amount:.1f} TiB"
 
 QUALITY_PRESETS = {
-    "Preview": "fast_preview",
-    "Balanced": "balanced",
-    "Precision": "quality",
+    "Glimpse": "fast_preview",
+    "Study": "balanced",
+    "Divination": "quality",
 }
 QUALITY_PRESET_DESCRIPTIONS = {
-    "Preview": "A faster examination for exploratory work",
-    "Balanced": "A measured balance of speed and fidelity",
-    "Precision": "A more exacting examination for final work",
+    "Glimpse": "Fast Preview — exploratory examination",
+    "Study": "Balanced — measured speed and fidelity",
+    "Divination": "High Accuracy — exacting final examination",
 }
+QUALITY_PRACTICAL_LABELS = {"Glimpse": "Fast Preview", "Study": "Balanced", "Divination": "High Accuracy"}
+QUALITY_DIAL_LABELS = {key: key.upper() for key in QUALITY_PRESETS}
 HIGHLIGHT_BUCKET_LABELS = {
     "most_convincing": "Most Convincing",
     "funniest": "Beautiful Accident",
@@ -144,14 +161,19 @@ STAGE_LABELS = {key: stage_message(key).title for key in (
     "inspect", "source_dialogue", "clips", "destination_speech", "performances", "schedule", "render_audio", "render_video", "finalize"
 )}
 STAGE_SEQUENCE = (
-    ("inspect", "Specimens catalogued"),
-    ("source_dialogue", "Spoken record isolated"),
-    ("destination_speech", "Recurring voices examined"),
-    ("performances", "Performances observed"),
-    ("schedule", "Experiment arranged"),
-    ("render_audio", "Reconstruction"),
-    ("finalize", "Artifact examined"),
+    ("inspect", "CATALOG"),
+    ("source_dialogue", "VOICE"),
+    ("destination_speech", "IDENTITY"),
+    ("performances", "PERFORMANCE"),
+    ("schedule", "ASSEMBLY"),
+    ("render_audio", "RENDER"),
+    ("finalize", "REVIEW"),
 )
+STAGE_DESCRIPTIONS = {
+    "inspect": "Specimens catalogued", "source_dialogue": "Spoken record isolated",
+    "destination_speech": "Recurring voices examined", "performances": "Performances observed",
+    "schedule": "Invocation arranged", "render_audio": "Reconstruction", "finalize": "Artifact examined",
+}
 STAGE_PROGRESS_FLOORS = {
     "inspect": 6.0,
     "source_dialogue": 16.0,
@@ -197,11 +219,18 @@ def single_film_input_needs_explicit_choice(
 
 
 def required_input_fields(transformation: str) -> tuple[str, ...]:
-    return input_field_ids(FILTER_REGISTRY.get(internal_mode_name(transformation)))
+    try:
+        internal_id = APPARATUS_CATALOG.resolve(transformation).internal_id
+    except ValueError:
+        internal_id = internal_mode_name(transformation)
+    return input_field_ids(FILTER_REGISTRY.get(internal_id))
 
 
 def quality_preset_mode(label: str) -> str:
-    legacy = {"Fast Preview": "Preview", "High Accuracy": "Precision"}
+    legacy = {
+        "Fast Preview": "Glimpse", "Preview": "Glimpse",
+        "Balanced": "Study", "High Accuracy": "Divination", "Precision": "Divination",
+    }
     return QUALITY_PRESETS.get(legacy.get(label, label), "balanced")
 
 
@@ -209,7 +238,7 @@ def quality_preset_label(mode: str) -> str:
     for label, value in QUALITY_PRESETS.items():
         if value == mode:
             return label
-    return "Balanced"
+    return "Study"
 
 
 def remix_preference_id(label: str) -> str:
@@ -228,7 +257,7 @@ def plain_status_for_log_line(line: str) -> str | None:
 def quality_detail(label: str) -> str:
     mode = quality_preset_mode(label)
     visible_label = quality_preset_label(mode)
-    purpose = QUALITY_PRESET_DESCRIPTIONS.get(visible_label, QUALITY_PRESET_DESCRIPTIONS["Balanced"])
+    purpose = QUALITY_PRESET_DESCRIPTIONS.get(visible_label, QUALITY_PRESET_DESCRIPTIONS["Study"])
     extra = " This examination may require substantially more time." if mode == "quality" else ""
     return f"{purpose}.{extra}"
 
@@ -239,8 +268,8 @@ def quality_runtime_warning(label: str, runtime: dict) -> str | None:
         return "The transcription instrument is unavailable. Review the Technical Record before beginning."
     if mode == "quality" and not runtime.get("cuda_available"):
         return (
-            "Precision fidelity will continue without accelerated examination and may require substantially more time. "
-            "Balanced fidelity is recommended for routine work."
+            "Divination (High Accuracy) will continue without accelerated examination and may require substantially more time. "
+            "Study (Balanced) is recommended for routine work."
         )
     return None
 
@@ -268,24 +297,24 @@ def run_truth_summary(
     workflow: str = "Full Source Timeline",
     films: list[Path] | tuple[Path, ...] | None = None,
 ) -> str:
-    mode = display_mode_name(transformation)
+    mode = public_apparatus_name(transformation)
     if films:
         media = " | ".join(
             f"{'Anchor Film' if index == 0 else f'Film {film_label(index)}'}: {compact_path(path)}"
             for index, path in enumerate(films)
         )
-    elif mode == TRANSPOSITION:
+    elif mode == "Transposition":
         media = f"Anchor Film: {compact_path(destination)} | Film B: {compact_path(source)}"
     else:
         media = f"Film: {compact_path(destination)}"
     return (
-        f"Experiment: {mode} | {media} | Archive: {compact_path(output_dir)} | "
+        f"Apparatus: {mode} | {media} | Archive: {compact_path(output_dir)} | "
         f"Form: {workflow} | Fidelity: {quality} | Previous observations are reused only when material and settings match."
     )
 
 
 def completed_run_truth_summary(output: Path, output_dir: Path, transformation: str) -> str:
-    mode = display_mode_name(transformation)
+    mode = public_apparatus_name(transformation)
     short_report = output.parent / "output_report.json"
     with contextlib.suppress(Exception):
         data = read_json(short_report)
@@ -308,15 +337,15 @@ def completed_run_truth_summary(output: Path, output_dir: Path, transformation: 
             source_bits.append(f"Vignettes: {selected.get('vignette_count')}")
         if selected.get("candidate_id"):
             source_bits.append(f"Candidate: {selected.get('candidate_id')}")
-        return f"Last completed experiment: {mode} | " + " | ".join(source_bits)
-    if mode != TRANSPOSITION:
+        return f"Last completed invocation: {mode} | " + " | ".join(source_bits)
+    if mode != "Transposition":
         report = output.parent / "mutation_report.json"
         with contextlib.suppress(Exception):
             data = read_json(report)
-            name = display_mode_name((data.get("mutation_filter") or {}).get("display_name") or mode)
+            name = public_apparatus_name((data.get("mutation_filter") or {}).get("display_name") or mode)
             source = data.get("source_film") or data.get("source_path") or "unknown"
             video = ((data.get("outputs") or {}).get("video") or output)
-            return f"Last completed experiment: {name} | Film: {compact_path(Path(source))} | Artifact: {compact_path(Path(video))}"
+            return f"Last completed invocation: {name} | Film: {compact_path(Path(source))} | Artifact: {compact_path(Path(video))}"
     report = output_dir / "run_report.json"
     with contextlib.suppress(Exception):
         data = read_json(report)
@@ -325,10 +354,18 @@ def completed_run_truth_summary(output: Path, output_dir: Path, transformation: 
         source = ((inputs.get("source_dialogue") or {}).get("path") or "unknown")
         video = ((data.get("outputs") or {}).get("video_path") or output)
         return (
-            f"Last completed experiment: Translation | Anchor Film: {compact_path(Path(destination))} | "
+            f"Last completed invocation: Transposition | Anchor Film: {compact_path(Path(destination))} | "
             f"Film B: {compact_path(Path(source))} | Artifact: {compact_path(Path(video))}"
         )
-    return f"Last completed experiment: {mode} | Artifact: {compact_path(output)}"
+    return f"Last completed invocation: {mode} | Artifact: {compact_path(output)}"
+
+
+def public_apparatus_name(value: str | None) -> str:
+    normalized = str(value or "").strip()
+    try:
+        return APPARATUS_CATALOG.resolve(normalized).public_name
+    except ValueError:
+        return normalized
 
 
 def compact_path(path: Path | str, max_chars: int = 78) -> str:
@@ -482,7 +519,7 @@ class CinelingusInstrumentApp(tk.Tk):
         self.output_path_var = tk.StringVar(value="")
         self.problem_summary_var = tk.StringVar(value="No run yet")
         self.current_truth_var = tk.StringVar(value="")
-        self.last_truth_var = tk.StringVar(value="No experiment has yet been archived.")
+        self.last_truth_var = tk.StringVar(value="No invocation has yet been archived.")
         self.preview_path_var = tk.StringVar(value="")
         self.filter_labels = {display: key for key, display in FILTER_DISPLAY_NAMES.items()}
         self.filter_var = tk.StringVar(value=FILTER_DISPLAY_NAMES.get(self.base_config.cinematic_filter, "Balanced"))
@@ -499,12 +536,19 @@ class CinelingusInstrumentApp(tk.Tk):
         self.specimen_var = tk.StringVar(value="No specimen selected")
         self.overall_eta_var = tk.StringVar(value="Estimated remaining: Calculating...")
         self.mode_description_var = tk.StringVar(value=MODE_DESCRIPTIONS[TRANSPOSITION])
+        self.apparatus_law_var = tk.StringVar(value="Selected cinematic law")
+        self.quality_practical_var = tk.StringVar(value=QUALITY_PRACTICAL_LABELS.get(self.quality_var.get(), self.quality_var.get()))
+        self.quality_model_var = tk.StringVar(value=f"MODEL: {self.base_config.whisper_model.upper()}")
+        self.calibration_detail_var = tk.StringVar(value=setting_definition("matching", self.filter_var.get()))
+        self.actuation_state_var = tk.StringVar(value="Instrument dormant")
+        self.machine_activity_var = tk.StringVar(value="DORMANT")
         self.completion_summary_var = tk.StringVar(value="")
         self.setting_definition_var = tk.StringVar(value="")
         self.overall_progress_var = tk.DoubleVar(value=0.0)
         self.stage_progress_var = tk.DoubleVar(value=0.0)
-        self.mode_var = tk.StringVar(value=TRANSPOSITION)
-        self.family_var = tk.StringVar(value="Multiworld")
+        self.mode_var = tk.StringVar(value="Transposition")
+        self.operating_mode_var = tk.StringVar(value="Several Films")
+        self.family_var = tk.StringVar(value="Alchemical Engine")
         self.filter_detail_var = tk.StringVar(value="")
         self.relationship_var = tk.StringVar(value="")
         self.filter_parameter_vars: dict[str, tk.Variable] = {}
@@ -520,7 +564,7 @@ class CinelingusInstrumentApp(tk.Tk):
 
         self._build_ui()
         self._bind_truth_refresh()
-        sync_filter_family(self, preferred_filter=TRANSPOSITION)
+        sync_operating_mode(self, preferred_discipline="Alchemical Engine", preferred_apparatus="Transposition")
         self._show_wizard_step(1)
         self.bind("<Configure>", self._on_window_resize)
         self.after(100, self._drain_output_queue)
@@ -535,19 +579,23 @@ class CinelingusInstrumentApp(tk.Tk):
         header.grid(row=0, column=0, sticky="ew")
         header.columnconfigure(0, weight=1)
         ttk.Label(header, text="Cinelingus", style="Title.TLabel").grid(row=0, column=0, sticky="w")
-        ttk.Label(header, text="Filter Laboratory — transform dialogue, performance, identity, and time.", style="Subtitle.TLabel").grid(row=1, column=0, sticky="w", pady=(2, 0))
+        ttk.Label(header, text="Apparatus Laboratory — invoke alternate laws of cinematic reality.", style="Subtitle.TLabel").grid(row=1, column=0, sticky="w", pady=(2, 0))
         ttk.Label(header, textvariable=self.status_var, style="Status.TLabel").grid(row=0, column=1, rowspan=2, sticky="e")
 
-        input_frame = ttk.LabelFrame(self, text="1. Choose Material And Filter", padding=14)
+        input_frame = ttk.LabelFrame(self, text="1. Admit Films And Select Apparatus", padding=14)
         input_frame.grid(row=1, column=0, sticky="ew", padx=18, pady=(8, 8))
         input_frame.columnconfigure(1, weight=1)
         self.choice_frame = input_frame
 
-        ttk.Label(input_frame, text="Filter family", style="Field.TLabel").grid(row=0, column=0, sticky="w", pady=5)
-        family_box = ttk.Combobox(input_frame, textvariable=self.family_var, values=list(FILTER_FAMILY_DISPLAY_NAMES), state="readonly", width=24)
-        family_box.grid(row=0, column=1, sticky="w", padx=10, pady=5)
-        family_box.bind("<<ComboboxSelected>>", lambda _event: sync_filter_family(self))
-        ttk.Label(input_frame, text="Filter", style="Field.TLabel").grid(row=1, column=0, sticky="w", pady=5)
+        ttk.Label(input_frame, text="Discipline", style="Field.TLabel").grid(row=0, column=0, sticky="w", pady=5)
+        self.family_box = ttk.Combobox(input_frame, textvariable=self.family_var, values=list(FILTER_FAMILY_DISPLAY_NAMES), state="readonly", width=24)
+        self.family_box.grid(row=0, column=1, sticky="w", padx=10, pady=5)
+        self.family_box.bind("<<ComboboxSelected>>", lambda _event: sync_filter_family(self))
+        ttk.Label(input_frame, text="Reality", style="Field.TLabel").grid(row=0, column=2, sticky="w", pady=5)
+        reality_box = ttk.Combobox(input_frame, textvariable=self.operating_mode_var, values=("One Film", "Several Films"), state="readonly", width=16)
+        reality_box.grid(row=0, column=3, sticky="w", padx=10, pady=5)
+        reality_box.bind("<<ComboboxSelected>>", lambda _event: sync_operating_mode(self))
+        ttk.Label(input_frame, text="Apparatus", style="Field.TLabel").grid(row=1, column=0, sticky="w", pady=5)
         self.mode_box = ttk.Combobox(input_frame, textvariable=self.mode_var, values=TRANSFORMATION_CHOICES, state="readonly", width=24)
         self.mode_box.grid(row=1, column=1, sticky="w", padx=10, pady=5)
         self.mode_box.bind("<<ComboboxSelected>>", lambda _event: self._sync_mode_fields())
@@ -587,7 +635,7 @@ class CinelingusInstrumentApp(tk.Tk):
             state="readonly",
             width=24,
         ).grid(row=4, column=1, sticky="w", padx=10, pady=5)
-        self.filter_controls_frame = ttk.LabelFrame(quality_frame, text="Filter behavior", padding=(10, 8))
+        self.filter_controls_frame = ttk.LabelFrame(quality_frame, text="Apparatus behavior", padding=(10, 8))
         self.filter_controls_frame.grid(row=5, column=0, columnspan=3, sticky="ew", pady=(10, 4))
         ttk.Label(quality_frame, textvariable=self.input_guidance_var, style="Hint.TLabel").grid(row=6, column=1, columnspan=2, sticky="w", padx=10, pady=(4, 0))
         ttk.Label(quality_frame, textvariable=self.speaker_detail_var, style="Hint.TLabel").grid(row=7, column=1, columnspan=2, sticky="w", padx=10, pady=(4, 0))
@@ -598,7 +646,7 @@ class CinelingusInstrumentApp(tk.Tk):
         ttk.Button(quality_actions, text="Make New Selections", command=lambda: self._show_wizard_step(1)).grid(row=0, column=0)
         ttk.Button(quality_actions, text="Save Recipe", command=lambda: save_recipe_dialog(self)).grid(row=0, column=1, padx=(10, 0))
         ttk.Button(quality_actions, text="Load Recipe", command=lambda: load_recipe_dialog(self)).grid(row=0, column=2, padx=(10, 0))
-        self.start_button = ttk.Button(quality_actions, text="RUN", command=self._start_run, style="Primary.TButton")
+        self.start_button = ttk.Button(quality_actions, text="INVOKE APPARATUS", command=self._start_run, style="Primary.TButton")
         self.start_button.grid(row=0, column=3, padx=(10, 0))
 
         run_frame = ttk.LabelFrame(self, text="3. Run And Review", padding=14)
@@ -684,101 +732,105 @@ class CinelingusInstrumentApp(tk.Tk):
         self._build_instrument_surface()
 
     def _instrument_panel(self, name: str, title: str) -> ttk.Frame:
-        panel = ttk.Frame(self.instrument_canvas, style="InstrumentPanel.TFrame", padding=(8, 6))
+        panel = ttk.Frame(self.instrument_canvas, style="InstrumentPanel.TFrame", padding=(8, 2))
         panel.columnconfigure(0, weight=1)
         ttk.Label(panel, text=title, style="InstrumentHeading.TLabel").grid(row=0, column=0, sticky="w")
         self.instrument_canvas.register_overlay(name, panel)
         return panel
 
     def _build_instrument_surface(self) -> None:
-        transformation = self._instrument_panel("transformation", "TRANSFORMATION")
-        family_row = ttk.Frame(transformation, style="InstrumentPanel.TFrame")
-        family_row.grid(row=1, column=0, sticky="ew", pady=(3, 2))
-        family_row.columnconfigure(1, weight=1)
-        ttk.Label(family_row, text="FIELD", style="MicroLabel.TLabel").grid(row=0, column=0, sticky="w", padx=(0, 6))
-        family_box = ttk.Combobox(
-            family_row,
-            textvariable=self.family_var,
-            values=list(FILTER_FAMILY_DISPLAY_NAMES),
-            state="readonly",
-            width=16,
-            style="Instrument.TCombobox",
+        transformation = self._instrument_panel("transformation", "APPARATUS")
+        ttk.Label(transformation, text="REALITY", style="MicroLabel.TLabel").grid(row=1, column=0, sticky="w", pady=(2, 0))
+        reality_box = MachineSelectorRail(
+            transformation, variable=self.operating_mode_var, values=("One Film", "Several Films"),
+            command=lambda: sync_operating_mode(self), height=24,
         )
-        family_box.grid(row=0, column=1, sticky="ew")
-        family_box.bind("<<ComboboxSelected>>", lambda _event: sync_filter_family(self))
-        ToolTip(family_box, "Choose the transformation field; the dial selects an experiment within it.")
-        self.mode_box = RotarySelector(transformation, variable=self.mode_var, values=(), command=self._sync_mode_fields, height=90)
-        self.mode_box.grid(row=2, column=0, sticky="nsew")
-        transformation.rowconfigure(2, weight=1)
-        ToolTip(self.mode_box, "Turn to choose the cinematic transformation. Left click advances; right click returns.")
+        reality_box.grid(row=2, column=0, sticky="ew", pady=(0, 2))
+        ToolTip(reality_box, "Choose one-film or several-film operation. Left and right arrow keys change the reality.")
+        ttk.Label(transformation, text="DISCIPLINE", style="MicroLabel.TLabel").grid(row=3, column=0, sticky="w")
+        self.family_box = MachineSelectorRail(
+            transformation, variable=self.family_var, values=list(FILTER_FAMILY_DISPLAY_NAMES),
+            command=lambda: sync_filter_family(self), height=24,
+        )
+        self.family_box.grid(row=4, column=0, sticky="ew", pady=(0, 2))
+        ToolTip(self.family_box, "Choose which discipline governs the selected reality.")
+        self.mode_box = RotarySelector(transformation, variable=self.mode_var, values=(), command=self._sync_mode_fields, height=62)
+        self.mode_box.grid(row=5, column=0, sticky="nsew")
+        transformation.rowconfigure(5, weight=1)
+        ttk.Label(transformation, textvariable=self.apparatus_law_var, style="Law.TLabel", anchor="center", wraplength=270).grid(row=6, column=0, sticky="ew")
+        ToolTip(self.mode_box, "Turn to choose the apparatus. Left click advances; right click returns.")
         self.choice_frame = transformation
 
-        material = self._instrument_panel("material", "MATERIAL")
+        material = self._instrument_panel("material", "MATERIALS")
         self.film_rows_frame = ttk.Frame(material, style="InstrumentPanel.TFrame")
         self.film_rows_frame.grid(row=1, column=0, sticky="nsew", pady=(3, 0))
         self.film_rows_frame.columnconfigure(1, weight=1)
         material.rowconfigure(1, weight=1)
-        self.add_film_button = ttk.Button(material, text="ADD MATERIAL", command=self._add_film_selector, style="Hardware.TButton")
+        self.add_film_button = MachineKey(material, text="ADD CHAMBER", command=self._add_film_selector, height=26, width=120)
         self.add_film_button.grid(row=2, column=0, sticky="w", pady=(3, 0))
 
-        quality = self._instrument_panel("quality", "QUALITY")
-        self.quality_dial = RotarySelector(quality, variable=self.quality_var, values=list(QUALITY_PRESETS), command=self._sync_quality_detail, height=100)
+        quality = self._instrument_panel("quality", "SCRUTINY")
+        self.quality_dial = RotarySelector(quality, variable=self.quality_var, values=list(QUALITY_PRESETS), command=self._sync_quality_detail, display_values=QUALITY_DIAL_LABELS, height=108)
         self.quality_dial.grid(row=1, column=0, sticky="nsew", pady=(3, 0))
         quality.rowconfigure(1, weight=1)
         self.quality_detail_var = tk.StringVar(value=quality_detail(self.quality_var.get()))
         self.quality_frame = quality
-        ToolTip(self.quality_dial, "Preview is fast, Balanced is measured, and Precision is the most exacting.")
+        ttk.Label(quality, textvariable=self.quality_practical_var, style="PlaqueDetail.TLabel", anchor="center").grid(row=2, column=0, sticky="ew")
+        ttk.Label(quality, textvariable=self.quality_model_var, style="TechnicalMicro.TLabel", anchor="center").grid(row=3, column=0, sticky="ew")
+        ToolTip(self.quality_dial, "Glimpse means Fast Preview, Study means Balanced, and Divination means High Accuracy.")
 
-        filter_panel = self._instrument_panel("filter", "FILTER")
+        filter_panel = self._instrument_panel("filter", "CALIBRATION")
         self.filter_dial = RotarySelector(filter_panel, variable=self.filter_var, values=list(self.filter_labels), command=self._refresh_truth_panel, height=112)
         self.filter_dial.grid(row=1, column=0, sticky="nsew", pady=(3, 0))
         filter_panel.rowconfigure(1, weight=1)
-        bias_row = ttk.Frame(filter_panel, style="InstrumentPanel.TFrame")
-        bias_row.grid(row=2, column=0, sticky="ew", pady=(3, 0))
-        bias_row.columnconfigure(1, weight=1)
-        ttk.Label(bias_row, text="BIAS", style="MicroLabel.TLabel").grid(row=0, column=0, sticky="w", padx=(0, 6))
-        preference_box = ttk.Combobox(
-            bias_row,
-            textvariable=self.remix_preference_var,
-            values=list(REMIX_PREFERENCES),
-            state="readonly",
-            width=14,
-            style="Instrument.TCombobox",
-        )
-        preference_box.grid(row=0, column=1, sticky="ew")
-        ToolTip(preference_box, "Bias candidate selection toward balance, realism, or comic surprise.")
-        ToolTip(self.filter_dial, "Turn to change the editable matching profile.")
+        ttk.Label(filter_panel, textvariable=self.calibration_detail_var, style="PlaqueDetail.TLabel", anchor="center", wraplength=270).grid(row=2, column=0, sticky="ew", pady=(3, 0))
+        ToolTip(self.filter_dial, "Turn to change candidate selection temperament without changing the apparatus law.")
 
         status = self._instrument_panel("status", "OBSERVATION")
         status.columnconfigure(0, weight=1)
-        ttk.Label(status, textvariable=self.stage_var, style="Operation.TLabel").grid(row=1, column=0, sticky="w", pady=(5, 0))
-        self.heartbeat_lamp = ActivityLamp(status, diameter=22)
-        self.heartbeat_lamp.grid(row=1, column=1, sticky="e", padx=(8, 0))
-        ttk.Label(status, textvariable=self.current_operation_var, style="Instrument.TLabel", wraplength=480).grid(row=2, column=0, columnspan=2, sticky="w", pady=(2, 6))
+        self.stage_display_label = ttk.Label(status, textvariable=self.stage_var, style="OperationDormant.TLabel")
+        self.stage_display_label.grid(row=1, column=0, sticky="w", pady=(5, 0))
+        lamp_row = ttk.Frame(status, style="InstrumentPanel.TFrame")
+        lamp_row.grid(row=1, column=1, sticky="e", padx=(8, 0))
+        self.heartbeat_lamp = ActivityLamp(lamp_row, diameter=18)
+        self.heartbeat_lamp.grid(row=0, column=0)
+        ttk.Label(lamp_row, textvariable=self.machine_activity_var, style="MicroLabel.TLabel").grid(row=0, column=1, padx=(3, 0))
+        self.operation_display_label = ttk.Label(status, textvariable=self.current_operation_var, style="Instrument.TLabel", wraplength=480)
+        self.operation_display_label.grid(row=2, column=0, columnspan=2, sticky="w", pady=(2, 6))
         metric_row = ttk.Frame(status, style="InstrumentPanel.TFrame")
         metric_row.grid(row=3, column=0, columnspan=2, sticky="ew")
-        for column in range(3):
+        for column in range(4):
             metric_row.columnconfigure(column, weight=1)
         self._metric(metric_row, 0, "Elapsed", self.live_elapsed_var)
         self._metric(metric_row, 1, "Remaining", self.live_eta_var)
-        self._metric(metric_row, 2, "Completion", self.live_completion_var)
-        ttk.Label(status, textvariable=self.progress_percent_var, style="Percent.TLabel").grid(row=4, column=1, sticky="e", pady=(4, 0))
+        self._metric(metric_row, 2, "Estimated completion", self.live_completion_var)
+        ttk.Label(metric_row, textvariable=self.progress_percent_var, style="Percent.TLabel").grid(row=1, column=3, sticky="e", padx=(8, 0))
+        self.observation_trace = ObservationTrace(
+            status,
+            progress_variable=self.stage_progress_var,
+            active_getter=lambda: bool(self.worker and self.worker.is_alive()),
+            reduced_motion=os.environ.get("CINELINGUS_REDUCED_MOTION", "").lower() in {"1", "true", "yes"},
+            height=66,
+        )
+        self.observation_trace.grid(row=4, column=0, columnspan=2, sticky="nsew", pady=(5, 0))
+        status.rowconfigure(4, weight=1)
         self.run_frame = status
 
-        activate = self._instrument_panel("activate", "ACTIVATE")
+        activate = self._instrument_panel("activate", "ACTUATION")
         activate.columnconfigure(0, weight=1)
         self.activation_lamp = ActivityLamp(activate, diameter=34)
-        self.activation_lamp.grid(row=1, column=0, pady=(8, 3))
-        self.start_button = ttk.Button(activate, text="ACTIVATE", command=self._start_run, style="Activate.TButton", takefocus=True)
-        self.start_button.grid(row=2, column=0, sticky="ew", padx=8, ipady=7)
+        self.activation_lamp.grid(row=1, column=0, pady=(6, 2))
+        self.start_button = MachineActuator(activate, text="INVOKE", command=self._start_run, height=60)
+        self.start_button.grid(row=2, column=0, sticky="ew", padx=8)
         self.continue_button = self.start_button
-        self.cancel_button = ttk.Button(activate, text="SAFE INTERRUPT", command=self._cancel_run, state="disabled", style="Interrupt.TButton", takefocus=True)
+        self.cancel_button = MachineGuardedControl(activate, text="SAFE INTERRUPT", command=self._cancel_run, state="disabled", height=30)
         self.cancel_button.grid(row=3, column=0, sticky="ew", padx=8, pady=(5, 0))
-        ttk.Label(activate, textvariable=self.status_var, style="Status.TLabel", wraplength=220, anchor="center").grid(row=4, column=0, sticky="ew", pady=(4, 0))
+        self.actuation_state_label = ttk.Label(activate, textvariable=self.actuation_state_var, style="Status.TLabel", wraplength=220, anchor="center")
+        self.actuation_state_label.grid(row=4, column=0, sticky="ew", pady=(4, 0))
         ToolTip(self.start_button, accessible_control_labels()["begin"])
         ToolTip(self.cancel_button, accessible_control_labels()["cancel"])
 
-        progress = self._instrument_panel("progress", "PROGRESS")
+        progress = self._instrument_panel("progress", "PROCESSION")
         progress.columnconfigure(1, weight=1)
         ttk.Label(progress, text="OVERALL", style="MetricLabel.TLabel").grid(row=1, column=0, sticky="w")
         InstrumentMeter(progress, variable=self.overall_progress_var, maximum=100).grid(row=1, column=1, sticky="ew", padx=(8, 0))
@@ -790,15 +842,12 @@ class CinelingusInstrumentApp(tk.Tk):
         self.stage_lamps = {}
         for index, (key, label) in enumerate(STAGE_SEQUENCE):
             stages.columnconfigure(index, weight=1)
-            cell = ttk.Frame(stages, style="InstrumentPanel.TFrame")
+            cell = MachineProcessStation(stages, text=label)
             cell.grid(row=0, column=index, sticky="nsew", padx=2)
-            cell.columnconfigure(0, weight=1)
-            lamp = ActivityLamp(cell, diameter=18)
-            lamp.grid(row=0, column=0)
-            self.stage_lamps[key] = lamp
+            self.stage_lamps[key] = cell
             var = tk.StringVar(value=label)
             self.stage_step_vars[key] = var
-            ttk.Label(cell, textvariable=var, style="Step.TLabel", anchor="center", wraplength=100).grid(row=1, column=0, sticky="ew")
+            ToolTip(cell, STAGE_DESCRIPTIONS[key])
         self.instrument_canvas.register_overlay("stages", stages)
 
         self._build_curator_panel()
@@ -810,24 +859,28 @@ class CinelingusInstrumentApp(tk.Tk):
             curator.columnconfigure(column, weight=1)
         self.curator_buttons = []
         for index, label in enumerate(CURATOR_SELECTIONS):
-            button = ttk.Button(curator, text=label, command=lambda selected=label: self._open_curator_selection(selected), state="disabled", style="Curator.TButton")
+            button = MachineVerdictTag(curator, text=label.upper(), command=lambda selected=label: self._select_curator_tag(selected), state="disabled")
             button.grid(row=1 + index // 3, column=index % 3, sticky="ew", padx=2, pady=2)
             self.curator_buttons.append(button)
         self.finished_frame = curator
 
     def _build_laboratory_notes_panel(self) -> None:
-        notes = self._instrument_panel("notes", "LABORATORY NOTES")
+        notes = self._instrument_panel("notes", "LEDGER")
         notes.columnconfigure(0, weight=1)
-        ttk.Checkbutton(notes, text="EXPAND", variable=self.laboratory_notes_var, command=self._toggle_laboratory_notes, style="Instrument.TCheckbutton", takefocus=True).grid(row=0, column=1, sticky="e")
+        self.service_button = MachineServiceControl(notes, text="SERVICE", command=self._open_settings_notes, height=24, width=82)
+        self.service_button.grid(row=0, column=1, sticky="e")
+        ToolTip(self.service_button, "Open technical settings and maintenance controls.")
+        ttk.Label(notes, textvariable=self.problem_summary_var, style="LedgerNote.TLabel", anchor="w", wraplength=500).grid(row=1, column=0, columnspan=2, sticky="ew", pady=(3, 0))
         actions = ttk.Frame(notes, style="InstrumentPanel.TFrame")
-        actions.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(5, 0))
+        actions.grid(row=2, column=0, columnspan=2, sticky="ew", pady=(5, 0))
         for column in range(3):
             actions.columnconfigure(column, weight=1)
-        self.open_button = ttk.Button(actions, text="OPEN ARCHIVE", command=self._open_output_folder, style="Hardware.TButton")
+        self.open_button = MachineKey(actions, text="OPEN ARCHIVE", command=self._open_output_folder, height=28)
         self.open_button.grid(row=0, column=0, sticky="ew", padx=2)
-        self.highlight_review_button = ttk.Button(actions, text="CURATOR INDEX", command=self._open_highlight_review, style="Hardware.TButton")
+        self.highlight_review_button = MachineKey(actions, text="CURATOR INDEX", command=self._open_highlight_review, height=28)
         self.highlight_review_button.grid(row=0, column=1, sticky="ew", padx=2)
-        ttk.Button(actions, text="SETTINGS", command=self._open_settings_notes, style="Hardware.TButton").grid(row=0, column=2, sticky="ew", padx=2)
+        self.unfold_button = MachineKey(actions, text="UNFOLD", command=self._toggle_ledger_latch, height=28)
+        self.unfold_button.grid(row=0, column=2, sticky="ew", padx=2)
         self.notes_panel = notes
         self.notes_body = ttk.Frame(notes, style="InstrumentPanel.TFrame")
         self.notes_body.columnconfigure(0, weight=1)
@@ -866,6 +919,11 @@ class CinelingusInstrumentApp(tk.Tk):
         ttk.Label(reports_tab, textvariable=self.completion_summary_var, style="Hint.TLabel", wraplength=560).grid(row=4, column=0, sticky="ew", pady=(8, 0))
         self.notes_body.grid_remove()
 
+    def _toggle_ledger_latch(self) -> None:
+        self.laboratory_notes_var.set(not self.laboratory_notes_var.get())
+        self._toggle_laboratory_notes()
+        self.unfold_button.configure(text="FOLD" if self.laboratory_notes_var.get() else "UNFOLD")
+
     def _build_brand_header(self) -> None:
         header = ttk.Frame(self, padding=(18, 12, 18, 10), style="App.TFrame")
         header.grid(row=0, column=0, sticky="ew")
@@ -893,22 +951,26 @@ class CinelingusInstrumentApp(tk.Tk):
         controls.grid(row=0, column=0, sticky="nsew")
         controls.columnconfigure(0, weight=1)
         self.setup_controls = controls
-        ttk.Label(controls, text="EXPERIMENT", style="PlateHeading.TLabel").grid(row=0, column=0, sticky="w", pady=(0, 8))
+        ttk.Label(controls, text="APPARATUS", style="PlateHeading.TLabel").grid(row=0, column=0, sticky="w", pady=(0, 8))
 
-        experiment_panel = ttk.LabelFrame(controls, text="Filter", padding=(12, 10))
+        experiment_panel = ttk.LabelFrame(controls, text="Invocation", padding=(12, 10))
         experiment_panel.grid(row=1, column=0, sticky="ew")
         experiment_panel.columnconfigure(1, weight=1)
-        ttk.Label(experiment_panel, text="Family", style="Field.TLabel").grid(row=0, column=0, sticky="w", pady=3)
-        family_box = ttk.Combobox(experiment_panel, textvariable=self.family_var, values=list(FILTER_FAMILY_DISPLAY_NAMES), state="readonly")
-        family_box.grid(row=0, column=1, sticky="ew", padx=(8, 0), pady=3)
-        family_box.bind("<<ComboboxSelected>>", lambda _event: sync_filter_family(self))
-        ttk.Label(experiment_panel, text="Filter", style="Field.TLabel").grid(row=1, column=0, sticky="w", pady=3)
+        ttk.Label(experiment_panel, text="Reality", style="Field.TLabel").grid(row=0, column=0, sticky="w", pady=3)
+        reality_box = ttk.Combobox(experiment_panel, textvariable=self.operating_mode_var, values=("One Film", "Several Films"), state="readonly")
+        reality_box.grid(row=0, column=1, sticky="ew", padx=(8, 0), pady=3)
+        reality_box.bind("<<ComboboxSelected>>", lambda _event: sync_operating_mode(self))
+        ttk.Label(experiment_panel, text="Discipline", style="Field.TLabel").grid(row=1, column=0, sticky="w", pady=3)
+        self.family_box = ttk.Combobox(experiment_panel, textvariable=self.family_var, values=list(FILTER_FAMILY_DISPLAY_NAMES), state="readonly")
+        self.family_box.grid(row=1, column=1, sticky="ew", padx=(8, 0), pady=3)
+        self.family_box.bind("<<ComboboxSelected>>", lambda _event: sync_filter_family(self))
+        ttk.Label(experiment_panel, text="Apparatus", style="Field.TLabel").grid(row=2, column=0, sticky="w", pady=3)
         self.mode_box = ttk.Combobox(experiment_panel, textvariable=self.mode_var, values=(), state="readonly")
-        self.mode_box.grid(row=1, column=1, sticky="ew", padx=(8, 0), pady=3)
+        self.mode_box.grid(row=2, column=1, sticky="ew", padx=(8, 0), pady=3)
         self.mode_box.bind("<<ComboboxSelected>>", lambda _event: self._sync_mode_fields())
         self.mode_buttons: list[ttk.Radiobutton] = []
-        ttk.Label(experiment_panel, textvariable=self.mode_description_var, style="Hint.TLabel", wraplength=600).grid(row=2, column=0, columnspan=2, sticky="w", pady=(8, 0))
-        ttk.Label(experiment_panel, textvariable=self.relationship_var, style="Instrument.TLabel", wraplength=600).grid(row=3, column=0, columnspan=2, sticky="w", pady=(4, 0))
+        ttk.Label(experiment_panel, textvariable=self.mode_description_var, style="Hint.TLabel", wraplength=600).grid(row=3, column=0, columnspan=2, sticky="w", pady=(8, 0))
+        ttk.Label(experiment_panel, textvariable=self.relationship_var, style="Instrument.TLabel", wraplength=600).grid(row=4, column=0, columnspan=2, sticky="w", pady=(4, 0))
 
         material_panel = ttk.LabelFrame(controls, text="Material", padding=(12, 10))
         material_panel.grid(row=2, column=0, sticky="ew", pady=(10, 0))
@@ -929,7 +991,7 @@ class CinelingusInstrumentApp(tk.Tk):
 
         ttk.Checkbutton(controls, text="Advanced settings", variable=self.advanced_filter_controls_var, command=self._toggle_advanced, takefocus=True).grid(row=4, column=0, sticky="w", pady=(10, 0))
         self._build_advanced_panel(controls)
-        self.start_button = ttk.Button(controls, text="BEGIN EXPERIMENT", command=self._start_run, style="Primary.TButton", takefocus=True)
+        self.start_button = ttk.Button(controls, text="BEGIN INVOCATION", command=self._start_run, style="Primary.TButton", takefocus=True)
         self.start_button.grid(row=6, column=0, sticky="ew", pady=(14, 0), ipady=4)
         self.continue_button = self.start_button
 
@@ -955,7 +1017,7 @@ class CinelingusInstrumentApp(tk.Tk):
             choice_widget = ttk.Combobox(self.advanced_frame, textvariable=variable, values=values, state="readonly", width=22)
             choice_widget.grid(row=row, column=1, sticky="w", padx=8, pady=3)
         self.output_widgets = self._path_row(self.advanced_frame, 2, "Archive folder", self.output_var, self._choose_output_dir)
-        self.filter_controls_frame = ttk.LabelFrame(self.advanced_frame, text="Experiment parameters", padding=(10, 8))
+        self.filter_controls_frame = ttk.LabelFrame(self.advanced_frame, text="Apparatus parameters", padding=(10, 8))
         self.filter_controls_frame.grid(row=5, column=0, columnspan=3, sticky="ew", pady=(8, 4))
         ttk.Label(self.advanced_frame, textvariable=self.speaker_detail_var, style="Hint.TLabel", wraplength=600).grid(row=6, column=0, columnspan=3, sticky="w", pady=(5, 0))
         ttk.Label(self.advanced_frame, textvariable=self.setting_definition_var, style="Hint.TLabel", wraplength=600).grid(row=7, column=0, columnspan=3, sticky="w", pady=(5, 0))
@@ -991,7 +1053,7 @@ class CinelingusInstrumentApp(tk.Tk):
 
     def _clear_pipeline_cache(self) -> None:
         if self.worker is not None and self.worker.is_alive():
-            messagebox.showwarning("Experiment in progress", "The pipeline cache cannot be cleared while an experiment is running.")
+            messagebox.showwarning("Invocation in progress", "The pipeline cache cannot be cleared while an invocation is running.")
             return
         cache_dir = self.base_config.cache_dir
         if not messagebox.askyesno(
@@ -1008,7 +1070,7 @@ class CinelingusInstrumentApp(tk.Tk):
         self.status_var.set("Pipeline cache cleared")
         messagebox.showinfo(
             "Pipeline cache cleared",
-            f"Removed {result['files_removed']} files from {cache_dir}.\\nReclaimed approximately {reclaimed}.\\n\\nThe next experiment will rebuild its analysis artifacts.",
+            f"Removed {result['files_removed']} files from {cache_dir}.\\nReclaimed approximately {reclaimed}.\\n\\nThe next invocation will rebuild its analysis artifacts.",
         )
 
     def _build_active_view(self) -> None:
@@ -1053,7 +1115,7 @@ class CinelingusInstrumentApp(tk.Tk):
 
         run_actions = ttk.Frame(run_frame, padding=(0, 10, 0, 0), style="App.TFrame")
         run_actions.grid(row=3, column=0, sticky="ew")
-        self.cancel_button = ttk.Button(run_actions, text="Cancel Experiment", command=self._cancel_run, takefocus=True)
+        self.cancel_button = ttk.Button(run_actions, text="Cancel Invocation", command=self._cancel_run, takefocus=True)
         self.cancel_button.grid(row=0, column=0, sticky="w")
         ttk.Checkbutton(run_actions, text="Technical Record", variable=self.technical_record_var, command=self._toggle_technical_record, takefocus=True).grid(row=0, column=1, sticky="w", padx=(10, 0))
         self.open_button = ttk.Button(run_actions, text="Open Archive", command=self._open_output_folder)
@@ -1079,7 +1141,7 @@ class CinelingusInstrumentApp(tk.Tk):
         finished = ttk.Frame(self.content_host, style="App.TFrame", padding=(20, 10))
         finished.columnconfigure(0, weight=1)
         self.finished_frame = finished
-        ttk.Label(finished, text="EXPERIMENT COMPLETE", style="Completion.TLabel").grid(row=0, column=0, sticky="w")
+        ttk.Label(finished, text="INVOCATION COMPLETE", style="Completion.TLabel").grid(row=0, column=0, sticky="w")
         ttk.Label(finished, textvariable=self.completion_summary_var, style="Summary.TLabel", justify="left", wraplength=920).grid(row=1, column=0, sticky="ew", pady=(14, 14))
         artifact_panel = ttk.LabelFrame(finished, text="Result", padding=(12, 10))
         artifact_panel.grid(row=2, column=0, sticky="ew")
@@ -1090,7 +1152,7 @@ class CinelingusInstrumentApp(tk.Tk):
         ttk.Button(result_actions, text="Open Artifact", command=self._open_finished_movie, style="Primary.TButton").grid(row=0, column=0)
         ttk.Button(result_actions, text="Open Folder", command=self._open_output_folder).grid(row=0, column=1, padx=(8, 0))
         ttk.Button(result_actions, text="View Technical Record", command=self._show_completed_technical_record).grid(row=0, column=2, padx=(8, 0))
-        ttk.Button(result_actions, text="Begin Another Experiment", command=lambda: self._show_wizard_step(1)).grid(row=0, column=3, padx=(8, 0))
+        ttk.Button(result_actions, text="Begin Another Invocation", command=lambda: self._show_wizard_step(1)).grid(row=0, column=3, padx=(8, 0))
         review_actions = ttk.Frame(finished, style="App.TFrame")
         review_actions.grid(row=4, column=0, sticky="w", pady=(10, 0))
         self.performance_review_button = ttk.Button(review_actions, text="Review Performances", command=self._open_performance_review)
@@ -1121,17 +1183,21 @@ class CinelingusInstrumentApp(tk.Tk):
     def _toggle_laboratory_notes(self) -> None:
         expanded = self.laboratory_notes_var.get()
         if expanded:
-            self.instrument_canvas.set_overlay_box("notes", OverlayBox(0.455, 0.385, 0.480, 0.560))
+            # Keep the floating inspector clear of the engraved edge that
+            # surrounds its expanded footprint as well.
+            self.instrument_canvas.set_overlay_box("notes", OverlayBox(0.463, 0.395, 0.464, 0.540))
             self.notes_body.grid(row=2, column=0, columnspan=2, sticky="nsew", pady=(6, 0))
             self.notes_panel.rowconfigure(2, weight=1)
         else:
             self.notes_body.grid_remove()
             self.notes_panel.rowconfigure(2, weight=0)
-            self.instrument_canvas.set_overlay_box("notes", OverlayBox(0.525, 0.820, 0.410, 0.125))
+            self.instrument_canvas.set_overlay_box("notes", INSTRUMENT_OVERLAY_BOXES["notes"])
 
     def _open_settings_notes(self) -> None:
         self.laboratory_notes_var.set(True)
         self._toggle_laboratory_notes()
+        if hasattr(self, "unfold_button"):
+            self.unfold_button.configure(text="FOLD")
         self.notes_tabs.select(0)
         self._refresh_setting_definitions()
 
@@ -1143,11 +1209,11 @@ class CinelingusInstrumentApp(tk.Tk):
         self.wizard_step = step
         if step in {1, 2}:
             self._refresh_setting_definitions()
-            self.status_var.set("Ready for experiment")
+            self.status_var.set("Ready to invoke")
         elif step == 3:
-            self.status_var.set("Experiment in progress")
+            self.status_var.set("Invocation in progress")
         elif step == 4:
-            self.status_var.set("Experiment complete")
+            self.status_var.set("Invocation complete")
             self.curator_var.set("Observation indexed")
 
     def _continue_to_quality(self) -> None:
@@ -1160,8 +1226,9 @@ class CinelingusInstrumentApp(tk.Tk):
 
     def _refresh_setting_definitions(self) -> None:
         definition = current_filter_definition(self)
+        apparatus = current_apparatus_entry(self)
         lines = (
-            f"Filter - {definition.name}: {definition.operational_description}\n{parameter_help(definition)}",
+            f"Apparatus - {apparatus.public_name}: {apparatus.public_description}\n{parameter_help(definition)}",
             f"Quality - {self.quality_var.get()}: {setting_definition('quality', self.quality_var.get())}",
             "Output - Full source timeline: all selected media is analyzed; the anchor is curtailed only when required audio ends first.",
             f"Preference - {self.remix_preference_var.get()}: {setting_definition('preference', self.remix_preference_var.get())}",
@@ -1200,6 +1267,11 @@ class CinelingusInstrumentApp(tk.Tk):
         style.configure("InstrumentHeading.TLabel", background=surface, foreground=accent_bright, font=("Georgia", 9, "bold"))
         style.configure("MicroLabel.TLabel", background=surface, foreground=accent, font=("Segoe UI", 7, "bold"))
         style.configure("Material.TLabel", background=surface, foreground=text, font=("Segoe UI", 8, "bold"))
+        style.configure("Anchor.TLabel", background=surface, foreground=cyan, font=("Segoe UI", 6, "bold"))
+        style.configure("Law.TLabel", background=surface, foreground=muted, font=("Georgia", 7, "italic"))
+        style.configure("PlaqueDetail.TLabel", background=surface, foreground=text, font=("Segoe UI", 8))
+        style.configure("TechnicalMicro.TLabel", background=surface, foreground=muted, font=("Consolas", 7))
+        style.configure("LedgerNote.TLabel", background=surface, foreground=text, font=("Segoe UI", 8))
         style.configure("Hero.TFrame", background=background, bordercolor="#4c4433", relief="solid", borderwidth=1)
         style.configure("TFrame", background=surface)
         style.configure("TLabel", background=surface, foreground=text)
@@ -1209,13 +1281,17 @@ class CinelingusInstrumentApp(tk.Tk):
         style.configure("Plate.TLabel", background=background, foreground=accent, font=("Georgia", 11, "italic"))
         style.configure("PlateHeading.TLabel", background=background, foreground=accent, font=("Georgia", 12, "bold"))
         style.configure("Subtitle.TLabel", background=background, foreground=muted, font=("Segoe UI", 10))
-        style.configure("Status.TLabel", background=surface, foreground=cyan, font=("Segoe UI", 9, "bold"))
+        style.configure("Status.TLabel", background=surface, foreground=text, font=("Segoe UI", 9, "bold"))
+        style.configure("StatusActive.TLabel", background=surface, foreground=cyan_bright, font=("Segoe UI", 9, "bold"))
+        style.configure("StatusFault.TLabel", background=surface, foreground="#d9786e", font=("Segoe UI", 9, "bold"))
         style.configure("Field.TLabel", background=surface, foreground=text, font=("Segoe UI", 9, "bold"))
         style.configure("Hint.TLabel", background=surface, foreground=muted, font=("Segoe UI", 9))
-        style.configure("Instrument.TLabel", background=surface, foreground=cyan, font=("Segoe UI", 9))
+        style.configure("Instrument.TLabel", background=surface, foreground=text, font=("Segoe UI", 9))
+        style.configure("InstrumentActive.TLabel", background=surface, foreground=cyan, font=("Segoe UI", 9))
         style.configure("Section.TLabel", background=surface, foreground=accent, font=("Segoe UI", 10, "bold"))
         style.configure("Step.TLabel", background=surface, foreground="#b9c0c8", font=("Segoe UI", 8))
         style.configure("Operation.TLabel", background=surface, foreground=cyan, font=("Georgia", 15, "bold"))
+        style.configure("OperationDormant.TLabel", background=surface, foreground=accent, font=("Georgia", 15, "bold"))
         style.configure("Percent.TLabel", background=surface, foreground=cyan_bright, font=("Segoe UI", 13, "bold"))
         style.configure("MetricLabel.TLabel", background=surface, foreground=accent, font=("Segoe UI", 7, "bold"))
         style.configure("MetricValue.TLabel", background=surface, foreground=text, font=("Consolas", 9))
@@ -1249,6 +1325,12 @@ class CinelingusInstrumentApp(tk.Tk):
     def _sync_quality_detail(self) -> None:
         if hasattr(self, "quality_detail_var"):
             self.quality_detail_var.set(quality_detail(self.quality_var.get()))
+        if hasattr(self, "quality_practical_var"):
+            self.quality_practical_var.set(QUALITY_PRACTICAL_LABELS.get(self.quality_var.get(), self.quality_var.get()))
+        if hasattr(self, "quality_model_var"):
+            mode = quality_preset_mode(self.quality_var.get())
+            model = self.base_config.quality_modes.get(mode, {}).get("whisper_model", self.base_config.whisper_model)
+            self.quality_model_var.set(f"MODEL: {str(model).upper()}")
 
     def _mark_stage(self, active_key: str | None, *, finished: bool = False) -> None:
         if not hasattr(self, "stage_step_vars"):
@@ -1289,14 +1371,20 @@ class CinelingusInstrumentApp(tk.Tk):
         self.overall_eta_var.set(f"Overall completion estimate: {text} | Total elapsed: {format_duration(elapsed)}")
         self.live_completion_var.set("Calculating..." if remaining is None else (datetime.now() + timedelta(seconds=remaining)).strftime("%I:%M %p").lstrip("0"))
     def _path_row(self, parent: ttk.Frame, row: int, label: str, variable: tk.StringVar, command) -> tuple[ttk.Widget, ttk.Widget, ttk.Widget]:
-        label_widget = ttk.Label(parent, text=label, style="Material.TLabel")
-        entry_widget = ttk.Entry(parent, textvariable=variable, state="readonly", style="Instrument.TEntry")
-        button_widget = ttk.Button(parent, text="LOAD", command=command, style="Hardware.TButton")
-        label_widget.grid(row=row, column=0, sticky="w", pady=4)
-        entry_widget.grid(row=row, column=1, sticky="ew", padx=8, pady=4)
-        button_widget.grid(row=row, column=2, sticky="e", pady=4)
+        is_anchor = "(Anchor)" in label
+        visible_label = label.replace(" (Anchor)", "")
+        label_widget = ttk.Frame(parent, style="InstrumentPanel.TFrame", width=74, height=30)
+        label_widget.grid_propagate(False)
+        ttk.Label(label_widget, text=visible_label.upper(), style="Material.TLabel").grid(row=0, column=0, sticky="w")
+        if is_anchor:
+            ttk.Label(label_widget, text="ANCHOR", style="Anchor.TLabel").grid(row=1, column=0, sticky="w")
+        entry_widget = MachineInsetTrough(parent, variable=variable, height=30)
+        button_widget = MachineKey(parent, text="ADMIT", command=command, height=30, width=78)
+        label_widget.grid(row=row, column=0, sticky="w", pady=3)
+        entry_widget.grid(row=row, column=1, sticky="ew", padx=8, pady=3)
+        button_widget.grid(row=row, column=2, sticky="ew", pady=3)
         ToolTip(entry_widget, lambda selected=variable: selected.get())
-        ToolTip(button_widget, f"Choose {label.lower()} from disk.")
+        ToolTip(button_widget, f"Choose {visible_label} file from disk.")
         return label_widget, entry_widget, button_widget
 
     def _sync_film_selectors(self, definition) -> None:
@@ -1326,7 +1414,7 @@ class CinelingusInstrumentApp(tk.Tk):
             )
             rows.append(row)
             if row_spec["removable"]:
-                ttk.Button(self.film_rows_frame, text="EJECT", command=lambda film_index=index: self._remove_film_selector(film_index), style="Hardware.TButton").grid(row=index, column=3, padx=(6, 0), pady=4)
+                MachineKey(self.film_rows_frame, text="EJECT", command=lambda film_index=index: self._remove_film_selector(film_index), height=30, width=70).grid(row=index, column=3, padx=(6, 0), pady=3)
         self.destination_widgets = rows[0]
         self.source_widgets = rows[1] if len(rows) > 1 else tuple()
         if selector["can_add"]:
@@ -1402,6 +1490,8 @@ class CinelingusInstrumentApp(tk.Tk):
 
     def _refresh_truth_panel(self) -> None:
         self._refresh_setting_definitions()
+        if hasattr(self, "calibration_detail_var"):
+            self.calibration_detail_var.set(setting_definition("matching", self.filter_var.get()))
         self.current_truth_var.set(
             run_truth_summary(
                 transformation=self.mode_var.get(),
@@ -1440,9 +1530,9 @@ class CinelingusInstrumentApp(tk.Tk):
         runtime_warning = quality_runtime_warning(self.quality_var.get(), whisper_runtime())
         if runtime_warning:
             if quality_preset_mode(self.quality_var.get()) == "quality":
-                proceed = messagebox.askyesno("Precision may require more time", f"{runtime_warning}\n\nContinue with Precision fidelity?")
+                proceed = messagebox.askyesno("Divination may require more time", f"{runtime_warning}\n\nContinue with High Accuracy fidelity?")
                 if not proceed:
-                    self.quality_var.set("Balanced")
+                    self.quality_var.set("Study")
                     self._sync_quality_detail()
                     self._refresh_truth_panel()
                     return
@@ -1460,19 +1550,19 @@ class CinelingusInstrumentApp(tk.Tk):
         self.last_heartbeat_console_at = self.run_started_at
         self._set_overall_progress(2.0, allow_decrease=True)
         self.stage_progress_var.set(0.0)
-        self.stage_var.set("Preparing the experiment")
-        self.current_operation_var.set("Preparing the experiment")
+        self.stage_var.set("Preparing the invocation")
+        self.current_operation_var.set("Preparing the invocation")
         self.live_elapsed_var.set("00:00")
         self.live_idle_var.set("00:00")
         self.live_eta_var.set("Calculating...")
         self.live_completion_var.set("Calculating...")
         selected_films = self._selected_film_paths()
         self.specimen_var.set(selected_films[0].name if selected_films else "Selected material")
-        self._set_running(True, "Experiment in progress")
+        self._set_running(True, "Invocation in progress")
         self._mark_stage(None)
         start_detail = f"Starting full-timeline {self.mode_var.get()} run with {self.quality_var.get()} quality...\n"
         self._append_console(start_detail)
-        self._append_journal("Experiment initiated", f"{self.mode_var.get()} has begun with {self.quality_var.get().lower()} fidelity.", event_id="experiment_started")
+        self._append_journal("Invocation initiated", f"{self.mode_var.get()} has engaged with {self.quality_var.get().lower()} fidelity.", event_id="experiment_started")
         definition = current_filter_definition(self)
         filter_id = definition.id
         self.worker = threading.Thread(target=self._run_pipeline, args=(config, False, self.mode_var.get(), filter_id, remix_preference_id(self.remix_preference_var.get()), filter_parameters), daemon=True)
@@ -1483,9 +1573,9 @@ class CinelingusInstrumentApp(tk.Tk):
         films = self._selected_film_paths()
         output = Path(self.output_var.get()).expanduser()
         definition = current_filter_definition(self)
-        if not definition.implemented:
-            raise ValueError("This filter is not yet implemented.")
-        definition.validate_film_count(len(films))
+        apparatus = current_apparatus_entry(self)
+        apparatus.require_invokable()
+        apparatus.validate_film_count(len(films))
         if definition.supported_output_forms != ("full_length",):
             raise ValueError(f"{definition.name} does not declare the required full-length output contract.")
         for index, film in enumerate(films):
@@ -1509,10 +1599,11 @@ class CinelingusInstrumentApp(tk.Tk):
         )
 
     def _sync_mode_fields(self) -> None:
-        display_name = display_mode_name(self.mode_var.get())
-        if display_name != self.mode_var.get():
-            self.mode_var.set(display_name)
-        self.mode_description_var.set(MODE_DESCRIPTIONS.get(display_name, "A cinematic transformation experiment."))
+        apparatus = current_apparatus_entry(self)
+        self.mode_description_var.set(apparatus.public_description)
+        if hasattr(self, "apparatus_law_var"):
+            law = current_filter_definition(self).creative_description.split(".", 1)[0]
+            self.apparatus_law_var.set(law.upper())
         sync_filter_mode(self)
 
     def _run_pipeline(self, config, force: bool, app_mode: str = TRANSPOSITION, filter_id: str = "translation.echo", preference: str = "balanced", filter_parameters: dict[str, Any] | None = None) -> None:
@@ -1585,7 +1676,7 @@ class CinelingusInstrumentApp(tk.Tk):
                         self._append_journal("Artifact archived", "The resulting cinematic artifact has been archived.", event_id="completed")
                         self._signal_processing_finished()
                     elif status == "Failed":
-                        self.current_operation_var.set("Experiment interrupted")
+                        self.current_operation_var.set("Invocation interrupted")
                         self._signal_processing_failed()
                     elif status == "Cancelled":
                         self._complete_active_stage()
@@ -1670,7 +1761,7 @@ class CinelingusInstrumentApp(tk.Tk):
         self._set_overall_progress(STAGE_PROGRESS_FLOORS[display_key])
         self.stage_progress_var.set(10.0)
         self._update_overall_eta()
-        self.status_var.set("Experiment in progress")
+        self.status_var.set("Invocation in progress")
 
     def _refresh_run_heartbeat(self) -> None:
         if self.worker and self.worker.is_alive() and self.run_started_at is not None:
@@ -1678,12 +1769,12 @@ class CinelingusInstrumentApp(tk.Tk):
             elapsed = now - self.run_started_at
             idle = now - (self.last_console_activity_at or self.run_started_at)
             stage_percent = heartbeat_stage_progress(elapsed)
-            self.status_var.set("Experiment in progress")
+            self.status_var.set("Invocation in progress")
             self.live_elapsed_var.set(format_clock_duration(elapsed))
             self.live_idle_var.set(format_clock_duration(idle))
             remaining = estimate_overall_remaining(elapsed, float(self.overall_progress_var.get() or 0.0))
             self.live_eta_var.set("Calculating..." if remaining is None else format_clock_duration(remaining))
-            base_stage = self.stage_var.get() or "Continuing the experiment"
+            base_stage = self.stage_var.get() or "Continuing the invocation"
             self.current_operation_var.set(heartbeat_stage_message(stage=base_stage, idle_seconds=idle))
             if idle >= 180.0:
                 self.status_var.set("Awaiting a progress report")
@@ -1711,7 +1802,7 @@ class CinelingusInstrumentApp(tk.Tk):
         self.stage_progress_var.set(bounded_stage)
         self._update_overall_eta()
         event = operator_message_for_log(message)
-        visible_message = event.title if event else "Continuing the experiment"
+        visible_message = event.title if event else "Continuing the invocation"
         progress = ProgressState.start("reported", visible_message, total=100)
         if self.run_started_at is not None:
             progress.started_at = self.run_started_at
@@ -1751,7 +1842,7 @@ class CinelingusInstrumentApp(tk.Tk):
         self._set_overall_progress(floor)
         self.stage_progress_var.set(15.0)
         self._update_overall_eta()
-        self.status_var.set("Experiment in progress")
+        self.status_var.set("Invocation in progress")
 
     def _signal_processing_finished(self) -> None:
         self.bell()
@@ -1774,8 +1865,8 @@ class CinelingusInstrumentApp(tk.Tk):
 
     def _signal_processing_failed(self) -> None:
         self.bell()
-        self._append_journal("Experiment interrupted", "The experiment did not complete. Review the Technical Record for details.", severity="error", event_id="experiment_failed")
-        messagebox.showerror("Experiment interrupted", "The experiment did not complete. Review the Technical Record for details.")
+        self._append_journal("Invocation interrupted", "The invocation did not complete. Review the Technical Record for details.", severity="error", event_id="experiment_failed")
+        messagebox.showerror("Invocation interrupted", "The invocation did not complete. Review the Technical Record for details.")
 
     def _clear_text_widget(self, widget: tk.Text) -> None:
         widget.configure(state="normal")
@@ -1833,14 +1924,50 @@ class CinelingusInstrumentApp(tk.Tk):
         self.highlight_review_button.configure(state=state)
         self.open_button.configure(state=state)
         self.cancel_button.configure(state="normal" if running else "disabled")
-        if hasattr(self, "activation_lamp"):
-            self.activation_lamp.set_active(running)
-        if hasattr(self, "heartbeat_lamp"):
-            self.heartbeat_lamp.set_active(running)
-        self.start_button.configure(
-            text="ENGAGED" if running else "ACTIVATE",
-            style="ActivateRunning.TButton" if running else "Activate.TButton",
-        )
+        if running:
+            self.machine_activity_var.set("ACTIVE")
+            self.stage_display_label.configure(style="Operation.TLabel")
+            self.operation_display_label.configure(style="InstrumentActive.TLabel")
+            self.actuation_state_label.configure(style="StatusActive.TLabel")
+            self.activation_lamp.set_state("active")
+            self.heartbeat_lamp.set_state("active")
+            self.start_button.command = self._start_run
+            self.start_button.configure(text="ENGAGED", state="disabled")
+            self.start_button.set_visual_state("active")
+            self.actuation_state_var.set("Invocation in progress")
+        elif status == "Processing finished" and self.last_output is not None:
+            self.machine_activity_var.set("COMPLETE")
+            self.stage_display_label.configure(style="Operation.TLabel")
+            self.operation_display_label.configure(style="InstrumentActive.TLabel")
+            self.actuation_state_label.configure(style="StatusActive.TLabel")
+            self.activation_lamp.set_state("complete")
+            self.heartbeat_lamp.set_state("complete")
+            self.start_button.command = self._open_finished_movie
+            self.start_button.configure(text="REVIEW ARTIFACT", state="normal")
+            self.start_button.set_visual_state("selected")
+            self.actuation_state_var.set("Complete")
+        elif status == "Failed":
+            self.machine_activity_var.set("FAULT")
+            self.stage_display_label.configure(style="OperationDormant.TLabel")
+            self.operation_display_label.configure(style="Instrument.TLabel")
+            self.actuation_state_label.configure(style="StatusFault.TLabel")
+            self.activation_lamp.set_state("failed")
+            self.heartbeat_lamp.set_state("failed")
+            self.start_button.command = self._open_settings_notes
+            self.start_button.configure(text="EXAMINE FAILURE", state="normal")
+            self.start_button.set_visual_state("failed")
+            self.actuation_state_var.set("Fault — review the technical record")
+        else:
+            self.machine_activity_var.set("DORMANT")
+            self.stage_display_label.configure(style="OperationDormant.TLabel")
+            self.operation_display_label.configure(style="Instrument.TLabel")
+            self.actuation_state_label.configure(style="Status.TLabel")
+            self.activation_lamp.set_state("off")
+            self.heartbeat_lamp.set_state("off")
+            self.start_button.command = self._start_run
+            self.start_button.configure(text="INVOKE", state="normal")
+            self.start_button.set_visual_state("normal")
+            self.actuation_state_var.set("Instrument dormant")
         curator_state = "normal" if not running and self.last_output is not None else "disabled"
         for button in getattr(self, "curator_buttons", []):
             button.configure(state=curator_state)
@@ -1848,6 +1975,13 @@ class CinelingusInstrumentApp(tk.Tk):
     def _open_curator_selection(self, label: str) -> None:
         self.curator_var.set(label)
         self._open_highlight_review(initial_bucket=CURATOR_SELECTIONS.get(label))
+
+    def _select_curator_tag(self, label: str) -> None:
+        """Curator verdicts are intentionally single-select specimen tags."""
+        self.curator_var.set(label)
+        for index, button in enumerate(getattr(self, "curator_buttons", [])):
+            button.set_selected(tuple(CURATOR_SELECTIONS)[index] == label)
+        self._open_curator_selection(label)
 
 
     def _open_highlight_review(self, initial_bucket: str | None = "most_convincing") -> None:
@@ -2240,7 +2374,7 @@ class PerformanceReviewWindow(tk.Toplevel):
         controls = ttk.Frame(self, padding=(12, 0, 12, 12))
         controls.grid(row=1, column=0, columnspan=2, sticky="ew")
         controls.columnconfigure(11, weight=1)
-        ttk.Label(controls, text="Filter").grid(row=0, column=0, sticky="w")
+        ttk.Label(controls, text="View").grid(row=0, column=0, sticky="w")
         filter_box = ttk.Combobox(controls, textvariable=self.filter_var, values=PERFORMANCE_REVIEW_FILTERS, state="readonly", width=22)
         filter_box.grid(row=0, column=1, sticky="w", padx=(6, 12))
         filter_box.bind("<<ComboboxSelected>>", lambda _event: self._load_rows())
@@ -2391,7 +2525,7 @@ class ScheduleReviewWindow(tk.Toplevel):
         controls = ttk.Frame(self, padding=(12, 0, 12, 12))
         controls.grid(row=1, column=0, columnspan=2, sticky="ew")
         controls.columnconfigure(11, weight=1)
-        ttk.Label(controls, text="Filter").grid(row=0, column=0, sticky="w")
+        ttk.Label(controls, text="View").grid(row=0, column=0, sticky="w")
         filter_box = ttk.Combobox(controls, textvariable=self.filter_var, values=REVIEW_FILTERS, state="readonly", width=22)
         filter_box.grid(row=0, column=1, sticky="w", padx=(6, 12))
         filter_box.bind("<<ComboboxSelected>>", lambda _event: self._load_rows())
@@ -2711,5 +2845,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
-

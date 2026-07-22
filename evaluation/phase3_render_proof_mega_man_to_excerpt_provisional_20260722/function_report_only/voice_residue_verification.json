@@ -1,0 +1,68 @@
+{
+  "status": "NONE_DETECTED",
+  "method": "post_render_whisper_hybrid_residue_v2",
+  "evaluated_region_count": 4,
+  "flagged_region_count": 0,
+  "unattributed_speech_region_count": 0,
+  "limitations": "Transcript contrast is not source-separation proof; unrelated or hallucinated speech is reported separately and is not treated as destination residue.",
+  "regions": [
+    {
+      "destination_region_id": "w000001",
+      "start": 0.0,
+      "end": 4.0,
+      "rendered_transcript": "But they're safe now. Thanks to this spray in order to modify your life cell, I must shut you down, Mega.",
+      "destination_similarity": 0.0,
+      "donor_similarity": 0.4211,
+      "possible_residue": false,
+      "unattributed_speech_detected": false,
+      "evidence_kind": "destination_transcript_contrast",
+      "replacement_mapping_count": 1
+    },
+    {
+      "destination_region_id": "w000002",
+      "start": 4.0,
+      "end": 9.0,
+      "rendered_transcript": "But they're safe now. Thanks to this spray in order to modify your life cell, I must shut you down, Mega.",
+      "destination_similarity": 0.0,
+      "donor_similarity": 0.7619,
+      "possible_residue": false,
+      "unattributed_speech_detected": false,
+      "evidence_kind": "destination_transcript_contrast",
+      "replacement_mapping_count": 1
+    },
+    {
+      "destination_region_id": "w000003",
+      "start": 9.0,
+      "end": 12.0,
+      "rendered_transcript": "That's it, my boy! You've got to finish this job with these time bombs!",
+      "destination_similarity": 0.0,
+      "donor_similarity": 0.6154,
+      "possible_residue": false,
+      "unattributed_speech_detected": false,
+      "evidence_kind": "destination_transcript_contrast",
+      "replacement_mapping_count": 1
+    },
+    {
+      "destination_region_id": "w000004",
+      "start": 12.0,
+      "end": 15.0,
+      "rendered_transcript": "That's it, my boy! You've got to finish this job with these time bombs!",
+      "destination_similarity": 0.0,
+      "donor_similarity": 0.0,
+      "possible_residue": false,
+      "unattributed_speech_detected": false,
+      "evidence_kind": "destination_transcript_contrast",
+      "replacement_mapping_count": 1
+    }
+  ],
+  "verification_scope": "initial",
+  "verification_reel": {
+    "strategy": "targeted_timestamp_preserving_reel",
+    "audio": "evaluation\\phase3_render_proof_mega_man_to_excerpt_provisional_20260722\\function_report_only\\residue_verification\\initial_verification_reel.wav",
+    "map": "evaluation\\phase3_render_proof_mega_man_to_excerpt_provisional_20260722\\function_report_only\\residue_verification\\initial_verification_reel.json",
+    "timeline": "evaluation\\phase3_render_proof_mega_man_to_excerpt_provisional_20260722\\function_report_only\\rendered_dialogue_timeline.json",
+    "source_duration": 15.023,
+    "reel_duration": 15.023,
+    "compression_ratio": 1.0
+  }
+}

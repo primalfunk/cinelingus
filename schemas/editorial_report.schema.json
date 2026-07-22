@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "editorial_report",
+  "type": "object",
+  "required": [
+    "schema_version", "editorial_system_version", "status", "termination_reason",
+    "placements_accepted_immediately", "placements_repaired", "placements_rejected",
+    "repair_passes", "initial_quality", "final_quality", "quality_improvement",
+    "quality_by_pass", "top_recurring_failure_types", "best_repaired_moments",
+    "worst_unrecoverable_moments", "passes", "memory", "decisions", "repair_effectiveness"
+  ],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "editorial_system_version": { "type": "string" },
+    "status": { "enum": ["PASS", "LIMIT_REACHED"] },
+    "termination_reason": { "type": "string" },
+    "resumed_from_candidate_checkpoint": { "type": "boolean" },
+    "placements_accepted_immediately": { "type": "integer", "minimum": 0 },
+    "placements_repaired": { "type": "integer", "minimum": 0 },
+    "placements_rejected": { "type": "integer", "minimum": 0 },
+    "final_state_counts": { "type": "object" },
+    "repair_capabilities": { "type": "object" },
+    "repair_passes": { "type": "integer", "minimum": 0 },
+    "initial_quality": { "type": "number", "minimum": 0, "maximum": 1 },
+    "final_quality": { "type": "number", "minimum": 0, "maximum": 1 },
+    "quality_improvement": { "type": "number" },
+    "quality_by_pass": { "type": "array", "items": { "type": "object" } },
+    "top_recurring_failure_types": { "type": "array", "items": { "type": "object" } },
+    "best_repaired_moments": { "type": "array", "items": { "type": "object" } },
+    "worst_unrecoverable_moments": { "type": "array", "items": { "type": "object" } },
+    "passes": { "type": "array", "items": { "type": "object" } },
+    "memory": { "type": "object" },
+    "decisions": { "type": "array", "items": { "type": "object" } },
+    "repair_effectiveness": { "type": "object" }
+  }
+}

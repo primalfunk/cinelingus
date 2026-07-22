@@ -54,7 +54,7 @@ def _base_filtered_artifact(raw: dict[str, Any], stats: dict[str, Any]) -> dict[
         "detector": f"segment_filter:{__version__}",
         "filter_stats": stats,
     }
-    for key in ("speaker_map_media_hash", "speaker_diarization_tool", "speaker_diagnostics", "speaker_warnings"):
+    for key in ("speaker_map_media_hash", "speaker_diarization_tool", "speaker_diagnostics", "speaker_warnings", "acoustic_activity_windows"):
         if key in raw:
             data[key] = raw[key]
     return data

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "semantic_corpus_screen",
+  "type": "object",
+  "required": [
+    "schema_version", "experiment_version", "creation_timestamp", "corpus_signature",
+    "case_count", "corpus_state", "summary", "cases", "claim_scope"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "experiment_version": {"const": "semantic_corpus_screen_v1"},
+    "case_count": {"type": "integer", "minimum": 1},
+    "corpus_state": {"enum": [
+      "INVALID_INVARIANT_FAILURE", "INCOMPLETE_SEMANTIC_COVERAGE",
+      "RENDER_NOMINEES_AVAILABLE", "VALID_RESTRAINT_ONLY"
+    ]},
+    "summary": {"type": "object", "required": [
+      "invariant_failure_count", "render_nominee_count", "coverage_state_counts",
+      "mapping_count", "semantic_placement_count", "direct_semantic_placement_count",
+      "performance_aggregate_fallback_count", "exact_direct_semantic_placement_count",
+      "boundary_bridge_semantic_placement_count", "text_bridge_semantic_placement_count", "weighted_semantic_coverage",
+      "weighted_direct_semantic_coverage"
+    ]},
+    "cases": {
+      "type": "array", "minItems": 1,
+      "items": {"type": "object", "required": [
+        "case_id", "screen", "invariants_passed", "mapping_count",
+        "semantic_placement_count", "direct_semantic_placement_count",
+        "performance_aggregate_fallback_count", "exact_direct_semantic_placement_count",
+        "boundary_bridge_semantic_placement_count", "text_bridge_semantic_placement_count",
+        "semantic_coverage", "semantic_coverage_state",
+        "changed_variant_count", "conflicted_variant_count", "case_state"
+      ]}
+    }
+  }
+}

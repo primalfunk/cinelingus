@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "phase": "Phase 1 - Minimal Cinematic Model Core",
+  "proof_case": "smoke/case_002_transition_sentence_integrity_6a92c69a",
+  "result": "PASS",
+  "source_model": {
+    "film_id": "film_1bb1ad996dbc773153a8",
+    "created_from_signature": "a1409286df496d4e9074bc9a6d6774c6a8b0453f89b8f00954ee41e98bdc7524",
+    "validation_status": "VALID"
+  },
+  "destination_model": {
+    "film_id": "film_f696039d2fed48f3573a",
+    "created_from_signature": "ef61115e50f231b29fd4c4457605d08e0afe085e27520105181e9704ecb0406c",
+    "validation_status": "VALID"
+  },
+  "schedule": {
+    "signature": "71334e62c34587e438d4ebce071891f5b3e8db841dcfc00a2f22bc8916b49fb8",
+    "placement_count": 3,
+    "trace_readiness": "READY",
+    "trace_status": "VALID",
+    "equivalence_checks_passed": 18,
+    "difference_count": 0,
+    "unacceptable_difference_count": 0,
+    "canonical_reconstruction_identical": true
+  },
+  "paired_render": {
+    "control": "fresh render from original cached schedule",
+    "model": "fresh render from reconstructed schedule",
+    "frames": 721104,
+    "bytes": 2884588,
+    "diff_rms": 0.0,
+    "byte_identical": true
+  },
+  "archived_render": {
+    "control_frames": 720000,
+    "model_frames_at_archived_duration": 720000,
+    "sample_rate": 48000,
+    "channels": 2,
+    "control_bytes": 2880172,
+    "model_bytes": 2880172,
+    "diff_rms": 0.0,
+    "byte_identical": false,
+    "difference_cause": "WAV container/header bytes only; decoded PCM is identical."
+  },
+  "existing_acceptance_evidence": {
+    "rendered_dialogue_verification": "WARN",
+    "voice_residue_verification": "NONE_DETECTED",
+    "editorial_report": "PASS",
+    "placements_repaired": 0,
+    "placements_rejected": 0,
+    "filter_acceptance": "pass",
+    "montage_render_acceptance": "PASS",
+    "model_path_evidence_basis": "Decoded PCM identity means the existing transcript, residue, editorial, and delivery decisions receive identical audio evidence."
+  },
+  "source_media_modified": false,
+  "legacy_pipeline_modified": false,
+  "notes": [
+    "The bridge preserves the complete original schedule payload and adds model references in a separate envelope.",
+    "The original schedule and reconstructed schedule have the same canonical signature.",
+    "The earlier performance-strategy candidate was rejected as the formal proof case because its archived editorial decision names a different final donor than its cached schedule."
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0",
+  "plan_version": "bounded_corpus_calibration_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T17:57:15+00:00",
+  "execution_revision": "phase0_observed_failure_isolation_v1",
+  "tier": "extended",
+  "excerpt_plan": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\output\\quality_corpus_runs\\animation_dense\\editorial_report.json",
+  "maximum_cases": 3,
+  "case_count": 3,
+  "planned_input_duration_seconds": 158.0,
+  "source_files_read_only": true,
+  "resume_required": true,
+  "observed_failure_source": {
+    "config": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\config\\corpus_animation_dense.local.json",
+    "editorial_report": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\output\\quality_corpus_runs\\animation_dense\\editorial_report.json",
+    "schedule": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache\\f5f65f292ac5bb650bb8295abd58a363dc4911086a6840850e445b0e9023b54f\\destination_video\\replacement_schedule.json",
+    "coverage": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\phase0_rendered_strategy_coverage_20260721.json"
+  },
+  "unfilled_target_strategies": [
+    "repair_word_boundary",
+    "repair_local_suppression",
+    "repair_reuse_pressure"
+  ],
+  "cases": [
+    {
+      "case_id": "observed_002_duration_failure_v2",
+      "purpose": "observed_strategy_isolation_duration_failure",
+      "variant_index": 2,
+      "destination": {
+        "excerpt_id": "observed_destination_8f546bedaa05",
+        "media_id": "observed_57ac021c0240e0a5",
+        "filename": "[AnimeRG] Pok\u00e9mon - 0002 - Pok\u00e9mon Emergency [480p] [x265] [pseudo].mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\[AnimeRG] Pok\u00e9mon - 0002 - Pok\u00e9mon Emergency [480p] [x265] [pseudo].mp4",
+        "content_type": "unknown",
+        "category": "observed_duration_failure_destination",
+        "start": 1030.0,
+        "end": 1051.0,
+        "duration": 21.0,
+        "analysis_signature": "2cf310051347003d01fee3e7deebb7ed98845f86e2a105f9eb17b6ca9394d586",
+        "evidence": {
+          "placement_key": "editorial_placement_000101",
+          "observed_failure_category": "duration_failure",
+          "observed_quality": 0.7064
+        }
+      },
+      "source": {
+        "excerpt_id": "observed_source_e0b609257570",
+        "media_id": "observed_95f491b751f06e11",
+        "filename": "Robocop Cartoon - Ep 02.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Robocop Cartoon - Ep 02.mp4",
+        "content_type": "unknown",
+        "category": "observed_duration_failure_source",
+        "start": 553.36,
+        "end": 584.36,
+        "duration": 31.0,
+        "analysis_signature": "20549d28b6b7d936662c02ac63cdc94e99551d871ab5a502262b514a57ec0e6f",
+        "evidence": {
+          "placement_key": "editorial_placement_000101",
+          "observed_failure_category": "duration_failure",
+          "observed_quality": 0.7064
+        }
+      },
+      "expected_failure_modes": [
+        "duration_failure"
+      ],
+      "target_failure_category": "duration_failure",
+      "target_repair_strategy": "repair_duration_fit",
+      "observed_source_placement_key": "editorial_placement_000101",
+      "status": "planned",
+      "case_signature": "60e926758266afec2b090921957b3dc379d82d6c237af16a786223d2ed9387f3"
+    },
+    {
+      "case_id": "observed_007_confidence_collapse_v2",
+      "purpose": "observed_strategy_isolation_confidence_collapse",
+      "variant_index": 2,
+      "destination": {
+        "excerpt_id": "observed_destination_dcc42d874251",
+        "media_id": "observed_57ac021c0240e0a5",
+        "filename": "[AnimeRG] Pok\u00e9mon - 0002 - Pok\u00e9mon Emergency [480p] [x265] [pseudo].mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\[AnimeRG] Pok\u00e9mon - 0002 - Pok\u00e9mon Emergency [480p] [x265] [pseudo].mp4",
+        "content_type": "unknown",
+        "category": "observed_confidence_collapse_destination",
+        "start": 516.0,
+        "end": 538.0,
+        "duration": 22.0,
+        "analysis_signature": "8884812bdce94ff07762b0cbc3149c831f0f4eb21b83bae446a65a4951908b3b",
+        "evidence": {
+          "placement_key": "editorial_placement_000044",
+          "observed_failure_category": "confidence_collapse",
+          "observed_quality": 0.3525
+        }
+      },
+      "source": {
+        "excerpt_id": "observed_source_aebbb099647d",
+        "media_id": "observed_95f491b751f06e11",
+        "filename": "Robocop Cartoon - Ep 02.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Robocop Cartoon - Ep 02.mp4",
+        "content_type": "unknown",
+        "category": "observed_confidence_collapse_source",
+        "start": 420.36,
+        "end": 452.36,
+        "duration": 32.0,
+        "analysis_signature": "b30636e48434f33ed488e057acf337d85aa086e4da1b4300d0211af8924b2c4b",
+        "evidence": {
+          "placement_key": "editorial_placement_000044",
+          "observed_failure_category": "confidence_collapse",
+          "observed_quality": 0.3525
+        }
+      },
+      "expected_failure_modes": [
+        "confidence_collapse"
+      ],
+      "target_failure_category": "confidence_collapse",
+      "target_repair_strategy": "conservative_uncertainty_retention",
+      "observed_source_placement_key": "editorial_placement_000044",
+      "status": "planned",
+      "case_signature": "658054ef0ecf34b830de3842d825bdce3ac2d85be7981cb2dee271f68f908783"
+    },
+    {
+      "case_id": "observed_008_confidence_collapse_v3",
+      "purpose": "observed_strategy_isolation_confidence_collapse",
+      "variant_index": 3,
+      "destination": {
+        "excerpt_id": "observed_destination_c169b17dcc84",
+        "media_id": "observed_57ac021c0240e0a5",
+        "filename": "[AnimeRG] Pok\u00e9mon - 0002 - Pok\u00e9mon Emergency [480p] [x265] [pseudo].mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\[AnimeRG] Pok\u00e9mon - 0002 - Pok\u00e9mon Emergency [480p] [x265] [pseudo].mp4",
+        "content_type": "unknown",
+        "category": "observed_confidence_collapse_destination",
+        "start": 632.0,
+        "end": 653.0,
+        "duration": 21.0,
+        "analysis_signature": "db543550a89050468ac59275b7616aeed4742cb29a31b2c3d2be985cec3ac025",
+        "evidence": {
+          "placement_key": "editorial_placement_000289",
+          "observed_failure_category": "confidence_collapse",
+          "observed_quality": 0.3532
+        }
+      },
+      "source": {
+        "excerpt_id": "observed_source_630083636a2e",
+        "media_id": "observed_95f491b751f06e11",
+        "filename": "Robocop Cartoon - Ep 02.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Robocop Cartoon - Ep 02.mp4",
+        "content_type": "unknown",
+        "category": "observed_confidence_collapse_source",
+        "start": 521.36,
+        "end": 552.36,
+        "duration": 31.0,
+        "analysis_signature": "cf4aa47b023b98b1170890d125753a4df3856550b92b64e03a2b35756d576c14",
+        "evidence": {
+          "placement_key": "editorial_placement_000289",
+          "observed_failure_category": "confidence_collapse",
+          "observed_quality": 0.3532
+        }
+      },
+      "expected_failure_modes": [
+        "confidence_collapse"
+      ],
+      "target_failure_category": "confidence_collapse",
+      "target_repair_strategy": "conservative_uncertainty_retention",
+      "observed_source_placement_key": "editorial_placement_000289",
+      "status": "planned",
+      "case_signature": "a81f10270540f755c99276f71e872adf510719bf710434bb1926d36404be3d52"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "corpus_manifest",
+  "type": "object",
+  "required": [
+    "schema_version", "manifest_version", "tool_version", "creation_timestamp",
+    "source_root", "source_policy", "compatible_file_count", "excluded_file_count",
+    "strata_counts", "media", "exclusions", "selection_contract"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "manifest_version": {"const": "movie_corpus_manifest_v1"},
+    "source_policy": {"const": "read_only_no_sidecars"},
+    "compatible_file_count": {"type": "integer", "minimum": 0},
+    "excluded_file_count": {"type": "integer", "minimum": 0},
+    "media": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "media_id", "filename", "relative_path", "source_path", "media_hash",
+          "size_bytes", "duration_seconds", "content_type", "duration_class",
+          "evaluation_strata", "analysis", "basic_audio_quality"
+        ]
+      }
+    },
+    "exclusions": {"type": "array", "items": {"type": "object"}},
+    "strata_counts": {"type": "object"},
+    "selection_contract": {"type": "object"}
+  }
+}

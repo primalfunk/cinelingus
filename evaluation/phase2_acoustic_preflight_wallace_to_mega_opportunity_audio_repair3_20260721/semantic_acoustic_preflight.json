@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "preflight_version": "semantic_acoustic_preflight_v1",
+  "creation_timestamp": "2026-07-22T03:01:02+00:00",
+  "screen_signature": "c3a5fec4403d9d12a573578aabe562332fa75eaef358f403c596760083990b9c",
+  "semantic_variant": "pareto_guarded",
+  "preflight_signature": "c8a82e2a18a475f1d44b156c3613639cc67bdf85ae91a4726642c92814925707",
+  "whisper_configuration": {
+    "requested_model": "medium",
+    "language": "en",
+    "transcription_mode": "quality"
+  },
+  "minimum_word_coverage": 0.72,
+  "changed_mapping_count": 1,
+  "reel": "changed_donor_reel.wav",
+  "reel_manifest": "changed_donor_reel_manifest.json",
+  "transcription": "changed_donor_transcription.json",
+  "transcription_cache_state": "CREATED",
+  "verification": {
+    "schema_version": "1.0",
+    "verification_version": "rendered_dialogue_verification_v4_expressive_elongation",
+    "status": "FAIL",
+    "mapping_count": 1,
+    "measurable_mapping_count": 1,
+    "failed_mapping_count": 1,
+    "warning_mapping_count": 0,
+    "average_word_coverage_percentage": 0.0,
+    "limitations": "Transcript alignment is conservative and cannot prove acoustic source separation or literal phoneme-boundary integrity. Neighboring words inside broad Whisper windows are labeled as adjacent overlap, not line truncation.",
+    "mappings": [
+      {
+        "mapping_index": 0,
+        "mapping_id": "preflight_001",
+        "editorial_placement_id": null,
+        "window_id": "p000028",
+        "clip_id": "c000143",
+        "destination_start": 1.0,
+        "destination_end": 3.0,
+        "intended_transcript": "Going",
+        "rendered_transcript": "hmm...",
+        "word_coverage_percentage": 0.0,
+        "missing_sentence_beginning": true,
+        "missing_sentence_ending": true,
+        "unexpected_word_loss": 1.0,
+        "mid_word_cut": true,
+        "incomplete_phrase": true,
+        "speaking_rate_anomaly": true,
+        "observed_words_per_second": 0.0,
+        "fade_masking_possible": false,
+        "audio_masking_possible": true,
+        "adjacent_dialogue_before": false,
+        "adjacent_dialogue_after": false,
+        "poor_intelligibility": true,
+        "confidence": 0.442,
+        "labels": [
+          {
+            "domain": "audio",
+            "label": "sentence_beginning",
+            "status": "fail",
+            "score": 0.0,
+            "confidence": 0.442
+          },
+          {
+            "domain": "audio",
+            "label": "sentence_ending",
+            "status": "fail",
+            "score": 0.0,
+            "confidence": 0.442
+          },
+          {
+            "domain": "audio",
+            "label": "word_coverage",
+            "status": "fail",
+            "score": 0.0,
+            "confidence": 0.442
+          },
+          {
+            "domain": "audio",
+            "label": "speaking_rate",
+            "status": "fail",
+            "score": 0.8929,
+            "confidence": 0.442
+          },
+          {
+            "domain": "audio",
+            "label": "intelligibility",
+            "status": "fail",
+            "score": 0.0,
+            "confidence": 0.442
+          }
+        ],
+        "status": "fail"
+      }
+    ]
+  },
+  "mapping_decisions": [
+    {
+      "clip_id": "c000143",
+      "window_id": "p000028",
+      "source_performance_id": "p000087",
+      "destination_performance_id": "p000028",
+      "word_coverage_percentage": 0.0,
+      "missing_sentence_beginning": true,
+      "missing_sentence_ending": true,
+      "state": "REJECTED",
+      "reasons": [
+        "word_coverage_below_threshold",
+        "sentence_beginning_missing",
+        "sentence_ending_missing"
+      ]
+    }
+  ],
+  "repair_lineage": {
+    "state": "PREFLIGHT_INFORMED_RESCREEN",
+    "evidence_type": "acoustic_preflight",
+    "predecessor_screen_signature": "ea96768c37945185810bc8e45307763ed90e1b23430a235065700d157a63c3d2",
+    "preflight_signature": "a4de48283090501a8d0a2f5bd593ca19f35d861d43f220b75358b04a9b79ecc8",
+    "render_proof_signature": null,
+    "opportunity_audit_signature": null,
+    "quarantined_source_performance_ids": [
+      "p000015",
+      "p000016",
+      "p000093",
+      "p000115",
+      "p000131",
+      "p000143",
+      "p000162",
+      "p000163",
+      "p000167",
+      "p000174",
+      "p000196"
+    ],
+    "quarantined_source_count": 11
+  },
+  "rejected_source_performance_ids": [
+    "p000087"
+  ],
+  "preflight_state": "REJECTED_ACOUSTIC_INTEGRITY",
+  "rejection_count": 1,
+  "claim_scope": "Selected-donor acoustic transcript integrity only; this does not establish render quality, semantic preference, voice separation, or visual fit."
+}

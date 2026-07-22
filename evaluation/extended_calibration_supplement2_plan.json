@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "plan_version": "bounded_corpus_calibration_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T16:14:48+00:00",
+  "execution_revision": "rendered_failure_exploration_v1",
+  "tier": "extended",
+  "excerpt_plan": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_excerpt_plan.json",
+  "maximum_cases": 1,
+  "case_count": 1,
+  "planned_input_duration_seconds": 40.0,
+  "source_files_read_only": true,
+  "resume_required": true,
+  "supplement_of": [
+    "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_calibration_plan_initial.json",
+    "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_calibration_followup_plan.json",
+    "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_calibration_supplement_plan.json"
+  ],
+  "cases": [
+    {
+      "case_id": "supplement_001_exchange_continuity",
+      "purpose": "exchange_continuity",
+      "variant_index": 2,
+      "destination": {
+        "excerpt_id": "excerpt_0015_28f0b840",
+        "media_id": "media_73d7903e2a4e16f1",
+        "filename": "WKYK - S1E6.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\WKYK - S1E6.mp4",
+        "content_type": "live_action",
+        "category": "rapid_speaker_exchange",
+        "start": 242.8,
+        "end": 272.8,
+        "duration": 30.0,
+        "analysis_signature": "fca5311b904bc2be3e765d2d26768289acb3f271d4141e0b25063d32789e4cda",
+        "evidence": {
+          "performance_id": "p000003",
+          "dialogue_density": 0.976,
+          "performance_duration": 136.44,
+          "turn_count": 18,
+          "speaker_count": 3,
+          "performance_type": "group_conversation",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0010_aa9e5635",
+        "media_id": "media_62311279e6dad494",
+        "filename": "Wallace and Gromit.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Wallace and Gromit.mp4",
+        "content_type": "animation",
+        "category": "animation_dialogue",
+        "start": 0.0,
+        "end": 10.0,
+        "duration": 10.0,
+        "analysis_signature": "7363d62b1f7f27d199feb3732002604ff6a3c025d30a82bbaf614c72ded53c06",
+        "evidence": {
+          "performance_id": "p000001",
+          "dialogue_density": 1.0,
+          "performance_duration": 2.0,
+          "turn_count": 1,
+          "speaker_count": 1,
+          "performance_type": "monologue",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "speaker_mismatch",
+        "performance_mismatch",
+        "masking"
+      ],
+      "status": "planned",
+      "case_signature": "ab6008dbc8da3a55d4ca6b017dca26fb5a380828652a1e201283e12a5f7e2efb",
+      "followup_reason": "adds_untried_case_after_recipe_refinement"
+    }
+  ]
+}

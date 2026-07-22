@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "dialogue_function_bundle",
+  "type": "object",
+  "required": ["schema_version", "bundle_version", "construction_state", "film_id", "film_model_signature", "taxonomy_version", "taxonomy_signature", "classifier", "configuration_signature", "entities", "turns", "sequences", "coverage", "validation_state"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "bundle_version": {"const": "dialogue_function_bundle_v2"},
+    "construction_state": {"enum": ["BUILDING", "READY", "INVALID"]},
+    "film_id": {"type": "string", "minLength": 1},
+    "film_model_signature": {"type": "string", "minLength": 1},
+    "taxonomy_version": {"const": "dialogue_function_taxonomy_v1"},
+    "taxonomy_signature": {"type": "string", "minLength": 1},
+    "classifier": {"type": "object"},
+    "configuration_signature": {"type": "string", "minLength": 1},
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_entity_type", "source_entity_id", "film_id", "source_time_range", "transcript_signature", "source_provenance_id", "taxonomy_version", "classifier_version", "configuration_signature", "context_signature", "context_used", "classification_state", "classification", "entity_cache_signature", "validation_state"],
+        "properties": {
+          "source_entity_type": {"const": "speech_passage"},
+          "source_entity_id": {"type": "string", "minLength": 1},
+          "classification_state": {"enum": ["CLASSIFIED", "ABSTAINED", "UNAVAILABLE", "FAILED"]},
+          "classification": {"type": "object"},
+          "validation_state": {"const": "VALID"}
+        }
+      }
+    },
+    "turns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_entity_type", "source_entity_id", "film_id", "source_time_range", "ordered_speech_passage_references", "aggregation_state", "aggregation_policy", "axes", "confidence", "ambiguity_state", "turn_cache_signature", "validation_state"],
+        "properties": {
+          "source_entity_type": {"const": "dialogue_turn"},
+          "source_entity_id": {"type": "string", "minLength": 1},
+          "ordered_speech_passage_references": {"type": "array", "items": {"type": "string"}},
+          "aggregation_state": {"enum": ["AVAILABLE", "UNAVAILABLE"]},
+          "aggregation_policy": {"const": "confidence_weighted_passage_distribution_v1"},
+          "axes": {"type": "object"},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "ambiguity_state": {"enum": ["UNAMBIGUOUS", "AMBIGUOUS"]},
+          "turn_cache_signature": {"type": "string", "minLength": 1},
+          "validation_state": {"const": "VALID"}
+        }
+      }
+    },
+    "sequences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_performance_id", "source_time_range", "ordered_dialogue_turn_references", "speaker_sequence", "sequence_state", "representation_policy", "function_sequence", "sequence_cache_signature", "validation_state"],
+        "properties": {
+          "source_performance_id": {"type": "string", "minLength": 1},
+          "ordered_dialogue_turn_references": {"type": "array", "items": {"type": "string"}},
+          "speaker_sequence": {"type": "array"},
+          "sequence_state": {"enum": ["AVAILABLE", "UNAVAILABLE"]},
+          "representation_policy": {"const": "ordered_turn_function_distributions_v1_no_flattening"},
+          "function_sequence": {"type": "array"},
+          "sequence_cache_signature": {"type": "string", "minLength": 1},
+          "validation_state": {"const": "VALID"}
+        }
+      }
+    },
+    "coverage": {"type": "object"},
+    "validation_state": {"type": "object"}
+  }
+}

@@ -1,0 +1,461 @@
+{
+  "schema_version": "1.0",
+  "plan_version": "evidence_excerpt_plan_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T09:09:00+00:00",
+  "manifest": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\corpus_manifest.json",
+  "manifest_version": "movie_corpus_manifest_v1",
+  "tier": "standard",
+  "seed": 20260721,
+  "dry_run": true,
+  "cache_root": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\cache",
+  "limits": {
+    "maximum_excerpts": 18,
+    "maximum_total_duration_seconds": 600.0
+  },
+  "candidate_count": 79,
+  "selected_excerpt_count": 18,
+  "selected_total_duration_seconds": 351.28,
+  "category_counts": {
+    "animation_dialogue": 1,
+    "dense_dialogue": 2,
+    "long_monologue": 1,
+    "quiet_room_tone": 6,
+    "rapid_speaker_exchange": 3,
+    "short_fragmented_lines": 3,
+    "transition_near_dialogue": 2
+  },
+  "excerpts": [
+    {
+      "media_id": "media_1879b4266b454698",
+      "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+      "content_type": "animation",
+      "duration_class": "episode",
+      "category": "quiet_room_tone",
+      "start": 26.0,
+      "end": 46.0,
+      "duration": 20.0,
+      "selection_reason": "longest analyzed non-speech gap",
+      "analysis_signature": "6600be2a189605bfec1c6b5c5add25a757d437dbf78b6670aafdb703a5a5c1f4",
+      "evidence": {
+        "gap_seconds": 30.0
+      },
+      "expected_failure_modes": [
+        "residual_dialogue",
+        "masking"
+      ],
+      "excerpt_id": "excerpt_0001_2b543b17"
+    },
+    {
+      "media_id": "media_1879b4266b454698",
+      "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+      "content_type": "animation",
+      "duration_class": "episode",
+      "category": "rapid_speaker_exchange",
+      "start": 561.0,
+      "end": 579.0,
+      "duration": 18.0,
+      "selection_reason": "highest qualified multi-speaker turn rate with transcription handles",
+      "analysis_signature": "6600be2a189605bfec1c6b5c5add25a757d437dbf78b6670aafdb703a5a5c1f4",
+      "evidence": {
+        "performance_id": "p000015",
+        "dialogue_density": 1.0,
+        "turn_count": 2,
+        "speaker_count": 2,
+        "performance_type": "dialogue_exchange",
+        "interruptions_detected": false
+      },
+      "expected_failure_modes": [
+        "speaker_mismatch",
+        "performance_mismatch"
+      ],
+      "excerpt_id": "excerpt_0002_00f561dd"
+    },
+    {
+      "media_id": "media_18f6b6ed542cca53",
+      "filename": "Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+      "content_type": "mixed_or_uncertain",
+      "duration_class": "episode",
+      "category": "dense_dialogue",
+      "start": 1599.16,
+      "end": 1629.16,
+      "duration": 30.0,
+      "selection_reason": "highest analyzed performance dialogue density",
+      "analysis_signature": "663a190e0f28ee5c10b3df6ac5e99212fbd06d6b723a88c0a495c126e7c9107e",
+      "evidence": {
+        "performance_id": "p000022",
+        "dialogue_density": 1.0,
+        "turn_count": 2,
+        "speaker_count": 2,
+        "performance_type": "dialogue_exchange",
+        "interruptions_detected": false
+      },
+      "expected_failure_modes": [
+        "masking",
+        "residual_dialogue",
+        "low_rendered_coverage"
+      ],
+      "excerpt_id": "excerpt_0003_894f9564"
+    },
+    {
+      "media_id": "media_18f6b6ed542cca53",
+      "filename": "Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+      "content_type": "mixed_or_uncertain",
+      "duration_class": "episode",
+      "category": "quiet_room_tone",
+      "start": 3351.16,
+      "end": 3371.16,
+      "duration": 20.0,
+      "selection_reason": "longest analyzed non-speech gap",
+      "analysis_signature": "663a190e0f28ee5c10b3df6ac5e99212fbd06d6b723a88c0a495c126e7c9107e",
+      "evidence": {
+        "gap_seconds": 88.0
+      },
+      "expected_failure_modes": [
+        "residual_dialogue",
+        "masking"
+      ],
+      "excerpt_id": "excerpt_0004_585593ab"
+    },
+    {
+      "media_id": "media_25b49b780a95ff7c",
+      "filename": "227 - S01E08.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\227 - S01E08.mp4",
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "category": "quiet_room_tone",
+      "start": 262.0,
+      "end": 273.0,
+      "duration": 11.0,
+      "selection_reason": "longest analyzed non-speech gap",
+      "analysis_signature": "eac58a14e29e3e60e890bc611685e68ffa8a3e1cd1a13b3e710ca17d77e17721",
+      "evidence": {
+        "gap_seconds": 11.0
+      },
+      "expected_failure_modes": [
+        "residual_dialogue",
+        "masking"
+      ],
+      "excerpt_id": "excerpt_0005_d6e972aa"
+    },
+    {
+      "media_id": "media_62311279e6dad494",
+      "filename": "Wallace and Gromit.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Wallace and Gromit.mp4",
+      "content_type": "animation",
+      "duration_class": "feature",
+      "category": "short_fragmented_lines",
+      "start": 4150.12,
+      "end": 4163.4,
+      "duration": 13.28,
+      "selection_reason": "short analyzed speech window with contextual handles",
+      "analysis_signature": "7363d62b1f7f27d199feb3732002604ff6a3c025d30a82bbaf614c72ded53c06",
+      "evidence": {
+        "window_id": "w000291",
+        "duration": 1.28,
+        "confidence": 0.9987
+      },
+      "expected_failure_modes": [
+        "mid_word_cut",
+        "transition_artifact"
+      ],
+      "excerpt_id": "excerpt_0006_5af48276"
+    },
+    {
+      "media_id": "media_9b626c297fcc6fb8",
+      "filename": "Christian TV stuff - American Saints.ia.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Christian TV stuff - American Saints.ia.mp4",
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "category": "transition_near_dialogue",
+      "start": 108.5,
+      "end": 123.5,
+      "duration": 15.0,
+      "selection_reason": "closest detected transition to analyzed speech",
+      "analysis_signature": "f827f8ac3e659fb36fe69e3a078aae9d75eb58094856506cb4b6dae3d2a34d12",
+      "evidence": {
+        "transition_id": "gradual_transition_000016",
+        "transition_kind": "GRADUAL_TRANSITION_CANDIDATE",
+        "speech_distance_seconds": 0.0
+      },
+      "expected_failure_modes": [
+        "transition_artifact",
+        "incomplete_sentence"
+      ],
+      "excerpt_id": "excerpt_0007_04791efe"
+    },
+    {
+      "media_id": "media_a0c757cdae48cfdb",
+      "filename": "Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "category": "quiet_room_tone",
+      "start": 883.42,
+      "end": 903.42,
+      "duration": 20.0,
+      "selection_reason": "longest analyzed non-speech gap",
+      "analysis_signature": "77d519f5b71bb411f22cdceb6f62928f75acd92f2d0392384fbab2205af19e38",
+      "evidence": {
+        "gap_seconds": 53.0
+      },
+      "expected_failure_modes": [
+        "residual_dialogue",
+        "masking"
+      ],
+      "excerpt_id": "excerpt_0008_8e61e0f8"
+    },
+    {
+      "media_id": "media_bcd657789dbe1941",
+      "filename": "Doogie Howser, M.D. - S01E01 - Pilot.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Doogie Howser, M.D. - S01E01 - Pilot.mp4",
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "category": "rapid_speaker_exchange",
+      "start": 1010.0,
+      "end": 1028.0,
+      "duration": 18.0,
+      "selection_reason": "highest qualified multi-speaker turn rate with transcription handles",
+      "analysis_signature": "f5cc2ea4705131efe470821bd7c748c02e3c1d2e29e4ad94f38ed2a7a89c6045",
+      "evidence": {
+        "performance_id": "p000022",
+        "dialogue_density": 1.0,
+        "turn_count": 2,
+        "speaker_count": 2,
+        "performance_type": "dialogue_exchange",
+        "interruptions_detected": false
+      },
+      "expected_failure_modes": [
+        "speaker_mismatch",
+        "performance_mismatch"
+      ],
+      "excerpt_id": "excerpt_0009_8561b58a"
+    },
+    {
+      "media_id": "media_ce3fe024b4f9dff2",
+      "filename": "GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat.mp4",
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "category": "short_fragmented_lines",
+      "start": 21.0,
+      "end": 34.0,
+      "duration": 13.0,
+      "selection_reason": "short analyzed speech window with contextual handles",
+      "analysis_signature": "b071140a51345f6d41a5a7b729794514c3e01c1d60533a3b72380da47affbbec",
+      "evidence": {
+        "window_id": "w000005",
+        "duration": 1.0,
+        "confidence": 0.525
+      },
+      "expected_failure_modes": [
+        "mid_word_cut",
+        "transition_artifact"
+      ],
+      "excerpt_id": "excerpt_0010_8ede425d"
+    },
+    {
+      "media_id": "media_ce3fe024b4f9dff2",
+      "filename": "GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat.mp4",
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "category": "quiet_room_tone",
+      "start": 1294.0,
+      "end": 1314.0,
+      "duration": 20.0,
+      "selection_reason": "longest analyzed non-speech gap",
+      "analysis_signature": "b071140a51345f6d41a5a7b729794514c3e01c1d60533a3b72380da47affbbec",
+      "evidence": {
+        "gap_seconds": 40.0
+      },
+      "expected_failure_modes": [
+        "residual_dialogue",
+        "masking"
+      ],
+      "excerpt_id": "excerpt_0011_09319457"
+    },
+    {
+      "media_id": "media_cfdb81cf9f0df5d7",
+      "filename": "Fries With That S01E01 - The Expendables.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Fries With That S01E01 - The Expendables.mp4",
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "category": "long_monologue",
+      "start": 824.0,
+      "end": 854.0,
+      "duration": 30.0,
+      "selection_reason": "longest single-speaker analyzed performance",
+      "analysis_signature": "26b458cb6889e12f0ee1ebe3bdfa46ed64d489e518b40e1a043fef6d73afbd2a",
+      "evidence": {
+        "performance_id": "p000026",
+        "dialogue_density": 0.875,
+        "turn_count": 1,
+        "speaker_count": 1,
+        "performance_type": "monologue",
+        "interruptions_detected": false
+      },
+      "expected_failure_modes": [
+        "duration_failure",
+        "incomplete_sentence"
+      ],
+      "excerpt_id": "excerpt_0012_eda3070c"
+    },
+    {
+      "media_id": "media_d8f348a6441985db",
+      "filename": "Red_Dwarf-s01e01.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Red_Dwarf-s01e01.mp4",
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "category": "quiet_room_tone",
+      "start": 963.16,
+      "end": 983.16,
+      "duration": 20.0,
+      "selection_reason": "longest analyzed non-speech gap",
+      "analysis_signature": "439827df985ab31eb4bab6969cf93dc271cb5bbc6386b9b1929144390863d024",
+      "evidence": {
+        "gap_seconds": 28.0
+      },
+      "expected_failure_modes": [
+        "residual_dialogue",
+        "masking"
+      ],
+      "excerpt_id": "excerpt_0013_c91d7bda"
+    },
+    {
+      "media_id": "media_e36a6bc9174a6dd5",
+      "filename": "227 - S01E06.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\227 - S01E06.mp4",
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "category": "short_fragmented_lines",
+      "start": 19.02,
+      "end": 32.02,
+      "duration": 13.0,
+      "selection_reason": "short analyzed speech window with contextual handles",
+      "analysis_signature": "ff0f8d48cab384c38287e32fa4d47673627b1bd7e2400fb34e4b982cab0a788c",
+      "evidence": {
+        "window_id": "w000008",
+        "duration": 1.0,
+        "confidence": 0.5146
+      },
+      "expected_failure_modes": [
+        "mid_word_cut",
+        "transition_artifact"
+      ],
+      "excerpt_id": "excerpt_0014_f77d6d11"
+    },
+    {
+      "media_id": "media_e36a6bc9174a6dd5",
+      "filename": "227 - S01E06.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\227 - S01E06.mp4",
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "category": "transition_near_dialogue",
+      "start": 254.5,
+      "end": 269.5,
+      "duration": 15.0,
+      "selection_reason": "closest detected transition to analyzed speech",
+      "analysis_signature": "ff0f8d48cab384c38287e32fa4d47673627b1bd7e2400fb34e4b982cab0a788c",
+      "evidence": {
+        "transition_id": "gradual_transition_000016",
+        "transition_kind": "GRADUAL_TRANSITION_CANDIDATE",
+        "speech_distance_seconds": 0.0
+      },
+      "expected_failure_modes": [
+        "transition_artifact",
+        "incomplete_sentence"
+      ],
+      "excerpt_id": "excerpt_0015_47d70028"
+    },
+    {
+      "media_id": "media_e36a6bc9174a6dd5",
+      "filename": "227 - S01E06.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\227 - S01E06.mp4",
+      "content_type": "live_action",
+      "duration_class": "episode",
+      "category": "rapid_speaker_exchange",
+      "start": 1312.22,
+      "end": 1342.22,
+      "duration": 30.0,
+      "selection_reason": "highest qualified multi-speaker turn rate with transcription handles",
+      "analysis_signature": "ff0f8d48cab384c38287e32fa4d47673627b1bd7e2400fb34e4b982cab0a788c",
+      "evidence": {
+        "performance_id": "p000035",
+        "dialogue_density": 1.0,
+        "turn_count": 7,
+        "speaker_count": 2,
+        "performance_type": "argument",
+        "interruptions_detected": false
+      },
+      "expected_failure_modes": [
+        "speaker_mismatch",
+        "performance_mismatch"
+      ],
+      "excerpt_id": "excerpt_0016_d02edeb8"
+    },
+    {
+      "media_id": "media_ec484f1580b5975e",
+      "filename": "Robocop Cartoon - Ep 02.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Robocop Cartoon - Ep 02.mp4",
+      "content_type": "animation",
+      "duration_class": "episode",
+      "category": "animation_dialogue",
+      "start": 30.0,
+      "end": 45.0,
+      "duration": 15.0,
+      "selection_reason": "animation-specific dialogue evidence",
+      "analysis_signature": "d9904593bce39418b785edcd79ff5790ce72a2d79a41be5837b83018c2cfd96b",
+      "evidence": {
+        "performance_id": "p000002",
+        "dialogue_density": 1.0,
+        "turn_count": 2,
+        "speaker_count": 2,
+        "performance_type": "dialogue_exchange",
+        "interruptions_detected": false
+      },
+      "expected_failure_modes": [
+        "visual_mismatch",
+        "speaker_mismatch"
+      ],
+      "excerpt_id": "excerpt_0017_14ca8b86"
+    },
+    {
+      "media_id": "media_ec484f1580b5975e",
+      "filename": "Robocop Cartoon - Ep 02.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Robocop Cartoon - Ep 02.mp4",
+      "content_type": "animation",
+      "duration_class": "episode",
+      "category": "dense_dialogue",
+      "start": 1190.36,
+      "end": 1220.36,
+      "duration": 30.0,
+      "selection_reason": "highest analyzed performance dialogue density",
+      "analysis_signature": "d9904593bce39418b785edcd79ff5790ce72a2d79a41be5837b83018c2cfd96b",
+      "evidence": {
+        "performance_id": "p000051",
+        "dialogue_density": 1.0,
+        "turn_count": 8,
+        "speaker_count": 2,
+        "performance_type": "argument",
+        "interruptions_detected": false
+      },
+      "expected_failure_modes": [
+        "masking",
+        "residual_dialogue",
+        "low_rendered_coverage"
+      ],
+      "excerpt_id": "excerpt_0018_772e8c1e"
+    }
+  ],
+  "execution_policy": {
+    "source_files_read_only": true,
+    "analysis_evidence_required": true,
+    "exact_boundaries_required": true,
+    "resume_required": true
+  }
+}

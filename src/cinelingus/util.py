@@ -1,6 +1,9 @@
 ﻿from __future__ import annotations
 
 import json
+import os
+import tempfile
+import time
 from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
@@ -17,7 +20,36 @@ def read_json(path: Path) -> dict[str, Any]:
 
 def write_json(path: Path, data: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, indent=2, sort_keys=False) + "\n", encoding="utf-8")
+    payload = json.dumps(data, indent=2, sort_keys=False) + "\n"
+    temporary_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            newline="\n",
+            dir=path.parent,
+            prefix=f".{path.name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as handle:
+            handle.write(payload)
+            handle.flush()
+            os.fsync(handle.fileno())
+            temporary_path = Path(handle.name)
+        for attempt in range(6):
+            try:
+                os.replace(temporary_path, path)
+                break
+            except PermissionError:
+                if attempt == 5:
+                    raise
+                # Windows readers may briefly prevent replacement even though
+                # both paths are workspace-local. Keep the write atomic and
+                # retry the same complete temporary payload.
+                time.sleep(0.02 * (attempt + 1))
+    finally:
+        if temporary_path is not None and temporary_path.exists():
+            temporary_path.unlink()
 
 
 def stable_hash(data: Any) -> str:

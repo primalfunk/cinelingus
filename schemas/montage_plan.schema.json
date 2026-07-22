@@ -20,7 +20,7 @@
       "required": ["policy", "requested_target_duration", "configured_minimum_duration", "available_non_repeating_montage_duration", "resolved_duration", "shortened", "configured_minimum_relaxed"],
       "additionalProperties": false,
       "properties": {
-        "policy": {"enum": ["TARGET_IS_CEILING_SHORTEN_TO_NON_REPEATED_SOURCE_AUDIO", "FULL_SOURCE_TIMELINE_LIMITED_BY_SUPPORTING_AUDIO"]},
+        "policy": {"enum": ["TARGET_IS_CEILING_SHORTEN_TO_NON_REPEATED_SOURCE_AUDIO", "FULL_SOURCE_TIMELINE_LIMITED_BY_SUPPORTING_AUDIO", "SHARED_TIMELINE_LIMITED_BY_SHORTEST_FILM"]},
         "requested_target_duration": {"type": "number", "exclusiveMinimum": 0},
         "configured_minimum_duration": {"type": ["number", "null"], "exclusiveMinimum": 0},
         "available_non_repeating_montage_duration": {"type": "number", "minimum": 0},
@@ -46,7 +46,7 @@
       "required": ["policy", "available_audio_safe_duration", "available_within_target_duration", "selected_duration", "utilization_ratio", "minimum_utilization_ratio", "utilization_sufficient", "available_moment_count", "selected_moment_count", "available_authored_moment_count", "selected_authored_moment_count", "selected_context_moment_count"],
       "additionalProperties": false,
       "properties": {
-        "policy": {"enum": ["MAXIMIZE_AUDIO_SAFE_MATERIAL_WITHIN_TARGET", "USE_COMPLETE_SOURCE_TIMELINE"]},
+        "policy": {"enum": ["MAXIMIZE_AUDIO_SAFE_MATERIAL_WITHIN_TARGET", "USE_COMPLETE_SOURCE_TIMELINE", "BUILD_SHARED_TIMELINE_WITHOUT_REPETITION"]},
         "available_audio_safe_duration": {"type": "number", "minimum": 0},
         "available_within_target_duration": {"type": "number", "minimum": 0},
         "selected_duration": {"type": "number", "minimum": 0},

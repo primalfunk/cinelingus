@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "record_type": "phase0_observed_strategy_outcome",
+  "created_on": "2026-07-21",
+  "status": "complete",
+  "implementation": {
+    "planner": "Observed full-run editorial failures can now be converted into bounded destination/source excerpt pairs with placement-level provenance.",
+    "variant_selection": "Multiple lowest-quality placements may be selected per missing strategy because excerpt-local analysis does not always reproduce full-run evidence.",
+    "production_routing_changed": false,
+    "source_media_read_only": true
+  },
+  "plans": [
+    "evaluation/phase0_observed_targets/phase0_observed_strategy_plan.json",
+    "evaluation/phase0_observed_variants/phase0_observed_strategy_plan.json",
+    "evaluation/phase0_duration_confidence_retry_plan.json"
+  ],
+  "reports": [
+    "output/corpus_calibration/phase0_observed_strategies/calibration_report.json",
+    "output/corpus_calibration/phase0_duration_confidence_retry/calibration_report.json"
+  ],
+  "measured_findings": {
+    "repair_speaker_role": {
+      "initial_quality": 0.7994,
+      "final_quality": 0.8022,
+      "quality_improvement": 0.0028,
+      "rendered_candidates": 1,
+      "surviving_repairs": 1,
+      "status": "rendered_repair_survived"
+    },
+    "conservative_uncertainty_retention": {
+      "runtime_attempts": 1,
+      "rendered_candidates": 0,
+      "surviving_repairs": 0,
+      "status": "runtime_retention_observed",
+      "interpretation": "The engine correctly declined to render a speculative replacement when no viable alternative existed."
+    },
+    "repair_duration_fit": {
+      "observed_full_run_variants_tested": 2,
+      "runtime_attempts": 0,
+      "status": "not_reproduced_in_excerpt"
+    },
+    "repair_visual_intent": {
+      "runtime_attempted": true,
+      "rendered_candidates": 0,
+      "status": "no_viable_improving_candidate"
+    }
+  },
+  "coverage_change": {
+    "before_evidence_satisfied": 5,
+    "after_evidence_satisfied": 7,
+    "declared_strategy_count": 12,
+    "runtime_attempted_strategy_count": 8,
+    "rendered_strategy_count": 6,
+    "surviving_strategy_count": 3,
+    "coverage_report": "evaluation/phase0_rendered_strategy_coverage_20260721.json"
+  },
+  "remaining_empirical_strategy_evidence": [
+    "repair_word_boundary",
+    "repair_duration_fit",
+    "repair_visual_intent",
+    "repair_local_suppression",
+    "repair_reuse_pressure"
+  ],
+  "remaining_unobserved_failure_categories": [
+    "mid_word_cut",
+    "residual_dialogue",
+    "reuse_exhaustion"
+  ],
+  "interpretation": "All twelve strategy contracts are executable. Seven strategies additionally have the appropriate real-runtime evidence. The remaining empirical gaps are diagnostic and must not be reported as failures of the written 12-of-12 executable-benchmark exit gate."
+}

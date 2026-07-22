@@ -19,8 +19,20 @@ from .combination import (
 )
 from .acceptance import FilterAcceptanceError, validate_filter_output
 from .strategies import representative_preview_regions
+from .public_catalog import (
+    ApparatusStatus,
+    CapabilityTier,
+    OperatingMode,
+    ProcedureEligibility,
+    PublicApparatusCatalog,
+    PublicApparatusEntry,
+    PublicDiscipline,
+    default_public_apparatus_catalog,
+)
 
 __all__ = [
+    "ApparatusStatus",
+    "CapabilityTier",
     "FilmInput",
     "FilterDefinition",
     "FilterContract",
@@ -33,10 +45,16 @@ __all__ = [
     "FilterParameter",
     "FilterRecipe",
     "FilterRegistry",
+    "OperatingMode",
+    "ProcedureEligibility",
+    "PublicApparatusCatalog",
+    "PublicApparatusEntry",
+    "PublicDiscipline",
     "RecipeLoadResult",
     "RelationshipDimension",
     "TransformationPlan",
     "default_filter_registry",
+    "default_public_apparatus_catalog",
     "compile_compatibility_matrix",
     "compile_ordered_combination",
     "default_contract_catalog",

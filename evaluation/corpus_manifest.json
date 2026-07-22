@@ -1,0 +1,3285 @@
+{
+  "schema_version": "1.0",
+  "manifest_version": "movie_corpus_manifest_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T05:01:30+00:00",
+  "source_root": "C:\\Users\\erinm\\Downloads\\Movies",
+  "source_policy": "read_only_no_sidecars",
+  "deterministic_order": "relative_path_casefold_ascending",
+  "compatible_file_count": 64,
+  "excluded_file_count": 2,
+  "total_compatible_duration_seconds": 159615.291,
+  "total_compatible_size_bytes": 20608271692,
+  "strata_counts": {
+    "animation_or_cartoons": 16,
+    "dialogue_heavy": 14,
+    "episode_form": 51,
+    "feature_form": 11,
+    "live_action": 42,
+    "mixed_or_uncertain": 6,
+    "moderate_dialogue": 1,
+    "short_form": 2
+  },
+  "media": [
+    {
+      "media_id": "media_61836c7b0549bf2d",
+      "filename": "1x06-TheManTrap.mp4",
+      "relative_path": "1x06-TheManTrap.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\1x06-TheManTrap.mp4",
+      "media_hash": "61836c7b0549bf2da959ab1a4d5a3de8c075f26ac73724fd033ab535a780f32c",
+      "size_bytes": 313797588,
+      "duration_seconds": 3025.48,
+      "resolution": "640x480",
+      "frame_rate": 23.98,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 127210
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_e36a6bc9174a6dd5",
+      "filename": "227 - S01E06.mp4",
+      "relative_path": "227 - S01E06.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\227 - S01E06.mp4",
+      "media_hash": "e36a6bc9174a6dd52b16f65d92020f949d22d996948a00c345ec95b7d8a8bf81",
+      "size_bytes": 597960984,
+      "duration_seconds": 1433.265,
+      "resolution": "1280x720",
+      "frame_rate": 29.97003,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 125376
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "cinematic_moments.json",
+          "clip_library.json",
+          "dialogue_events.json",
+          "diarization_report.json",
+          "filtered_dialogue_events.json",
+          "filtered_timeline.json",
+          "manifest.json",
+          "movie.json",
+          "performance.json",
+          "replacement_schedule.json",
+          "shots.json",
+          "speaker_map.json",
+          "timeline.json",
+          "visual_report.json",
+          "visual_schedule_report.json"
+        ],
+        "analysis_cache_signature": "ff0f8d48cab384c38287e32fa4d47673627b1bd7e2400fb34e4b982cab0a788c",
+        "dialogue_occupancy": 0.8138,
+        "detected_shot_count": 75
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_25b49b780a95ff7c",
+      "filename": "227 - S01E08.mp4",
+      "relative_path": "227 - S01E08.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\227 - S01E08.mp4",
+      "media_hash": "25b49b780a95ff7cba2b92e1c51879c0cd7bfa08552a709d25be1af3e86dc407",
+      "size_bytes": 598165114,
+      "duration_seconds": 1433.365,
+      "resolution": "1280x720",
+      "frame_rate": 29.97003,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 125376
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "clip_library.json",
+          "dialogue_events.json",
+          "diarization_report.json",
+          "filtered_dialogue_events.json",
+          "filtered_timeline.json",
+          "manifest.json",
+          "movie.json",
+          "performance.json",
+          "shots.json",
+          "speaker_map.json",
+          "timeline.json",
+          "visual_report.json"
+        ],
+        "analysis_cache_signature": "eac58a14e29e3e60e890bc611685e68ffa8a3e1cd1a13b3e710ca17d77e17721",
+        "dialogue_occupancy": 0.7528,
+        "detected_shot_count": 49
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_91c15997c660fe41",
+      "filename": "[BlueLobster] The Wonderful Wizard of Oz - 06 [480p].mp4",
+      "relative_path": "[BlueLobster] The Wonderful Wizard of Oz - 06 [480p].mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\[BlueLobster] The Wonderful Wizard of Oz - 06 [480p].mp4",
+      "media_hash": "91c15997c660fe4146d0c0ee6482a4ca549f2613e4dffdaa2d4ffee902c6b5b6",
+      "size_bytes": 137653169,
+      "duration_seconds": 1355.116,
+      "resolution": "640x480",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 106064
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "episode_form"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_8f7099d5498a11fb",
+      "filename": "Abbott and Costello in Cheap Skates.mp4",
+      "relative_path": "Abbott and Costello in Cheap Skates.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Abbott and Costello in Cheap Skates.mp4",
+      "media_hash": "8f7099d5498a11fb8928e196408b6a841c67ecfc93de6eda02f6a7ad4c0038f3",
+      "size_bytes": 145387694,
+      "duration_seconds": 1397.126,
+      "resolution": "710x480",
+      "frame_rate": 29.376028,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 125903
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_b5c0d64d4c13e986",
+      "filename": "Abbott and Costello in Life Insurance.mp4",
+      "relative_path": "Abbott and Costello in Life Insurance.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Abbott and Costello in Life Insurance.mp4",
+      "media_hash": "b5c0d64d4c13e986d84b754dd63b6786ffc37384dff536bcc58d66b4250f0596",
+      "size_bytes": 142904619,
+      "duration_seconds": 1401.927,
+      "resolution": "710x480",
+      "frame_rate": 29.304665,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 125618
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_9337015fcd55f3ab",
+      "filename": "An American Hippie in Israel (1972) \u05d4\u05d8\u05e8\u05de\u05e4\u05d9\u05e1\u05d8.mp4",
+      "relative_path": "An American Hippie in Israel (1972) \u05d4\u05d8\u05e8\u05de\u05e4\u05d9\u05e1\u05d8.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\An American Hippie in Israel (1972) \u05d4\u05d8\u05e8\u05de\u05e4\u05d9\u05e1\u05d8.mp4",
+      "media_hash": "9337015fcd55f3abae50b7462c9bd28f21cc76bb2547b253b771b1c609f2ba33",
+      "size_bytes": 410710914,
+      "duration_seconds": 5584.631,
+      "resolution": "640x360",
+      "frame_rate": 23.976024,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 95999
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "feature_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_4121ae2102f20e1f",
+      "filename": "Annie Oakley S01_E17 Annie and the Mystery Woman.mp4",
+      "relative_path": "Annie Oakley S01_E17 Annie and the Mystery Woman.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Annie Oakley S01_E17 Annie and the Mystery Woman.mp4",
+      "media_hash": "4121ae2102f20e1fb9f0097b42e603153417d671329a4838079e36e38ae6b1e4",
+      "size_bytes": 257694037,
+      "duration_seconds": 1499.13,
+      "resolution": "640x480",
+      "frame_rate": 29.970029,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 125588
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_ebc1b65994e02086",
+      "filename": "Anything But Love s02 e07-\u00a0Bang You're Dead\u00a0( Dir. M. Lessac +Writers Jane M + Billy Van Zandt.mp4",
+      "relative_path": "Anything But Love s02 e07-\u00a0Bang You're Dead\u00a0( Dir. M. Lessac +Writers Jane M + Billy Van Zandt.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Anything But Love s02 e07-\u00a0Bang You're Dead\u00a0( Dir. M. Lessac +Writers Jane M + Billy Van Zandt.mp4",
+      "media_hash": "ebc1b65994e02086d944b2f0b3b9e8184df617eed72a76b618198b392c9aefd3",
+      "size_bytes": 142052464,
+      "duration_seconds": 1364.278,
+      "resolution": "640x480",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 128002
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_54f727943a6cc68f",
+      "filename": "Anything But Love s02 e10-\u00a0Hearts and Bones\u00a0(1989) .Dir. James Widdoes -written by Alan Kirschenbaum.mp4",
+      "relative_path": "Anything But Love s02 e10-\u00a0Hearts and Bones\u00a0(1989) .Dir. James Widdoes -written by Alan Kirschenbaum.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Anything But Love s02 e10-\u00a0Hearts and Bones\u00a0(1989) .Dir. James Widdoes -written by Alan Kirschenbaum.mp4",
+      "media_hash": "54f727943a6cc68f25400b79f235b2e89a4c0ce57fc686ceba494adca8553bea",
+      "size_bytes": 146456656,
+      "duration_seconds": 1402.608,
+      "resolution": "640x480",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 128001
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_d9c440ac12fd96f5",
+      "filename": "Beverly Hillbillies.mp4",
+      "relative_path": "Beverly Hillbillies.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Beverly Hillbillies.mp4",
+      "media_hash": "d9c440ac12fd96f52568c5f45a008a632f1fe56915c6db470da951c8b2cd9c71",
+      "size_bytes": 136863676,
+      "duration_seconds": 1356.855,
+      "resolution": "320x240",
+      "frame_rate": 29.97003,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 99454
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_9b626c297fcc6fb8",
+      "filename": "Christian TV stuff - American Saints.ia.mp4",
+      "relative_path": "Christian TV stuff - American Saints.ia.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Christian TV stuff - American Saints.ia.mp4",
+      "media_hash": "9b626c297fcc6fb8a2ed39590fcef9aa81c4163802af903c5b1ad5f82570089a",
+      "size_bytes": 208716120,
+      "duration_seconds": 2159.6,
+      "resolution": "854x480",
+      "frame_rate": 30.0,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 73546
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "clip_library.json",
+          "dialogue_events.json",
+          "diarization_report.json",
+          "filtered_dialogue_events.json",
+          "filtered_timeline.json",
+          "manifest.json",
+          "movie.json",
+          "performance.json",
+          "shots.json",
+          "speaker_map.json",
+          "timeline.json",
+          "visual_report.json"
+        ],
+        "analysis_cache_signature": "f827f8ac3e659fb36fe69e3a078aae9d75eb58094856506cb4b6dae3d2a34d12",
+        "dialogue_occupancy": 0.7951,
+        "detected_shot_count": 173
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_a07d059872fd8f02",
+      "filename": "Christian TV stuff - Parker\u2019s Puzzle (9).ia.mp4",
+      "relative_path": "Christian TV stuff - Parker\u2019s Puzzle (9).ia.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Christian TV stuff - Parker\u2019s Puzzle (9).ia.mp4",
+      "media_hash": "a07d059872fd8f02544f29eac57f727e21f606e400e2db1c02c448dd20fffec4",
+      "size_bytes": 178626057,
+      "duration_seconds": 1844.85,
+      "resolution": "854x480",
+      "frame_rate": 60.0,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 74469
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "clip_library.json",
+          "dialogue_events.json",
+          "diarization_report.json",
+          "filtered_dialogue_events.json",
+          "manifest.json",
+          "movie.json",
+          "speaker_map.json"
+        ],
+        "analysis_cache_signature": "de3d37efcbc24c62ec784bc508ecaeeeb339ea0f341d6f82883fe498457f69dd",
+        "dialogue_occupancy": 0.8413,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_0e67c8df91810b40",
+      "filename": "Dark Side of the Ring S04E04 What Happened to Doink the Clown.mp4",
+      "relative_path": "Dark Side of the Ring S04E04 What Happened to Doink the Clown.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Dark Side of the Ring S04E04 What Happened to Doink the Clown.mp4",
+      "media_hash": "0e67c8df91810b409151b95822300681d4355e0e348e08b0cf8cb93544bad403",
+      "size_bytes": 818004517,
+      "duration_seconds": 2642.731,
+      "resolution": "1280x720",
+      "frame_rate": 23.976015,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 262144
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_b7ecb812ba5a9d5c",
+      "filename": "Death Note Ep 2.mp4",
+      "relative_path": "Death Note Ep 2.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Death Note Ep 2.mp4",
+      "media_hash": "b7ecb812ba5a9d5c363ef169e58f96b4bbeddb8cb30855f01f0e74f77c6acb9e",
+      "size_bytes": 135668419,
+      "duration_seconds": 1376.937,
+      "resolution": "854x480",
+      "frame_rate": 23.98,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 90994
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "episode_form"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_bcd657789dbe1941",
+      "filename": "Doogie Howser, M.D. - S01E01 - Pilot.mp4",
+      "relative_path": "Doogie Howser, M.D. - S01E01 - Pilot.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Doogie Howser, M.D. - S01E01 - Pilot.mp4",
+      "media_hash": "bcd657789dbe1941cbc05e51387f563b99235f58311a62a552bd3886e33f373c",
+      "size_bytes": 151652336,
+      "duration_seconds": 1457.315,
+      "resolution": "624x480",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 130681
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "clip_library.json",
+          "dialogue_events.json",
+          "diarization_report.json",
+          "filtered_dialogue_events.json",
+          "manifest.json",
+          "movie.json",
+          "performance.json",
+          "performance_library.json",
+          "speaker_map.json"
+        ],
+        "analysis_cache_signature": "f5cc2ea4705131efe470821bd7c748c02e3c1d2e29e4ad94f38ed2a7a89c6045",
+        "dialogue_occupancy": 0.691,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_a73534d88492769d",
+      "filename": "Faerie Tale Theatre - 02 - Rumplestiltskin.mp4",
+      "relative_path": "Faerie Tale Theatre - 02 - Rumplestiltskin.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Faerie Tale Theatre - 02 - Rumplestiltskin.mp4",
+      "media_hash": "a73534d88492769dcd69e2f87f644dece2103bc200c2d84abc2cc59f34d463d7",
+      "size_bytes": 229976235,
+      "duration_seconds": 2371.872,
+      "resolution": "576x432",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 69894
+        }
+      ],
+      "content_type": "mixed_or_uncertain",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "mixed_or_uncertain"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "manifest.json"
+        ],
+        "analysis_cache_signature": "0fc2c0f9b35123619a0413952a699c308d33df5cce37fef85d45aef63b1f6ee0",
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_18f6b6ed542cca53",
+      "filename": "Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+      "relative_path": "Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Faerie Tale Theatre - 05 - Sleeping Beauty.mp4",
+      "media_hash": "18f6b6ed542cca53c693bc5e361d168ba10bf85785b830639898821c8d7cf589",
+      "size_bytes": 340376868,
+      "duration_seconds": 3473.04,
+      "resolution": "512x384",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 76245
+        }
+      ],
+      "content_type": "mixed_or_uncertain",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "mixed_or_uncertain"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "cinematic_moments.json",
+          "clip_library.json",
+          "dialogue_events.json",
+          "diarization_report.json",
+          "filtered_dialogue_events.json",
+          "filtered_timeline.json",
+          "manifest.json",
+          "movie.json",
+          "performance.json",
+          "replacement_schedule.json",
+          "shots.json",
+          "speaker_map.json",
+          "timeline.json",
+          "visual_report.json",
+          "visual_schedule_report.json"
+        ],
+        "analysis_cache_signature": "663a190e0f28ee5c10b3df6ac5e99212fbd06d6b723a88c0a495c126e7c9107e",
+        "dialogue_occupancy": 0.7753,
+        "detected_shot_count": 103
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_01334067e7bce8bd",
+      "filename": "Fairie Tale Theatre -01 - The Tale of the Frog Prince.mp4",
+      "relative_path": "Fairie Tale Theatre -01 - The Tale of the Frog Prince.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Fairie Tale Theatre -01 - The Tale of the Frog Prince.mp4",
+      "media_hash": "01334067e7bce8bded7fe530985241b828a8b6620f66445bac78c6b985f798a8",
+      "size_bytes": 326821830,
+      "duration_seconds": 3276.076,
+      "resolution": "512x384",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 91787
+        }
+      ],
+      "content_type": "mixed_or_uncertain",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "mixed_or_uncertain"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_8edd1abdceb11bc1",
+      "filename": "Fraggle Rock S01 E03 - Let the Water Run.mp4",
+      "relative_path": "Fraggle Rock S01 E03 - Let the Water Run.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Fraggle Rock S01 E03 - Let the Water Run.mp4",
+      "media_hash": "8edd1abdceb11bc19e33cda266a78da96b8e3fc61d75707d521373f400fa516d",
+      "size_bytes": 154878675,
+      "duration_seconds": 1486.42,
+      "resolution": "640x480",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 129732
+        }
+      ],
+      "content_type": "mixed_or_uncertain",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "mixed_or_uncertain"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_dd11e14de5e805cf",
+      "filename": "Fraggle Rock S01 E15 - I Don't Care.mp4",
+      "relative_path": "Fraggle Rock S01 E15 - I Don't Care.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Fraggle Rock S01 E15 - I Don't Care.mp4",
+      "media_hash": "dd11e14de5e805cf11ef0b75e72af73fb62d73f1666abd2b48bbc0739ce55456",
+      "size_bytes": 154688200,
+      "duration_seconds": 1484.985,
+      "resolution": "640x480",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 130355
+        }
+      ],
+      "content_type": "mixed_or_uncertain",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "mixed_or_uncertain"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_cfdb81cf9f0df5d7",
+      "filename": "Fries With That S01E01 - The Expendables.mp4",
+      "relative_path": "Fries With That S01E01 - The Expendables.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Fries With That S01E01 - The Expendables.mp4",
+      "media_hash": "cfdb81cf9f0df5d78ba072e03dee15bc44930d1df0965ba9dce10e4342721a63",
+      "size_bytes": 140233192,
+      "duration_seconds": 1398.236,
+      "resolution": "480x360",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 96608
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "clip_library.json",
+          "dialogue_events.json",
+          "diarization_report.json",
+          "filtered_dialogue_events.json",
+          "manifest.json",
+          "movie.json",
+          "performance.json",
+          "performance_library.json",
+          "speaker_map.json"
+        ],
+        "analysis_cache_signature": "26b458cb6889e12f0ee1ebe3bdfa46ed64d489e518b40e1a043fef6d73afbd2a",
+        "dialogue_occupancy": 0.7623,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_9253495cf09e5826",
+      "filename": "Fries With That S01E10 - Undercover Guy.mp4",
+      "relative_path": "Fries With That S01E10 - Undercover Guy.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Fries With That S01E10 - Undercover Guy.mp4",
+      "media_hash": "9253495cf09e5826ec2ccf92b9dbdeca3b4ab7ff274d4a8529f9d553c63f2e8f",
+      "size_bytes": 141837948,
+      "duration_seconds": 1413.28,
+      "resolution": "480x360",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 97377
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_ce3fe024b4f9dff2",
+      "filename": "GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat.mp4",
+      "relative_path": "GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat.mp4",
+      "media_hash": "ce3fe024b4f9dff2befb2875229d526fe73b76423d56703d634d1f0feaebb8c6",
+      "size_bytes": 134307100,
+      "duration_seconds": 1335.235,
+      "resolution": "512x368",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 97436
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "clip_library.json",
+          "dialogue_events.json",
+          "diarization_report.json",
+          "filtered_dialogue_events.json",
+          "filtered_timeline.json",
+          "manifest.json",
+          "movie.json",
+          "performance.json",
+          "shots.json",
+          "speaker_map.json",
+          "timeline.json",
+          "visual_report.json"
+        ],
+        "analysis_cache_signature": "b071140a51345f6d41a5a7b729794514c3e01c1d60533a3b72380da47affbbec",
+        "dialogue_occupancy": 0.7819,
+        "detected_shot_count": 119
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_558a5818fe48b42e",
+      "filename": "Golden Queen's Commando (1982).mp4",
+      "relative_path": "Golden Queen's Commando (1982).mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Golden Queen's Commando (1982).mp4",
+      "media_hash": "558a5818fe48b42ed8722b8fc2c3bb1ef8ea3bec996927ff0854336d0e1cd968",
+      "size_bytes": 528561847,
+      "duration_seconds": 5181.068,
+      "resolution": "640x480",
+      "frame_rate": 23.98,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 110226
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "feature_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_a7d2b7e401b3ab4e",
+      "filename": "Green Acres - 016 - Give Me Land, Lots Of Land.mpg",
+      "relative_path": "Green Acres - 016 - Give Me Land, Lots Of Land.mpg",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Green Acres - 016 - Give Me Land, Lots Of Land.mpg",
+      "media_hash": "a7d2b7e401b3ab4e2294d07c6c2914d06bb0c3219a0e4cc4aee5c9707a59a016",
+      "size_bytes": 223473668,
+      "duration_seconds": 1282.536,
+      "resolution": "352x240",
+      "frame_rate": 29.97003,
+      "video_codec": "mpeg1video",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "mp2",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 224000
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "mp2"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_ee695743235c7162",
+      "filename": "Gummi Bears S01E09 - A Gummi By Any Other Name.mp4",
+      "relative_path": "Gummi Bears S01E09 - A Gummi By Any Other Name.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Gummi Bears S01E09 - A Gummi By Any Other Name.mp4",
+      "media_hash": "ee695743235c716267aafca587899ab878e5a793340dd6cdc064b0f92266ca9b",
+      "size_bytes": 183237912,
+      "duration_seconds": 1321.169,
+      "resolution": "640x480",
+      "frame_rate": 30.000749,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 253588
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "episode_form"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_ceccde443a600a25",
+      "filename": "Hey.Dude.S01E01.Day.One.at.the.Bar.None.mp4",
+      "relative_path": "Hey.Dude.S01E01.Day.One.at.the.Bar.None.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Hey.Dude.S01E01.Day.One.at.the.Bar.None.mp4",
+      "media_hash": "ceccde443a600a253abb75b4c748b338986706743e1d877d50d76619d54e7971",
+      "size_bytes": 142670816,
+      "duration_seconds": 1442.475,
+      "resolution": "626x480",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 83904
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_1dcc3e38a27c902b",
+      "filename": "Hey_Duggee_Series_2_-_16._The_Medicine_Badge_b08v9rwt_signed.mp4",
+      "relative_path": "Hey_Duggee_Series_2_-_16._The_Medicine_Badge_b08v9rwt_signed.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Hey_Duggee_Series_2_-_16._The_Medicine_Badge_b08v9rwt_signed.mp4",
+      "media_hash": "1dcc3e38a27c902b5e7b0ab1dedb3413e58fbc726be9a888a18dbdec375f13e4",
+      "size_bytes": 138580396,
+      "duration_seconds": 420.0,
+      "resolution": "1280x720",
+      "frame_rate": 25.0,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 317374
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "short",
+      "evaluation_strata": [
+        "live_action",
+        "short_form"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_b4638e7e7a7bfe4e",
+      "filename": "In The Mood For Love - Chinese film in Italian.mp4",
+      "relative_path": "In The Mood For Love - Chinese film in Italian.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\In The Mood For Love - Chinese film in Italian.mp4",
+      "media_hash": "b4638e7e7a7bfe4e54f707560eae5503fa5bc461b6faa559443a16cc122b04f4",
+      "size_bytes": 575134271,
+      "duration_seconds": 5904.0,
+      "resolution": "796x480",
+      "frame_rate": 24.0,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 110115
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "feature_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_9ceeb2294b8592bd",
+      "filename": "Japanese Bee Show Episode I Dont Know.mp4",
+      "relative_path": "Japanese Bee Show Episode I Dont Know.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Japanese Bee Show Episode I Dont Know.mp4",
+      "media_hash": "9ceeb2294b8592bded7f985fae7ebd5fdc69a0646a7d39708510e5dc566affa2",
+      "size_bytes": 199989702,
+      "duration_seconds": 1412.911,
+      "resolution": "524x472",
+      "frame_rate": 23.976024,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 127941
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_f3cd1040fe856699",
+      "filename": "Little Bear 1x03 Up All Night _ Little Bear's Bath _ Father Bear Comes Home.mp4",
+      "relative_path": "Little Bear 1x03 Up All Night _ Little Bear's Bath _ Father Bear Comes Home.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Little Bear 1x03 Up All Night _ Little Bear's Bath _ Father Bear Comes Home.mp4",
+      "media_hash": "f3cd1040fe856699362463e956b8588dfe5557a15ba9cf9d3733d38274540a5f",
+      "size_bytes": 72904535,
+      "duration_seconds": 1451.061,
+      "resolution": "480x360",
+      "frame_rate": 29.97003,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 96001
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "episode_form"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_ba01cdc31429b05d",
+      "filename": "MADtv - S01 E19 .mp4",
+      "relative_path": "MADtv - S01 E19 .mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\MADtv - S01 E19 .mp4",
+      "media_hash": "ba01cdc31429b05de6eaa328c0173a321a2730f56af68672d8a46ec36709c57d",
+      "size_bytes": 379522385,
+      "duration_seconds": 2526.59,
+      "resolution": "720x480",
+      "frame_rate": 29.173311,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 95888
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_1879b4266b454698",
+      "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+      "relative_path": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+      "media_hash": "1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b",
+      "size_bytes": 144978698,
+      "duration_seconds": 1436.224,
+      "resolution": "640x480",
+      "frame_rate": 59.94,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 97581
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "dialogue_heavy",
+        "episode_form"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "cinematic_moments.json",
+          "clip_library.json",
+          "dialogue_events.json",
+          "diarization_report.json",
+          "filtered_dialogue_events.json",
+          "filtered_timeline.json",
+          "manifest.json",
+          "movie.json",
+          "performance.json",
+          "shots.json",
+          "speaker_map.json",
+          "timeline.json",
+          "visual_report.json"
+        ],
+        "analysis_cache_signature": "6600be2a189605bfec1c6b5c5add25a757d437dbf78b6670aafdb703a5a5c1f4",
+        "dialogue_occupancy": 0.6834,
+        "detected_shot_count": 472
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_ac53264b4ea4918a",
+      "filename": "Mission Impossible (1988) - S01E01 - The Killer - SDTV.mp4",
+      "relative_path": "Mission Impossible (1988) - S01E01 - The Killer - SDTV.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Mission Impossible (1988) - S01E01 - The Killer - SDTV.mp4",
+      "media_hash": "ac53264b4ea4918ae8e88b54125b96bc75f0200cf237436f26f1d6c3f62424ea",
+      "size_bytes": 293156643,
+      "duration_seconds": 2921.4,
+      "resolution": "636x480",
+      "frame_rate": 25.0,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 99463
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_7a98d9ba7cb2246b",
+      "filename": "Ms. Marple.mp4",
+      "relative_path": "Ms. Marple.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Ms. Marple.mp4",
+      "media_hash": "7a98d9ba7cb2246b8380d027a52b5f2f7e0065ac9eca3a3e1c3f9c1ce3e1aa7e",
+      "size_bytes": 351679911,
+      "duration_seconds": 3368.289,
+      "resolution": "640x480",
+      "frame_rate": 23.976,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 128000
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_6a45d26eb77a63e2",
+      "filename": "Mulan (1999 VHS).mp4",
+      "relative_path": "Mulan (1999 VHS).mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Mulan (1999 VHS).mp4",
+      "media_hash": "6a45d26eb77a63e26ce3a7bf28123309df9a822ec4a04d77c3e3ed9ebc3ff46d",
+      "size_bytes": 1485602131,
+      "duration_seconds": 5789.983,
+      "resolution": "640x480",
+      "frame_rate": 43.29788,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 196536
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "feature_form"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_7a596f2be7ff829c",
+      "filename": "OlivetheOtherReindeer2000FPUO.mp4",
+      "relative_path": "OlivetheOtherReindeer2000FPUO.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\OlivetheOtherReindeer2000FPUO.mp4",
+      "media_hash": "7a596f2be7ff829ce840768c32df095c7df33e385642dd9946f17e7f2c2d79c3",
+      "size_bytes": 313078332,
+      "duration_seconds": 2994.31,
+      "resolution": "720x480",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 132421
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "episode_form"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_c644e9f1dc00a1f2",
+      "filename": "Otherworld 1985) S01E01 Rules of Attraction.mp4",
+      "relative_path": "Otherworld 1985) S01E01 Rules of Attraction.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Otherworld 1985) S01E01 Rules of Attraction.mp4",
+      "media_hash": "c644e9f1dc00a1f28e05e65ca74ab4a81ccfd60693be49df465b9cb1ff20f445",
+      "size_bytes": 259598760,
+      "duration_seconds": 2706.804,
+      "resolution": "512x384",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 32000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 62581
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 32000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_91398926505d6269",
+      "filename": "Quatermass S01 - The Quatermass Experiment - 02 - Persons Reported Missing.mp4",
+      "relative_path": "Quatermass S01 - The Quatermass Experiment - 02 - Persons Reported Missing.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Quatermass S01 - The Quatermass Experiment - 02 - Persons Reported Missing.mp4",
+      "media_hash": "91398926505d6269c2841425315055559e3bb582dc2680de0435ad3a62c6edb6",
+      "size_bytes": 197071490,
+      "duration_seconds": 2091.42,
+      "resolution": "512x384",
+      "frame_rate": 25.0,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 32000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 49448
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 32000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_d8f348a6441985db",
+      "filename": "Red_Dwarf-s01e01.mp4",
+      "relative_path": "Red_Dwarf-s01e01.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Red_Dwarf-s01e01.mp4",
+      "media_hash": "d8f348a6441985db96ca9bf39e4d46217062c1e9283014253ac729fb2564e459",
+      "size_bytes": 176952086,
+      "duration_seconds": 1802.803,
+      "resolution": "622x480",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 79564
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "cinematic_moments.json",
+          "clip_library.json",
+          "dialogue_events.json",
+          "diarization_report.json",
+          "filtered_dialogue_events.json",
+          "filtered_timeline.json",
+          "manifest.json",
+          "movie.json",
+          "performance.json",
+          "performance_library.json",
+          "shots.json",
+          "speaker_map.json",
+          "timeline.json",
+          "visual_report.json"
+        ],
+        "analysis_cache_signature": "439827df985ab31eb4bab6969cf93dc271cb5bbc6386b9b1929144390863d024",
+        "dialogue_occupancy": 0.7135,
+        "detected_shot_count": 132
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_ec484f1580b5975e",
+      "filename": "Robocop Cartoon - Ep 02.mp4",
+      "relative_path": "Robocop Cartoon - Ep 02.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Robocop Cartoon - Ep 02.mp4",
+      "media_hash": "ec484f1580b5975e5c93e52a84d6c76a49cad1703fe1c0625d1badec142cffa5",
+      "size_bytes": 463440285,
+      "duration_seconds": 1282.36,
+      "resolution": "702x574",
+      "frame_rate": 24.99844,
+      "video_codec": "h264",
+      "audio_stream_count": 2,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 159966
+        },
+        {
+          "codec": "ac3",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 192000
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "dialogue_heavy",
+        "episode_form"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "clip_library.json",
+          "dialogue_events.json",
+          "diarization_report.json",
+          "filtered_dialogue_events.json",
+          "manifest.json",
+          "movie.json",
+          "performance.json",
+          "performance_library.json",
+          "speaker_map.json"
+        ],
+        "analysis_cache_signature": "d9904593bce39418b785edcd79ff5790ce72a2d79a41be5837b83018c2cfd96b",
+        "dialogue_occupancy": 0.636,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac",
+          "ac3"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_af3c9081b698d5b3",
+      "filename": "Robocop Cartoon S2E7.mp4",
+      "relative_path": "Robocop Cartoon S2E7.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Robocop Cartoon S2E7.mp4",
+      "media_hash": "af3c9081b698d5b3ed7d88288086d2a29d9cf681b44e296dc77f0e954a0355b7",
+      "size_bytes": 360426063,
+      "duration_seconds": 1285.013,
+      "resolution": "700x576",
+      "frame_rate": 25.0,
+      "video_codec": "h264",
+      "audio_stream_count": 2,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 159980
+        },
+        {
+          "codec": "ac3",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 192000
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "episode_form"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac",
+          "ac3"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_0aba10b58ad04abf",
+      "filename": "Saved by the Bell - 01x02 - Dancing to the Maxx.mp4",
+      "relative_path": "Saved by the Bell - 01x02 - Dancing to the Maxx.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Saved by the Bell - 01x02 - Dancing to the Maxx.mp4",
+      "media_hash": "0aba10b58ad04abfa78cc7ec9d318bf47c6098117aac858a8a88d07a6eca6940",
+      "size_bytes": 133764161,
+      "duration_seconds": 1336.848,
+      "resolution": "636x480",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 97346
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_8203e58fa9811bb3",
+      "filename": "Scared Silly.mp4",
+      "relative_path": "Scared Silly.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Scared Silly.mp4",
+      "media_hash": "8203e58fa9811bb39c428b246ce350346267bdc43f67f386b6910b07489366ac",
+      "size_bytes": 430997539,
+      "duration_seconds": 2411.242,
+      "resolution": "640x480",
+      "frame_rate": 59.94006,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 264944
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_8d622c62543808b0",
+      "filename": "Speed Racer X Episode 05.mp4",
+      "relative_path": "Speed Racer X Episode 05.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Speed Racer X Episode 05.mp4",
+      "media_hash": "8d622c62543808b09b2ec093d4e80f7df4ed559433602476e91a35a444d7f5af",
+      "size_bytes": 132062524,
+      "duration_seconds": 1357.818,
+      "resolution": "704x480",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 68415
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "episode_form"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_a0c757cdae48cfdb",
+      "filename": "Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+      "relative_path": "Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Star Trek Original Series - 1x09-BalanceOfTerror.mp4",
+      "media_hash": "a0c757cdae48cfdba4304c28627ade20ae4b52251dde3b96834f6e9ae5331b44",
+      "size_bytes": 314093295,
+      "duration_seconds": 3031.693,
+      "resolution": "640x480",
+      "frame_rate": 23.98,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 126884
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "cinematic_moments.json",
+          "diarization_report.json",
+          "filtered_timeline.json",
+          "manifest.json",
+          "movie.json",
+          "performance.json",
+          "replacement_schedule.json",
+          "shots.json",
+          "speaker_map.json",
+          "timeline.json",
+          "visual_report.json",
+          "visual_schedule_report.json"
+        ],
+        "analysis_cache_signature": "77d519f5b71bb411f22cdceb6f62928f75acd92f2d0392384fbab2205af19e38",
+        "dialogue_occupancy": 0.5936,
+        "detected_shot_count": 219
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_d947a42b610cb425",
+      "filename": "Star Trek Original Series - 1x14-TheGalileoSeven.mp4",
+      "relative_path": "Star Trek Original Series - 1x14-TheGalileoSeven.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Star Trek Original Series - 1x14-TheGalileoSeven.mp4",
+      "media_hash": "d947a42b610cb4255e076ab43233baf2edd30704ff4c38f21aa8093b2039f4dc",
+      "size_bytes": 313231267,
+      "duration_seconds": 3023.937,
+      "resolution": "640x480",
+      "frame_rate": 23.98,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 125685
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_d0151c0f2c0df5c5",
+      "filename": "the avengers s4e9.mp4",
+      "relative_path": "the avengers s4e9.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\the avengers s4e9.mp4",
+      "media_hash": "d0151c0f2c0df5c517960ef98f6f7b843f0293a67e99ee83411a3e2f54dca119",
+      "size_bytes": 404347569,
+      "duration_seconds": 3120.106,
+      "resolution": "1280x720",
+      "frame_rate": 30.000657,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 127910
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_8b2ee33208bcfb71",
+      "filename": "The Chronicles of Narnia - S03E01 - The Silver Chair - Part 2.mp4",
+      "relative_path": "The Chronicles of Narnia - S03E01 - The Silver Chair - Part 2.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Chronicles of Narnia - S03E01 - The Silver Chair - Part 2.mp4",
+      "media_hash": "8b2ee33208bcfb71c82c9f33459d9bf0b01a4c7e6b7dc5d9e351db5a8f60a916",
+      "size_bytes": 162327934,
+      "duration_seconds": 1650.016,
+      "resolution": "512x384",
+      "frame_rate": 25.0,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 88941
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_f8def6364f025875",
+      "filename": "The Fox and he Hound (1994 VHS).mp4",
+      "relative_path": "The Fox and he Hound (1994 VHS).mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Fox and he Hound (1994 VHS).mp4",
+      "media_hash": "f8def6364f02587591f28a169b50244f172ab2ffc2885b0de4d311373b31895f",
+      "size_bytes": 270357000,
+      "duration_seconds": 5185.782,
+      "resolution": "480x360",
+      "frame_rate": 29.97003,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 127999
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "feature_form"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_f4e66df3b000d6f0",
+      "filename": "The Hitchhiker's Guide to the Galaxy - E01.mp4",
+      "relative_path": "The Hitchhiker's Guide to the Galaxy - E01.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Hitchhiker's Guide to the Galaxy - E01.mp4",
+      "media_hash": "f4e66df3b000d6f0387ea0f298ed68a06f6cd3aa3223d58e5710e59bb1634d6d",
+      "size_bytes": 190459537,
+      "duration_seconds": 1972.76,
+      "resolution": "506x384",
+      "frame_rate": 25.0,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 32000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 68422
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 32000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_df0f39501952c203",
+      "filename": "The Little Mermaid (1990 VHS) (2).mp4",
+      "relative_path": "The Little Mermaid (1990 VHS) (2).mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Little Mermaid (1990 VHS) (2).mp4",
+      "media_hash": "df0f39501952c203a0b77ce8c67baa4e311c86350e7dc9ec6dd31ff228b05d53",
+      "size_bytes": 811136112,
+      "duration_seconds": 5003.669,
+      "resolution": "640x480",
+      "frame_rate": 29.97,
+      "video_codec": "mpeg4",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 127965
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "feature_form"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_1ffdfdf8f428ad19",
+      "filename": "The Little Mermaid II Return To The Sea (2000 VHS).mp4",
+      "relative_path": "The Little Mermaid II Return To The Sea (2000 VHS).mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Little Mermaid II Return To The Sea (2000 VHS).mp4",
+      "media_hash": "1ffdfdf8f428ad1968ad8f13eac6cec0de892b68689b8c6547e2a1bd487fbeb5",
+      "size_bytes": 480856579,
+      "duration_seconds": 5195.499,
+      "resolution": "640x480",
+      "frame_rate": 29.970222,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 133933
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "feature_form"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_1188af40325a4018",
+      "filename": "The Littlest Hobo (1979) 01x02 - Manhunt (Part1).mp4",
+      "relative_path": "The Littlest Hobo (1979) 01x02 - Manhunt (Part1).mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Littlest Hobo (1979) 01x02 - Manhunt (Part1).mp4",
+      "media_hash": "1188af40325a4018d79c30c87c6d7532415ec9f0469e0951d60d9e1fbddb6cef",
+      "size_bytes": 137878991,
+      "duration_seconds": 1428.996,
+      "resolution": "640x480",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 66121
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_b2203a07578ab221",
+      "filename": "The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+      "relative_path": "The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Magic Schoolbus - 42 Goes to Mussel Beach.ia.mp4",
+      "media_hash": "b2203a07578ab221c829e9e4759841e381041bfa53feb25e80919f562110eae1",
+      "size_bytes": 183829414,
+      "duration_seconds": 1991.689,
+      "resolution": "720x480",
+      "frame_rate": 59.94,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 95598
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "dialogue_heavy",
+        "episode_form"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "clip_library.json",
+          "dialogue_events.json",
+          "diarization_report.json",
+          "filtered_dialogue_events.json",
+          "filtered_timeline.json",
+          "manifest.json",
+          "movie.json",
+          "performance.json",
+          "shots.json",
+          "speaker_map.json",
+          "timeline.json",
+          "visual_report.json"
+        ],
+        "analysis_cache_signature": "5eba5bdd52c94a24bc76062d73ac5f0b67a9820b6d34403e1f1e252f7fa747df",
+        "dialogue_occupancy": 0.6482,
+        "detected_shot_count": 72
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_2f95a2ac048a4567",
+      "filename": "The Muppets Take Manhattan (1999 VHS).mp4",
+      "relative_path": "The Muppets Take Manhattan (1999 VHS).mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Muppets Take Manhattan (1999 VHS).mp4",
+      "media_hash": "2f95a2ac048a45671b96233b8473f60f738fc5eb986d63aaf784c391ac169f20",
+      "size_bytes": 445558735,
+      "duration_seconds": 6242.499,
+      "resolution": "640x426",
+      "frame_rate": 30.0,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 95999
+        }
+      ],
+      "content_type": "mixed_or_uncertain",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "feature_form",
+        "mixed_or_uncertain"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_ddbd3c6d9f51fe35",
+      "filename": "The Room, by Tommy Wiseau (2003).mp4",
+      "relative_path": "The Room, by Tommy Wiseau (2003).mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Room, by Tommy Wiseau (2003).mp4",
+      "media_hash": "ddbd3c6d9f51fe35da1babf4aea850d862cbd28c54752a174b5a445764a30d2a",
+      "size_bytes": 1549324192,
+      "duration_seconds": 5975.803,
+      "resolution": "1920x1080",
+      "frame_rate": 23.976024,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 93753
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "feature_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_f7d393468f242420",
+      "filename": "THE SIGN OF THE CROSS - 1932 - Fredric March Elissa Landi Claudette Colbert Charles Laughton - Director Cecil B Demille - Play by Wison Barrett.mp4",
+      "relative_path": "THE SIGN OF THE CROSS - 1932 - Fredric March Elissa Landi Claudette Colbert Charles Laughton - Director Cecil B Demille - Play by Wison Barrett.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\THE SIGN OF THE CROSS - 1932 - Fredric March Elissa Landi Claudette Colbert Charles Laughton - Director Cecil B Demille - Play by Wison Barrett.mp4",
+      "media_hash": "f7d393468f242420ed9195807fa3b37906bf2a9258bf1a6b1255bccc5f0a891c",
+      "size_bytes": 723986198,
+      "duration_seconds": 7542.89,
+      "resolution": "644x480",
+      "frame_rate": 24.0,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 62466
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "feature_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_fc2180bbf179ac04",
+      "filename": "The Sword in the Stone (1996 VHS) - 09of19.mp4",
+      "relative_path": "The Sword in the Stone (1996 VHS) - 09of19.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The Sword in the Stone (1996 VHS) - 09of19.mp4",
+      "media_hash": "fc2180bbf179ac044e35657bf04902026c1f2f2a1c5512f0d8ebf55bce8c373c",
+      "size_bytes": 311260301,
+      "duration_seconds": 666.517,
+      "resolution": "640x480",
+      "frame_rate": 29.961742,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 192001
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "short",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "short_form"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_4201d0692a0a7c30",
+      "filename": "The-Benny-Hill-Show-_1988_.mp4",
+      "relative_path": "The-Benny-Hill-Show-_1988_.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\The-Benny-Hill-Show-_1988_.mp4",
+      "media_hash": "4201d0692a0a7c302c7bb6d853a88efb82f45051ed8c51e3b0aca30f887ccb56",
+      "size_bytes": 283350094,
+      "duration_seconds": 1317.8,
+      "resolution": "640x480",
+      "frame_rate": 25.0,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 128932
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 48000,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_c7ba52ed758770f9",
+      "filename": "Uncle Muscle Ep 8.mp4",
+      "relative_path": "Uncle Muscle Ep 8.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Uncle Muscle Ep 8.mp4",
+      "media_hash": "c7ba52ed758770f93730d78a798ec55cd6c017d97df185b5a53aaaf13425a46d",
+      "size_bytes": 58360928,
+      "duration_seconds": 1247.097,
+      "resolution": "480x360",
+      "frame_rate": 25.0,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 96003
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": false,
+        "artifact_names": [],
+        "analysis_cache_signature": null,
+        "dialogue_occupancy": null,
+        "detected_shot_count": null
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_62311279e6dad494",
+      "filename": "Wallace and Gromit.mp4",
+      "relative_path": "Wallace and Gromit.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Wallace and Gromit.mp4",
+      "media_hash": "62311279e6dad49448aca3c376f5bdb00a9305e32a90ea910df3d3709b6d0017",
+      "size_bytes": 499235840,
+      "duration_seconds": 5005.804,
+      "resolution": "640x480",
+      "frame_rate": 29.97,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 90582
+        }
+      ],
+      "content_type": "animation",
+      "content_type_method": "local_filename_hint_low_confidence",
+      "duration_class": "feature",
+      "evaluation_strata": [
+        "animation_or_cartoons",
+        "feature_form",
+        "moderate_dialogue"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "clip_library.json",
+          "dialogue_events.json",
+          "diarization_report.json",
+          "filtered_dialogue_events.json",
+          "filtered_timeline.json",
+          "manifest.json",
+          "movie.json",
+          "performance.json",
+          "performance_library.json",
+          "shots.json",
+          "speaker_map.json",
+          "timeline.json",
+          "visual_report.json"
+        ],
+        "analysis_cache_signature": "7363d62b1f7f27d199feb3732002604ff6a3c025d30a82bbaf614c72ded53c06",
+        "dialogue_occupancy": 0.3141,
+        "detected_shot_count": 791
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    },
+    {
+      "media_id": "media_73d7903e2a4e16f1",
+      "filename": "WKYK - S1E6.mp4",
+      "relative_path": "WKYK - S1E6.mp4",
+      "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\WKYK - S1E6.mp4",
+      "media_hash": "73d7903e2a4e16f148b8f50ee59e19373e38ada56e1bbd6f5fc4865606268b26",
+      "size_bytes": 136359139,
+      "duration_seconds": 1312.052,
+      "resolution": "576x432",
+      "frame_rate": 23.98,
+      "video_codec": "h264",
+      "audio_stream_count": 1,
+      "audio_streams": [
+        {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bit_rate": 129678
+        }
+      ],
+      "content_type": "live_action",
+      "content_type_method": "provisional_non_animation_filename_classification",
+      "duration_class": "episode",
+      "evaluation_strata": [
+        "dialogue_heavy",
+        "episode_form",
+        "live_action"
+      ],
+      "analysis": {
+        "available": true,
+        "artifact_names": [
+          "cinematic_moments.json",
+          "clip_library.json",
+          "dialogue_events.json",
+          "diarization_report.json",
+          "filtered_dialogue_events.json",
+          "filtered_timeline.json",
+          "manifest.json",
+          "movie.json",
+          "performance.json",
+          "replacement_schedule.json",
+          "shots.json",
+          "speaker_map.json",
+          "timeline.json",
+          "visual_report.json",
+          "visual_schedule_report.json"
+        ],
+        "analysis_cache_signature": "fca5311b904bc2be3e765d2d26768289acb3f271d4141e0b25063d32789e4cda",
+        "dialogue_occupancy": 0.71,
+        "detected_shot_count": 182
+      },
+      "basic_audio_quality": {
+        "audio_present": true,
+        "maximum_channels": 2,
+        "maximum_sample_rate": 44100,
+        "codec_set": [
+          "aac"
+        ]
+      },
+      "known_ingestion_problems": [],
+      "inventory_source": "fresh_probe",
+      "benchmark_roles": []
+    }
+  ],
+  "exclusions": [
+    {
+      "path": "GMMB - Saved by the Bell - 01x08 - The Boy Who Cried Rat_audio.mp3",
+      "extension": ".mp3",
+      "reason": "unsupported_non_video_media",
+      "size_bytes": 27084412
+    },
+    {
+      "path": "Mission Impossible (1988) - S01E01 - The Killer - SDTV_audio.mp3",
+      "extension": ".mp3",
+      "reason": "unsupported_non_video_media",
+      "size_bytes": 54494597
+    }
+  ],
+  "selection_contract": {
+    "stable_media_id": "sha256_content_prefix_16",
+    "required_reproduction_inputs": [
+      "manifest_version",
+      "media_ids",
+      "pairing_rules",
+      "configuration",
+      "seed",
+      "tool_version"
+    ]
+  }
+}

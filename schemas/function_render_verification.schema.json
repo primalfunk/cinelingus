@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "function_render_verification",
+  "type": "object",
+  "required": ["schema_version", "verification_version", "creation_timestamp", "schedule_signature", "classifier", "calibration_state", "claim_state", "status", "changed_mapping_count", "counts", "mappings", "claim_scope", "verification_signature"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "verification_version": {"const": "function_render_verification_v1"},
+    "claim_state": {"enum": ["ELIGIBLE", "PROVISIONAL_PENDING_REVIEWED_CALIBRATION"]},
+    "status": {"enum": ["PASS", "WARN", "FAIL", "INCONCLUSIVE"]},
+    "changed_mapping_count": {"type": "integer", "minimum": 0},
+    "mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["mapping_index", "placement_key", "changed_from_baseline", "rendered_transcript", "rendered_transcript_confidence", "technical_evidence", "verification_state", "verification_reason"],
+        "properties": {
+          "verification_state": {"enum": ["VERIFIED", "FUNCTION_MISMATCH", "TECHNICAL_FAILURE", "UNVERIFIABLE"]}
+        }
+      }
+    }
+  }
+}

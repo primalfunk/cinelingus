@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cinelingus Semantic Bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "builder_version", "construction_state", "film_id",
+    "film_model_signature", "entity_type", "embedding_configuration_signature",
+    "provider_metadata", "entities", "coverage", "capability_overlay", "validation_state"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "builder_version": {"type": "string", "minLength": 1},
+    "construction_state": {"enum": ["BUILDING", "VALIDATED", "READY", "INVALID"]},
+    "film_id": {"type": "string", "minLength": 1},
+    "film_model_signature": {"type": "string", "minLength": 1},
+    "entity_type": {"enum": ["speech_passage", "dialogue_turn", "turn_sequence"]},
+    "embedding_configuration_signature": {"type": "string", "minLength": 1},
+    "provider_metadata": {"type": "object"},
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "film_id", "source_entity_id", "source_time_range", "transcript_signature",
+          "source_provenance_id", "canonical_semantic_text_signature", "language_state",
+          "model_id", "model_revision", "tokenizer_id", "semantic_configuration_signature",
+          "embedding_dimension", "entity_cache_signature", "embedding_status", "vector_locator",
+          "vector_digest", "token_count", "truncation_state", "low_information",
+          "status_reason", "validation_state"
+        ]
+      }
+    },
+    "coverage": {"type": "object"},
+    "structural_exclusions": {"type": "array"},
+    "capability_overlay": {"type": "object"},
+    "validation_state": {"type": "object"}
+  }
+}

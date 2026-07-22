@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "semantic_review_result",
+  "type": "object",
+  "required": [
+    "schema_version", "review_version", "finalizer_version", "package_signature",
+    "review_state", "phase2_human_review_criterion",
+    "distinguishes_semantic_relatedness_from_overall_preference", "incomplete_response_ids", "cases"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "review_version": {"const": "semantic_blinded_review_v1"},
+    "finalizer_version": {"const": "semantic_review_finalizer_v1"},
+    "package_signature": {"type": "string", "minLength": 1},
+    "review_state": {"enum": ["COMPLETE", "INCOMPLETE"]},
+    "phase2_human_review_criterion": {"enum": ["PASS", "PENDING"]},
+    "distinguishes_semantic_relatedness_from_overall_preference": {"type": "boolean"},
+    "incomplete_response_ids": {"type": "array", "items": {"type": "string"}},
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["case_id", "judgments", "notes"],
+        "properties": {
+          "case_id": {"type": "string", "minLength": 1},
+          "judgments": {"type": "object"},
+          "notes": {"type": "string"}
+        }
+      }
+    }
+  }
+}

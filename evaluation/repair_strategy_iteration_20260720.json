@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "animation_dense_failure_specific_repairs_20260720",
+  "configuration": "config/corpus_animation_dense.local.json",
+  "placement_count": 290,
+  "initial_quality": 0.6732,
+  "final_quality": 0.688,
+  "quality_delta": 0.0148,
+  "placements_accepted_immediately": 100,
+  "placements_repaired_and_accepted": 5,
+  "placements_best_known_unresolved": 184,
+  "placements_skipped_unrepairable": 1,
+  "hard_gate_failure_count": 52,
+  "repair_funnel": {
+    "attempted_placements": 48,
+    "rendered_candidates": 32,
+    "rendered_candidates_with_positive_verified_delta": 17,
+    "final_accepted_repairs": 5,
+    "candidate_survival_rate": 0.5312,
+    "restored_after_regression": 15,
+    "pre_render_quality_ceiling_rejections": 14,
+    "conservative_retentions": 2
+  },
+  "observed_strategy_distribution": {
+    "repair_sentence_boundaries": 44,
+    "repair_rendered_coverage": 2,
+    "conservative_uncertainty_retention": 2
+  },
+  "comparison": {
+    "original_control_final_quality": 0.6794,
+    "prior_iteration_final_quality": 0.6816,
+    "quality_gain_over_original_control": 0.0086,
+    "original_control_final_accepted_repairs": 2,
+    "prior_iteration_final_accepted_repairs": 3,
+    "final_accepted_repair_gain_over_original_control": 3,
+    "original_control_candidate_survival_rate": 0.1463,
+    "prior_iteration_candidate_survival_rate": 0.3077,
+    "candidate_survival_rate_gain_over_original_control": 0.3849
+  },
+  "interpretation": {
+    "accepted_change": true,
+    "result": "Failure-aware routing, conservative confidence handling, pre-render elimination, and strategy-diverse budgeting improved verified repair yield without lowering final quality.",
+    "remaining_bottleneck": "Most selected failures still contain sentence-integrity defects, so the next benchmark expansion must deliberately include pairings and excerpts that isolate speaker, visual, transition, residual-dialogue, masking, duration, and performance failures."
+  }
+}

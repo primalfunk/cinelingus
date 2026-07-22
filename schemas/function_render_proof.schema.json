@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "function_render_proof",
+  "type": "object",
+  "required": ["schema_version", "proof_version", "creation_timestamp", "screen_signature", "calibration_state", "closeout_state", "claim_state", "invariant_configuration", "variants", "report_only_invariant", "technical_acceptance", "function_repair", "runtime_and_memory", "deferred_review_package", "claim_scope", "proof_signature"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "proof_version": {"const": "function_render_proof_v1"},
+    "variants": {"type": "array", "minItems": 4, "maxItems": 4},
+    "technical_acceptance": {"type": "object"},
+    "function_repair": {"type": "object"}
+  }
+}

@@ -7,7 +7,7 @@ from ..filter_lab.acceptance import validate_filter_output, validate_schedule_qu
 from ..filter_lab.multiworld import MultiworldPipeline
 from ..filter_lab.registry import default_filter_registry
 from ..montage import build_full_timeline_plan, build_montage_render_acceptance, rebase_schedule_to_montage
-from ..mutations import render_mutation_media
+from ..mutations import render_mutation_media  # compatibility export for older integrations
 from ..tools import ffprobe_json
 from ..transformation_plan import build_translation_plan, write_transformation_plan
 from .base import Transformation, TransformationMetadata, TransformationResult
@@ -145,8 +145,15 @@ class TranslationTransformation(Transformation):
         }
         pipeline = self.context.pipeline
         definition = default_filter_registry().get("multiworld.translation")
-        destination_duration = float(selections["destination_movie"]["duration"])
-        source_duration = float(selections["source_movie"]["duration"])
+        destination_movie = selections["destination_movie"]
+        source_movie = selections["source_movie"]
+        # Container duration can include padding beyond the primary audio or
+        # video stream. The rendered mix and mux are bounded by those streams.
+        destination_duration = min(
+            _primary_stream_duration(destination_movie, "video"),
+            _primary_stream_duration(destination_movie, "audio"),
+        )
+        source_duration = _primary_stream_duration(source_movie, "audio")
         shot_ids = [
             str(row["id"])
             for row in selections["visual"].get("shots", {}).get("shots", [])
@@ -198,18 +205,23 @@ class TranslationTransformation(Transformation):
             output_dir = pipeline.config.output_dir / self.metadata.id
             audio = output_dir / "replacement_dialogue.wav"
             video = output_dir / "translation_output.mp4"
-            render_mutation_media(
-                original_media=pipeline.destination.media_path,
+            publish_runtime_stage("render_audio")
+            audio = pipeline.render_audio_from_schedule(
                 schedule=transformed["schedule"],
+                dest_movie={
+                    **self._selections["destination_movie"],
+                    "duration": float(transformed["montage_plan"]["actual_duration"]),
+                },
+                force=self.context.force,
+                output_path=audio,
+                persist_schedule=False,
+            )
+            publish_runtime_stage("render_video")
+            video = pipeline.render_video_from_audio(
+                audio=audio,
+                force=self.context.force,
+                output_path=video,
                 duration=float(transformed["montage_plan"]["actual_duration"]),
-                audio_output=audio,
-                video_output=video,
-                sample_rate=pipeline.config.render_sample_rate,
-                channels=pipeline.config.render_channels,
-                target_lufs=pipeline.config.target_lufs,
-                fade_duration=pipeline.config.audio_fade_duration,
-                mute_regions=None,
-                stage_callback=publish_runtime_stage,
             )
             publish_runtime_stage("finalize")
             self._filter_acceptance_path = output_dir / "filter_acceptance.json"
@@ -265,3 +277,14 @@ class TranslationTransformation(Transformation):
         return report
 
 
+def _primary_stream_duration(movie: dict[str, Any], codec_type: str) -> float:
+    fallback = float(movie["duration"])
+    streams = [row for row in movie.get("streams", []) if row.get("codec_type") == codec_type]
+    if not streams:
+        return fallback
+    primary = next((row for row in streams if (row.get("disposition") or {}).get("default") == 1), streams[0])
+    try:
+        duration = float(primary.get("duration") or 0.0)
+    except (TypeError, ValueError):
+        return fallback
+    return duration if duration > 0.0 else fallback

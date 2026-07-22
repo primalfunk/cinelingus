@@ -1,0 +1,420 @@
+{
+  "schema_version": "1.0",
+  "experiment_version": "semantic_schedule_screen_v1",
+  "creation_timestamp": "2026-07-22T01:29:26+00:00",
+  "experiment_signature": "e8474d72f9ba991e500bb24225a7f4f27037113055f295b4915efc39dd9fb2c8",
+  "source_hash": "1879b4266b4546984d3113a70a48cf5c51a797f120caebfb1e586d9203bbb98b",
+  "destination_hash": "b2203a07578ab221c829e9e4759841e381041bfa53feb25e80919f562110eae1",
+  "scheduling_mode": "performance_fill",
+  "weight_grid": [
+    0.0,
+    0.05,
+    0.1,
+    0.15,
+    0.2
+  ],
+  "semantic_model_identity": {
+    "provider": "local_e5_transformers",
+    "model_id": "intfloat/multilingual-e5-small",
+    "model_revision": "d829207ab28e6a5fb3aafb5d4c44111b8146db32",
+    "tokenizer_id": "intfloat/multilingual-e5-small",
+    "dimensions": 384,
+    "token_limit": 256,
+    "pooling_policy": "attention_mask_mean",
+    "normalization": "l2",
+    "precision": "float32",
+    "asset_digest": "327ab8a846605d1bdac7f2cf14cfc259e53c28fa4303766665ac4c991c6e7cfd",
+    "source_bundle_signature": "845744b12b7ed584164d8f508478c0744f97ee075713026f57b7cc73ede79873",
+    "destination_bundle_signature": "13bd0b46f77c3637cbf5bd89ae6ab1bdd39f62a32bd1bac61a42aaf96904d0a3"
+  },
+  "invariants": {
+    "report_only_selection_equivalent": true,
+    "report_only_scores_equivalent": true,
+    "zero_weight_selection_equivalent": true,
+    "zero_weight_scores_equivalent": true,
+    "candidate_generation_policy": "EXISTING_LEGAL_CANDIDATES_ONLY",
+    "hard_constraints_remain_authoritative": true
+  },
+  "variants": [
+    {
+      "variant_id": "control",
+      "mode": "SEMANTIC_DISABLED",
+      "weight": 0.0,
+      "mapping_count": 256,
+      "placements_changed": 0,
+      "placements_unchanged": 256,
+      "semantic_placement_count": 0,
+      "semantic_placement_coverage": 0.0,
+      "performance_aggregate_fallback_count": 0,
+      "boundary_bridge_semantic_placement_count": 0,
+      "text_bridge_semantic_placement_count": 0,
+      "exact_direct_semantic_placement_count": 0,
+      "mean_selected_semantic_similarity": null,
+      "mean_legacy_candidate_score": 0.853067,
+      "mean_compatibility": {
+        "performance": 0.768202,
+        "duration": 0.915539,
+        "speaker": 0.644193,
+        "visual": 1.0,
+        "completeness": 0.99477
+      },
+      "unique_donor_count": 255,
+      "maximum_donor_reuse": 2,
+      "conflict_count": 0,
+      "conflicts": [],
+      "legacy_score_tradeoff_count": 0,
+      "legacy_score_tradeoffs": [],
+      "schedule_file": "control_schedule.json"
+    },
+    {
+      "variant_id": "report_only",
+      "mode": "SEMANTIC_REPORT_ONLY",
+      "weight": 0.0,
+      "mapping_count": 256,
+      "placements_changed": 0,
+      "placements_unchanged": 256,
+      "semantic_placement_count": 256,
+      "semantic_placement_coverage": 1.0,
+      "performance_aggregate_fallback_count": 0,
+      "boundary_bridge_semantic_placement_count": 0,
+      "text_bridge_semantic_placement_count": 0,
+      "exact_direct_semantic_placement_count": 256,
+      "mean_selected_semantic_similarity": 0.869705,
+      "mean_legacy_candidate_score": 0.853067,
+      "mean_compatibility": {
+        "performance": 0.768202,
+        "duration": 0.915539,
+        "speaker": 0.644193,
+        "visual": 1.0,
+        "completeness": 0.99477
+      },
+      "unique_donor_count": 255,
+      "maximum_donor_reuse": 2,
+      "conflict_count": 0,
+      "conflicts": [],
+      "legacy_score_tradeoff_count": 0,
+      "legacy_score_tradeoffs": [],
+      "schedule_file": "report_only_schedule.json"
+    },
+    {
+      "variant_id": "assisted_000",
+      "mode": "SEMANTIC_ASSISTED",
+      "weight": 0.0,
+      "mapping_count": 256,
+      "placements_changed": 0,
+      "placements_unchanged": 256,
+      "semantic_placement_count": 0,
+      "semantic_placement_coverage": 0.0,
+      "performance_aggregate_fallback_count": 0,
+      "boundary_bridge_semantic_placement_count": 0,
+      "text_bridge_semantic_placement_count": 0,
+      "exact_direct_semantic_placement_count": 0,
+      "mean_selected_semantic_similarity": null,
+      "mean_legacy_candidate_score": 0.853067,
+      "mean_compatibility": {
+        "performance": 0.768202,
+        "duration": 0.915539,
+        "speaker": 0.644193,
+        "visual": 1.0,
+        "completeness": 0.99477
+      },
+      "unique_donor_count": 255,
+      "maximum_donor_reuse": 2,
+      "conflict_count": 0,
+      "conflicts": [],
+      "legacy_score_tradeoff_count": 0,
+      "legacy_score_tradeoffs": [],
+      "schedule_file": "assisted_000_schedule.json"
+    },
+    {
+      "variant_id": "assisted_005",
+      "mode": "SEMANTIC_ASSISTED",
+      "weight": 0.05,
+      "mapping_count": 256,
+      "placements_changed": 2,
+      "placements_unchanged": 254,
+      "semantic_placement_count": 256,
+      "semantic_placement_coverage": 1.0,
+      "performance_aggregate_fallback_count": 0,
+      "boundary_bridge_semantic_placement_count": 0,
+      "text_bridge_semantic_placement_count": 0,
+      "exact_direct_semantic_placement_count": 256,
+      "mean_selected_semantic_similarity": 0.869835,
+      "mean_legacy_candidate_score": 0.853067,
+      "mean_compatibility": {
+        "performance": 0.768202,
+        "duration": 0.915539,
+        "speaker": 0.644193,
+        "visual": 1.0,
+        "completeness": 0.99477
+      },
+      "unique_donor_count": 255,
+      "maximum_donor_reuse": 2,
+      "conflict_count": 1,
+      "conflicts": [
+        {
+          "placement_index": 203,
+          "window_id": "p000044",
+          "control_clip_id": "c000079",
+          "assisted_clip_id": "c000080",
+          "semantic_delta": 0.023302,
+          "compatibility_regressions": {
+            "performance": -0.0009
+          }
+        }
+      ],
+      "legacy_score_tradeoff_count": 1,
+      "legacy_score_tradeoffs": [
+        {
+          "placement_index": 203,
+          "window_id": "p000044",
+          "control_clip_id": "c000079",
+          "assisted_clip_id": "c000080",
+          "legacy_score_delta": -0.0003,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        }
+      ],
+      "schedule_file": "assisted_005_schedule.json"
+    },
+    {
+      "variant_id": "assisted_010",
+      "mode": "SEMANTIC_ASSISTED",
+      "weight": 0.1,
+      "mapping_count": 256,
+      "placements_changed": 4,
+      "placements_unchanged": 252,
+      "semantic_placement_count": 256,
+      "semantic_placement_coverage": 1.0,
+      "performance_aggregate_fallback_count": 0,
+      "boundary_bridge_semantic_placement_count": 0,
+      "text_bridge_semantic_placement_count": 0,
+      "exact_direct_semantic_placement_count": 256,
+      "mean_selected_semantic_similarity": 0.870268,
+      "mean_legacy_candidate_score": 0.853067,
+      "mean_compatibility": {
+        "performance": 0.768202,
+        "duration": 0.915539,
+        "speaker": 0.644193,
+        "visual": 1.0,
+        "completeness": 0.99477
+      },
+      "unique_donor_count": 255,
+      "maximum_donor_reuse": 2,
+      "conflict_count": 2,
+      "conflicts": [
+        {
+          "placement_index": 149,
+          "window_id": "p000026",
+          "control_clip_id": "c000205",
+          "assisted_clip_id": "c000179",
+          "semantic_delta": 0.034668,
+          "compatibility_regressions": {
+            "performance": -0.0028,
+            "completeness": -0.0367
+          }
+        },
+        {
+          "placement_index": 203,
+          "window_id": "p000044",
+          "control_clip_id": "c000079",
+          "assisted_clip_id": "c000080",
+          "semantic_delta": 0.023302,
+          "compatibility_regressions": {
+            "performance": -0.0009
+          }
+        }
+      ],
+      "legacy_score_tradeoff_count": 2,
+      "legacy_score_tradeoffs": [
+        {
+          "placement_index": 149,
+          "window_id": "p000026",
+          "control_clip_id": "c000205",
+          "assisted_clip_id": "c000179",
+          "legacy_score_delta": -0.0019,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 203,
+          "window_id": "p000044",
+          "control_clip_id": "c000079",
+          "assisted_clip_id": "c000080",
+          "legacy_score_delta": -0.0003,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        }
+      ],
+      "schedule_file": "assisted_010_schedule.json"
+    },
+    {
+      "variant_id": "assisted_015",
+      "mode": "SEMANTIC_ASSISTED",
+      "weight": 0.15,
+      "mapping_count": 256,
+      "placements_changed": 4,
+      "placements_unchanged": 252,
+      "semantic_placement_count": 256,
+      "semantic_placement_coverage": 1.0,
+      "performance_aggregate_fallback_count": 0,
+      "boundary_bridge_semantic_placement_count": 0,
+      "text_bridge_semantic_placement_count": 0,
+      "exact_direct_semantic_placement_count": 256,
+      "mean_selected_semantic_similarity": 0.870268,
+      "mean_legacy_candidate_score": 0.853067,
+      "mean_compatibility": {
+        "performance": 0.768202,
+        "duration": 0.915539,
+        "speaker": 0.644193,
+        "visual": 1.0,
+        "completeness": 0.99477
+      },
+      "unique_donor_count": 255,
+      "maximum_donor_reuse": 2,
+      "conflict_count": 2,
+      "conflicts": [
+        {
+          "placement_index": 149,
+          "window_id": "p000026",
+          "control_clip_id": "c000205",
+          "assisted_clip_id": "c000179",
+          "semantic_delta": 0.034668,
+          "compatibility_regressions": {
+            "performance": -0.0028,
+            "completeness": -0.0367
+          }
+        },
+        {
+          "placement_index": 203,
+          "window_id": "p000044",
+          "control_clip_id": "c000079",
+          "assisted_clip_id": "c000080",
+          "semantic_delta": 0.023302,
+          "compatibility_regressions": {
+            "performance": -0.0009
+          }
+        }
+      ],
+      "legacy_score_tradeoff_count": 2,
+      "legacy_score_tradeoffs": [
+        {
+          "placement_index": 149,
+          "window_id": "p000026",
+          "control_clip_id": "c000205",
+          "assisted_clip_id": "c000179",
+          "legacy_score_delta": -0.0019,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 203,
+          "window_id": "p000044",
+          "control_clip_id": "c000079",
+          "assisted_clip_id": "c000080",
+          "legacy_score_delta": -0.0003,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        }
+      ],
+      "schedule_file": "assisted_015_schedule.json"
+    },
+    {
+      "variant_id": "assisted_020",
+      "mode": "SEMANTIC_ASSISTED",
+      "weight": 0.2,
+      "mapping_count": 256,
+      "placements_changed": 4,
+      "placements_unchanged": 252,
+      "semantic_placement_count": 256,
+      "semantic_placement_coverage": 1.0,
+      "performance_aggregate_fallback_count": 0,
+      "boundary_bridge_semantic_placement_count": 0,
+      "text_bridge_semantic_placement_count": 0,
+      "exact_direct_semantic_placement_count": 256,
+      "mean_selected_semantic_similarity": 0.870268,
+      "mean_legacy_candidate_score": 0.853067,
+      "mean_compatibility": {
+        "performance": 0.768202,
+        "duration": 0.915539,
+        "speaker": 0.644193,
+        "visual": 1.0,
+        "completeness": 0.99477
+      },
+      "unique_donor_count": 255,
+      "maximum_donor_reuse": 2,
+      "conflict_count": 2,
+      "conflicts": [
+        {
+          "placement_index": 149,
+          "window_id": "p000026",
+          "control_clip_id": "c000205",
+          "assisted_clip_id": "c000179",
+          "semantic_delta": 0.034668,
+          "compatibility_regressions": {
+            "performance": -0.0028,
+            "completeness": -0.0367
+          }
+        },
+        {
+          "placement_index": 203,
+          "window_id": "p000044",
+          "control_clip_id": "c000079",
+          "assisted_clip_id": "c000080",
+          "semantic_delta": 0.023302,
+          "compatibility_regressions": {
+            "performance": -0.0009
+          }
+        }
+      ],
+      "legacy_score_tradeoff_count": 2,
+      "legacy_score_tradeoffs": [
+        {
+          "placement_index": 149,
+          "window_id": "p000026",
+          "control_clip_id": "c000205",
+          "assisted_clip_id": "c000179",
+          "legacy_score_delta": -0.0019,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        },
+        {
+          "placement_index": 203,
+          "window_id": "p000044",
+          "control_clip_id": "c000079",
+          "assisted_clip_id": "c000080",
+          "legacy_score_delta": -0.0003,
+          "interpretation": "Bounded soft-score tradeoff; requires render and human review and is not a technical regression by itself."
+        }
+      ],
+      "schedule_file": "assisted_020_schedule.json"
+    }
+  ],
+  "render_selection": [
+    "control",
+    "report_only"
+  ],
+  "render_selection_state": "NO_CONFLICT_FREE_CHANGED_ASSISTED_CANDIDATE",
+  "render_selection_diagnostics": {
+    "changed_assisted_variant_count": 4,
+    "conflict_free_changed_variant_count": 0,
+    "fully_covered_conflict_free_changed_variant_count": 0,
+    "pareto_guarded_variant_present": false,
+    "pareto_guarded_admission_count": 0,
+    "render_nomination_requires_full_selected_placement_semantic_coverage": true
+  },
+  "semantic_opportunity_audit": {
+    "audit_version": "semantic_pareto_opportunity_v1",
+    "audited_destination_performance_count": 41,
+    "legal_candidate_count": 479,
+    "higher_semantic_candidate_count": 154,
+    "placement_valid_candidate_count": 97,
+    "fully_covered_candidate_count": 97,
+    "local_pareto_safe_opportunity_count": 0,
+    "globally_admissible_opportunity_count": 0,
+    "pareto_safe_opportunity_count": 0,
+    "opportunities": [],
+    "claim_scope": "Report-only counterfactual evidence with full-schedule source-reuse admission; the selected schedule is unchanged."
+  },
+  "pareto_guarded_admission": {
+    "policy": "DIRECT_EVIDENCE_GLOBAL_PARETO_V1",
+    "admission_count": 0,
+    "admissions": [],
+    "schedule_variant": null
+  },
+  "claim_scope": "Schedule-only transcript-vector screening. Render quality and human preference are not established."
+}

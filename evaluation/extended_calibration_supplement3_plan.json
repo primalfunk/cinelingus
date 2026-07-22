@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "plan_version": "bounded_corpus_calibration_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T16:16:25+00:00",
+  "execution_revision": "rendered_failure_exploration_v1",
+  "tier": "extended",
+  "excerpt_plan": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_excerpt_plan.json",
+  "maximum_cases": 1,
+  "case_count": 1,
+  "planned_input_duration_seconds": 48.0,
+  "source_files_read_only": true,
+  "resume_required": true,
+  "supplement_of": [
+    "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_calibration_plan_initial.json",
+    "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_calibration_followup_plan.json",
+    "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_calibration_supplement_plan.json",
+    "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\extended_calibration_supplement2_plan.json"
+  ],
+  "cases": [
+    {
+      "case_id": "supplement_001_exchange_continuity",
+      "purpose": "exchange_continuity",
+      "variant_index": 4,
+      "destination": {
+        "excerpt_id": "excerpt_0032_8561b58a",
+        "media_id": "media_bcd657789dbe1941",
+        "filename": "Doogie Howser, M.D. - S01E01 - Pilot.mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Doogie Howser, M.D. - S01E01 - Pilot.mp4",
+        "content_type": "live_action",
+        "category": "rapid_speaker_exchange",
+        "start": 1010.0,
+        "end": 1028.0,
+        "duration": 18.0,
+        "analysis_signature": "f5cc2ea4705131efe470821bd7c748c02e3c1d2e29e4ad94f38ed2a7a89c6045",
+        "evidence": {
+          "performance_id": "p000022",
+          "dialogue_density": 1.0,
+          "performance_duration": 6.0,
+          "turn_count": 2,
+          "speaker_count": 2,
+          "performance_type": "dialogue_exchange",
+          "interruptions_detected": false
+        }
+      },
+      "source": {
+        "excerpt_id": "excerpt_0003_417d12eb",
+        "media_id": "media_1879b4266b454698",
+        "filename": "Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "source_path": "C:\\Users\\erinm\\Downloads\\Movies\\Mega Man - 03 - Mega-Pinocchio   [DarkDream].mp4",
+        "content_type": "animation",
+        "category": "dense_dialogue",
+        "start": 1322.0,
+        "end": 1352.0,
+        "duration": 30.0,
+        "analysis_signature": "6600be2a189605bfec1c6b5c5add25a757d437dbf78b6670aafdb703a5a5c1f4",
+        "evidence": {
+          "performance_id": "p000048",
+          "dialogue_density": 1.0,
+          "performance_duration": 39.0,
+          "turn_count": 6,
+          "speaker_count": 4,
+          "performance_type": "group_conversation",
+          "interruptions_detected": false
+        }
+      },
+      "expected_failure_modes": [
+        "speaker_mismatch",
+        "performance_mismatch",
+        "masking"
+      ],
+      "status": "planned",
+      "case_signature": "8fcf32a79d0c4078376a886a51caceb6fc785a1f9c84b41e90dd20cf76973538",
+      "followup_reason": "adds_untried_case_after_recipe_refinement"
+    }
+  ]
+}

@@ -1,0 +1,2791 @@
+{
+  "schema_version": "1.0",
+  "calibration_version": "dialogue_function_calibration_v1",
+  "creation_timestamp": "2026-07-22T18:08:52+00:00",
+  "review_state": "PENDING_HUMAN_ANNOTATION",
+  "package_signature": "c6d739397a4eca9a2986c74e5c2176ddd88980a15c468a83b5d3a8517216c378",
+  "sample_count": 23,
+  "samples": [
+    {
+      "sample_id": "function_sample_001",
+      "case_id": "animation_magic_schoolbus",
+      "media_class": "animation",
+      "film_id": "film_e9514a5b78526719590e",
+      "speech_passage_id": "speech_a03aaaab275c6de86640",
+      "source_time_range": {
+        "start": 294.8,
+        "end": 299.8,
+        "duration": 5.0
+      },
+      "transcript": "Turns out Mert needs someone to keep an eye on his scrumptious shoreline home.",
+      "transcript_signature": "37fa3e12155c8ac56ae8abe4131793b45b66b1132b1ec13336400cb617c41d99",
+      "language_state": "en",
+      "source_provenance_id": "provenance_da7d50898f788f30c076",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_99700b9718a1c94c1342",
+        "previous_transcript_signature": "57f079f6549228fd51c9bb0d891a51cbc45f4e8a845254423c8bc61a35b6fffc",
+        "next_speech_passage_id": "speech_fcdcad0c88c3eb335ad7",
+        "next_transcript_signature": "a958a49f2aba7c4687554e50b701fb59d96353000d4105e6e6cb077d83ffcdf1",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [
+          "performance_3f4a714f46b5c739d818"
+        ],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "bedc8888bf95fbca3c94a5a26b8186fd2b633dde42d1faac4609c5d91931a008",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_99700b9718a1c94c1342",
+          "previous_transcript_signature": "57f079f6549228fd51c9bb0d891a51cbc45f4e8a845254423c8bc61a35b6fffc",
+          "next_speech_passage_id": "speech_fcdcad0c88c3eb335ad7",
+          "next_transcript_signature": "a958a49f2aba7c4687554e50b701fb59d96353000d4105e6e6cb077d83ffcdf1",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [
+            "performance_3f4a714f46b5c739d818"
+          ],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "c60aefd0de458e0353d09bb74e5b5aa77aa1d19e3823c13c38afbaa900ac78c4",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "revelation",
+                "label_id": "interaction_function.revelation",
+                "confidence": 0.88
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.78,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.revelation",
+            "observation": "revelation"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "revelation"
+      ],
+      "proposed_surface_label": "declarative",
+      "proposal_confidence": 0.78,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_revelation"
+      ]
+    },
+    {
+      "sample_id": "function_sample_002",
+      "case_id": "animation_magic_schoolbus",
+      "media_class": "animation",
+      "film_id": "film_e9514a5b78526719590e",
+      "speech_passage_id": "speech_7cb729b3be657eea6dee",
+      "source_time_range": {
+        "start": 806.8,
+        "end": 811.8,
+        "duration": 5.0
+      },
+      "transcript": "Well, first of all, there are no annoying neighbors like those pushy owl limpets.",
+      "transcript_signature": "e27ca88f6bcfd041f0f862e3c36b32c31d18e833333b71e020813436055c6873",
+      "language_state": "en",
+      "source_provenance_id": "provenance_151b8959e30dd450908b",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_37e60db8ddb476543703",
+        "previous_transcript_signature": "ab823dc1428fb6f394cf8ff67f66e634d6bb5269829abc009e8610ba932b1732",
+        "next_speech_passage_id": "speech_7670b881a6746dacade6",
+        "next_transcript_signature": "b5407da0fbcf1467e8c3aefe351b48a146a29be3c26bfa2ec12fc55ff636c970",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [
+          "performance_01f6d2aab9693cb9a405"
+        ],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "e332b464675e25d1fd256f768d6161c84b65f806d28b068147b443b9e91b7164",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_37e60db8ddb476543703",
+          "previous_transcript_signature": "ab823dc1428fb6f394cf8ff67f66e634d6bb5269829abc009e8610ba932b1732",
+          "next_speech_passage_id": "speech_7670b881a6746dacade6",
+          "next_transcript_signature": "b5407da0fbcf1467e8c3aefe351b48a146a29be3c26bfa2ec12fc55ff636c970",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [
+            "performance_01f6d2aab9693cb9a405"
+          ],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "0a1407c3f8d0be054c3c54ad67650cf287bc136343f159ed5f5365c35d4074aa",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "discourse_management",
+                "label_id": "interaction_function.discourse_management",
+                "confidence": 0.86
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.78,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.discourse_management",
+            "observation": "discourse_management"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "discourse_management"
+      ],
+      "proposed_surface_label": "declarative",
+      "proposal_confidence": 0.78,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_discourse_management"
+      ]
+    },
+    {
+      "sample_id": "function_sample_003",
+      "case_id": "animation_mega_man",
+      "media_class": "animation",
+      "film_id": "film_16fa9f4eb0552a562e65",
+      "speech_passage_id": "speech_057953e7731177735d19",
+      "source_time_range": {
+        "start": 793.0,
+        "end": 795.0,
+        "duration": 2.0
+      },
+      "transcript": "Nice work, Mega.",
+      "transcript_signature": "e8714bf09fefa71efa09c36bfc86e530f8482940c6c560413aad19e4fd1df345",
+      "language_state": "en",
+      "source_provenance_id": "provenance_eab42da39168c33177d4",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_6b1760917339505b8f61",
+        "previous_transcript_signature": "d8ad782e0e0cd09c359d3f30ebc25ec8e0b5825d080123b49fd4a5e54444e45f",
+        "next_speech_passage_id": "speech_11c344f18dcfd8b1a963",
+        "next_transcript_signature": "cca531b9ae9f1f3d4a2a100fca7f8a2a6244757cb890eb115be17d71bd20abdc",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "699a7d8a85fa364a6a1b7e8eb2a2373cb2c98c31227ba9a51fd9350d4cd6a724",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_6b1760917339505b8f61",
+          "previous_transcript_signature": "d8ad782e0e0cd09c359d3f30ebc25ec8e0b5825d080123b49fd4a5e54444e45f",
+          "next_speech_passage_id": "speech_11c344f18dcfd8b1a963",
+          "next_transcript_signature": "cca531b9ae9f1f3d4a2a100fca7f8a2a6244757cb890eb115be17d71bd20abdc",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "14aaad6fc0ca0914a2ad725b13321761de74b0d89f9e8c91a1ddfcc2f7e70f82",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "fragment",
+                "label_id": "surface_form.fragment",
+                "confidence": 0.72
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "evaluation_or_reaction",
+                "label_id": "interaction_function.evaluation_or_reaction",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "evaluation_or_reaction"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "evaluation_or_reaction"
+      ],
+      "proposed_surface_label": "fragment",
+      "proposal_confidence": 0.66,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "fragment"
+      ]
+    },
+    {
+      "sample_id": "function_sample_004",
+      "case_id": "animation_wallace_gromit",
+      "media_class": "animation",
+      "film_id": "film_c354c296f196aedd3b4f",
+      "speech_passage_id": "speech_90c55cf6ef08688b1d38",
+      "source_time_range": {
+        "start": 823.48,
+        "end": 830.48,
+        "duration": 7.0
+      },
+      "transcript": "It's the wrong trousers the wrong trousers what have you done with the controls grommet?",
+      "transcript_signature": "b0c583839958a46bfb7bb375d5a373c6517f231c1503bf5729ca65e69cda8069",
+      "language_state": "en",
+      "source_provenance_id": "provenance_4ce7b3d6e77fb6df9a3c",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_a48236fb50e88e230ce3",
+        "previous_transcript_signature": "8aaacb4afa8099cbd4831348f9683ef5bf1e3c77cefa10cfaed8f956e3f35ecd",
+        "next_speech_passage_id": "speech_2cf4365b10f53290a068",
+        "next_transcript_signature": "05d1527c0f61201e17edc8b2a9a2328dc49637cccdfc4462850c8cb4cf06383b",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [
+          "performance_2423d7428f48f850e1d6"
+        ],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "b851bfae52067eb34eacfa12db1a9e0facb73e24ecf23aa1304fa9d4d44e0387",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_a48236fb50e88e230ce3",
+          "previous_transcript_signature": "8aaacb4afa8099cbd4831348f9683ef5bf1e3c77cefa10cfaed8f956e3f35ecd",
+          "next_speech_passage_id": "speech_2cf4365b10f53290a068",
+          "next_transcript_signature": "05d1527c0f61201e17edc8b2a9a2328dc49637cccdfc4462850c8cb4cf06383b",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [
+            "performance_2423d7428f48f850e1d6"
+          ],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "a5dc6945c893fde0574f58c7a73b604c1da61c93b423dfe26e7dcd3ba5b79a61",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "interrogative",
+                "label_id": "surface_form.interrogative",
+                "confidence": 0.94
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "accusation",
+                "label_id": "interaction_function.accusation",
+                "confidence": 0.9
+              },
+              {
+                "label": "request_information",
+                "label_id": "interaction_function.request_information",
+                "confidence": 0.9
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.9,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "surface.interrogative_form",
+            "observation": [
+              "it's",
+              "the"
+            ]
+          },
+          {
+            "rule_id": "interaction.accusation",
+            "observation": "accusation"
+          },
+          {
+            "rule_id": "interaction.information_question",
+            "observation": "request_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "accusation",
+        "request_information"
+      ],
+      "proposed_surface_label": "interrogative",
+      "proposal_confidence": 0.9,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_accusation"
+      ]
+    },
+    {
+      "sample_id": "function_sample_005",
+      "case_id": "animation_wallace_gromit",
+      "media_class": "animation",
+      "film_id": "film_c354c296f196aedd3b4f",
+      "speech_passage_id": "speech_018b4209a172f74e622f",
+      "source_time_range": {
+        "start": 1210.96,
+        "end": 1212.96,
+        "duration": 2.0
+      },
+      "transcript": "Oh",
+      "transcript_signature": "8aaacb4afa8099cbd4831348f9683ef5bf1e3c77cefa10cfaed8f956e3f35ecd",
+      "language_state": "en",
+      "source_provenance_id": "provenance_d16a7c348ea4d931b4ab",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_a66a582d86f1092aaafd",
+        "previous_transcript_signature": "8aaacb4afa8099cbd4831348f9683ef5bf1e3c77cefa10cfaed8f956e3f35ecd",
+        "next_speech_passage_id": "speech_99cd3fa19b3b7f5f0a90",
+        "next_transcript_signature": "8aaacb4afa8099cbd4831348f9683ef5bf1e3c77cefa10cfaed8f956e3f35ecd",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [
+          "performance_1f042699b15e49d13f84"
+        ],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "18322a2a905c3ead069fba78819463ce03cc7d5ab9ece62c6122c3c803ccfaff",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_a66a582d86f1092aaafd",
+          "previous_transcript_signature": "8aaacb4afa8099cbd4831348f9683ef5bf1e3c77cefa10cfaed8f956e3f35ecd",
+          "next_speech_passage_id": "speech_99cd3fa19b3b7f5f0a90",
+          "next_transcript_signature": "8aaacb4afa8099cbd4831348f9683ef5bf1e3c77cefa10cfaed8f956e3f35ecd",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [
+            "performance_1f042699b15e49d13f84"
+          ],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "ba51ec91a41cc37eda7633f9ce601824191614c8931f5098ff5ec4c10e8868ad",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "non_lexical",
+                "label_id": "surface_form.non_lexical",
+                "confidence": 0.96
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "not_applicable",
+                "label_id": "interaction_function.not_applicable",
+                "confidence": 0.92
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.0,
+        "abstention": {
+          "abstained": true,
+          "reason": "BELOW_THRESHOLD_OR_UNSUPPORTED",
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "surface.non_lexical_lexicon",
+            "observation": [
+              "oh"
+            ]
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [],
+      "proposed_surface_label": "non_lexical",
+      "proposal_confidence": 0.0,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "non_lexical"
+      ]
+    },
+    {
+      "sample_id": "function_sample_006",
+      "case_id": "live_action_red_dwarf",
+      "media_class": "live_action",
+      "film_id": "film_87a25cfebac025a84d52",
+      "speech_passage_id": "speech_2acdb2d3768307b99004",
+      "source_time_range": {
+        "start": 69.16,
+        "end": 70.16,
+        "duration": 1.0
+      },
+      "transcript": "No?",
+      "transcript_signature": "23909ff9720c0d7f570ff7f9a8f26457f0fa3a520ef45800abaf6ea935855694",
+      "language_state": "en",
+      "source_provenance_id": "provenance_fbad888720b98259137d",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_31730dde328730f7b6b5",
+        "previous_transcript_signature": "452c9344bc055e594389f04bc8dbc84e9237ea80ca32261b9bad1e2396ffb4ad",
+        "next_speech_passage_id": "speech_5cd296b876c1996d0bdb",
+        "next_transcript_signature": "59b4d580f77b1a2c4682ce50513cc7e67d749c7a656dc0054474f26df626be25",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "bdfc517019740129171d9c88cde35bc7042e1fa7f8959c3cb54fc3c658962e2a",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_31730dde328730f7b6b5",
+          "previous_transcript_signature": "452c9344bc055e594389f04bc8dbc84e9237ea80ca32261b9bad1e2396ffb4ad",
+          "next_speech_passage_id": "speech_5cd296b876c1996d0bdb",
+          "next_transcript_signature": "59b4d580f77b1a2c4682ce50513cc7e67d749c7a656dc0054474f26df626be25",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "f53c881ca18e09559ee3afa1e304a1422fa7be7c7e45d374ebc9166f8efbc308",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "interrogative",
+                "label_id": "surface_form.interrogative",
+                "confidence": 0.94
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "request_information",
+                "label_id": "interaction_function.request_information",
+                "confidence": 0.9
+              },
+              {
+                "label": "ambiguous",
+                "label_id": "interaction_function.ambiguous",
+                "confidence": 0.87
+              },
+              {
+                "label": "disagreement",
+                "label_id": "interaction_function.disagreement",
+                "confidence": 0.87
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.9,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "AMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "surface.interrogative_form",
+            "observation": [
+              "no"
+            ]
+          },
+          {
+            "rule_id": "interaction.disagreement",
+            "observation": "disagreement"
+          },
+          {
+            "rule_id": "interaction.information_question",
+            "observation": "request_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "request_information",
+        "disagreement"
+      ],
+      "proposed_surface_label": "interrogative",
+      "proposal_confidence": 0.9,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_disagreement"
+      ]
+    },
+    {
+      "sample_id": "function_sample_007",
+      "case_id": "live_action_red_dwarf",
+      "media_class": "live_action",
+      "film_id": "film_87a25cfebac025a84d52",
+      "speech_passage_id": "speech_07fe292c0c3efb9f609c",
+      "source_time_range": {
+        "start": 484.16,
+        "end": 488.16,
+        "duration": 4.0
+      },
+      "transcript": "That's why I never buy any soap or deodorants or socks or anything like that, you know?",
+      "transcript_signature": "f3484047ef26892e8ccad0ad3041e6af72c98fa78a176449e9fb391de664f8fc",
+      "language_state": "en",
+      "source_provenance_id": "provenance_36447a5108c4dede8716",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_0ca1f3b66e41f5213278",
+        "previous_transcript_signature": "946d43d5fb634519d7103a543ca5aef95d394070b3f5b9758629aeb3fa9f61b8",
+        "next_speech_passage_id": "speech_3c0eaaa76f6c9a9e834b",
+        "next_transcript_signature": "563a6b2bf5fc9c9d13b1ff0841ae549744e58fc54649463a8df818209cdff755",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "763f4990ee439cc4999ca0d1984897fb648ab968871f6655806a8cadec38b75e",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_0ca1f3b66e41f5213278",
+          "previous_transcript_signature": "946d43d5fb634519d7103a543ca5aef95d394070b3f5b9758629aeb3fa9f61b8",
+          "next_speech_passage_id": "speech_3c0eaaa76f6c9a9e834b",
+          "next_transcript_signature": "563a6b2bf5fc9c9d13b1ff0841ae549744e58fc54649463a8df818209cdff755",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "8ae54de963476ebfbac57588d5140d260378f77182d6fb48088a883199e31188",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "interrogative",
+                "label_id": "surface_form.interrogative",
+                "confidence": 0.94
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "request_information",
+                "label_id": "interaction_function.request_information",
+                "confidence": 0.9
+              },
+              {
+                "label": "ambiguous",
+                "label_id": "interaction_function.ambiguous",
+                "confidence": 0.85
+              },
+              {
+                "label": "explanation",
+                "label_id": "interaction_function.explanation",
+                "confidence": 0.85
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.9,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "AMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "surface.interrogative_form",
+            "observation": [
+              "that's",
+              "why"
+            ]
+          },
+          {
+            "rule_id": "interaction.explanation",
+            "observation": "explanation"
+          },
+          {
+            "rule_id": "interaction.information_question",
+            "observation": "request_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "request_information",
+        "explanation"
+      ],
+      "proposed_surface_label": "interrogative",
+      "proposal_confidence": 0.9,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_explanation"
+      ]
+    },
+    {
+      "sample_id": "function_sample_008",
+      "case_id": "live_action_red_dwarf",
+      "media_class": "live_action",
+      "film_id": "film_87a25cfebac025a84d52",
+      "speech_passage_id": "speech_66d897b411492cc8658c",
+      "source_time_range": {
+        "start": 712.16,
+        "end": 714.16,
+        "duration": 2.0
+      },
+      "transcript": "if you die, I'll kill you.",
+      "transcript_signature": "41f353a4093fc70be32250dde5d7d7d9ff5c3997a1ec73c2658588461467eddf",
+      "language_state": "en",
+      "source_provenance_id": "provenance_165f85bf99a490edcf0d",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_affd1877dfb3611a7a1e",
+        "previous_transcript_signature": "06c2a68eb2e210fe82cce5350acc90941e33d3ab7d6b77eacc939aeab44253ed",
+        "next_speech_passage_id": "speech_a004d17c5f4f575662b6",
+        "next_transcript_signature": "72f721e2eab6dcedc1858afa52e7f4fe7d7e45a61241f9ba850130dc063e259b",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "2f98b6f52f3651b2fd7da4db0fbf974323fa80bae613da893aa18dd1b8c04654",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_affd1877dfb3611a7a1e",
+          "previous_transcript_signature": "06c2a68eb2e210fe82cce5350acc90941e33d3ab7d6b77eacc939aeab44253ed",
+          "next_speech_passage_id": "speech_a004d17c5f4f575662b6",
+          "next_transcript_signature": "72f721e2eab6dcedc1858afa52e7f4fe7d7e45a61241f9ba850130dc063e259b",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "82105abda0c08fe81b7f4d44c4532e73fd1183f70db15f29dca9c0ba009e0cd8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "threat",
+                "label_id": "interaction_function.threat",
+                "confidence": 0.94
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.78,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.threat",
+            "observation": "threat"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "threat"
+      ],
+      "proposed_surface_label": "declarative",
+      "proposal_confidence": 0.78,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_threat"
+      ]
+    },
+    {
+      "sample_id": "function_sample_009",
+      "case_id": "live_action_red_dwarf",
+      "media_class": "live_action",
+      "film_id": "film_87a25cfebac025a84d52",
+      "speech_passage_id": "speech_3663bac0b5bbe588e906",
+      "source_time_range": {
+        "start": 748.16,
+        "end": 752.16,
+        "duration": 4.0
+      },
+      "transcript": "We don't know what it is, Lister, so just be careful, okay?",
+      "transcript_signature": "5aebb51e7403ad20288a3153ba2ef499076280d0fdf5a516daa4935b93f58520",
+      "language_state": "en",
+      "source_provenance_id": "provenance_1dd743bf89c46e0dcdd9",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_7d1d18c849d23917a73a",
+        "previous_transcript_signature": "b1bf3235f096104c6193d1ededcc26007bb1dfe3238a6e9998d647d5f1e3d1d0",
+        "next_speech_passage_id": "speech_f53acb82ea80c0595544",
+        "next_transcript_signature": "fa3d7985529f470a615903351d6ecc3f79644bccfd4071b963befb965c38b20c",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "a9e001866d5b59fc5d07482415a0a83252c04c5ceb6424868e5287de345e4933",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_7d1d18c849d23917a73a",
+          "previous_transcript_signature": "b1bf3235f096104c6193d1ededcc26007bb1dfe3238a6e9998d647d5f1e3d1d0",
+          "next_speech_passage_id": "speech_f53acb82ea80c0595544",
+          "next_transcript_signature": "fa3d7985529f470a615903351d6ecc3f79644bccfd4071b963befb965c38b20c",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "ba7e443df87b6af523df1fcbc6d94036e8022847bd27ecea42a0aa7bd8a327b4",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "interrogative",
+                "label_id": "surface_form.interrogative",
+                "confidence": 0.94
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "warning",
+                "label_id": "interaction_function.warning",
+                "confidence": 0.94
+              },
+              {
+                "label": "ambiguous",
+                "label_id": "interaction_function.ambiguous",
+                "confidence": 0.9
+              },
+              {
+                "label": "request_information",
+                "label_id": "interaction_function.request_information",
+                "confidence": 0.9
+              },
+              {
+                "label": "acknowledgment",
+                "label_id": "interaction_function.acknowledgment",
+                "confidence": 0.82
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.94,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "AMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "surface.interrogative_form",
+            "observation": [
+              "we",
+              "don't"
+            ]
+          },
+          {
+            "rule_id": "interaction.acknowledgment",
+            "observation": "acknowledgment"
+          },
+          {
+            "rule_id": "interaction.warning",
+            "observation": "warning"
+          },
+          {
+            "rule_id": "interaction.information_question",
+            "observation": "request_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "warning",
+        "request_information",
+        "acknowledgment"
+      ],
+      "proposed_surface_label": "interrogative",
+      "proposal_confidence": 0.94,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_request_information"
+      ]
+    },
+    {
+      "sample_id": "function_sample_010",
+      "case_id": "live_action_red_dwarf",
+      "media_class": "live_action",
+      "film_id": "film_87a25cfebac025a84d52",
+      "speech_passage_id": "speech_18191408a9f895b19a94",
+      "source_time_range": {
+        "start": 1328.16,
+        "end": 1330.16,
+        "duration": 2.0
+      },
+      "transcript": "It was me plan. I planned it.",
+      "transcript_signature": "4eb01b7f4b9716dee404b5cd870e4b48fae834bf33cad1a657788528a5d24c1a",
+      "language_state": "en",
+      "source_provenance_id": "provenance_005408b1bc74d26e6b3a",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_d701a4026505048f7c54",
+        "previous_transcript_signature": "0588d180eb13a811de662f864fb4942590fc4188c028753ec985f5e512ef0535",
+        "next_speech_passage_id": "speech_ac6626f5467395423f21",
+        "next_transcript_signature": "d0eea2f5c8229d0f38eae7508abe06a3f4f14ff8db4960a65712f4f6ceebd1dd",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "b0aa886c9c33bbf4cf9931e354f10b198b32dd8329d5b5ebd07c8d33e7604f41",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_d701a4026505048f7c54",
+          "previous_transcript_signature": "0588d180eb13a811de662f864fb4942590fc4188c028753ec985f5e512ef0535",
+          "next_speech_passage_id": "speech_ac6626f5467395423f21",
+          "next_transcript_signature": "d0eea2f5c8229d0f38eae7508abe06a3f4f14ff8db4960a65712f4f6ceebd1dd",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "5ec74156204b58bbd06ad4b300ab4e81746597d4f6565f06c3f96f5af0344638",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "confession",
+                "label_id": "interaction_function.confession",
+                "confidence": 0.94
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.78,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.confession",
+            "observation": "confession"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "confession"
+      ],
+      "proposed_surface_label": "declarative",
+      "proposal_confidence": 0.78,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_confession"
+      ]
+    },
+    {
+      "sample_id": "function_sample_011",
+      "case_id": "live_action_red_dwarf",
+      "media_class": "live_action",
+      "film_id": "film_87a25cfebac025a84d52",
+      "speech_passage_id": "speech_3f23f2054462cce557aa",
+      "source_time_range": {
+        "start": 1354.16,
+        "end": 1356.16,
+        "duration": 2.0
+      },
+      "transcript": "What do you mean, technically speaking?",
+      "transcript_signature": "9c65f323fec10f2d7feebca15cf121b0d3d20f73dc5ff1d4cc719dca47c09290",
+      "language_state": "en",
+      "source_provenance_id": "provenance_2569d0ccde904923ebab",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_3744b02c1bbdd7b08f37",
+        "previous_transcript_signature": "dcdfed59d5968d77831729ac2c994d4a84ccbfa31f278223d7859f058ff47177",
+        "next_speech_passage_id": "speech_d8a9ef086a47f4550176",
+        "next_transcript_signature": "5376ba3b0ffd1699af748b70134d94ef271bc18b02d699ffd6884995780f95c8",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "6a641c3360be43399b14182f5488561a8eed8b1347cf7481b0e330b714d61df0",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_3744b02c1bbdd7b08f37",
+          "previous_transcript_signature": "dcdfed59d5968d77831729ac2c994d4a84ccbfa31f278223d7859f058ff47177",
+          "next_speech_passage_id": "speech_d8a9ef086a47f4550176",
+          "next_transcript_signature": "5376ba3b0ffd1699af748b70134d94ef271bc18b02d699ffd6884995780f95c8",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "81f57b50bfea18db6e18a2ae73e610ea640ea9624b47980c9c9179b6276395a4",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "interrogative",
+                "label_id": "surface_form.interrogative",
+                "confidence": 0.94
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "clarification_or_repair",
+                "label_id": "interaction_function.clarification_or_repair",
+                "confidence": 0.9
+              },
+              {
+                "label": "request_information",
+                "label_id": "interaction_function.request_information",
+                "confidence": 0.9
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.9,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "surface.interrogative_form",
+            "observation": [
+              "what",
+              "do"
+            ]
+          },
+          {
+            "rule_id": "interaction.clarification",
+            "observation": "clarification_or_repair"
+          },
+          {
+            "rule_id": "interaction.information_question",
+            "observation": "request_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "clarification_or_repair",
+        "request_information"
+      ],
+      "proposed_surface_label": "interrogative",
+      "proposal_confidence": 0.9,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_clarification_or_repair"
+      ]
+    },
+    {
+      "sample_id": "function_sample_012",
+      "case_id": "live_action_red_dwarf",
+      "media_class": "live_action",
+      "film_id": "film_87a25cfebac025a84d52",
+      "speech_passage_id": "speech_afc2d5a452c79a73b57a",
+      "source_time_range": {
+        "start": 1408.16,
+        "end": 1410.16,
+        "duration": 2.0
+      },
+      "transcript": "Hey, hey, I didn't do anything.",
+      "transcript_signature": "1bb679ea0299c7ed8f18933dbd151b4eef48183fac7eb2250266eb8230f59890",
+      "language_state": "en",
+      "source_provenance_id": "provenance_e7974c6e246de31d8041",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_ee091a16e1bc8e414fc7",
+        "previous_transcript_signature": "db638f4b20ae5af83c592f75c0ae1837e58627ea3b71fb0402d7b8ac69984be5",
+        "next_speech_passage_id": "speech_345693894220af97c99e",
+        "next_transcript_signature": "5286e9deabbf8034d69778ebca7d2229a8bfd14afa072ebf3cd5c4f018101e05",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "7f054aa48d6ee0fcdb5f189f1466b28e0d4c7808e0043a75a4d1f414d9d9bf7e",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_ee091a16e1bc8e414fc7",
+          "previous_transcript_signature": "db638f4b20ae5af83c592f75c0ae1837e58627ea3b71fb0402d7b8ac69984be5",
+          "next_speech_passage_id": "speech_345693894220af97c99e",
+          "next_transcript_signature": "5286e9deabbf8034d69778ebca7d2229a8bfd14afa072ebf3cd5c4f018101e05",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "f7db037311cf4fb7aebb9be51a351e1615c13fc4278841c7cdb46135bedab62c",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "greeting_or_address",
+                "label_id": "interaction_function.greeting_or_address",
+                "confidence": 0.91
+              },
+              {
+                "label": "ambiguous",
+                "label_id": "interaction_function.ambiguous",
+                "confidence": 0.87
+              },
+              {
+                "label": "defense",
+                "label_id": "interaction_function.defense",
+                "confidence": 0.87
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.78,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "AMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.greeting",
+            "observation": "greeting_or_address"
+          },
+          {
+            "rule_id": "interaction.defense",
+            "observation": "defense"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "greeting_or_address",
+        "defense"
+      ],
+      "proposed_surface_label": "declarative",
+      "proposal_confidence": 0.78,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_defense"
+      ]
+    },
+    {
+      "sample_id": "function_sample_013",
+      "case_id": "live_action_red_dwarf",
+      "media_class": "live_action",
+      "film_id": "film_87a25cfebac025a84d52",
+      "speech_passage_id": "speech_2ef7d6764bd6438e0b70",
+      "source_time_range": {
+        "start": 1618.16,
+        "end": 1620.16,
+        "duration": 2.0
+      },
+      "transcript": "Hello?",
+      "transcript_signature": "140b5f8f0035493e4b1d46166288c8493bb6fdc938f956d0eea4e18f894938b6",
+      "language_state": "en",
+      "source_provenance_id": "provenance_de34e8f3cc2d4038393c",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_6f77c0c4b4636c123aee",
+        "previous_transcript_signature": "63d58d64eea4178cd81856f2943bc1a69a08ce66dcf0aa5277547cdb0ae8c835",
+        "next_speech_passage_id": "speech_071a1453f15d518acdf8",
+        "next_transcript_signature": "5a1e76808a67b601b8a483ea62831f6cfa79b562c66d848825f4fe78682822c6",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "7d5f5d379c4cd600df19efa52f5bca830aea363a1e46653095c9e81032b67080",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_6f77c0c4b4636c123aee",
+          "previous_transcript_signature": "63d58d64eea4178cd81856f2943bc1a69a08ce66dcf0aa5277547cdb0ae8c835",
+          "next_speech_passage_id": "speech_071a1453f15d518acdf8",
+          "next_transcript_signature": "5a1e76808a67b601b8a483ea62831f6cfa79b562c66d848825f4fe78682822c6",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "c6f2ac146f17223430c3e52e7fda5b99bc0f836d8a4d8b95cf5b177aa0a2b9fc",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "interrogative",
+                "label_id": "surface_form.interrogative",
+                "confidence": 0.94
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "greeting_or_address",
+                "label_id": "interaction_function.greeting_or_address",
+                "confidence": 0.91
+              },
+              {
+                "label": "ambiguous",
+                "label_id": "interaction_function.ambiguous",
+                "confidence": 0.9
+              },
+              {
+                "label": "request_information",
+                "label_id": "interaction_function.request_information",
+                "confidence": 0.9
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.91,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "AMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "surface.interrogative_form",
+            "observation": [
+              "hello"
+            ]
+          },
+          {
+            "rule_id": "interaction.greeting",
+            "observation": "greeting_or_address"
+          },
+          {
+            "rule_id": "interaction.information_question",
+            "observation": "request_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "greeting_or_address",
+        "request_information"
+      ],
+      "proposed_surface_label": "interrogative",
+      "proposal_confidence": 0.91,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_greeting_or_address"
+      ]
+    },
+    {
+      "sample_id": "function_sample_014",
+      "case_id": "live_action_sleeping_beauty",
+      "media_class": "live_action",
+      "film_id": "film_ef0c425a5b58f8481c69",
+      "speech_passage_id": "speech_045879557e2f8afc342a",
+      "source_time_range": {
+        "start": 217.6,
+        "end": 218.6,
+        "duration": 1.0
+      },
+      "transcript": "Yes?",
+      "transcript_signature": "a9e6cfef1fe82e1c5dfdfa5d080806c9006d8a9a9e958429d31e676759c4dd8a",
+      "language_state": "en",
+      "source_provenance_id": "provenance_e05ad458345d6d8ed85c",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_4b307c8493ec22cce3f6",
+        "previous_transcript_signature": "fe47912d43033c8ec0bee95ad45f18f4044673ca49c756a4986242fed67cfce7",
+        "next_speech_passage_id": "speech_306658ff369c2e2d319d",
+        "next_transcript_signature": "8ca75b8ad4970dab0f3fc94d7ca39e2cdd112adc1ee4da51a09f286d7e37baa7",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [
+          "performance_0ff4c4c6c3828d0faee9"
+        ],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "c71c60005bdb40428db64310039d83635534422776d7ffb4526e666af2ca0bd5",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_4b307c8493ec22cce3f6",
+          "previous_transcript_signature": "fe47912d43033c8ec0bee95ad45f18f4044673ca49c756a4986242fed67cfce7",
+          "next_speech_passage_id": "speech_306658ff369c2e2d319d",
+          "next_transcript_signature": "8ca75b8ad4970dab0f3fc94d7ca39e2cdd112adc1ee4da51a09f286d7e37baa7",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [
+            "performance_0ff4c4c6c3828d0faee9"
+          ],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "f856c65ed19c718f259cd1efe020f1021764c59a9d1f24067b66f03113680b65",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "interrogative",
+                "label_id": "surface_form.interrogative",
+                "confidence": 0.94
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "request_information",
+                "label_id": "interaction_function.request_information",
+                "confidence": 0.9
+              },
+              {
+                "label": "agreement",
+                "label_id": "interaction_function.agreement",
+                "confidence": 0.88
+              },
+              {
+                "label": "ambiguous",
+                "label_id": "interaction_function.ambiguous",
+                "confidence": 0.88
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.9,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "AMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "surface.interrogative_form",
+            "observation": [
+              "yes"
+            ]
+          },
+          {
+            "rule_id": "interaction.agreement",
+            "observation": "agreement"
+          },
+          {
+            "rule_id": "interaction.information_question",
+            "observation": "request_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "request_information",
+        "agreement"
+      ],
+      "proposed_surface_label": "interrogative",
+      "proposal_confidence": 0.9,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_agreement"
+      ]
+    },
+    {
+      "sample_id": "function_sample_015",
+      "case_id": "live_action_sleeping_beauty",
+      "media_class": "live_action",
+      "film_id": "film_ef0c425a5b58f8481c69",
+      "speech_passage_id": "speech_12615f97072a0a409497",
+      "source_time_range": {
+        "start": 230.24,
+        "end": 236.24,
+        "duration": 6.0
+      },
+      "transcript": "Once upon a time in a land far away.",
+      "transcript_signature": "c62dfbe5dffdf00758ceb05ea91ca55aed5968b52f2db8bd45969602e5221edf",
+      "language_state": "en",
+      "source_provenance_id": "provenance_d21d3e60a6336b47cb43",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_15b107f3b68b26fd30cf",
+        "previous_transcript_signature": "e26d4e3023bc8572bbc500c2dc1030a2be0ef6875284fa4bf19cc7c2ca137a04",
+        "next_speech_passage_id": "speech_69e35f823e2f9db2a66a",
+        "next_transcript_signature": "fe47912d43033c8ec0bee95ad45f18f4044673ca49c756a4986242fed67cfce7",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [
+          "performance_0ff4c4c6c3828d0faee9"
+        ],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "430e3dd19abfc28c38cb3fb78e5e55b99119974417644bb065ba5470e43a7669",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_15b107f3b68b26fd30cf",
+          "previous_transcript_signature": "e26d4e3023bc8572bbc500c2dc1030a2be0ef6875284fa4bf19cc7c2ca137a04",
+          "next_speech_passage_id": "speech_69e35f823e2f9db2a66a",
+          "next_transcript_signature": "fe47912d43033c8ec0bee95ad45f18f4044673ca49c756a4986242fed67cfce7",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [
+            "performance_0ff4c4c6c3828d0faee9"
+          ],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "36042e6a567127c7de960917029cd61e448f02a013a0100088c37d1182fbdc7a",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "narration",
+                "label_id": "interaction_function.narration",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.78,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.narration",
+            "observation": "narration"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "narration"
+      ],
+      "proposed_surface_label": "declarative",
+      "proposal_confidence": 0.78,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_narration"
+      ]
+    },
+    {
+      "sample_id": "function_sample_016",
+      "case_id": "live_action_sleeping_beauty",
+      "media_class": "live_action",
+      "film_id": "film_ef0c425a5b58f8481c69",
+      "speech_passage_id": "speech_7a8250455c25968c87d4",
+      "source_time_range": {
+        "start": 871.56,
+        "end": 876.96,
+        "duration": 5.4
+      },
+      "transcript": "Anyway, as I was saying, all these gifts, what are they good for?",
+      "transcript_signature": "776a45dce8f84c599866c6bcc15df9789356c607190da9af0880619bec813cd2",
+      "language_state": "en",
+      "source_provenance_id": "provenance_50f7956f7a2b669cc64a",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_631d340c5a4ef0a2b40d",
+        "previous_transcript_signature": "bc3c9de96ee7fe9835c2e1a3c91211bb5f95491b8497b34b91f492b5b4dc5eca",
+        "next_speech_passage_id": "speech_bb5f9f85c927aea479ac",
+        "next_transcript_signature": "332031e4d477544a6496a484867b3aaf0f9d25fa9b16b5fb156c2d5e1bfc7031",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [
+          "performance_a39ec9a0c1617973371e"
+        ],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "f79b251560a542f84046d946c9de26ca2615c24b4a3d2ec7a3edeca7d9d0900b",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_631d340c5a4ef0a2b40d",
+          "previous_transcript_signature": "bc3c9de96ee7fe9835c2e1a3c91211bb5f95491b8497b34b91f492b5b4dc5eca",
+          "next_speech_passage_id": "speech_bb5f9f85c927aea479ac",
+          "next_transcript_signature": "332031e4d477544a6496a484867b3aaf0f9d25fa9b16b5fb156c2d5e1bfc7031",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [
+            "performance_a39ec9a0c1617973371e"
+          ],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "798c904baa437de76b766bb542291711c773ed56285795398e16643b13df54f9",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "interrogative",
+                "label_id": "surface_form.interrogative",
+                "confidence": 0.94
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "request_information",
+                "label_id": "interaction_function.request_information",
+                "confidence": 0.9
+              },
+              {
+                "label": "ambiguous",
+                "label_id": "interaction_function.ambiguous",
+                "confidence": 0.85
+              },
+              {
+                "label": "deflection",
+                "label_id": "interaction_function.deflection",
+                "confidence": 0.85
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.9,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "AMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "surface.interrogative_form",
+            "observation": [
+              "anyway",
+              "as"
+            ]
+          },
+          {
+            "rule_id": "interaction.deflection",
+            "observation": "deflection"
+          },
+          {
+            "rule_id": "interaction.information_question",
+            "observation": "request_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "request_information",
+        "deflection"
+      ],
+      "proposed_surface_label": "interrogative",
+      "proposal_confidence": 0.9,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_deflection"
+      ]
+    },
+    {
+      "sample_id": "function_sample_017",
+      "case_id": "live_action_sleeping_beauty",
+      "media_class": "live_action",
+      "film_id": "film_ef0c425a5b58f8481c69",
+      "speech_passage_id": "speech_3c012d5bb758582abe70",
+      "source_time_range": {
+        "start": 1617.16,
+        "end": 1619.16,
+        "duration": 2.0
+      },
+      "transcript": "Wait a minute. You mean there's more?",
+      "transcript_signature": "5f56643078baf28a3009940bb3e28c1fc22936192d96cbd52e6a7c7e8f3f80c6",
+      "language_state": "en",
+      "source_provenance_id": "provenance_15a1ba79975b34d70ba6",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_5ecdab7bef8858c7254a",
+        "previous_transcript_signature": "af80cf1154d619b1c4425bf59e19ed14de0910f2c00c3b59ba849e0ace8c2da9",
+        "next_speech_passage_id": "speech_54cc3945b7d0fb69dfbc",
+        "next_transcript_signature": "06d5135818d4084fb82493358b4eb59088a760795232492056005580c01bd4e8",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [
+          "performance_29253fcc386e6291bc3a"
+        ],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "7e0ee82c84bb5e21892b03119b9c987f2fdb97a4e4df22ee692976b9e6eb4d15",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_5ecdab7bef8858c7254a",
+          "previous_transcript_signature": "af80cf1154d619b1c4425bf59e19ed14de0910f2c00c3b59ba849e0ace8c2da9",
+          "next_speech_passage_id": "speech_54cc3945b7d0fb69dfbc",
+          "next_transcript_signature": "06d5135818d4084fb82493358b4eb59088a760795232492056005580c01bd4e8",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [
+            "performance_29253fcc386e6291bc3a"
+          ],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "87de7f53b63c0a6dec80aa16fe377a0b9634014ad2caac5e2508f7fd27168f11",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "interrogative",
+                "label_id": "surface_form.interrogative",
+                "confidence": 0.94
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "request_information",
+                "label_id": "interaction_function.request_information",
+                "confidence": 0.9
+              },
+              {
+                "label": "ambiguous",
+                "label_id": "interaction_function.ambiguous",
+                "confidence": 0.86
+              },
+              {
+                "label": "interruption",
+                "label_id": "interaction_function.interruption",
+                "confidence": 0.86
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.9,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "AMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "surface.interrogative_form",
+            "observation": [
+              "wait",
+              "a"
+            ]
+          },
+          {
+            "rule_id": "interaction.interruption",
+            "observation": "interruption"
+          },
+          {
+            "rule_id": "interaction.information_question",
+            "observation": "request_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "request_information",
+        "interruption"
+      ],
+      "proposed_surface_label": "interrogative",
+      "proposal_confidence": 0.9,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_interruption"
+      ]
+    },
+    {
+      "sample_id": "function_sample_018",
+      "case_id": "live_action_sleeping_beauty",
+      "media_class": "live_action",
+      "film_id": "film_ef0c425a5b58f8481c69",
+      "speech_passage_id": "speech_1729ee73c592070ff3fd",
+      "source_time_range": {
+        "start": 2235.16,
+        "end": 2238.16,
+        "duration": 3.0
+      },
+      "transcript": "Don't worry. He looks great.",
+      "transcript_signature": "a5375d9c305434911e97f805030ca2e530e24132b7871be23634443a0d2a01cc",
+      "language_state": "en",
+      "source_provenance_id": "provenance_5165b93ef086845081b4",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_7ff35de5b856bc3d89af",
+        "previous_transcript_signature": "ce35922da12e9d7b966c74475af576971e5b44f5eb44e961da70bab4bc36c6fc",
+        "next_speech_passage_id": "speech_bd98a34e80d97f13e97f",
+        "next_transcript_signature": "f0a5b86bc9042be6ce00681a7b590922679d4194184fbc2e638b1a2d46582237",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [
+          "performance_55f22728ce93b0c12f20"
+        ],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "26a15d10422d05e9efb25f62db446bdb2c243f7f243ec0eee261db858e77878d",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_7ff35de5b856bc3d89af",
+          "previous_transcript_signature": "ce35922da12e9d7b966c74475af576971e5b44f5eb44e961da70bab4bc36c6fc",
+          "next_speech_passage_id": "speech_bd98a34e80d97f13e97f",
+          "next_transcript_signature": "f0a5b86bc9042be6ce00681a7b590922679d4194184fbc2e638b1a2d46582237",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [
+            "performance_55f22728ce93b0c12f20"
+          ],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "29c528992ca9610c1f966387a42ceb8a67b166fa8bc4d087008b31fe1da1184f",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "imperative",
+                "label_id": "surface_form.imperative",
+                "confidence": 0.86
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "reassurance",
+                "label_id": "interaction_function.reassurance",
+                "confidence": 0.92
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.86,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "surface.imperative_opening",
+            "observation": [
+              "don't",
+              "worry"
+            ]
+          },
+          {
+            "rule_id": "interaction.reassurance",
+            "observation": "reassurance"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "reassurance"
+      ],
+      "proposed_surface_label": "imperative",
+      "proposal_confidence": 0.86,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_reassurance"
+      ]
+    },
+    {
+      "sample_id": "function_sample_019",
+      "case_id": "live_action_sleeping_beauty",
+      "media_class": "live_action",
+      "film_id": "film_ef0c425a5b58f8481c69",
+      "speech_passage_id": "speech_5087fc43fa11c7d410d1",
+      "source_time_range": {
+        "start": 2338.16,
+        "end": 2341.16,
+        "duration": 3.0
+      },
+      "transcript": "I can't allow the rabble such familiarity. Where will it end?",
+      "transcript_signature": "e11752ad1fc1834e230435bff1aea0e0db8173fd14a4a614832915f24e3f8bb1",
+      "language_state": "en",
+      "source_provenance_id": "provenance_889748c670384dad8899",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_1f5e568a2cc3fd2a357a",
+        "previous_transcript_signature": "0dacb6b2213967b31f037ef78a66b5944be387186c20d19bd91043085aab3724",
+        "next_speech_passage_id": "speech_666f2bc080a358e5bae5",
+        "next_transcript_signature": "b95b16efdfd2cd52df5c6ccc50d5d9bd3c5e3b8d9d41e8f718687d62b2621bc3",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [
+          "performance_3199ac762b5a932d5071"
+        ],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "3a87bb7c89be949dbe14d8755105dcdb184d53112c191b7c142b73d717234345",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_1f5e568a2cc3fd2a357a",
+          "previous_transcript_signature": "0dacb6b2213967b31f037ef78a66b5944be387186c20d19bd91043085aab3724",
+          "next_speech_passage_id": "speech_666f2bc080a358e5bae5",
+          "next_transcript_signature": "b95b16efdfd2cd52df5c6ccc50d5d9bd3c5e3b8d9d41e8f718687d62b2621bc3",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [
+            "performance_3199ac762b5a932d5071"
+          ],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "55e62ad871f063a8578a414dc916707797c4123f8551f85fbec85dbb6a8376d3",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "interrogative",
+                "label_id": "surface_form.interrogative",
+                "confidence": 0.94
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "ambiguous",
+                "label_id": "interaction_function.ambiguous",
+                "confidence": 0.9
+              },
+              {
+                "label": "refusal",
+                "label_id": "interaction_function.refusal",
+                "confidence": 0.9
+              },
+              {
+                "label": "request_information",
+                "label_id": "interaction_function.request_information",
+                "confidence": 0.9
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.9,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "AMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "surface.interrogative_form",
+            "observation": [
+              "i",
+              "can't"
+            ]
+          },
+          {
+            "rule_id": "interaction.refusal",
+            "observation": "refusal"
+          },
+          {
+            "rule_id": "interaction.information_question",
+            "observation": "request_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "refusal",
+        "request_information"
+      ],
+      "proposed_surface_label": "interrogative",
+      "proposal_confidence": 0.9,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_refusal"
+      ]
+    },
+    {
+      "sample_id": "function_sample_020",
+      "case_id": "live_action_star_trek",
+      "media_class": "live_action",
+      "film_id": "film_ffebefb9187cc0e1ac21",
+      "speech_passage_id": "speech_00026136e3414557273e",
+      "source_time_range": {
+        "start": 1960.42,
+        "end": 1963.42,
+        "duration": 3.0
+      },
+      "transcript": "A faser hit at this distance would be the wireless stroke of luck.",
+      "transcript_signature": "59cd3cf1c7b90de3e3166645fc01e559b2fcdaf4daed6a696953b1a040189edc",
+      "language_state": "en",
+      "source_provenance_id": "provenance_7987d27cb0fea3690c49",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_9dfd4446377be1b4df1f",
+        "previous_transcript_signature": "0c950ad948a9bed2e148172aadb7bfdb9aa9e29e73649dd6a124d828fb38a54a",
+        "next_speech_passage_id": "speech_d740867be633c2547fd9",
+        "next_transcript_signature": "7d2354296f8d944cb00c8260a7ea43f51fdaa0e8dba1a21bb59efbc252b54770",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [
+          "performance_a744aca1e29b3521904b"
+        ],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "f5006d13a0d45615b11fa5aa7805ca11613cbde47b6e2a2b0d1701584fd91098",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_9dfd4446377be1b4df1f",
+          "previous_transcript_signature": "0c950ad948a9bed2e148172aadb7bfdb9aa9e29e73649dd6a124d828fb38a54a",
+          "next_speech_passage_id": "speech_d740867be633c2547fd9",
+          "next_transcript_signature": "7d2354296f8d944cb00c8260a7ea43f51fdaa0e8dba1a21bb59efbc252b54770",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [
+            "performance_a744aca1e29b3521904b"
+          ],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "498651257106f38fbf223e3a5788c8af4c6006a25a9e917a6d5a69ca5f9fd968",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "declarative",
+                "label_id": "surface_form.declarative",
+                "confidence": 0.78
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "provide_information",
+                "label_id": "interaction_function.provide_information",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.66,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.form_fallback",
+            "observation": "provide_information"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "provide_information"
+      ],
+      "proposed_surface_label": "declarative",
+      "proposal_confidence": 0.66,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_provide_information"
+      ]
+    },
+    {
+      "sample_id": "function_sample_021",
+      "case_id": "live_action_star_trek",
+      "media_class": "live_action",
+      "film_id": "film_ffebefb9187cc0e1ac21",
+      "speech_passage_id": "speech_0754c6e79be926dd96a3",
+      "source_time_range": {
+        "start": 2640.42,
+        "end": 2642.42,
+        "duration": 2.0
+      },
+      "transcript": "Will you require any assistance here?",
+      "transcript_signature": "ce08990c3d08428c4584cef422e9ede49168ce694f7086820b3924ea68aa9bff",
+      "language_state": "en",
+      "source_provenance_id": "provenance_3bf9bb31466eaccca10b",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_dbeb99aebf81918ea955",
+        "previous_transcript_signature": "884e1724db4f7c0d44b6a3f4e195b7dcfdc27eda500b156018fa4cdf75ed6e43",
+        "next_speech_passage_id": "speech_f7bf82e817e8915589e7",
+        "next_transcript_signature": "60f73ebf2acd7b391a515f8e7e044e62aae23f85b39de2efc977fe48c9e1ee93",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [
+          "performance_ef5c26d2263eff83e86f"
+        ],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "f519dcb06f03384a089b95b1220daafb6386d19d68fd0f4e1a8debde425561bb",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_dbeb99aebf81918ea955",
+          "previous_transcript_signature": "884e1724db4f7c0d44b6a3f4e195b7dcfdc27eda500b156018fa4cdf75ed6e43",
+          "next_speech_passage_id": "speech_f7bf82e817e8915589e7",
+          "next_transcript_signature": "60f73ebf2acd7b391a515f8e7e044e62aae23f85b39de2efc977fe48c9e1ee93",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [
+            "performance_ef5c26d2263eff83e86f"
+          ],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "885871ce515feb8c6ac7faa1392fa91b41f919e05842da2bcc91573405a57e19",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "interrogative",
+                "label_id": "surface_form.interrogative",
+                "confidence": 0.94
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "request_action",
+                "label_id": "interaction_function.request_action",
+                "confidence": 0.74
+              },
+              {
+                "label": "ambiguous",
+                "label_id": "interaction_function.ambiguous",
+                "confidence": 0.66
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.74,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "AMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "surface.interrogative_form",
+            "observation": [
+              "will",
+              "you"
+            ]
+          },
+          {
+            "rule_id": "interaction.indirect_action_request",
+            "observation": "request_action"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "request_action"
+      ],
+      "proposed_surface_label": "interrogative",
+      "proposal_confidence": 0.74,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_request_action"
+      ]
+    },
+    {
+      "sample_id": "function_sample_022",
+      "case_id": "live_action_wkyk",
+      "media_class": "live_action",
+      "film_id": "film_ad00f29166f9dbb6b1a6",
+      "speech_passage_id": "speech_008be6ab66bb102318d5",
+      "source_time_range": {
+        "start": 967.7,
+        "end": 968.7,
+        "duration": 1.0
+      },
+      "transcript": "Let's show Carl.",
+      "transcript_signature": "046804a710a29acd83674d3fa116f4d582889d84b24bc023bed494a90f9223d1",
+      "language_state": "en",
+      "source_provenance_id": "provenance_2496c048b1d8522573d9",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_b116b43a2085b7118bb8",
+        "previous_transcript_signature": "a5ff02233447d347b8ed61c77021c57cb038b6aef4aac3041d41057d66f60437",
+        "next_speech_passage_id": "speech_5d899261f6e42e22fd88",
+        "next_transcript_signature": "046804a710a29acd83674d3fa116f4d582889d84b24bc023bed494a90f9223d1",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [
+          "performance_20e50f3b8e9f18db3340"
+        ],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "acecac373ca6e65c0e10a454d828d7872d81e24dfc8ec12088c49a856968465a",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_b116b43a2085b7118bb8",
+          "previous_transcript_signature": "a5ff02233447d347b8ed61c77021c57cb038b6aef4aac3041d41057d66f60437",
+          "next_speech_passage_id": "speech_5d899261f6e42e22fd88",
+          "next_transcript_signature": "046804a710a29acd83674d3fa116f4d582889d84b24bc023bed494a90f9223d1",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [
+            "performance_20e50f3b8e9f18db3340"
+          ],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "d0478a754b54598dc0224b94ed50de76ae69acce6020971f3f0abb2553b06609",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "imperative",
+                "label_id": "surface_form.imperative",
+                "confidence": 0.86
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "command",
+                "label_id": "interaction_function.command",
+                "confidence": 0.86
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.86,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "surface.imperative_opening",
+            "observation": [
+              "let's",
+              "show"
+            ]
+          },
+          {
+            "rule_id": "interaction.directive",
+            "observation": "command"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "command"
+      ],
+      "proposed_surface_label": "imperative",
+      "proposal_confidence": 0.86,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_command"
+      ]
+    },
+    {
+      "sample_id": "function_sample_023",
+      "case_id": "live_action_wkyk",
+      "media_class": "live_action",
+      "film_id": "film_ad00f29166f9dbb6b1a6",
+      "speech_passage_id": "speech_81cde8c05adabdbdcc9d",
+      "source_time_range": {
+        "start": 1006.18,
+        "end": 1008.18,
+        "duration": 2.0
+      },
+      "transcript": "That's amazing!",
+      "transcript_signature": "11becb5d3171be01eeb8ae5b979e51456754529a64ab2dc5db76238d8b56a4c1",
+      "language_state": "en",
+      "source_provenance_id": "provenance_80fed590d3f6bc1e23c9",
+      "context_used": {
+        "mode": "dialogue_turn",
+        "previous_speech_passage_id": "speech_ef705179139c8ec56bcd",
+        "previous_transcript_signature": "11becb5d3171be01eeb8ae5b979e51456754529a64ab2dc5db76238d8b56a4c1",
+        "next_speech_passage_id": "speech_57a160170d78355ef414",
+        "next_transcript_signature": "fd5fed3d02080d2133ce4e13450419236baa779491976494bda7ec4e59f2341c",
+        "dialogue_turn_id": null,
+        "containing_performance_ids": [
+          "performance_12e8cddaa760c2d60fb5"
+        ],
+        "ordered_turn_evidence": false,
+        "preceding_turn_reference": null,
+        "following_turn_reference": null,
+        "sequence_position": null
+      },
+      "context_signature": "826d98ad7a4c5f90118bb49d8fc4502b851a01038cdd6e97b50a1b77a292a335",
+      "classifier_proposal": {
+        "taxonomy_version": "dialogue_function_taxonomy_v1",
+        "classifier_version": "dialogue_function_rules_v3_calibration_refinement",
+        "configuration_signature": "6dabc471d56035e1a07297c61655e78de93eb00f323d21871e0239172b6da291",
+        "input_context": {
+          "mode": "dialogue_turn",
+          "previous_speech_passage_id": "speech_ef705179139c8ec56bcd",
+          "previous_transcript_signature": "11becb5d3171be01eeb8ae5b979e51456754529a64ab2dc5db76238d8b56a4c1",
+          "next_speech_passage_id": "speech_57a160170d78355ef414",
+          "next_transcript_signature": "fd5fed3d02080d2133ce4e13450419236baa779491976494bda7ec4e59f2341c",
+          "dialogue_turn_id": null,
+          "containing_performance_ids": [
+            "performance_12e8cddaa760c2d60fb5"
+          ],
+          "ordered_turn_evidence": false,
+          "preceding_turn_reference": null,
+          "following_turn_reference": null,
+          "sequence_position": null
+        },
+        "context_signature": "c6884ba2a810e35260b9964b4202317514281bbff673b1a81fe44cb6432b36e8",
+        "axes": {
+          "surface_form": {
+            "labels": [
+              {
+                "label": "exclamatory",
+                "label_id": "surface_form.exclamatory",
+                "confidence": 0.84
+              }
+            ],
+            "supported": true
+          },
+          "interaction_function": {
+            "labels": [
+              {
+                "label": "evaluation_or_reaction",
+                "label_id": "interaction_function.evaluation_or_reaction",
+                "confidence": 0.86
+              }
+            ],
+            "supported": true,
+            "multi_label": true
+          },
+          "sequence_position": {
+            "labels": [
+              {
+                "label": "unavailable",
+                "label_id": "sequence_position.unavailable",
+                "confidence": 1.0
+              }
+            ],
+            "supported": false
+          }
+        },
+        "confidence": 0.84,
+        "abstention": {
+          "abstained": false,
+          "reason": null,
+          "threshold": 0.62
+        },
+        "ambiguity_state": "UNAMBIGUOUS",
+        "evidence": [
+          {
+            "rule_id": "interaction.evaluation",
+            "observation": "evaluation_or_reaction"
+          }
+        ],
+        "claim_scope": "Observable English conversational form/function from transcript and declared bounded context only."
+      },
+      "proposed_interaction_labels": [
+        "evaluation_or_reaction"
+      ],
+      "proposed_surface_label": "exclamatory",
+      "proposal_confidence": 0.84,
+      "proposal_is_ground_truth": false,
+      "selection_reasons": [
+        "candidate_for_evaluation_or_reaction"
+      ]
+    }
+  ],
+  "target_interaction_labels": [
+    "request_information",
+    "provide_information",
+    "request_action",
+    "command",
+    "refusal",
+    "acknowledgment",
+    "agreement",
+    "disagreement",
+    "warning",
+    "accusation",
+    "defense",
+    "explanation",
+    "reassurance",
+    "confession",
+    "threat",
+    "revelation",
+    "interruption",
+    "deflection",
+    "narration",
+    "greeting_or_address",
+    "clarification_or_repair",
+    "discourse_management",
+    "evaluation_or_reaction"
+  ],
+  "proposal_coverage_labels": [
+    "accusation",
+    "acknowledgment",
+    "agreement",
+    "clarification_or_repair",
+    "command",
+    "confession",
+    "defense",
+    "deflection",
+    "disagreement",
+    "discourse_management",
+    "evaluation_or_reaction",
+    "explanation",
+    "greeting_or_address",
+    "interruption",
+    "narration",
+    "provide_information",
+    "reassurance",
+    "refusal",
+    "request_action",
+    "request_information",
+    "revelation",
+    "threat",
+    "warning"
+  ],
+  "proposal_coverage_gaps": [],
+  "instructions": "Annotate from transcript and declared context only. Classifier proposals are selection aids, not ground truth. Preserve ambiguity and disagreement."
+}

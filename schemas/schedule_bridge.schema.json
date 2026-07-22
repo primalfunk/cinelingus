@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cinelingus FilmModel Schedule Bridge",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "bridge_version", "schedule_signature",
+    "source_film_id", "source_model_signature", "destination_film_id",
+    "destination_model_signature", "source_media_hash",
+    "destination_media_hash", "placement_count", "canonical_schedule_payload",
+    "placements", "validation_state"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "bridge_version": {"type": "string", "minLength": 1},
+    "schedule_signature": {"type": "string", "minLength": 1},
+    "schedule_config_signature": {"type": ["string", "null"]},
+    "source_film_id": {"type": "string"},
+    "source_model_signature": {"type": "string"},
+    "destination_film_id": {"type": "string"},
+    "destination_model_signature": {"type": "string"},
+    "source_media_hash": {"type": "string"},
+    "destination_media_hash": {"type": "string"},
+    "placement_count": {"type": "integer", "minimum": 0},
+    "canonical_schedule_payload": {"type": "object"},
+    "placements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "model_placement_id", "source_placement_id", "original_mapping_index",
+          "mapping_signature", "destination", "donor", "score_evidence",
+          "adaptation_parameters", "suppression_parameters",
+          "editorial_observation_ids", "repair_history",
+          "unresolved_references", "contradictions", "trace_status"
+        ]
+      }
+    },
+    "validation_state": {
+      "type": "object",
+      "required": ["status", "errors", "warnings", "schedule_trace_readiness"]
+    }
+  }
+}

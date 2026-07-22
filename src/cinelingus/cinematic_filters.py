@@ -20,6 +20,7 @@ SCORING_DIMENSIONS = (
     "response_delay",
     "silence_ratio",
     "words_per_second",
+    "interruptions",
     "reuse_penalty",
     "contrast_bonus",
     "silence_penalty",
@@ -87,6 +88,14 @@ class CinematicFilter:
             components["contrast_bonus"] = max(components.get("contrast_bonus", 0.0), 0.75)
             components["reuse_penalty"] = 1.0
             components["silence_penalty"] = 1.0
+        elif self.id == "volatile":
+            source_interruptions = 1.0 if bool(source_signature.get("interruptions_detected")) else 0.0
+            source_turn_count = _float(source_signature.get("turn_count"), 0.0)
+            components["energy"] = max(components.get("energy", 0.0), source_energy)
+            components["dialogue_density"] = max(components.get("dialogue_density", 0.0), source_density)
+            components["interruptions"] = max(components.get("interruptions", 0.0), source_interruptions)
+            components["speaker_pattern"] = max(components.get("speaker_pattern", 0.0), min(1.0, source_wps / 3.5))
+            components["turn_count"] = max(components.get("turn_count", 0.0), min(1.0, source_turn_count / 7.0))
         elif self.id == "rhythm":
             components["dialogue_density"] = 1.0 - min(1.0, abs(source_density - destination_density))
             components["response_delay"] = max(components.get("response_delay", 0.0), _ratio(source_pause + 0.25, destination_response + 0.25))
@@ -114,6 +123,7 @@ BASELINE_WEIGHTS = {
     "response_delay": 0.035,
     "silence_ratio": 0.025,
     "words_per_second": 0.025,
+    "interruptions": 0.025,
     "reuse_penalty": 0.0,
     "contrast_bonus": 0.0,
     "silence_penalty": 0.0,
@@ -169,6 +179,20 @@ FILTERS: dict[str, CinematicFilter] = {
         description="Encourage unusual choices while retaining technical safety and whole-line preservation.",
         weights={**BASELINE_WEIGHTS, "contrast_bonus": 0.24, "energy": 0.13, "dialogue_density": 0.12, "duration": 0.08, "speaker_pattern": 0.04, "reuse_penalty": 0.0},
         notes="Chaos relaxes taste penalties and rewards destabilizing contrast.",
+    ),
+    "volatile": CinematicFilter(
+        id="volatile",
+        display_name="Volatile",
+        description="Favor high energy, rapid alternation, interruptions, and dense dialogue.",
+        weights={**BASELINE_WEIGHTS, "energy": 0.24, "dialogue_density": 0.2, "interruptions": 0.18, "speaker_pattern": 0.16, "turn_count": 0.14, "pause": 0.02},
+        notes="Volatile prefers compressed, interruptive exchanges without relaxing structural safety.",
+    ),
+    "structural": CinematicFilter(
+        id="structural",
+        display_name="Structural",
+        description="Prioritize participant structure, turn sequence, scene category, and duration.",
+        weights={**BASELINE_WEIGHTS, "speaker_count": 0.24, "turn_count": 0.22, "speaker_pattern": 0.2, "conversation_type": 0.16, "performance_type": 0.16, "duration": 0.2, "energy": 0.01},
+        notes="Structural gives the destination performance's participant and turn geometry first priority.",
     ),
 }
 

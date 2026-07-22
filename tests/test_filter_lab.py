@@ -34,11 +34,11 @@ def test_registry_contains_all_families_and_only_real_filters_are_runnable() -> 
     registry = default_filter_registry()
 
     assert [family.id for family in registry.families()] == ["translation", "infection", "identity", "memory", "emotion", "time", "experimental", "multiworld"]
-    assert len(registry.definitions(implemented_only=True)) == 32
+    assert len(registry.definitions(implemented_only=True)) == 33
     assert {item.id for item in registry.definitions() if not item.implemented} == {
         "multiworld.bleed", "multiworld.chimera", "multiworld.civilization",
         "multiworld.doppelganger", "multiworld.mirror_world",
-        "multiworld.parallel_universes", "multiworld.triangle", "multiworld.wormhole",
+        "multiworld.parallel_universes", "multiworld.wormhole",
     }
     assert registry.get("translation").id == "multiworld.translation"
     assert registry.get("multiworld.translation").id == "multiworld.translation"

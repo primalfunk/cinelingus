@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "record_type": "phase0_strategy_isolation_outcome",
+  "created_on": "2026-07-21",
+  "status": "complete",
+  "implementation": {
+    "production_routing_changed": false,
+    "benchmark_mode": "explicit_opt_in_strategy_isolation",
+    "target_authority": "An observed target failure becomes the primary route; secondary failures remain visible but cannot consume or veto the isolation pass.",
+    "interruption_recovery": "Excerpt extraction now writes a validated partial file and atomically replaces the destination, so a truncated MP4 is not mistaken for a completed input."
+  },
+  "initial_targeted_run": {
+    "plan": "evaluation/phase0_strategy_isolation_plan.json",
+    "report": "output/corpus_calibration/phase0_strategy_isolation/calibration_report.json",
+    "planned_cases": 4,
+    "completed_cases": 4,
+    "strategies": {
+      "repair_visual_intent": {
+        "runtime_attempted": true,
+        "rendered_candidates": 0,
+        "surviving_repairs": 0,
+        "finding": "The donor pool was initially exhausted by occupied mappings. Target-authority retry exposed swap candidates, but none improved the destination-driven visual score."
+      },
+      "repair_transition_edges": {
+        "runtime_attempted": true,
+        "rendered_candidates": 6,
+        "surviving_repairs": 0,
+        "finding": "All candidates were safely rolled back."
+      },
+      "repair_audio_masking": {
+        "runtime_attempted": true,
+        "rendered_candidates": 6,
+        "surviving_repairs": 0,
+        "finding": "All candidates were safely rolled back."
+      },
+      "repair_performance_structure": {
+        "runtime_attempted": true,
+        "rendered_candidates": 0,
+        "surviving_repairs": 0,
+        "finding": "The first evidence region contained only one usable donor."
+      }
+    }
+  },
+  "performance_followup": {
+    "plan": "evaluation/phase0_performance_strategy_plan.json",
+    "report": "output/corpus_calibration/phase0_performance_strategy/calibration_report.json",
+    "initial_quality": 0.7651,
+    "final_quality": 0.8537,
+    "quality_improvement": 0.0886,
+    "rendered_candidates": 3,
+    "surviving_repairs": 1,
+    "coordinated_candidates": 2,
+    "coordinated_surviving": 0,
+    "interpretation": "The performance repair strategy now has measured rendered benefit. Coordinated performance-group acceptance remains unproven."
+  },
+  "coverage_change": {
+    "before_evidence_satisfied": 2,
+    "after_evidence_satisfied": 5,
+    "declared_strategy_count": 12,
+    "before_surviving_strategies": 1,
+    "after_surviving_strategies": 2,
+    "coverage_report": "evaluation/phase0_rendered_strategy_coverage_20260721.json"
+  },
+  "remaining_strategy_evidence": [
+    "repair_word_boundary",
+    "repair_duration_fit",
+    "repair_speaker_role",
+    "repair_visual_intent",
+    "repair_local_suppression",
+    "repair_reuse_pressure",
+    "conservative_uncertainty_retention"
+  ],
+  "next_recommendation": "Build evidence-selection recipes for the six strategies not yet observed at runtime, and revise visual compatibility so donor choice can materially change visual-fit evidence before repeating visual repair."
+}

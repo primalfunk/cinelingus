@@ -1,0 +1,201 @@
+{
+  "schema_version": "1.0",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T19:20:02+00:00",
+  "manifest": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\phase0_run_acceptance_manifest.json",
+  "runs_root": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\output\\quality_corpus_runs",
+  "case_count": 2,
+  "passed_case_count": 0,
+  "failed_case_count": 2,
+  "passed": false,
+  "cases": [
+    {
+      "id": "animation_dense",
+      "tags": [
+        "animation",
+        "dialogue-dense",
+        "feature-length"
+      ],
+      "run_report": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\output\\quality_corpus_runs\\animation_dense\\run_report.json",
+      "passed": false,
+      "metrics": {
+        "residue_status": "NONE_DETECTED",
+        "performance_first_ratio": 0.9535,
+        "linewise_fallback_ratio": 0.0233,
+        "preserved_original_ratio": 0.0,
+        "suppressed_unreplaced_ratio": 0.0233,
+        "silence_fallback_ratio": 0.3647,
+        "problem_count": 208,
+        "editorial_evidence_available": true,
+        "editorial_status": "LIMIT_REACHED",
+        "editorial_final_quality": 0.6913,
+        "minimum_placement_quality": 0.3444,
+        "hard_gate_failure_count": 52,
+        "hard_gate_failure_categories": [
+          "low_rendered_coverage"
+        ],
+        "failed_delivery_count": 0
+      },
+      "checks": [
+        {
+          "name": "residue_status",
+          "passed": true,
+          "actual": "NONE_DETECTED",
+          "expected": [
+            "NONE_DETECTED"
+          ]
+        },
+        {
+          "name": "performance_first_ratio",
+          "passed": true,
+          "actual": 0.9535,
+          "expected_minimum": 0.0
+        },
+        {
+          "name": "linewise_fallback_ratio",
+          "passed": true,
+          "actual": 0.0233,
+          "expected_maximum": 1.0
+        },
+        {
+          "name": "preserved_original_ratio",
+          "passed": true,
+          "actual": 0.0,
+          "expected_maximum": 1.0
+        },
+        {
+          "name": "silence_fallback_ratio",
+          "passed": true,
+          "actual": 0.3647,
+          "expected_maximum": 1.0
+        },
+        {
+          "name": "problem_count",
+          "passed": true,
+          "actual": 208,
+          "expected_maximum": 10000
+        },
+        {
+          "name": "editorial_evidence_available",
+          "passed": true,
+          "actual": true,
+          "required": true
+        },
+        {
+          "name": "editorial_status",
+          "passed": true,
+          "actual": "LIMIT_REACHED",
+          "expected": [
+            "PASS",
+            "LIMIT_REACHED"
+          ]
+        },
+        {
+          "name": "hard_gate_failure_count",
+          "passed": false,
+          "actual": 52,
+          "expected_maximum": 0
+        },
+        {
+          "name": "failed_delivery_count",
+          "passed": true,
+          "actual": 0,
+          "expected_maximum": 0
+        }
+      ]
+    },
+    {
+      "id": "live_rapid",
+      "tags": [
+        "live-action",
+        "rapid-turn-taking",
+        "feature-length"
+      ],
+      "run_report": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\output\\quality_corpus_runs\\live_rapid\\run_report.json",
+      "passed": false,
+      "metrics": {
+        "residue_status": "NONE_DETECTED",
+        "performance_first_ratio": 0.8889,
+        "linewise_fallback_ratio": 0.0741,
+        "preserved_original_ratio": 0.037,
+        "suppressed_unreplaced_ratio": 0.0,
+        "silence_fallback_ratio": 0.0,
+        "problem_count": 484,
+        "editorial_evidence_available": false,
+        "editorial_status": "UNAVAILABLE",
+        "editorial_final_quality": null,
+        "minimum_placement_quality": null,
+        "hard_gate_failure_count": 0,
+        "hard_gate_failure_categories": [],
+        "failed_delivery_count": 0
+      },
+      "checks": [
+        {
+          "name": "residue_status",
+          "passed": true,
+          "actual": "NONE_DETECTED",
+          "expected": [
+            "NONE_DETECTED"
+          ]
+        },
+        {
+          "name": "performance_first_ratio",
+          "passed": true,
+          "actual": 0.8889,
+          "expected_minimum": 0.0
+        },
+        {
+          "name": "linewise_fallback_ratio",
+          "passed": true,
+          "actual": 0.0741,
+          "expected_maximum": 1.0
+        },
+        {
+          "name": "preserved_original_ratio",
+          "passed": true,
+          "actual": 0.037,
+          "expected_maximum": 1.0
+        },
+        {
+          "name": "silence_fallback_ratio",
+          "passed": true,
+          "actual": 0.0,
+          "expected_maximum": 1.0
+        },
+        {
+          "name": "problem_count",
+          "passed": true,
+          "actual": 484,
+          "expected_maximum": 10000
+        },
+        {
+          "name": "editorial_evidence_available",
+          "passed": false,
+          "actual": false,
+          "required": true
+        },
+        {
+          "name": "editorial_status",
+          "passed": false,
+          "actual": "UNAVAILABLE",
+          "expected": [
+            "PASS",
+            "LIMIT_REACHED"
+          ]
+        },
+        {
+          "name": "hard_gate_failure_count",
+          "passed": true,
+          "actual": 0,
+          "expected_maximum": 0
+        },
+        {
+          "name": "failed_delivery_count",
+          "passed": true,
+          "actual": 0,
+          "expected_maximum": 0
+        }
+      ]
+    }
+  ]
+}

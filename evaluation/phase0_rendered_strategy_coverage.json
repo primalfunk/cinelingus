@@ -1,0 +1,178 @@
+{
+  "schema_version": "1.0",
+  "report_version": "phase0_rendered_strategy_coverage_v1",
+  "tool_version": "0.3.0",
+  "creation_timestamp": "2026-07-21T16:48:42+00:00",
+  "contract_report": "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\evaluation\\phase0_strategy_contract_benchmarks.json",
+  "calibration_reports": [
+    "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\output\\corpus_calibration\\extended\\calibration_report_initial.json",
+    "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\output\\corpus_calibration\\extended_followup\\calibration_report.json",
+    "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\output\\corpus_calibration\\extended_supplement\\calibration_report.json",
+    "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\output\\corpus_calibration\\extended_supplement2\\calibration_report.json",
+    "C:\\Users\\erinm\\Desktop\\2026 - Work\\06.26 Cinelingus\\output\\corpus_calibration\\extended_supplement3\\calibration_report.json"
+  ],
+  "declared_strategy_count": 12,
+  "contract_executable_count": 12,
+  "runtime_attempted_strategy_count": 2,
+  "rendered_strategy_count": 2,
+  "surviving_strategy_count": 1,
+  "evidence_satisfied_strategy_count": 2,
+  "missing_rendered_strategies": [
+    "repair_word_boundary",
+    "repair_duration_fit",
+    "repair_speaker_role",
+    "repair_visual_intent",
+    "repair_transition_edges",
+    "repair_local_suppression",
+    "repair_audio_masking",
+    "repair_performance_structure",
+    "repair_reuse_pressure"
+  ],
+  "missing_strategy_evidence": [
+    "repair_word_boundary",
+    "repair_duration_fit",
+    "repair_speaker_role",
+    "repair_visual_intent",
+    "repair_transition_edges",
+    "repair_local_suppression",
+    "repair_audio_masking",
+    "repair_performance_structure",
+    "repair_reuse_pressure",
+    "conservative_uncertainty_retention"
+  ],
+  "phase0_rendered_strategy_gate_passed": false,
+  "strategies": [
+    {
+      "failure_category": "incomplete_sentence",
+      "repair_strategy": "repair_sentence_boundaries",
+      "contract_executable": true,
+      "runtime_attempt_count": 16,
+      "rendered_candidate_count": 5,
+      "surviving_repair_count": 3,
+      "required_evidence": "rendered_candidate",
+      "evidence_satisfied": true,
+      "status": "rendered_repair_survived"
+    },
+    {
+      "failure_category": "mid_word_cut",
+      "repair_strategy": "repair_word_boundary",
+      "contract_executable": true,
+      "runtime_attempt_count": 0,
+      "rendered_candidate_count": 0,
+      "surviving_repair_count": 0,
+      "required_evidence": "rendered_candidate",
+      "evidence_satisfied": false,
+      "status": "contract_only"
+    },
+    {
+      "failure_category": "low_rendered_coverage",
+      "repair_strategy": "repair_rendered_coverage",
+      "contract_executable": true,
+      "runtime_attempt_count": 2,
+      "rendered_candidate_count": 2,
+      "surviving_repair_count": 0,
+      "required_evidence": "rendered_candidate",
+      "evidence_satisfied": true,
+      "status": "rendered_attempt_observed"
+    },
+    {
+      "failure_category": "duration_failure",
+      "repair_strategy": "repair_duration_fit",
+      "contract_executable": true,
+      "runtime_attempt_count": 0,
+      "rendered_candidate_count": 0,
+      "surviving_repair_count": 0,
+      "required_evidence": "rendered_candidate",
+      "evidence_satisfied": false,
+      "status": "contract_only"
+    },
+    {
+      "failure_category": "speaker_mismatch",
+      "repair_strategy": "repair_speaker_role",
+      "contract_executable": true,
+      "runtime_attempt_count": 0,
+      "rendered_candidate_count": 0,
+      "surviving_repair_count": 0,
+      "required_evidence": "rendered_candidate",
+      "evidence_satisfied": false,
+      "status": "contract_only"
+    },
+    {
+      "failure_category": "visual_mismatch",
+      "repair_strategy": "repair_visual_intent",
+      "contract_executable": true,
+      "runtime_attempt_count": 0,
+      "rendered_candidate_count": 0,
+      "surviving_repair_count": 0,
+      "required_evidence": "rendered_candidate",
+      "evidence_satisfied": false,
+      "status": "contract_only"
+    },
+    {
+      "failure_category": "transition_artifact",
+      "repair_strategy": "repair_transition_edges",
+      "contract_executable": true,
+      "runtime_attempt_count": 0,
+      "rendered_candidate_count": 0,
+      "surviving_repair_count": 0,
+      "required_evidence": "rendered_candidate",
+      "evidence_satisfied": false,
+      "status": "contract_only"
+    },
+    {
+      "failure_category": "residual_dialogue",
+      "repair_strategy": "repair_local_suppression",
+      "contract_executable": true,
+      "runtime_attempt_count": 0,
+      "rendered_candidate_count": 0,
+      "surviving_repair_count": 0,
+      "required_evidence": "rendered_candidate",
+      "evidence_satisfied": false,
+      "status": "contract_only"
+    },
+    {
+      "failure_category": "masking",
+      "repair_strategy": "repair_audio_masking",
+      "contract_executable": true,
+      "runtime_attempt_count": 0,
+      "rendered_candidate_count": 0,
+      "surviving_repair_count": 0,
+      "required_evidence": "rendered_candidate",
+      "evidence_satisfied": false,
+      "status": "contract_only"
+    },
+    {
+      "failure_category": "performance_mismatch",
+      "repair_strategy": "repair_performance_structure",
+      "contract_executable": true,
+      "runtime_attempt_count": 0,
+      "rendered_candidate_count": 0,
+      "surviving_repair_count": 0,
+      "required_evidence": "rendered_candidate",
+      "evidence_satisfied": false,
+      "status": "contract_only"
+    },
+    {
+      "failure_category": "reuse_exhaustion",
+      "repair_strategy": "repair_reuse_pressure",
+      "contract_executable": true,
+      "runtime_attempt_count": 0,
+      "rendered_candidate_count": 0,
+      "surviving_repair_count": 0,
+      "required_evidence": "rendered_candidate",
+      "evidence_satisfied": false,
+      "status": "contract_only"
+    },
+    {
+      "failure_category": "confidence_collapse",
+      "repair_strategy": "conservative_uncertainty_retention",
+      "contract_executable": true,
+      "runtime_attempt_count": 0,
+      "rendered_candidate_count": 0,
+      "surviving_repair_count": 0,
+      "required_evidence": "runtime_retention",
+      "evidence_satisfied": false,
+      "status": "contract_only"
+    }
+  ]
+}

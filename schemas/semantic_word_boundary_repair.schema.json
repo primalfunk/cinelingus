@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "semantic_word_boundary_repair",
+  "type": "object",
+  "required": ["schema_version", "repair_version", "creation_timestamp", "repair_signature", "rejected_clip_count", "repaired_clip_count", "unrecovered_clip_count", "repaired_clip_ids", "clips", "repaired_clip_library", "repair_state", "claim_scope"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "repair_version": {"const": "semantic_word_boundary_repair_v2_timing_preserving_silence"},
+    "rejected_clip_count": {"type": "integer", "minimum": 0},
+    "repaired_clip_count": {"type": "integer", "minimum": 0},
+    "unrecovered_clip_count": {"type": "integer", "minimum": 0},
+    "repaired_clip_ids": {"type": "array", "items": {"type": "string"}},
+    "clips": {"type": "array"},
+    "repaired_clip_library": {"type": "string"},
+    "repair_state": {"enum": ["ALL_REPAIRED", "PARTIAL_REPAIR", "NO_REPAIR"]},
+    "claim_scope": {"type": "string"}
+  }
+}

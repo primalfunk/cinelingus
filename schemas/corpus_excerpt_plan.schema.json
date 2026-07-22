@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "corpus_excerpt_plan",
+  "type": "object",
+  "required": [
+    "schema_version", "plan_version", "tool_version", "manifest", "manifest_version",
+    "tier", "seed", "dry_run", "cache_root", "limits", "candidate_count",
+    "selected_excerpt_count", "selected_total_duration_seconds", "category_counts",
+    "excerpts", "execution_policy"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "plan_version": {"const": "evidence_excerpt_plan_v1"},
+    "tier": {"enum": ["smoke", "standard", "extended"]},
+    "dry_run": {"const": true},
+    "candidate_count": {"type": "integer", "minimum": 0},
+    "selected_excerpt_count": {"type": "integer", "minimum": 0},
+    "selected_total_duration_seconds": {"type": "number", "minimum": 0},
+    "category_counts": {"type": "object"},
+    "excerpts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "excerpt_id", "media_id", "category", "start", "end", "duration",
+          "selection_reason", "analysis_signature", "evidence", "expected_failure_modes"
+        ]
+      }
+    },
+    "execution_policy": {"type": "object"}
+  }
+}

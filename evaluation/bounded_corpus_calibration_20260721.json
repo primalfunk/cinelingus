@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "bounded_rendered_failure_exploration_20260721",
+  "tier": "standard",
+  "case_count": 5,
+  "planned_input_duration_seconds": 219.28,
+  "control": {
+    "rendered_candidate_count": 0,
+    "surviving_repair_count": 0,
+    "case_final_quality": {
+      "exchange_continuity": 0.8141,
+      "transition_sentence_integrity": 0.8591,
+      "animation_visual_role": 0.7644,
+      "quiet_residue_masking": 0.7909,
+      "fragment_duration_edges": 0.6961
+    }
+  },
+  "bounded_rendered_exploration": {
+    "exploration_count": 4,
+    "surviving_repair_count": 3,
+    "restored_after_regression_count": 1,
+    "case_final_quality": {
+      "exchange_continuity": 0.8534,
+      "transition_sentence_integrity": 0.8591,
+      "animation_visual_role": 0.8535,
+      "quiet_residue_masking": 0.812,
+      "fragment_duration_edges": 0.6961
+    },
+    "measured_quality_deltas": {
+      "exchange_continuity": 0.1179,
+      "animation_visual_role": 0.2672,
+      "quiet_residue_masking": 0.1474,
+      "fragment_duration_edges_rejected": -0.0457
+    }
+  },
+  "production_regression_check": {
+    "benchmark": "animation_dense",
+    "quality_before": 0.688,
+    "quality_after": 0.6913,
+    "placements_repaired_before": 5,
+    "placements_repaired_after": 6,
+    "placements_unresolved_before": 185,
+    "placements_unresolved_after": 184,
+    "rendered_candidates_before": 32,
+    "rendered_candidates_after": 39,
+    "bounded_exploration_count": 6,
+    "bounded_exploration_surviving_count": 2,
+    "bounded_exploration_restored_count": 4,
+    "candidate_survival_rate_before": 0.5312,
+    "candidate_survival_rate_after": 0.359
+  },
+  "decision": "accepted",
+  "conclusion": "Rendered boundary evidence can legitimately contradict an optimistic pre-render score for the current donor. Admit at most one technically credible near-ceiling challenger, then retain it only after measured rendered improvement. The standard corpus accepted three improvements and correctly rolled back the sole regression.",
+  "artifacts": {
+    "plan": "evaluation/standard_calibration_plan.json",
+    "control_report": "output/corpus_calibration/standard/calibration_report_control.json",
+    "calibrated_report": "output/corpus_calibration/standard/calibration_report.json",
+    "production_editorial_report": "output/quality_corpus_runs/animation_dense/editorial_report.json",
+    "production_repair_effectiveness": "output/quality_corpus_runs/animation_dense/repair_effectiveness.json"
+  }
+}

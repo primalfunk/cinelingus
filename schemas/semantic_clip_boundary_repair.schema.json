@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "semantic_clip_boundary_repair",
+  "type": "object",
+  "required": [
+    "schema_version", "repair_version", "creation_timestamp", "repair_signature",
+    "search_policy", "confirmation_policy", "rejected_clip_count", "candidate_count",
+    "repaired_clip_count", "unrecovered_clip_count", "clips", "repaired_clip_library",
+    "repair_state", "claim_scope"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "repair_version": {"type": "string"},
+    "creation_timestamp": {"type": "string"},
+    "repair_signature": {"type": "string"},
+    "search_policy": {"type": "string"},
+    "confirmation_policy": {"type": "string"},
+    "rejected_clip_count": {"type": "integer"},
+    "candidate_count": {"type": "integer"},
+    "repaired_clip_count": {"type": "integer"},
+    "unrecovered_clip_count": {"type": "integer"},
+    "clips": {"type": "array"},
+    "repaired_clip_library": {"type": "string"},
+    "repair_state": {"enum": ["ALL_REJECTED_CLIPS_REPAIRED", "PARTIAL_REPAIR", "NO_REPAIR_CANDIDATE", "NO_REJECTED_CLIPS"]},
+    "claim_scope": {"type": "string"}
+  }
+}
